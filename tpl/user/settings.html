@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}完善资料 - {% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="content setting">
+            <h3>完善资料</h3>
+            <div class="avatar" style="background: url({% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center;"><img src="{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" /></div>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input class="file-input" name="avatar" type="file" />
+                <br />
+                <span class="tips">提示：图片会被自动压缩</span>
+                <br />
+                <p>账号：{{ user.username }}</p>
+                {% if not user.userprofile.openid %}<p>邮箱：{{ user.email }}</p>{% endif %}
+                <p>签名：<input name="info" type="text" value="{{ user.userprofile.info }}" /></p>
+                <p class="description">简介：<textarea name="profile">{{ user.userprofile.profile }}</textarea></p>
+                <!--<p class="description">页面：<textarea name="page">{{ user.userprofile.page }}</textarea></p>-->
+                <p>{% if prev == 'signup' %}<a href="{% if next %}{{ next }}{% else %}/{% endif %}"><button>跳过</button></a>{% else %}<a href="/u/">取消</a>{% endif %} <input type="submit" value="提交" /></p>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}

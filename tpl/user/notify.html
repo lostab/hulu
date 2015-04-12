@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}通知中心 - {% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="content notify">
+            <h3>通知中心</h3>
+            {% if notify %}
+                {% for i in notify %}
+                    <p>您发布的 {% with i.item.belong.all|first as belong %}<a href="/i/{{ belong.id }}/">{% with belong.itemcontent_set.all|first as belongcontent %}{{ belongcontent.content|slice:'30' }}...{% endwith %}</a>{% endwith %} 有了 <a href="/{{ i.item.user.username }}/">{{ i.item.user.username }}</a> 的新回应：<a href="/i/{{ i.item.id }}/">{% with i.item.itemcontent_set.all|first as itemcontent %}{{ itemcontent.content|slice:'30' }}...{% endwith %}</a></p>
+                {% endfor %}
+            {% else %}
+                <p>暂无通知。</p>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

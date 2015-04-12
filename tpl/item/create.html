@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}发布信息 - {% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="content create">
+            <h3>发布信息</h3>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <p class="description"><textarea name="content">{{ form.content.value }}</textarea></p>
+                <!--<p>附件：<input name="file" type="file" value={{ form.file.value }} />
+                <br />
+                (小于2MB有效)</p>-->
+                <p><input class="submit" type="submit" value="发布信息" /></p>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}

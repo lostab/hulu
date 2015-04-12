@@ -1,0 +1,39 @@
+{% load i18n %}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>{% block title %}{% endblock %}Hulu</title>
+    <meta name="viewport" content="maximum-scale=1,width=device-width,initial-scale=1" />
+    <link href="/s/css/style.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="/s/favicon.ico" />
+</head>
+<body>
+    <div class="header">
+        <a class="logo" href="/">Hulu</a>
+        <span class="right-navbar">
+        {% if user.is_authenticated %}
+            <!--<a href="/{{ user.username }}/">{% if user.userprofile.name %}{{ user.userprofile.name }}{% else %}{{ user.username }}{% endif %}</a>-->
+            <a href="/u/" class="accounts-button"><div class="avatar-area"><div class="avatar" style="background: url({% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center;"><img src="{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" /></div></div></a>
+            {% with user.usernotify_set.all|length as notifyamount %}<a href="/u/notify/" class="notify-amount{% if notifyamount %} notify-amount-new{% endif %}">{{ notifyamount }}</a>{% endwith %}
+            <!--<a href="{% url 'logout' %}?next={{ request.path }}">退出</a>-->
+            <a href="/i/create/" class="create-button">+</a>
+        {% else %}
+            <a class="header-navbar-button" href="{% url 'login' %}{% if request.get_full_path != '/' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.get_full_path }}{% endif %}{% endif %}">登录</a>
+            <a class="header-navbar-button" href="{% url 'signup' %}{% if request.get_full_path != '/' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.get_full_path }}{% endif %}{% endif %}">注册</a>
+            <a href="/i/create/" class="header-navbar-button">发布</a>
+        {% endif %}
+            <!--<a href="/i/create/" class="create-button">✍</a>-->
+        </span>
+    </div>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+    <div class="footer">
+        © {% now "Y" %} Hulu <a href="/u/feedback/">反馈建议</a> <a href="/u/list/">用户列表</a>
+    </div>
+    <script type="text/javascript" src="/s/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/s/js/common.js"></script>
+    {% block footer %}{% endblock %}
+</body>
+</html>

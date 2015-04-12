@@ -1,0 +1,10 @@
+applications:
+- disk_quota: 1024M
+  buildpack: python_buildpack
+  host: hulu
+  name: hulu
+  path: .
+  domain: mybluemix.net
+  instances: 2
+  memory: 128M
+  command: sh runserver.sh

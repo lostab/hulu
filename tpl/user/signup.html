@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}注册 - {% endblock %}
+
+{% block content %}
+    <div class="content signup">
+        <form method="post">
+            {% csrf_token %}
+            <p>邮箱：<input name="email" type="email" value="{{ form.email.value }}" />
+                {% if form.email.errors %}
+                    {% if form.email.value %}
+                        {% if 'Enter a valid email address.' in form.email.errors %}
+                            <span class="error">格式错误</span>
+                        {% elif 'User with this Email address already exists.' in form.email.errors %}
+                            <span class="error">已被注册</span>
+                        {% else %}
+                            <span class="error">{{ form.email.errors }}</span>
+                        {% endif %}
+                    {% else %}
+                        <span class="error">请填写邮箱</span>
+                    {% endif %}
+                {% endif %}
+            </p>
+            <p>账号：<input name="username" type="text" value="{{ form.username.value }}" />
+                {% if form.username.errors %}
+                    {% if form.username.value %}
+                        {% if 'Ensure this value has at least 6 characters' in form.username.errors %}
+                            <span class="error">至少3位字符</span>
+                        {% elif 'A user with that username already exists.' in form.username.errors %}
+                            <span class="error">已被注册</span>
+                        {% elif 'The username is not allowed.' in form.username.errors %}
+                            <span class="error">不允许使用</span>
+                        {% else %}
+                            <span class="error">{{ form.username.errors }}</span>
+                        {% endif %}
+                    {% else %}
+                        <span class="error">请填写账号</span>
+                    {% endif %}
+                {% endif %}
+            </p>
+            <p>密码：<input name="password1" type="password" />
+                {% if form.errors and not form.email.errors and not form.username.errors %}
+                    <span class="error">密码填写错误</span>
+                {% endif %}
+            </p>
+            <p>重复：<input name="password2" type="password" /></p>
+            <p><input type="submit" value="注册" /></p>
+            <p>已有帐号？<a href="{% url 'login' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.path }}{% endif %}">现在登录</a></p>
+            <p><a href="?type=qq&next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.path }}{% endif %}"><img src="http://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_3.png" /></a></p>
+        </form>
+    </div>
+{% endblock %}

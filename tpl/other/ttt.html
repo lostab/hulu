@@ -1,0 +1,420 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Tic Tac Toe</title>
+    <meta name="viewport" content="maximum-scale=1,width=device-width,initial-scale=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="/s/favicon.ico" />
+    <link rel="apple-touch-startup-image" href="/s/startup.png" />
+    <link rel="apple-touch-icon" href="/s/icon.png" />
+    <style type="text/css">
+        html, body, .container { width: 100%; height: 100%; margin: 0; padding: 0; -webkit-user-select: none; font-family:"Constantia"; }
+        .board { width: 246px; height: 246px; margin: 0 auto; display: block; position: absolute; top: 50%; margin-top: -123px; left: 50%; margin-left: -123px; }
+        .box { width: 80px; height: 80px; display: inline-block; text-align: center; line-height: 80px; position: absolute; -webkit-tap-highlight-color: rgba(0,0,0,0); font-size: xx-large; font-weight: bold; }
+        .box-tl, .box-ml, .box-bl { left: 0; }
+        .box-tm, .box-mm, .box-bm { left: 81px; }
+        .box-tr, .box-mr, .box-br { left: 163px; }
+        .box-tl, .box-tm, .box-tr { top: 0; }
+        .box-ml, .box-mm, .box-mr { top: 81px; }
+        .box-bl, .box-bm, .box-br { top: 163px; }
+        .box-ml, .box-mm, .box-mr, .box-bl, .box-bm, .box-br { border-top: 1px solid gray; }
+        .box-tl, .box-tm, .box-tr, .box-ml, .box-mm, .box-mr { border-bottom: 1px solid gray; }
+        .box-tm, .box-mm, .box-bm, .box-tr, .box-mr, .box-br { border-left: 1px solid gray; }
+        .box-tl, .box-ml, .box-bl, .box-tm, .box-mm, .box-bm { border-right: 1px solid gray; }
+        .info { position: absolute; top: 10px; text-align: center; width: 100%; }
+        .msg { position: absolute; top: 30px; text-align: center; width: 100%; }
+        .menu { position: absolute; bottom: 20px; text-align: center; width: 100%; }
+        .menu .newgame { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="info"></div>
+        <div class="msg"></div>
+        <div class="board">
+            <div class="box box-tl"></div><div class="box box-tm"></div><div class="box box-tr"></div>
+            <div class="box box-ml"></div><div class="box box-mm"></div><div class="box box-mr"></div>
+            <div class="box box-bl"></div><div class="box box-bm"></div><div class="box box-br"></div>
+        </div>
+        <div class="menu">
+            <button class="newgame">新游戏</button>
+        </div>
+    </div>
+    <script type="text/javascript" src="/s/js/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(document).bind('touchmove', false);
+            
+            var gamestatus = 0;
+            var chessqueue = new Array();
+            var humanchess = "";
+            var lockclick = 0;
+            
+            var checkwin = function(chess) {
+                if (
+                    ($(".box-tl").text() == chess && $(".box-tm").text() == chess && $(".box-tr").text() == chess) || 
+                    ($(".box-ml").text() == chess && $(".box-mm").text() == chess && $(".box-mr").text() == chess) || 
+                    ($(".box-bl").text() == chess && $(".box-bm").text() == chess && $(".box-br").text() == chess) || 
+                    ($(".box-tl").text() == chess && $(".box-ml").text() == chess && $(".box-bl").text() == chess) || 
+                    ($(".box-tm").text() == chess && $(".box-mm").text() == chess && $(".box-bm").text() == chess) || 
+                    ($(".box-tr").text() == chess && $(".box-mr").text() == chess && $(".box-br").text() == chess) || 
+                    ($(".box-tl").text() == chess && $(".box-mm").text() == chess && $(".box-br").text() == chess) || 
+                    ($(".box-tr").text() == chess && $(".box-mm").text() == chess && $(".box-bl").text() == chess)
+                ) {
+                    //$(".msg").text(chess + " Win");
+                    if(chess == humanchess){
+                        $(".msg").text("好吧，你赢了");
+                    } else {
+                        $(".msg").text("呃，你输了");
+                    }
+                    $(".box").each(function(){
+                        if($(this).text() == chess) {
+                            $(this).css({"color": "yellowgreen"});
+                        }
+                    });
+                    gamestatus = 1;
+                    $(".newgame").text("新游戏");
+                } else {
+                    if(chessqueue.length == 6) {
+                        $("." + chessqueue[0][1]).html("<span>" + $("." + chessqueue[0][1]).text() + "</span>");
+                        blinkchess = $("." + chessqueue[0][1]).children("span");
+                        var blink = function(){
+                            blinkchess.fadeOut(800, function show(){
+                                $(this).fadeIn(800, blink);
+                            });
+                        }
+                        blink();
+                    }
+                }
+            }
+            
+            var randomclick = function(){
+                var blankqueue = new Array();
+                $(".box").each(function(){
+                    if($(this).text() == "") {
+                        blankqueue.push($(this).attr("class").split(" ")[1]);
+                    }
+                });
+                $("." + blankqueue[parseInt(Math.random() * blankqueue.length)]).click();
+            }
+            
+            var ai = function() {
+                lockclick = 0;
+                
+                if(chessqueue.length >= 3) {
+                    var ifclick = 0;
+                    var humanchess1 = chessqueue[chessqueue.length-1][1];
+                    var humanchess2 = chessqueue[chessqueue.length-3][1];
+                    
+                    if(chessqueue.length >= 5){
+                        var aichess1 = chessqueue[chessqueue.length-2][1];
+                        var aichess2 = chessqueue[chessqueue.length-4][1];
+                        
+                        if($(".box-tl").text() == ""){
+                            if( ("box-tm" == aichess1 && "box-tr" == aichess2) ||
+                                ("box-tm" == aichess2 && "box-tr" == aichess1) ||
+                                ("box-mm" == aichess1 && "box-br" == aichess2) ||
+                                ("box-mm" == aichess2 && "box-br" == aichess1) ||
+                                ("box-ml" == aichess1 && "box-bl" == aichess2) ||
+                                ("box-ml" == aichess2 && "box-bl" == aichess1)
+                            ) {
+                                $(".box-tl").click();
+                                ifclick = 1;
+                            }
+                        }
+                        if($(".box-tr").text() == ""){
+                            if( ("box-tl" == aichess1 && "box-tm" == aichess2) ||
+                                ("box-tl" == aichess2 && "box-tm" == aichess1) ||
+                                ("box-mm" == aichess1 && "box-bl" == aichess2) ||
+                                ("box-mm" == aichess2 && "box-bl" == aichess1) ||
+                                ("box-mr" == aichess1 && "box-br" == aichess2) ||
+                                ("box-mr" == aichess2 && "box-br" == aichess1)
+                            ) {
+                                $(".box-tr").click();
+                                ifclick = 1;
+                            }
+                        }
+                        if($(".box-bl").text() == ""){
+                            if( ("box-tl" == aichess1 && "box-ml" == aichess2) ||
+                                ("box-tl" == aichess2 && "box-ml" == aichess1) ||
+                                ("box-mm" == aichess1 && "box-tr" == aichess2) ||
+                                ("box-mm" == aichess2 && "box-tr" == aichess1) ||
+                                ("box-bm" == aichess1 && "box-br" == aichess2) ||
+                                ("box-bm" == aichess2 && "box-br" == aichess1)
+                            ) {
+                                $(".box-bl").click();
+                                ifclick = 1;
+                            }
+                        }
+                        if($(".box-br").text() == ""){
+                            if( ("box-tr" == aichess1 && "box-mr" == aichess2) ||
+                                ("box-tr" == aichess2 && "box-mr" == aichess1) ||
+                                ("box-tl" == aichess1 && "box-mm" == aichess2) ||
+                                ("box-tl" == aichess2 && "box-mm" == aichess1) ||
+                                ("box-bm" == aichess1 && "box-bl" == aichess2) ||
+                                ("box-bm" == aichess2 && "box-bl" == aichess1)
+                            ) {
+                                $(".box-br").click();
+                                ifclick = 1;
+                            }
+                        }
+                        
+                        if($(".box-tm").text() == ""){
+                            if( ("box-tl" == aichess1 && "box-tr" == aichess2) ||
+                                ("box-tl" == aichess2 && "box-tr" == aichess1) ||
+                                ("box-mm" == aichess1 && "box-bm" == aichess2) ||
+                                ("box-mm" == aichess2 && "box-bm" == aichess1)
+                            ) {
+                                $(".box-tm").click();
+                                ifclick = 1;
+                            }
+                        }
+                        if($(".box-ml").text() == ""){
+                            if( ("box-tl" == aichess1 && "box-bl" == aichess2) ||
+                                ("box-tl" == aichess2 && "box-bl" == aichess1) ||
+                                ("box-mm" == aichess1 && "box-mr" == aichess2) ||
+                                ("box-mm" == aichess2 && "box-mr" == aichess1)
+                            ) {
+                                $(".box-ml").click();
+                                ifclick = 1;
+                            }
+                        }
+                        if($(".box-mr").text() == ""){
+                            if( ("box-tr" == aichess1 && "box-br" == aichess2) ||
+                                ("box-tr" == aichess2 && "box-br" == aichess1) ||
+                                ("box-ml" == aichess1 && "box-mm" == aichess2) ||
+                                ("box-ml" == aichess2 && "box-mm" == aichess1)
+                            ) {
+                                $(".box-mr").click();
+                                ifclick = 1;
+                            }
+                        }
+                        if($(".box-bm").text() == ""){
+                            if( ("box-tm" == aichess1 && "box-mm" == aichess2) ||
+                                ("box-tm" == aichess2 && "box-mm" == aichess1) ||
+                                ("box-bl" == aichess1 && "box-br" == aichess2) ||
+                                ("box-bl" == aichess2 && "box-br" == aichess1)
+                            ) {
+                                $(".box-bm").click();
+                                ifclick = 1;
+                            }
+                        }
+                        
+                        if($(".box-mm").text() == ""){
+                            if( ("box-tl" == aichess1 && "box-br" == aichess2) ||
+                                ("box-tl" == aichess2 && "box-br" == aichess1) ||
+                                ("box-tm" == aichess1 && "box-bm" == aichess2) ||
+                                ("box-tm" == aichess2 && "box-bm" == aichess1) ||
+                                ("box-tr" == aichess1 && "box-bl" == aichess2) ||
+                                ("box-tr" == aichess2 && "box-bl" == aichess1) ||
+                                ("box-ml" == aichess1 && "box-mr" == aichess2) ||
+                                ("box-ml" == aichess2 && "box-mr" == aichess1)
+                            ) {
+                                $(".box-mm").click();
+                                ifclick = 1;
+                            }
+                        }
+                    }
+                    
+                    if($(".box-tl").text() == ""){
+                        if( ("box-tm" == humanchess1 && "box-tr" == humanchess2) ||
+                            ("box-tm" == humanchess2 && "box-tr" == humanchess1) ||
+                            ("box-mm" == humanchess1 && "box-br" == humanchess2) ||
+                            ("box-mm" == humanchess2 && "box-br" == humanchess1) ||
+                            ("box-ml" == humanchess1 && "box-bl" == humanchess2) ||
+                            ("box-ml" == humanchess2 && "box-bl" == humanchess1)
+                        ) {
+                            $(".box-tl").click();
+                            ifclick = 1;
+                        }
+                    }
+                    if($(".box-tr").text() == ""){
+                        if( ("box-tl" == humanchess1 && "box-tm" == humanchess2) ||
+                            ("box-tl" == humanchess2 && "box-tm" == humanchess1) ||
+                            ("box-mm" == humanchess1 && "box-bl" == humanchess2) ||
+                            ("box-mm" == humanchess2 && "box-bl" == humanchess1) ||
+                            ("box-mr" == humanchess1 && "box-br" == humanchess2) ||
+                            ("box-mr" == humanchess2 && "box-br" == humanchess1)
+                        ) {
+                            $(".box-tr").click();
+                            ifclick = 1;
+                        }
+                    }
+                    if($(".box-bl").text() == ""){
+                        if( ("box-tl" == humanchess1 && "box-ml" == humanchess2) ||
+                            ("box-tl" == humanchess2 && "box-ml" == humanchess1) ||
+                            ("box-mm" == humanchess1 && "box-tr" == humanchess2) ||
+                            ("box-mm" == humanchess2 && "box-tr" == humanchess1) ||
+                            ("box-bm" == humanchess1 && "box-br" == humanchess2) ||
+                            ("box-bm" == humanchess2 && "box-br" == humanchess1)
+                        ) {
+                            $(".box-bl").click();
+                            ifclick = 1;
+                        }
+                    }
+                    if($(".box-br").text() == ""){
+                        if( ("box-tr" == humanchess1 && "box-mr" == humanchess2) ||
+                            ("box-tr" == humanchess2 && "box-mr" == humanchess1) ||
+                            ("box-tl" == humanchess1 && "box-mm" == humanchess2) ||
+                            ("box-tl" == humanchess2 && "box-mm" == humanchess1) ||
+                            ("box-bm" == humanchess1 && "box-bl" == humanchess2) ||
+                            ("box-bm" == humanchess2 && "box-bl" == humanchess1)
+                        ) {
+                            $(".box-br").click();
+                            ifclick = 1;
+                        }
+                    }
+                    
+                    if($(".box-tm").text() == ""){
+                        if( ("box-tl" == humanchess1 && "box-tr" == humanchess2) ||
+                            ("box-tl" == humanchess2 && "box-tr" == humanchess1) ||
+                            ("box-mm" == humanchess1 && "box-bm" == humanchess2) ||
+                            ("box-mm" == humanchess2 && "box-bm" == humanchess1)
+                        ) {
+                            $(".box-tm").click();
+                            ifclick = 1;
+                        }
+                    }
+                    if($(".box-ml").text() == ""){
+                        if( ("box-tl" == humanchess1 && "box-bl" == humanchess2) ||
+                            ("box-tl" == humanchess2 && "box-bl" == humanchess1) ||
+                            ("box-mm" == humanchess1 && "box-mr" == humanchess2) ||
+                            ("box-mm" == humanchess2 && "box-mr" == humanchess1)
+                        ) {
+                            $(".box-ml").click();
+                            ifclick = 1;
+                        }
+                    }
+                    if($(".box-mr").text() == ""){
+                        if( ("box-tr" == humanchess1 && "box-br" == humanchess2) ||
+                            ("box-tr" == humanchess2 && "box-br" == humanchess1) ||
+                            ("box-ml" == humanchess1 && "box-mm" == humanchess2) ||
+                            ("box-ml" == humanchess2 && "box-mm" == humanchess1)
+                        ) {
+                            $(".box-mr").click();
+                            ifclick = 1;
+                        }
+                    }
+                    if($(".box-bm").text() == ""){
+                        if( ("box-tm" == humanchess1 && "box-mm" == humanchess2) ||
+                            ("box-tm" == humanchess2 && "box-mm" == humanchess1) ||
+                            ("box-bl" == humanchess1 && "box-br" == humanchess2) ||
+                            ("box-bl" == humanchess2 && "box-br" == humanchess1)
+                        ) {
+                            $(".box-bm").click();
+                            ifclick = 1;
+                        }
+                    }
+                    
+                    if($(".box-mm").text() == ""){
+                        if( ("box-tl" == humanchess1 && "box-br" == humanchess2) ||
+                            ("box-tl" == humanchess2 && "box-br" == humanchess1) ||
+                            ("box-tm" == humanchess1 && "box-bm" == humanchess2) ||
+                            ("box-tm" == humanchess2 && "box-bm" == humanchess1) ||
+                            ("box-tr" == humanchess1 && "box-bl" == humanchess2) ||
+                            ("box-tr" == humanchess2 && "box-bl" == humanchess1) ||
+                            ("box-ml" == humanchess1 && "box-mr" == humanchess2) ||
+                            ("box-ml" == humanchess2 && "box-mr" == humanchess1)
+                        ) {
+                            $(".box-mm").click();
+                            ifclick = 1;
+                        }
+                    }
+                    
+                    if (ifclick == 0) {
+                        randomclick();
+                    }
+                } else {
+                    randomclick();
+                }
+                
+                $(".msg").text("该你了");
+                
+                checkwin(chessqueue[chessqueue.length-1][0]);
+            }
+            
+            $(".box").click(function() {
+                if(gamestatus || $(this).text() != "" || lockclick){
+                    return false;
+                } else {
+                    $(".menu .newgame").show();
+                    if(chessqueue.length == 0) {
+                        var currentchess = [Math.random()>=0.5?"X":"O", $(this).attr("class").split(" ")[1]];
+                        $(this).text(currentchess[0]);
+                        chessqueue.push(currentchess);
+                        humanchess = currentchess[0];
+                        $(".newgame").text("重新开始");
+                        $(".info").text("你:" + humanchess + " 计算机:" + (humanchess=="X"?"O":"X"));
+                    } else {
+                        var that = $(this);
+                        var currentchess = [chessqueue[chessqueue.length-1][0]=="O"?"X":"O", $(this).attr("class").split(" ")[1]];
+                        $(this).text(currentchess[0]);
+                        chessqueue.push(currentchess);
+                        
+                        if(chessqueue.length > 6) {
+                            /*var removebox = $("." + chessqueue[0][1]);
+                            removebox.html("<span>" + removebox.text() + "</span>");
+                            var removechess = removebox.children("span");
+                            removechess.css({"position": "absolute"});
+                            
+                            removechess.animate({
+                                marginTop: (that.offset().top - removebox.offset().top) + "px",
+                                marginLeft: (that.offset().left - removebox.offset().left) + "px"
+                            }, function(){
+                                removebox.text("");
+                            });*/
+                            
+                            $("." + chessqueue[0][1]).text("");
+                            $("." + chessqueue[0][1]).css({"color": "black"});
+                            chessqueue.shift();
+                        }
+                        if(chessqueue.length == 3) {
+                            $("." + chessqueue[0][1]).css({"color": "gray"});
+                        }
+                        if(chessqueue.length == 4) {
+                            $("." + chessqueue[0][1]).css({"color": "gray"});
+                            $("." + chessqueue[1][1]).css({"color": "gray"});
+                        }
+                        if(chessqueue.length == 5) {
+                            $("." + chessqueue[0][1]).css({"color": "lightgray"});
+                            $("." + chessqueue[1][1]).css({"color": "gray"});
+                            $("." + chessqueue[2][1]).css({"color": "gray"});
+                        }
+                        if(chessqueue.length == 6) {
+                            $("." + chessqueue[0][1]).css({"color": "lightgray"});
+                            $("." + chessqueue[1][1]).css({"color": "lightgray"});
+                            $("." + chessqueue[2][1]).css({"color": "gray"});
+                            $("." + chessqueue[3][1]).css({"color": "gray"});
+                        }
+                        
+                        checkwin(currentchess[0]);
+                    }
+                    if(chessqueue[chessqueue.length-1][0] == humanchess) {
+                        $(".msg").text("嗯让我想想…");
+                        //ai();
+                        lockclick = 1;
+                        setTimeout(ai, (parseInt(Math.random()*1000)));
+                    }
+                }
+                //alert(chessqueue);
+            });
+            
+            $(".menu .newgame").click(function(){
+                gamestatus = 0;
+                chessqueue = new Array();
+                humanchess = "";
+                lockclick = 0;
+                $(".box").text("");
+                $(".box").css({"color": "black"});
+                $(".info").text("");
+                $(".msg").text("");
+                $(".newgame").text("新游戏");
+                $(this).hide();
+            });
+        });
+    </script>
+</body>
+</html>

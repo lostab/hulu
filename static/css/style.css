@@ -1,0 +1,429 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: times new roman;
+}
+a {
+    color: black;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+a:visited {
+    color: black;
+}
+input:not(.file-input), textarea {
+    font-size: inherit;
+    font-family: times new roman;
+}
+img {
+    max-width: 100%;
+}
+.error {
+    color: red;
+}
+.submit {
+    width: 100%;
+}
+.tips {
+    color: lightgray;
+    font-size: small;
+}
+.header {
+    padding: 3px;
+    border-bottom: 1px solid lightgray;
+}
+.header .logo {
+    text-decoration:none;
+    font-weight: bold;
+    font-size: 1.5em;
+    color: gray;
+    font-family: Arial;
+    padding-left: 7px;
+    padding-right: 7px;
+}
+.header .right-navbar {
+    position: absolute;
+    right: 7px;
+}
+.header .right-navbar .header-navbar-button {
+    background: lightgray;
+    color: white;
+	text-decoration:none;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    font-weight: bold;
+    font-size: small;
+    text-align: center;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.header .right-navbar a:not(.accounts-button):hover {
+    background: gray;
+    color: white;
+}
+.header .avatar-area {
+	vertical-align: top;
+    display: inline-block;
+}
+.header .avatar-area .avatar {
+    width: 24px;
+    height: 24px;
+	vertical-align: top;
+    border-radius: 12px;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    display: inline-block;
+	vertical-align: middle;
+}
+.header .avatar-area .avatar img {
+    width: 24px;
+    height: 24px;
+    opacity: 0;
+	filter: alpha(opacity=0);
+}
+.header .right-navbar a:not(.header-navbar-button){
+    font-family: arial,sans-serif;
+    /*background: gray;*/
+    color: white;
+    font-weight: bold;
+    width: 24px;
+    border-radius: 12px;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    text-align: center;
+    font-size: small;
+}
+.header .right-navbar a:not(.accounts-button) {
+    background: gray;
+    color: white;
+    display: inline-block;
+    line-height: 24px;
+}
+.header .right-navbar a.notify-amount-new, .header .right-navbar a.notify-amount-new:hover {
+    background: crimson;
+}
+.header .right-navbar a {
+    background: none;
+    opacity: 0.6;
+	filter: alpha(opacity=60);
+    text-decoration: none;
+}
+.header .right-navbar a:hover {
+    opacity: 1;
+	filter: alpha(opacity=100);
+}
+.pagination {
+    text-align: center;
+}
+.container {
+    
+}
+.content {
+    margin: 7px;
+    padding: 7px;
+    min-height: 230px;
+}
+.content .operate {
+    text-align: right;
+}
+.userinfo {
+    color: lightgray;
+}
+.userprofile .description, .userpage .description {
+	vertical-align:top;
+    display: inline-block;
+    margin: 0;
+    font-family: Consolas;
+	font-size: 16px;
+	white-space: pre-wrap;
+	white-space: -moz-pre-wrap;
+	white-space: -pre-wrap;
+	white-space: -o-pre-wrap;
+	word-wrap: break-word;
+    word-break: break-all;
+}
+.userprofile .description {
+    width: 80%;
+}
+.userprofile .created, .content.task .updated {
+    text-align: right;
+    color: lightgray;
+    font-size: small;
+}
+.setting .description textarea{
+	vertical-align:top;
+	overflow-y:visible;
+    width: 80%;
+    height: 7em;
+}
+.userpage .title .avatar, .content.userprofile .avatar, .content.setting .avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    -webkit-border-radius: 24px;
+    -moz-border-radius: 24px;
+    float: left;
+}
+.userpage .title .avatar img, .content.userprofile .avatar img, .content.setting .avatar img {
+    width: 48px;
+    height: 48px;
+    opacity: 0;
+	filter: alpha(opacity=0);
+}
+.userpage .title .user {
+	vertical-align:top;
+    line-height: 48px;
+}
+.userpage .title .user .name {
+	vertical-align:top;
+    line-height: 30px;
+}
+.userpage .title .user .username {
+    font-size: small;
+    font-weight: normal;
+	vertical-align:top;
+    line-height: 18px;
+}
+.userpage .title a {
+	text-decoration:none;
+}
+.content.create .description textarea, .content.task .description textarea{
+	vertical-align:top;
+	overflow-y:visible;
+    width: 100%;
+    height: 7em;
+}
+.content.tasks .task-line .task-title, .content.tasks .task-line .task-info {
+    display: inline-block;
+}
+.content.tasks .task-line .task-title a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.content.tasks .task-line .task-info {
+    float: right;
+    color: lightgray;
+    font-size: small;
+}
+.itemcontent {
+    border-bottom: 1px dashed lightgray;
+    line-height: 2em;
+}
+.itemcontent-content {
+    line-height: 1.5;
+	white-space: pre-wrap;
+	white-space: -moz-pre-wrap;
+	white-space: -pre-wrap;
+	white-space: -o-pre-wrap;
+	word-wrap: break-word;
+    word-break: break-all;
+    font-family: Consolas;
+}
+.item-info .comment-reply-to {
+    display: inline-block;
+    text-indent: 30px;
+    color: gray;
+    font-size: small;
+}
+.home .task:not(:last-child), .comment, .home .createbutton {
+    margin-bottom: 3px;
+    border-bottom: 1px solid lightgray;
+}
+.home .createbutton {
+    font-size: small;
+    text-align: right;
+    margin-top: -7px;
+}
+.home .task .avatar-area, .comment .comment-avatar-area {
+    width: 30px;
+    float: left;
+	vertical-align: top;
+}
+.home .task .avatar, .comment .comment-avatar-area .comment-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+}
+.home .task .avatar img, .comment .comment-avatar-area .comment-avatar img {
+    width: 24px;
+    height: 24px;
+    opacity: 0;
+	filter: alpha(opacity=0);
+}
+.home .task .task-line, .comment .comment-line, .comment .itemcontent-content {
+    margin-left: 30px;
+}
+.home .task .task-line .task-author, .comment .comment-line .comment-author {
+    font-size: small;
+    font-weight: normal;
+	vertical-align: top;
+    height: 18px;
+    color: gray;
+}
+.home .task .task-line .task-author, .comment .comment-line .comment-author {
+	text-decoration:none;
+    color: gray;
+}
+.home .task .task-line .task-title a:visited {
+    /*color: gray;*/
+}
+.home .tasks {
+    
+}
+.home .tasks .task-line .task-title {
+    line-height: 2em;
+    vertical-align: middle;
+	word-wrap: break-word;
+    word-break: break-all;
+}
+.comment-content .comment-reply-to {
+    display: inline-block;
+    color: gray;
+    font-size: small;
+}
+.comment-content .cancel-comment-reply {
+    display: inline-block;
+    color: gray;
+    font-size: small;
+    float: right;
+    cursor: pointer;
+}
+.comment .comment-content {
+	vertical-align: top;
+    display: inline-block;
+    margin: 0;
+    font-family: Consolas;
+	font-size: 16px;
+	white-space: pre-wrap;
+	white-space: -moz-pre-wrap;
+	white-space: -pre-wrap;
+	white-space: -o-pre-wrap;
+	word-wrap: break-word;
+    word-break: break-all;
+    width: 100%;
+}
+.comment .comment-operate {
+    text-align: right;
+    font-size: small;
+}
+.comment .comment-operate a {
+    color: gray;
+}
+.home .task .task-info, .comment .comment-info {
+    font-size: small;
+    line-height: 18px;
+    color: gray;
+}
+.home .task .task-info .task-created, .home .task .task-info .userinfo {
+    color: lightgray;
+}
+.home .task .task-info .task-created:hover, .home .task .task-info .task-author:hover {
+    text-decoration: none;
+}
+.home .task .task-info .task-info-right, .comment .comment-info .comment-created {
+    float: right;
+    text-align: right;
+}
+.home .task .item-title {
+    
+}
+.home .subitemcount {
+    font-family: arial, sans-serif;
+    background: lightgray;
+    color: black;
+    font-weight: bold;
+    padding: 2px 5px 2px 5px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    text-align: center;
+    float: right;
+    font-size: small;
+    height: 1em;
+    line-height: 1em;
+	text-decoration:none;
+    float: right;
+    margin: 7px 0 7px 7px;
+}
+.home .subitemcount:visited {
+    background: lightgray;
+    color: white;
+}
+.content.task .avatar-area {
+    width: 48px;
+    float: left;
+}
+.content.task .avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    -webkit-border-radius: 24px;
+    -moz-border-radius: 24px;
+}
+.content.task .avatar img {
+    width: 48px;
+    height: 48px;
+    opacity: 0;
+	filter: alpha(opacity=0);
+}
+.content.task .task-head {
+    margin-left: 50px;
+}
+.content.task .task-title {
+    line-height: 30px;
+    margin: 0;
+}
+.content.task .task-info {
+    /*height: 18px;*/
+    color: gray;
+    font-size: small;
+}
+.content.task .task-info .task-author {
+    
+}
+.content.task .task-info a {
+	text-decoration:none;
+    color: gray;
+}
+.content.task .task-info .task-created {
+    color: lightgray;
+    float: right;
+}
+.content.task .line {
+    margin: 7px 0 7px 0;
+}
+.content.task .description {
+	vertical-align: top;
+    margin: 0;
+    font-family: Consolas;
+	font-size: 16px;
+	white-space: pre-wrap;
+	white-space: -moz-pre-wrap;
+	white-space: -pre-wrap;
+	white-space: -o-pre-wrap;
+	word-wrap: break-word;
+    word-break: break-all;
+}
+.content.create .amount, .content.update .amount, .content.create .reword, .content.update .reword {
+    width: 50px;
+}
+.content.notify a {
+    font-weight: bold;
+}
+.feedback textarea, .content.task form textarea {
+	vertical-align: top;
+	overflow-y:visible;
+    width: 100%;
+    height: 7em;
+}
+.footer {
+    padding: 7px;
+    border-top: 1px solid lightgray;
+    text-align: center;
+}

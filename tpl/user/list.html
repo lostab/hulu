@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}用户列表 - {% endblock %}
+
+{% block content %}
+    <div class="content list home">
+        <h3>用户列表</h3>
+        <div class="tasks">
+        {% for user in users %}
+        <div class="task">
+            <div class="avatar-area"><div class="avatar" style="background: url({% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center;"><img src="{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" /></div></div>
+            <div class="task-line">
+                <div class="task-info">
+                    <span class="task-info-right"><a class="task-created">{{ user.userprofile.create|date:'Y年m月d日' }}</a>
+                    </span>
+                    
+                    <span class="task-info-left">
+                        {% if url %}<!--fetch-->
+                        <span class="username">{{ user.username }}</span>
+                        {% else %}
+                        <a class="task-author" href="/{{ user.username }}/"><span class="username">{{ user.username }}</span></a>
+                        {% endif %}
+                        <br />
+                        <span class="userinfo">{{ user.userprofile.info }}</span>
+                    </span>
+                </div>
+                <div class="task-title">
+                    <br />
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% if items.paginator.num_pages > 1 %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if items.has_previous %}
+                    <a class="previous-page" href="?page={{ items.previous_page_number }}"><button>上一页</button></a>
+                {% endif %}
+
+                <span class="current">
+                    {{ items.number }} / {{ items.paginator.num_pages }}
+                </span>
+
+                {% if items.has_next %}
+                    <a class="next-page" href="?page={{ items.next_page_number }}"><button>下一页</button></a>
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}

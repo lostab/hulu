@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}{% if viewuser %}{% if viewuser.userprofile.name %}{{ viewuser.userprofile.name }}{% else %}{{ viewuser.username }}{% endif %}{% else %}页面不存在{% endif %} - {% endblock %}
+
+{% block content %}
+    <div class="content userpage">
+        {% if viewuser %}
+            <h3 class="title"><a href="/{{ viewuser.username }}">
+                <div class="avatar" style="background: url({% if viewuser.userprofile.openid %}{{ viewuser.userprofile.avatar }}{% else %}{% if viewuser.userprofile.avatar %}/s/{{ viewuser.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center;"><img src="{% if viewuser.userprofile.openid %}{{ viewuser.userprofile.avatar }}{% else %}{% if viewuser.userprofile.avatar %}/s/{{ viewuser.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" /></div>
+                <div class="user">
+                    <div class="name">{{ viewuser.username }}</div>
+                    <div class="username">{% if viewuser.userprofile.info %}{{ viewuser.userprofile.info }}{% else %}{{ viewuser.username }}{% endif %}</div>
+                </div>
+            </a></h3>
+            {% if request.user == viewuser %}
+            <p class="operate">
+                <a href="/u/settings/"><button>完善资料</button></a>
+            </p>
+            {% endif %}
+            <pre class="description">{{ viewuser.userprofile.profile }}</pre>
+        {% else %}
+            <p>抱歉，页面不存在。</p>
+        {% endif %}
+    </div>
+{% endblock %}

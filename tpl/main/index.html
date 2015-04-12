@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+    <div class="content home">
+        <div class="tasks">
+        {% for item in items %}
+        <div class="task">
+            <div class="avatar-area"><div class="avatar" style="background: url({% if item.user.userprofile.openid %}{{ item.user.userprofile.avatar }}{% else %}{% if item.user.userprofile.avatar %}/s/{{ item.user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center;"><img src="{% if item.user.userprofile.openid %}{{ item.user.userprofile.avatar }}{% else %}{% if item.user.userprofile.avatar %}/s/{{ item.user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" /></div></div>
+            <div class="task-line">
+                <div class="task-info">
+                    <span class="task-info-right"><a class="task-created">{% blocktrans with item.lastsubitem.create|timesince as update %}{{ update }}{% endblocktrans %}前</a>
+                    </span>
+                    
+                    <span class="task-info-left">
+                        {% if item.url %}<!--fetch-->
+                        <span class="username">{{ item.user.username }}</span>
+                        {% else %}
+                        <a class="task-author" href="/{{ item.user.username }}/"><span class="username">{{ item.user.username }}</span></a>
+                        {% endif %}
+                        <br />
+                        <span class="userinfo">{{ item.user.userprofile.info }}</span>
+                    </span>
+                </div>
+                <div class="task-title">
+                {% if item.url %}<!--fetch-->
+                    <a href="{{ item.url }}" target="_blank">{{ item.title }}</a>
+                {% else %}
+                    {% if item.subitemcount %}
+                    <a class="subitemcount" href="/i/{{ item.id }}/#{{ item.lastsubitem.id }}">{{ item.subitemcount }}</a>
+                    {% endif %}
+                    <a class="item-title" href="/i/{{ item.id }}/">{{ item.title }}</a>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% if items.paginator.num_pages > 1 %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if items.has_previous %}
+                    <a class="previous-page" href="?page={{ items.previous_page_number }}"><button>上一页</button></a>
+                {% endif %}
+
+                <span class="current">
+                    {{ items.number }} / {{ items.paginator.num_pages }}
+                </span>
+
+                {% if items.has_next %}
+                    <a class="next-page" href="?page={{ items.next_page_number }}"><button>下一页</button></a>
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+<script type="text/javascript">
+$(document).ready(function(){
+    var load_next_page = function(){
+        if ($(".content.home .tasks .pagination .next-page").length > 0) {
+            $(".content.home .tasks .pagination .current").hide();
+            $(".content.home .tasks .pagination .previous-page").hide();
+            $(".content.home .tasks .pagination .next-page button").text("加载更多");
+            $(".content.home .tasks .pagination .next-page button").css({"width": "100%", "height":"30px"});
+            $(".content.home .tasks .pagination .next-page").click(function(){
+                var url = $(this).attr("href");
+                $(".content.home .tasks .pagination .next-page button").text("加载中…");
+                $(".content.home .tasks .pagination .next-page button").attr("disabled",true);
+                $(".content.home .tasks .pagination .current").load(url + " .tasks", function(){
+                    $(".content.home .tasks .pagination").after($(".content.home .tasks .pagination .current .tasks").html());
+                    $(".content.home .tasks .pagination").first().remove();
+                    load_next_page();
+                });
+                return false;
+            });
+        } else {
+            $(".content.home .tasks .pagination").remove();
+        }
+    }
+    load_next_page();
+    var loading = function(){
+        if($(".loading").length <= 0){
+            $(".loading").remove();
+            $(".content.home").before("<p class=\"loading\" style=\"color:gray;text-align:center;display:none;\">加载中…</p>");
+            $(".loading").slideDown();
+        }
+        $(".content.home").load("/ .tasks", function(response, status, xhr){
+            $(".tasks").show();
+            load_next_page();
+            $(".loading").slideUp(function(){
+                $(this).remove();
+            });
+        });
+        $.getJSON("/u/notify/?type=json", function(json){
+            if(json.status == "success"){
+                if(json.notify.count != 0){
+                    if ($(".notify-amount").length > 0){
+                        $(".notify-amount").text(json.notify.count);
+                        $(".notify-amount").addClass("notify-amount-new");
+                    } else {
+                        $(".header .right-navbar .accounts-button").after(" <a href=\"/u/notify/\" class=\"notify-amount notify-amount-new\">" + json.notify.count + "</a>");
+                    }
+                } else {
+                    $(".notify-amount").text(json.notify.count);
+                    $(".notify-amount").removeClass("notify-amount-new");
+                }
+            }
+        });
+    }
+    $(".header .logo").click(function(){
+        loading();
+        return false;
+    });
+});
+</script>
+{% endblock %}

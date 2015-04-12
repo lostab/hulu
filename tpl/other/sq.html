@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>远程</title>
+    <meta name="viewport" content="maximum-scale=1,width=device-width,initial-scale=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="/s/favicon.ico" />
+    <link rel="apple-touch-startup-image" href="/s/startup.png" />
+    <link rel="apple-touch-icon" href="/s/icon.png" />
+    <style type="text/css">
+        html, body, .container { width: 100%; height: 100%; margin: 0; padding: 0; -webkit-user-select: none }
+        .img1,.img2 { width: 100%; height: 100%; position:absolute; top: 0; left:0; }
+        .ctl { width: 100px; position: absolute; left: 50%; margin-left: -50px; bottom: 25px; display: none; }
+        .rf { width: 50px; height: 50px; position: absolute; left: 50%; margin-left: -25px; bottom: 25px; }
+        .mtime {color: white; width:100%; position: absolute;top:10px;left:0;text-align:center;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img class="img1" />
+        <img class="img2" />
+        <button class="ctl">Play</button>
+        <button class="rf">刷新</button>
+        <div class="mtime">{{ mtime }}</div>
+        <!--<form method="post" enctype="multipart/form-data">
+        <input class="file-input" name="file" type="file" />
+        <input type="submit" value="提交" />
+        </form>-->
+    </div>
+    <script type="text/javascript" src="/s/js/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var refresh = function(){
+                var ct = new Date();
+                $.getJSON("?type=json", function(json){
+                    ct.setSeconds(ct.getSeconds() - json.mtime);
+                    $(".mtime").text(ct.getFullYear() + "-" + ("0" + (ct.getMonth()+1)).slice(-2) + "-" + ("0" + ct.getDate()).slice(-2) + " " + ("0" + ct.getHours()).slice(-2) + ":" + ("0" + ct.getMinutes()).slice(-2) + ":" + ("0" + ct.getSeconds()).slice(-2));
+                    var imgurl = "/s/sq.jpg?" + Math.random();
+                    if ($(".img1").is(":hidden")) {
+                        $(".img1").attr({"src": imgurl});
+                        $(".img1").onload = function(){
+                            $(this).show();
+                            $(".img2").hide();
+                        }
+                    } else {
+                        $(".img2").attr({"src": imgurl});
+                        $(".img2").onload = function(){
+                            $(this).show();
+                            $(".img1").hide();
+                        }
+                    }
+                    if ($(".ctl").text() == "Stop") {
+                        setTimeout(refresh, 800);
+                    }
+                });
+                /*$.ajax({
+                    url: imgurl
+                }).done(function(data){
+                    var newImage = new Image();
+                    newImage.src = imgurl;
+                    newImage.onload = function(){
+                        $("body").css({"background-image": "url(" + imgurl + ")", "background-repeat": "no-repeat"});
+                        if ($(".ctl").text() == "Stop") {
+                            refresh();
+                        }
+                    };
+                });*/
+            }
+            $(".ctl").click(function(){
+                if ($(this).text() == "Play"){
+                    $(this).text("Stop");
+                    refresh();
+                } else {
+                    $(this).text("Play");
+                }
+            });
+            $(".rf").click(function(){
+                refresh();
+            });
+            $(".ctl").text("Play");
+            refresh();
+        });
+    </script>
+</body>
+</html>
