@@ -112,10 +112,10 @@ def index(request):
                     itemlist.append(newsitem)
                     fetchitems.append(newsitem)
                 
-                cache.set('cacheitems', json.dumps({
-                    'datetime': datetime.datetime.now(),
-                    'items': fetchitems
-                }, cls=DjangoJSONEncoder), 7200)
+                #cache.set('cacheitems', json.dumps({
+                #    'datetime': datetime.datetime.now(),
+                #    'items': fetchitems
+                #}, cls=DjangoJSONEncoder), 7200)
             except:
                 pass
         

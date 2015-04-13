@@ -347,7 +347,7 @@
                         chessqueue.push(currentchess);
                         humanchess = currentchess[0];
                         $(".newgame").text("重新开始");
-                        $(".info").text("你:" + humanchess + " 计算机:" + (humanchess=="X"?"O":"X"));
+                        $(".info").text("你:" + humanchess + " 对方:" + (humanchess=="X"?"O":"X"));
                     } else {
                         var that = $(this);
                         var currentchess = [chessqueue[chessqueue.length-1][0]=="O"?"X":"O", $(this).attr("class").split(" ")[1]];
