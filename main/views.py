@@ -151,7 +151,7 @@ def ttt(request):
 @csrf_exempt
 def sq(request):
     if request.method == 'GET':
-        mtime_delta = datetime.datetime.now() - datetime.datetime.fromtimestamp(os.path.getmtime('/ww/hulu/static/sq.jpg'))
+        mtime_delta = datetime.datetime.now() - datetime.datetime.fromtimestamp(os.path.getmtime(os.path.join(settings.MEDIA_ROOT, 'sq.jpg')))
         if request.GET.get('type') == 'json':
             content = {
                 'mtime': mtime_delta.total_seconds()

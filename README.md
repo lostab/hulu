@@ -1,6 +1,9 @@
-# hulu
 A simple framework based on Django.
 
-Required Python & Django & PIL.
+~   required
+    
+    Python & Django & PIL.
 
-Runing on VPS or Heroku.
+~   runing
+    
+    Such as VPS or Heroku.
