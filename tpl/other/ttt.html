@@ -127,8 +127,8 @@
                                 ("box-ml" == aichess1 && "box-bl" == aichess2) ||
                                 ("box-ml" == aichess2 && "box-bl" == aichess1)
                             ) {
-                                $(".box-tl").click();
                                 ifclick = 1;
+                                $(".box-tl").click();
                             }
                         }
                         if($(".box-tr").text() == ""){
@@ -139,8 +139,8 @@
                                 ("box-mr" == aichess1 && "box-br" == aichess2) ||
                                 ("box-mr" == aichess2 && "box-br" == aichess1)
                             ) {
-                                $(".box-tr").click();
                                 ifclick = 1;
+                                $(".box-tr").click();
                             }
                         }
                         if($(".box-bl").text() == ""){
@@ -151,8 +151,8 @@
                                 ("box-bm" == aichess1 && "box-br" == aichess2) ||
                                 ("box-bm" == aichess2 && "box-br" == aichess1)
                             ) {
-                                $(".box-bl").click();
                                 ifclick = 1;
+                                $(".box-bl").click();
                             }
                         }
                         if($(".box-br").text() == ""){
@@ -163,8 +163,8 @@
                                 ("box-bm" == aichess1 && "box-bl" == aichess2) ||
                                 ("box-bm" == aichess2 && "box-bl" == aichess1)
                             ) {
-                                $(".box-br").click();
                                 ifclick = 1;
+                                $(".box-br").click();
                             }
                         }
                         
@@ -174,8 +174,8 @@
                                 ("box-mm" == aichess1 && "box-bm" == aichess2) ||
                                 ("box-mm" == aichess2 && "box-bm" == aichess1)
                             ) {
-                                $(".box-tm").click();
                                 ifclick = 1;
+                                $(".box-tm").click();
                             }
                         }
                         if($(".box-ml").text() == ""){
@@ -184,8 +184,8 @@
                                 ("box-mm" == aichess1 && "box-mr" == aichess2) ||
                                 ("box-mm" == aichess2 && "box-mr" == aichess1)
                             ) {
-                                $(".box-ml").click();
                                 ifclick = 1;
+                                $(".box-ml").click();
                             }
                         }
                         if($(".box-mr").text() == ""){
@@ -194,8 +194,8 @@
                                 ("box-ml" == aichess1 && "box-mm" == aichess2) ||
                                 ("box-ml" == aichess2 && "box-mm" == aichess1)
                             ) {
-                                $(".box-mr").click();
                                 ifclick = 1;
+                                $(".box-mr").click();
                             }
                         }
                         if($(".box-bm").text() == ""){
@@ -204,8 +204,8 @@
                                 ("box-bl" == aichess1 && "box-br" == aichess2) ||
                                 ("box-bl" == aichess2 && "box-br" == aichess1)
                             ) {
-                                $(".box-bm").click();
                                 ifclick = 1;
+                                $(".box-bm").click();
                             }
                         }
                         
@@ -219,114 +219,116 @@
                                 ("box-ml" == aichess1 && "box-mr" == aichess2) ||
                                 ("box-ml" == aichess2 && "box-mr" == aichess1)
                             ) {
-                                $(".box-mm").click();
                                 ifclick = 1;
+                                $(".box-mm").click();
                             }
                         }
                     }
                     
-                    if($(".box-tl").text() == ""){
-                        if( ("box-tm" == humanchess1 && "box-tr" == humanchess2) ||
-                            ("box-tm" == humanchess2 && "box-tr" == humanchess1) ||
-                            ("box-mm" == humanchess1 && "box-br" == humanchess2) ||
-                            ("box-mm" == humanchess2 && "box-br" == humanchess1) ||
-                            ("box-ml" == humanchess1 && "box-bl" == humanchess2) ||
-                            ("box-ml" == humanchess2 && "box-bl" == humanchess1)
-                        ) {
-                            $(".box-tl").click();
-                            ifclick = 1;
+                    if(ifclick == 0){
+                        if($(".box-tl").text() == ""){
+                            if( ("box-tm" == humanchess1 && "box-tr" == humanchess2) ||
+                                ("box-tm" == humanchess2 && "box-tr" == humanchess1) ||
+                                ("box-mm" == humanchess1 && "box-br" == humanchess2) ||
+                                ("box-mm" == humanchess2 && "box-br" == humanchess1) ||
+                                ("box-ml" == humanchess1 && "box-bl" == humanchess2) ||
+                                ("box-ml" == humanchess2 && "box-bl" == humanchess1)
+                            ) {
+                                ifclick = 1;
+                                $(".box-tl").click();
+                            }
                         }
-                    }
-                    if($(".box-tr").text() == ""){
-                        if( ("box-tl" == humanchess1 && "box-tm" == humanchess2) ||
-                            ("box-tl" == humanchess2 && "box-tm" == humanchess1) ||
-                            ("box-mm" == humanchess1 && "box-bl" == humanchess2) ||
-                            ("box-mm" == humanchess2 && "box-bl" == humanchess1) ||
-                            ("box-mr" == humanchess1 && "box-br" == humanchess2) ||
-                            ("box-mr" == humanchess2 && "box-br" == humanchess1)
-                        ) {
-                            $(".box-tr").click();
-                            ifclick = 1;
+                        if($(".box-tr").text() == ""){
+                            if( ("box-tl" == humanchess1 && "box-tm" == humanchess2) ||
+                                ("box-tl" == humanchess2 && "box-tm" == humanchess1) ||
+                                ("box-mm" == humanchess1 && "box-bl" == humanchess2) ||
+                                ("box-mm" == humanchess2 && "box-bl" == humanchess1) ||
+                                ("box-mr" == humanchess1 && "box-br" == humanchess2) ||
+                                ("box-mr" == humanchess2 && "box-br" == humanchess1)
+                            ) {
+                                ifclick = 1;
+                                $(".box-tr").click();
+                            }
                         }
-                    }
-                    if($(".box-bl").text() == ""){
-                        if( ("box-tl" == humanchess1 && "box-ml" == humanchess2) ||
-                            ("box-tl" == humanchess2 && "box-ml" == humanchess1) ||
-                            ("box-mm" == humanchess1 && "box-tr" == humanchess2) ||
-                            ("box-mm" == humanchess2 && "box-tr" == humanchess1) ||
-                            ("box-bm" == humanchess1 && "box-br" == humanchess2) ||
-                            ("box-bm" == humanchess2 && "box-br" == humanchess1)
-                        ) {
-                            $(".box-bl").click();
-                            ifclick = 1;
+                        if($(".box-bl").text() == ""){
+                            if( ("box-tl" == humanchess1 && "box-ml" == humanchess2) ||
+                                ("box-tl" == humanchess2 && "box-ml" == humanchess1) ||
+                                ("box-mm" == humanchess1 && "box-tr" == humanchess2) ||
+                                ("box-mm" == humanchess2 && "box-tr" == humanchess1) ||
+                                ("box-bm" == humanchess1 && "box-br" == humanchess2) ||
+                                ("box-bm" == humanchess2 && "box-br" == humanchess1)
+                            ) {
+                                ifclick = 1;
+                                $(".box-bl").click();
+                            }
                         }
-                    }
-                    if($(".box-br").text() == ""){
-                        if( ("box-tr" == humanchess1 && "box-mr" == humanchess2) ||
-                            ("box-tr" == humanchess2 && "box-mr" == humanchess1) ||
-                            ("box-tl" == humanchess1 && "box-mm" == humanchess2) ||
-                            ("box-tl" == humanchess2 && "box-mm" == humanchess1) ||
-                            ("box-bm" == humanchess1 && "box-bl" == humanchess2) ||
-                            ("box-bm" == humanchess2 && "box-bl" == humanchess1)
-                        ) {
-                            $(".box-br").click();
-                            ifclick = 1;
+                        if($(".box-br").text() == ""){
+                            if( ("box-tr" == humanchess1 && "box-mr" == humanchess2) ||
+                                ("box-tr" == humanchess2 && "box-mr" == humanchess1) ||
+                                ("box-tl" == humanchess1 && "box-mm" == humanchess2) ||
+                                ("box-tl" == humanchess2 && "box-mm" == humanchess1) ||
+                                ("box-bm" == humanchess1 && "box-bl" == humanchess2) ||
+                                ("box-bm" == humanchess2 && "box-bl" == humanchess1)
+                            ) {
+                                ifclick = 1;
+                                $(".box-br").click();
+                            }
                         }
-                    }
-                    
-                    if($(".box-tm").text() == ""){
-                        if( ("box-tl" == humanchess1 && "box-tr" == humanchess2) ||
-                            ("box-tl" == humanchess2 && "box-tr" == humanchess1) ||
-                            ("box-mm" == humanchess1 && "box-bm" == humanchess2) ||
-                            ("box-mm" == humanchess2 && "box-bm" == humanchess1)
-                        ) {
-                            $(".box-tm").click();
-                            ifclick = 1;
+                        
+                        if($(".box-tm").text() == ""){
+                            if( ("box-tl" == humanchess1 && "box-tr" == humanchess2) ||
+                                ("box-tl" == humanchess2 && "box-tr" == humanchess1) ||
+                                ("box-mm" == humanchess1 && "box-bm" == humanchess2) ||
+                                ("box-mm" == humanchess2 && "box-bm" == humanchess1)
+                            ) {
+                                ifclick = 1;
+                                $(".box-tm").click();
+                            }
                         }
-                    }
-                    if($(".box-ml").text() == ""){
-                        if( ("box-tl" == humanchess1 && "box-bl" == humanchess2) ||
-                            ("box-tl" == humanchess2 && "box-bl" == humanchess1) ||
-                            ("box-mm" == humanchess1 && "box-mr" == humanchess2) ||
-                            ("box-mm" == humanchess2 && "box-mr" == humanchess1)
-                        ) {
-                            $(".box-ml").click();
-                            ifclick = 1;
+                        if($(".box-ml").text() == ""){
+                            if( ("box-tl" == humanchess1 && "box-bl" == humanchess2) ||
+                                ("box-tl" == humanchess2 && "box-bl" == humanchess1) ||
+                                ("box-mm" == humanchess1 && "box-mr" == humanchess2) ||
+                                ("box-mm" == humanchess2 && "box-mr" == humanchess1)
+                            ) {
+                                ifclick = 1;
+                                $(".box-ml").click();
+                            }
                         }
-                    }
-                    if($(".box-mr").text() == ""){
-                        if( ("box-tr" == humanchess1 && "box-br" == humanchess2) ||
-                            ("box-tr" == humanchess2 && "box-br" == humanchess1) ||
-                            ("box-ml" == humanchess1 && "box-mm" == humanchess2) ||
-                            ("box-ml" == humanchess2 && "box-mm" == humanchess1)
-                        ) {
-                            $(".box-mr").click();
-                            ifclick = 1;
+                        if($(".box-mr").text() == ""){
+                            if( ("box-tr" == humanchess1 && "box-br" == humanchess2) ||
+                                ("box-tr" == humanchess2 && "box-br" == humanchess1) ||
+                                ("box-ml" == humanchess1 && "box-mm" == humanchess2) ||
+                                ("box-ml" == humanchess2 && "box-mm" == humanchess1)
+                            ) {
+                                ifclick = 1;
+                                $(".box-mr").click();
+                            }
                         }
-                    }
-                    if($(".box-bm").text() == ""){
-                        if( ("box-tm" == humanchess1 && "box-mm" == humanchess2) ||
-                            ("box-tm" == humanchess2 && "box-mm" == humanchess1) ||
-                            ("box-bl" == humanchess1 && "box-br" == humanchess2) ||
-                            ("box-bl" == humanchess2 && "box-br" == humanchess1)
-                        ) {
-                            $(".box-bm").click();
-                            ifclick = 1;
+                        if($(".box-bm").text() == ""){
+                            if( ("box-tm" == humanchess1 && "box-mm" == humanchess2) ||
+                                ("box-tm" == humanchess2 && "box-mm" == humanchess1) ||
+                                ("box-bl" == humanchess1 && "box-br" == humanchess2) ||
+                                ("box-bl" == humanchess2 && "box-br" == humanchess1)
+                            ) {
+                                ifclick = 1;
+                                $(".box-bm").click();
+                            }
                         }
-                    }
-                    
-                    if($(".box-mm").text() == ""){
-                        if( ("box-tl" == humanchess1 && "box-br" == humanchess2) ||
-                            ("box-tl" == humanchess2 && "box-br" == humanchess1) ||
-                            ("box-tm" == humanchess1 && "box-bm" == humanchess2) ||
-                            ("box-tm" == humanchess2 && "box-bm" == humanchess1) ||
-                            ("box-tr" == humanchess1 && "box-bl" == humanchess2) ||
-                            ("box-tr" == humanchess2 && "box-bl" == humanchess1) ||
-                            ("box-ml" == humanchess1 && "box-mr" == humanchess2) ||
-                            ("box-ml" == humanchess2 && "box-mr" == humanchess1)
-                        ) {
-                            $(".box-mm").click();
-                            ifclick = 1;
+                        
+                        if($(".box-mm").text() == ""){
+                            if( ("box-tl" == humanchess1 && "box-br" == humanchess2) ||
+                                ("box-tl" == humanchess2 && "box-br" == humanchess1) ||
+                                ("box-tm" == humanchess1 && "box-bm" == humanchess2) ||
+                                ("box-tm" == humanchess2 && "box-bm" == humanchess1) ||
+                                ("box-tr" == humanchess1 && "box-bl" == humanchess2) ||
+                                ("box-tr" == humanchess2 && "box-bl" == humanchess1) ||
+                                ("box-ml" == humanchess1 && "box-mr" == humanchess2) ||
+                                ("box-ml" == humanchess2 && "box-mr" == humanchess1)
+                            ) {
+                                ifclick = 1;
+                                $(".box-mm").click();
+                            }
                         }
                     }
                     
@@ -339,17 +341,13 @@
                 
                 var msgs = new Array("该你下了");
                 $(".msg").text(msgs[parseInt(Math.random()* msgs.length)]);
-                
-                checkwin(chessqueue[chessqueue.length-1][0]);
             }
             
             var startai = function(){
-                if(!gamestatus && chessqueue[chessqueue.length-1][0] == humanchess) {
-                    var msgs = new Array("嗯…让我想想", "等等哈，马上");
-                    $(".msg").text(msgs[parseInt(Math.random()* msgs.length)]);
-                    lockclick = 1;
-                    setTimeout(ai, (parseInt(Math.random()*1000)));
-                }
+                var msgs = new Array("嗯…让我想想", "等等哈，马上");
+                $(".msg").text(msgs[parseInt(Math.random()* msgs.length)]);
+                lockclick = 1;
+                setTimeout(ai, (parseInt(Math.random()*1000)));
             }
             
             $(".box").click(function() {
@@ -373,6 +371,7 @@
                         
                         if(chessqueue.length > 6) {
                             var removebox = $("." + chessqueue[0][1]);
+                            chessqueue.shift();
                             removebox.html("<span>" + removebox.text() + "</span>");
                             var removechess = removebox.children("span");
                             removechess.css({"position": "absolute"});
@@ -381,11 +380,10 @@
                                 marginTop: (that.offset().top - removebox.offset().top) + "px",
                                 marginLeft: (that.offset().left - removebox.offset().left) + "px"
                             }, function(){
-                                $(this).remove();
                                 that.text(currentchess[0]);
-                                $("." + chessqueue[0][1]).html("");
-                                $("." + chessqueue[0][1]).css({"color": "black"});
-                                chessqueue.shift();
+                                $(this).remove();
+                                removebox.html("");
+                                removebox.css({"color": "black"});
                                 
                                 $("." + chessqueue[0][1]).css({"color": "lightgray"});
                                 $("." + chessqueue[1][1]).css({"color": "lightgray"});
@@ -393,7 +391,9 @@
                                 $("." + chessqueue[3][1]).css({"color": "gray"});
                                 
                                 checkwin(currentchess[0]);
-                                startai();
+                                if(gamestatus == 0 && currentchess[0] == humanchess){
+                                    startai();
+                                }
                             });
                         } else {
                             that.text(currentchess[0]);
@@ -418,7 +418,9 @@
                             }
                             
                             checkwin(currentchess[0]);
-                            startai();
+                            if(gamestatus == 0 && currentchess[0] == humanchess){
+                                startai();
+                            }
                         }
                     }
                 }
