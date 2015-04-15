@@ -24,9 +24,9 @@
         .box-tl, .box-tm, .box-tr, .box-ml, .box-mm, .box-mr { border-bottom: 1px solid gray; }
         .box-tm, .box-mm, .box-bm, .box-tr, .box-mr, .box-br { border-left: 1px solid gray; }
         .box-tl, .box-ml, .box-bl, .box-tm, .box-mm, .box-bm { border-right: 1px solid gray; }
-        .info { position: absolute; top: 10px; text-align: center; width: 100%; }
+        .info { position: absolute; top: 10px; text-align: center; width: 100%; display: none; }
         .msg { position: absolute; top: 30px; text-align: center; width: 100%; }
-        .menu { position: absolute; bottom: 20px; text-align: center; width: 100%; }
+        .menu { position: absolute; bottom: 30px; text-align: center; width: 100%; }
         .menu .newgame { display: none; }
     </style>
 </head>
@@ -64,17 +64,23 @@
                     ($(".box-tl").text() == chess && $(".box-mm").text() == chess && $(".box-br").text() == chess) || 
                     ($(".box-tr").text() == chess && $(".box-mm").text() == chess && $(".box-bl").text() == chess)
                 ) {
-                    //$(".msg").text(chess + " Win");
                     if(chess == humanchess){
-                        $(".msg").text("好吧，你赢了");
+                        var msgs = new Array("好吧，你赢了", "看起来好厉害的样子", "啊啊…失误了");
+                        $(".msg").text(msgs[parseInt(Math.random()* msgs.length)]);
+                        $(".box").each(function(){
+                            if($(this).text() == chess) {
+                                $(this).css({"color": "yellowgreen"});
+                            }
+                        });
                     } else {
-                        $(".msg").text("呃，你输了");
+                        var msgs = new Array("呃…你输了", "一定是你打开方式不对", "耶…终于赢了");
+                        $(".msg").text(msgs[parseInt(Math.random()* msgs.length)]);
+                        $(".box").each(function(){
+                            if($(this).text() == chess) {
+                                $(this).css({"color": "red"});
+                            }
+                        });
                     }
-                    $(".box").each(function(){
-                        if($(this).text() == chess) {
-                            $(this).css({"color": "yellowgreen"});
-                        }
-                    });
                     gamestatus = 1;
                     $(".newgame").text("新游戏");
                 } else {
@@ -331,9 +337,19 @@
                     randomclick();
                 }
                 
-                $(".msg").text("该你了");
+                var msgs = new Array("该你下了");
+                $(".msg").text(msgs[parseInt(Math.random()* msgs.length)]);
                 
                 checkwin(chessqueue[chessqueue.length-1][0]);
+            }
+            
+            var startai = function(){
+                if(!gamestatus && chessqueue[chessqueue.length-1][0] == humanchess) {
+                    var msgs = new Array("嗯…让我想想", "等等哈，马上");
+                    $(".msg").text(msgs[parseInt(Math.random()* msgs.length)]);
+                    lockclick = 1;
+                    setTimeout(ai, (parseInt(Math.random()*1000)));
+                }
             }
             
             $(".box").click(function() {
@@ -348,14 +364,15 @@
                         humanchess = currentchess[0];
                         $(".newgame").text("重新开始");
                         $(".info").text("你:" + humanchess + " 对方:" + (humanchess=="X"?"O":"X"));
+                        
+                        startai();
                     } else {
                         var that = $(this);
                         var currentchess = [chessqueue[chessqueue.length-1][0]=="O"?"X":"O", $(this).attr("class").split(" ")[1]];
-                        $(this).text(currentchess[0]);
                         chessqueue.push(currentchess);
                         
                         if(chessqueue.length > 6) {
-                            /*var removebox = $("." + chessqueue[0][1]);
+                            var removebox = $("." + chessqueue[0][1]);
                             removebox.html("<span>" + removebox.text() + "</span>");
                             var removechess = removebox.children("span");
                             removechess.css({"position": "absolute"});
@@ -364,42 +381,47 @@
                                 marginTop: (that.offset().top - removebox.offset().top) + "px",
                                 marginLeft: (that.offset().left - removebox.offset().left) + "px"
                             }, function(){
-                                removebox.text("");
-                            });*/
+                                $(this).remove();
+                                that.text(currentchess[0]);
+                                $("." + chessqueue[0][1]).html("");
+                                $("." + chessqueue[0][1]).css({"color": "black"});
+                                chessqueue.shift();
+                                
+                                $("." + chessqueue[0][1]).css({"color": "lightgray"});
+                                $("." + chessqueue[1][1]).css({"color": "lightgray"});
+                                $("." + chessqueue[2][1]).css({"color": "gray"});
+                                $("." + chessqueue[3][1]).css({"color": "gray"});
+                                
+                                checkwin(currentchess[0]);
+                                startai();
+                            });
+                        } else {
+                            that.text(currentchess[0]);
                             
-                            $("." + chessqueue[0][1]).text("");
-                            $("." + chessqueue[0][1]).css({"color": "black"});
-                            chessqueue.shift();
+                            if(chessqueue.length == 3) {
+                                $("." + chessqueue[0][1]).css({"color": "gray"});
+                            }
+                            if(chessqueue.length == 4) {
+                                $("." + chessqueue[0][1]).css({"color": "gray"});
+                                $("." + chessqueue[1][1]).css({"color": "gray"});
+                            }
+                            if(chessqueue.length == 5) {
+                                $("." + chessqueue[0][1]).css({"color": "lightgray"});
+                                $("." + chessqueue[1][1]).css({"color": "gray"});
+                                $("." + chessqueue[2][1]).css({"color": "gray"});
+                            }
+                            if(chessqueue.length == 6) {
+                                $("." + chessqueue[0][1]).css({"color": "lightgray"});
+                                $("." + chessqueue[1][1]).css({"color": "lightgray"});
+                                $("." + chessqueue[2][1]).css({"color": "gray"});
+                                $("." + chessqueue[3][1]).css({"color": "gray"});
+                            }
+                            
+                            checkwin(currentchess[0]);
+                            startai();
                         }
-                        if(chessqueue.length == 3) {
-                            $("." + chessqueue[0][1]).css({"color": "gray"});
-                        }
-                        if(chessqueue.length == 4) {
-                            $("." + chessqueue[0][1]).css({"color": "gray"});
-                            $("." + chessqueue[1][1]).css({"color": "gray"});
-                        }
-                        if(chessqueue.length == 5) {
-                            $("." + chessqueue[0][1]).css({"color": "lightgray"});
-                            $("." + chessqueue[1][1]).css({"color": "gray"});
-                            $("." + chessqueue[2][1]).css({"color": "gray"});
-                        }
-                        if(chessqueue.length == 6) {
-                            $("." + chessqueue[0][1]).css({"color": "lightgray"});
-                            $("." + chessqueue[1][1]).css({"color": "lightgray"});
-                            $("." + chessqueue[2][1]).css({"color": "gray"});
-                            $("." + chessqueue[3][1]).css({"color": "gray"});
-                        }
-                        
-                        checkwin(currentchess[0]);
-                    }
-                    if(chessqueue[chessqueue.length-1][0] == humanchess) {
-                        $(".msg").text("嗯让我想想…");
-                        //ai();
-                        lockclick = 1;
-                        setTimeout(ai, (parseInt(Math.random()*1000)));
                     }
                 }
-                //alert(chessqueue);
             });
             
             $(".menu .newgame").click(function(){
