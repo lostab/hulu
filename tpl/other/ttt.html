@@ -24,9 +24,9 @@
         .box-tl, .box-tm, .box-tr, .box-ml, .box-mm, .box-mr { border-bottom: 1px solid gray; }
         .box-tm, .box-mm, .box-bm, .box-tr, .box-mr, .box-br { border-left: 1px solid gray; }
         .box-tl, .box-ml, .box-bl, .box-tm, .box-mm, .box-bm { border-right: 1px solid gray; }
-        .info { position: absolute; top: 10px; text-align: center; width: 100%; display: none; }
-        .msg { position: absolute; top: 30px; text-align: center; width: 100%; }
-        .menu { position: absolute; bottom: 30px; text-align: center; width: 100%; }
+        .info { position: absolute; top: 50%; margin-top: -173px; text-align: center; width: 100%; display: none; }
+        .msg { position: absolute; top: 50%; margin-top: -153px; text-align: center; width: 100%; }
+        .menu { position: absolute; top: 50%; margin-top: 133px; text-align: center; width: 100%; }
         .menu .newgame { display: none; }
     </style>
 </head>
@@ -338,9 +338,10 @@
                 } else {
                     randomclick();
                 }
-                
-                var msgs = new Array("该你下了");
-                $(".msg").text(msgs[parseInt(Math.random()* msgs.length)]);
+                if(gamestatus == 0) {
+                    var msgs = new Array("该你下了");
+                    $(".msg").text(msgs[parseInt(Math.random()* msgs.length)]);
+                }
             }
             
             var startai = function(){
