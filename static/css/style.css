@@ -1,4 +1,6 @@
 html, body {
+    width: 100%;
+    height: 100%;
     margin: 0;
     padding: 0;
     font-family: times new roman;
@@ -31,10 +33,19 @@ img {
     font-size: small;
 }
 .header {
+    width: 100%;
+    height: 24px;
+    marging: 0;
     padding: 3px;
     border-bottom: 1px solid lightgray;
+    position: fixed;
+    background: white;
 }
 .header .logo {
+    position: absolute;
+    width: 72px;
+    height: 24px;
+    display: inline-block;
     text-decoration:none;
     font-weight: bold;
     font-size: 1.5em;
@@ -42,10 +53,13 @@ img {
     font-family: Arial;
     padding-left: 7px;
     padding-right: 7px;
+    background: url(/s/hulu.png) 10px no-repeat;
+    background-size: 64px 24px;
+    color: transparent;
 }
 .header .right-navbar {
     position: absolute;
-    right: 7px;
+    right: 20px;
 }
 .header .right-navbar .header-navbar-button {
     background: lightgray;
@@ -119,7 +133,7 @@ img {
     text-align: center;
 }
 .container {
-    
+    padding-top: 27px;
 }
 .content {
     margin: 7px;

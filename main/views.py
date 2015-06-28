@@ -32,8 +32,13 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 def index(request):
     try:
-        site = Site.objects.all()[0]
-        if site.domain != request.get_host():
+        if Site.objects.all():
+            site = Site.objects.all()[0]
+            if site.domain != request.get_host():
+                site.domain = request.get_host()
+                site.save()
+        else:
+            site = Site()
             site.domain = request.get_host()
             site.save()
     except Site.DoesNotExist:
@@ -71,7 +76,8 @@ def index(request):
                 fetchitems = []
                 
                 fetchitem = namedtuple('fetchitem', 'user title url lastsubitem')
-                fetchuser=namedtuple('fetchuser', 'username')
+                fetchuser=namedtuple('fetchuser', 'username userprofile')
+                fetchprofile=namedtuple('fetchprofile', 'openid avatar')
                 fetchcreate=namedtuple('fetchcreate', 'create')
                 #Zhihu
                 for fetchdate in [str((datetime.datetime.now() + timedelta(days=1)).strftime('%Y%m%d')), str(datetime.datetime.now().strftime('%Y%m%d')), str((datetime.datetime.now() - timedelta(days=1)).strftime('%Y%m%d'))]:
@@ -85,14 +91,14 @@ def index(request):
                     if int(zhihudate) == int(fetchdate) - 1:
                         zhihucontent = zhihujson['stories']
                         for i in zhihucontent:
-                            zhihuitem = fetchitem(user=fetchuser(username=u'知乎日报'), title=i['title'], url='http://daily.zhihu.com/story/'+str(i['id']), lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(str(datetime.datetime.now().strftime('%Y')) + i['ga_prefix'], '%Y%m%d%H'), timezone.get_default_timezone())))
+                            zhihuitem = fetchitem(user=fetchuser(username=u'知乎日报', userprofile=fetchprofile(openid='Zhihu', avatar='http://www.zhihu.com/favicon.ico')), title=i['title'], url='http://daily.zhihu.com/story/'+str(i['id']), lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(str(datetime.datetime.now().strftime('%Y')) + i['ga_prefix'], '%Y%m%d%H'), timezone.get_default_timezone())))
                             itemlist.append(zhihuitem)
                             fetchitems.append(zhihuitem)
                 #V2EX
                 v2exurl = 'https://www.v2ex.com/api/topics/hot.json'
                 v2exjson = json.loads(urllib2.urlopen(v2exurl).read())
                 for i in v2exjson:
-                    v2exitem = fetchitem(user=fetchuser(username='V2EX'), title=i['title'], url=i['url'].replace('http://', 'https://'), lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.fromtimestamp(int(i['created'])), timezone.get_default_timezone())))
+                    v2exitem = fetchitem(user=fetchuser(username='V2EX', userprofile=fetchprofile(openid='V2EX', avatar='https://v2ex.com/favicon.ico')), title=i['title'], url=i['url'].replace('http://', 'https://'), lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.fromtimestamp(int(i['created'])), timezone.get_default_timezone())))
                     itemlist.append(v2exitem)
                     fetchitems.append(v2exitem)
                 
@@ -108,9 +114,29 @@ def index(request):
                     title = hp.unescape(re.split('<title>|</title> <title>|</title>', item)[1])
                     newstime = re.split('<pubDate>|</pubDate> <pubDate>|</pubDate>', item)[1]
                     url = re.split('<link>|</link> <link>|</link>', item)[1].split('url=')[1]
-                    newsitem = fetchitem(user=fetchuser(username='Google News'), title=title, url=url, lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(newstime, '%a, %d %b %Y %H:%M:%S GMT'), timezone.get_default_timezone())))
+                    newsitem = fetchitem(user=fetchuser(username='Google News', userprofile=fetchprofile(openid='Google News', avatar='http://www.google.cn/favicon.ico')), title=title, url=url, lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(newstime, '%a, %d %b %Y %H:%M:%S GMT'), timezone.get_default_timezone())))
                     itemlist.append(newsitem)
                     fetchitems.append(newsitem)
+                
+                #Weixin
+                #weixinurl = 'http://weixin.sogou.com/'
+                #hdr = {
+                #    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:32.0) Gecko/20100101 Firefox/32.0'
+                #}
+                #req = urllib2.Request(weixinurl, headers=hdr)
+                #result = urllib2.urlopen(req).read()
+                #items = re.split('<div class="wx-news-info2">|</div></li></ul>', result)
+                #items.pop(0)
+                #items.pop(-1)
+                #print(items[0])
+                #for item in items:
+                #    hp = HTMLParser.HTMLParser()
+                    #title = hp.unescape(re.split('<title>|</title> <title>|</title>', item)[1])
+                    #newstime = re.split('<pubDate>|</pubDate> <pubDate>|</pubDate>', item)[1]
+                    #url = re.split('<link>|</link> <link>|</link>', item)[1].split('url=')[1]
+                    #newsitem = fetchitem(user=fetchuser(username='Google News', userprofile=fetchprofile(openid='Google News', avatar='http://www.google.cn/favicon.ico')), title=title, url=url, lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(newstime, '%a, %d %b %Y %H:%M:%S GMT'), timezone.get_default_timezone())))
+                    #itemlist.append(newsitem)
+                    #fetchitems.append(newsitem)
                 
                 #cache.set('cacheitems', json.dumps({
                 #    'datetime': datetime.datetime.now(),

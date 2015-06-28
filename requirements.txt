@@ -1,2 +1,4 @@
 Django==1.6.5
 https://pypi.python.org/packages/source/P/Pillow/Pillow-2.8.1.tar.gz
+MySQL-python==1.2.5
+dj-database-url==0.3.0

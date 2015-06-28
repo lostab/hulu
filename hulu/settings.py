@@ -23,6 +23,9 @@ DATABASES = {
     }
 }
 
+import dj_database_url
+DATABASES['default'] =  dj_database_url.config()
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
