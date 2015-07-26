@@ -7,16 +7,19 @@ from django.shortcuts import redirect
 import datetime
 import urllib2
 import json
+import time
 from django.contrib.auth.models import User
 from django.contrib.auth import *
 from django.contrib.auth.forms import *
 from django.core.mail import send_mail
+from hulu import *
 from user.models import *
 from user.forms import *
+from item.models import *
+from item.forms import *
+from django.db.models import Q
 from django.forms.util import ErrorList
 from django.core.context_processors import csrf
-
-from item.models import *
 
 def Main(request):
     user = request.user
@@ -28,11 +31,10 @@ def Main(request):
                 'user': {
                     'username': user.username,
                     'email': user.email,
-                    'name': user.userprofile.name,
+                    'name': user.userprofile.info,
                     'avatar': (user.userprofile.openid) and str(user.userprofile.avatar) or ((user.userprofile.avatar) and '/s/' + str(user.userprofile.avatar) or '/s/avatar/n.png'),
-                    'phone': user.userprofile.phone,
-                    'address': user.userprofile.address,
-                    'description': user.userprofile.description
+                    'page': user.userprofile.page,
+                    'create': str(user.userprofile.create),
                 }
             }
             return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
@@ -48,9 +50,14 @@ def Main(request):
 def Signup(request):
     next = None
     if request.GET.get('next'):
-        next = request.GET.get('next')
-    if next and (next[0] != '/' or next in ['', '/', '/u/login/', '/u/signup/']):
-        return redirect('/u/signup/')
+        next = request.META['QUERY_STRING'].split('next=')[1]
+        if request.GET.get('next'):
+            if request.GET.get('next')[0] != '/':
+                return redirect('/u/login/')
+            else:
+                nextpath = request.GET.get('next').split('?')[0]
+                if nextpath[0] != '/' or nextpath in ['', '/', '/u/login/', '/u/signup/']:
+                    return redirect('/u/login/')
     if request.user.is_authenticated():
         if request.GET.get('type') == 'json':
             content = {
@@ -103,7 +110,7 @@ def Signup(request):
 def Login(request):
     next = None
     if request.GET.get('next'):
-        next = request.GET.get('next')
+        next = request.META['QUERY_STRING'].split('next=')[1]
     
     if request.GET.get('type') == 'qq':
         qq_app_id = '101192703'
@@ -184,9 +191,13 @@ def Login(request):
             else:
                 return redirect('https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=' + qq_app_id + '&redirect_uri=' + urllib2.quote('http://' + request.get_host() + '/u/login/?type=qq'))
     
-    
-    if next and (next[0] != '/' or next in ['', '/', '/u/login/', '/u/signup/']):
-        return redirect('/u/login/')
+    if request.GET.get('next'):
+        if request.GET.get('next')[0] != '/':
+            return redirect('/u/login/')
+        else:
+            nextpath = request.GET.get('next').split('?')[0]
+            if nextpath[0] != '/' or nextpath in ['', '/', '/u/login/', '/u/signup/']:
+                return redirect('/u/login/')
     if request.user.is_authenticated():
         if request.GET.get('type') == 'json':
             content = {
@@ -253,9 +264,13 @@ def Login(request):
 def Logout(request):
     next = None
     if request.GET.get('next'):
-        next = request.GET.get('next')
-    if next and (next[0] != '/' or next in ['', '/', '/u/login/', '/u/signup/']):
-        return redirect('/u/login/')
+        next = request.META['QUERY_STRING'].split('next=')[1]
+        if request.GET.get('next')[0] != '/':
+            return redirect('/u/login/')
+        else:
+            nextpath = request.GET.get('next').split('?')[0]
+            if nextpath[0] != '/' or nextpath in ['', '/', '/u/login/', '/u/signup/']:
+                return redirect('/u/login/')
     logout(request)
     if request.GET.get('type') == 'json':
         content = {
@@ -452,3 +467,223 @@ def List(request):
         'users': users
     }
     return render_to_response('user/list.html', content, context_instance=RequestContext(request))
+
+def Message(request, username):
+    usernames = username.split(',')
+    users = []
+    for username in usernames:
+        try:
+            user = User.objects.get(username=username)
+            if user not in users:
+                users.append(user)
+        except User.DoesNotExist:
+            user = None
+    if not users:
+        return redirect('/')
+    
+    if request.user.is_authenticated():
+        if len(users) > 1 and request.user not in users:
+            return redirect('/')
+        if request.user not in users:
+            users.append(User.objects.get(username=request.user))
+        users = sorted(users, key=lambda user: user.username)
+        def getmessages():
+            try:
+                items = Item.objects.select_related('useritemrelationship').filter(user__in=users).all()
+                if request.GET.get('messageid'):
+                    items = Item.objects.select_related('useritemrelationship').filter(user__in=users).filter(id__gt=request.GET.get('messageid')).all()
+                messages = []
+                for item in items:
+                    useritemrelationship = UserItemRelationship.objects.filter(item=item)
+                    urusers = []
+                    for ur in useritemrelationship:
+                        if ur.type == 'message':
+                            urusers.append(ur.user)
+                    urusers = sorted(urusers, key=lambda user: user.username)
+                    if (urusers == users):
+                        itemcontent = ItemContent.objects.filter(item=item)
+                        item.create = itemcontent[0].create
+                        item.title = itemcontent[0].content.strip().splitlines()[0]
+                        
+                        subitem = item.get_all_items(include_self=False)
+                        if subitem:
+                            subitem.sort(key=lambda item:item.create, reverse=True)
+                            itemcontent = ItemContent.objects.filter(item=subitem[0]).reverse()
+                            item.subitemcount = len(subitem)
+                            item.lastsubitem = subitem[0]
+                        else:
+                            item.lastsubitem = itemcontent[0]
+                        messages.append(item)
+                
+                messages = sorted(messages, key=lambda item:item.lastsubitem.create, reverse=False)[-100:]
+                
+            except Item.DoesNotExist:
+                messages = None
+            
+            return messages
+        
+        messages = getmessages()
+        
+        if request.method == 'GET':
+            if request.GET.get('type') == 'json':
+                for i in range(30):
+                    if not messages:
+                        time.sleep(1)
+                        messages = getmessages()
+                messagelist = []
+                for item in messages:
+                    message = {
+                        'id': str(item.id),
+                        'user': {
+                            'username': item.user.username,
+                            'info': item.user.userprofile.info,
+                            'avatar': (item.user.userprofile.openid) and str(item.user.userprofile.avatar) or ((item.user.userprofile.avatar) and '/s/' + str(item.user.userprofile.avatar) or '/s/avatar/n.png'),
+                            'profile': item.user.userprofile.profile,
+                            'page': item.user.userprofile.page,
+                        },
+                        'create': str(item.lastsubitem.create),
+                        'content': item.lastsubitem.content
+                    }
+                    messagelist.append(message)
+                
+                content = {
+                    'status': 'success',
+                    'messages': messagelist
+                }
+                return jsonp(request, content)
+            
+            tousers = users
+            if len(tousers) == 2 and request.user in tousers:
+                tousers.remove(request.user)
+            content = {
+                'tousers': tousers,
+                'messages': messages
+            }
+            return render_to_response('user/message.html', content, context_instance=RequestContext(request))
+        
+        if request.method == 'POST':
+            if request.POST.get('content').strip() == '' and not request.FILES:
+                tousers = users
+                if len(tousers) == 2 and request.user in tousers:
+                    tousers.remove(request.user)
+                content = {
+                    'tousers': tousers,
+                    'messages': messages
+                }
+                return render_to_response('user/message.html', content, context_instance=RequestContext(request))
+            
+            form = ItemContentForm(request.POST)
+            if form.is_valid():
+                item = Item(user=request.user)
+                item.save()
+                
+                itemcontent = ItemContent(item=item)
+                itemcontentform = ItemContentForm(request.POST, instance=itemcontent)
+                itemcontent = itemcontentform.save()
+                
+                x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+                ip = request.META['REMOTE_ADDR']
+                if x_forwarded_for:
+                    ip = x_forwarded_for.split(', ')[-1]
+                
+                itemcontent.ip = ip
+                itemcontent.ua = request.META['HTTP_USER_AGENT']
+                itemcontent.save()
+                
+                for user in users:
+                    useritemrelationship = UserItemRelationship(user=user)
+                    useritemrelationship.type = 'message'
+                    useritemrelationship.save()
+                    item.useritemrelationship.add(useritemrelationship)
+                
+            else:
+                if len(tousers) == 2 and request.user in tousers:
+                    tousers.remove(request.user)
+                content = {
+                    'tousers': tousers,
+                    'item': item,
+                    'reply': reply,
+                    'form': form
+                }
+                return render_to_response('user/message.html', content, context_instance=RequestContext(request))
+            
+            return redirect('/u/m/' + username)
+    else:
+        return redirect('/u/login/?next=/u/m/' + username + '/')
+
+def MessageList(request):
+    if request.user.is_authenticated():
+        messagelist = []
+        ursession = []
+        useritemrelationship = UserItemRelationship.objects.filter(type="message").filter(user=request.user).prefetch_related('item_set').order_by('-id')
+        for ur in useritemrelationship:
+            for message in ur.item_set.all():
+                urusers = []
+                for mur in message.useritemrelationship.all():
+                    if mur.user not in urusers:
+                        urusers.append(mur.user)
+                if len(urusers) == 2 and request.user in urusers:
+                    urusers.remove(request.user)
+                urusers = sorted(urusers, key=lambda user: user.username)
+                
+                messagesession = {
+                    'urusers': urusers,
+                    'message': message
+                }
+                if urusers not in ursession:
+                    ursession.append(urusers)
+                    messagelist.append(messagesession)
+        
+        if request.GET.get('type') == 'json':
+            messages = []
+            for ms in messagelist:
+                urusers = []
+                for uruser in ms['urusers']:
+                    urusers.append({
+                        'username': uruser.username,
+                        'info': uruser.userprofile.info,
+                        'avatar': (uruser.userprofile.openid) and str(uruser.userprofile.avatar) or ((uruser.userprofile.avatar) and '/s/' + str(uruser.userprofile.avatar) or '/s/avatar/n.png'),
+                        'profile': uruser.userprofile.profile,
+                        'page': uruser.userprofile.page,
+                    })
+                
+                message = ms['message']
+                itemcontent = ItemContent.objects.filter(item=message)
+                message.create = itemcontent[0].create
+                message.title = itemcontent[0].content.strip().splitlines()[0]
+                subitem = message.get_all_items(include_self=False)
+                if subitem:
+                    subitem.sort(key=lambda item:item.create, reverse=True)
+                    itemcontent = ItemContent.objects.filter(item=subitem[0]).reverse()
+                    message.subitemcount = len(subitem)
+                    message.lastsubitem = subitem[0]
+                else:
+                    message.lastsubitem = itemcontent[0]
+                lastmessage = {
+                    'content': message.lastsubitem.content,
+                    'datetime': str(message.lastsubitem.create)
+                }
+                
+                messagesession = {
+                    'urusers': urusers,
+                    'lastmessage': lastmessage
+                }
+                messages.append(messagesession)
+            
+            content = {
+                'status': 'success',
+                'messages': messages
+            }
+            return jsonp(request, content)
+        
+        content = {
+            'messagelist': messagelist
+        }
+        return render_to_response('user/messagelist.html', content, context_instance=RequestContext(request))
+    else:
+        if request.GET.get('type') == 'json':
+            content = {
+                'status': 'error'
+            }
+            return jsonp(request, content)
+        return redirect('/u/login/?next=' + request.path + '?' + request.META['QUERY_STRING'])

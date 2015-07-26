@@ -10,7 +10,7 @@ a {
     text-decoration: none;
 }
 a:hover {
-    text-decoration: underline;
+    text-decoration: none;
 }
 a:visited {
     color: black;
@@ -162,7 +162,7 @@ img {
 .userprofile .description {
     width: 80%;
 }
-.userprofile .created, .content.task .updated {
+.userprofile .created, .content.task .updated, .line .updated {
     text-align: right;
     color: lightgray;
     font-size: small;
@@ -204,16 +204,16 @@ img {
 .userpage .title a {
 	text-decoration:none;
 }
-.content.create .description textarea, .content.task .description textarea{
+.content.create .description textarea, .content.task .description textarea, .line .description textarea {
 	vertical-align:top;
 	overflow-y:visible;
     width: 100%;
     height: 7em;
 }
-.content.tasks .task-line .task-title, .content.tasks .task-line .task-info {
+.content.tasks .task-line .task-title, .content.tasks .task-line .task-info{
     display: inline-block;
 }
-.content.tasks .task-line .task-title a {
+.content.tasks .task-line .task-title a, .line .line-main .line-title a {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -243,7 +243,7 @@ img {
     color: gray;
     font-size: small;
 }
-.home .task:not(:last-child), .comment, .home .createbutton {
+.home .task:not(:last-child), .line:not(:last-child), .comment, .home .createbutton {
     margin-bottom: 3px;
     border-bottom: 1px solid lightgray;
 }
@@ -252,28 +252,31 @@ img {
     text-align: right;
     margin-top: -7px;
 }
-.home .task .avatar-area, .comment .comment-avatar-area {
+.home .task .avatar-area, .line .avatar-area, .comment .comment-avatar-area, .content.message .avatar-area {
     width: 30px;
     float: left;
 	vertical-align: top;
 }
-.home .task .avatar, .comment .comment-avatar-area .comment-avatar {
+.content.message .message-me .avatar-area {
+    float: right;
+}
+.home .task .avatar, .line .avatar, .comment .comment-avatar-area .comment-avatar, .content.message .avatar-area .avatar {
     width: 24px;
     height: 24px;
     border-radius: 12px;
     -webkit-border-radius: 12px;
     -moz-border-radius: 12px;
 }
-.home .task .avatar img, .comment .comment-avatar-area .comment-avatar img {
+.home .task .avatar img, .line .avatar img, .comment .comment-avatar-area .comment-avatar img, .content.message .avatar-area .avatar img {
     width: 24px;
     height: 24px;
     opacity: 0;
 	filter: alpha(opacity=0);
 }
-.home .task .task-line, .comment .comment-line, .comment .itemcontent-content {
+.home .task .task-line, .line .line-main, .comment .comment-line, .comment .itemcontent-content {
     margin-left: 30px;
 }
-.home .task .task-line .task-author, .comment .comment-line .comment-author {
+.home .task .task-line .task-author, .line .line-main .line-info .line-info-left, .comment .comment-line .comment-author {
     font-size: small;
     font-weight: normal;
 	vertical-align: top;
@@ -329,18 +332,18 @@ img {
 .comment .comment-operate a {
     color: gray;
 }
-.home .task .task-info, .comment .comment-info {
+.home .task .task-info, .line .line-info, .comment .comment-info {
     font-size: small;
     line-height: 18px;
     color: gray;
 }
-.home .task .task-info .task-created, .home .task .task-info .userinfo {
+.home .task .task-info .task-created, .line .line-info .line-info-right, .home .task .task-info .userinfo {
     color: lightgray;
 }
-.home .task .task-info .task-created:hover, .home .task .task-info .task-author:hover {
+.home .task .task-info .task-created:hover, .line .line-info .line-info-right:hover, .home .task .task-info .task-author:hover {
     text-decoration: none;
 }
-.home .task .task-info .task-info-right, .comment .comment-info .comment-created {
+.home .task .task-info .task-info-right, .line .line-info .line-info-right, .comment .comment-info .comment-created {
     float: right;
     text-align: right;
 }
@@ -405,7 +408,7 @@ img {
 	text-decoration:none;
     color: gray;
 }
-.content.task .task-info .task-created {
+.content.task .task-info .task-created, .line .line-main .line-info .line-info-right {
     color: lightgray;
     float: right;
 }
@@ -430,7 +433,89 @@ img {
 .content.notify a {
     font-weight: bold;
 }
-.feedback textarea, .content.task form textarea {
+.content.message {
+    margin-bottom: 0;
+    padding: 0;
+}
+.msgbox {
+    width: 100%;
+    height: 80vh;
+    position: relative;
+}
+.historymessages {
+    width: 100%;
+    max-height: 100%;
+    overflow-y: scroll;
+    position: absolute;
+    bottom: 0;
+}
+.historymessages::-webkit-scrollbar {
+    display: none;
+}
+.message-me {
+    text-align: right;
+}
+.sendmessageform {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+.sendmessage {
+    display: none;
+}
+.messagecontent {
+    width: calc(100% - 20px);
+}
+.messagesessions a .line {
+    border-bottom: 1px solid lightgray;
+    margin: 0;
+    padding: 3px 0 3px 0;
+}
+.messagesessions .avatar-area {
+    width: 48px;
+    float: left;
+	vertical-align: top;
+}
+.messagesessions .avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    -webkit-border-radius: 24px;
+    -moz-border-radius: 24px;
+}
+.messagesessions .avatar img {
+    width: 48px;
+    height: 48px;
+    opacity: 0;
+	filter: alpha(opacity=0);
+}
+.messagesessions .line .line-info .line-info-left {
+    color: black;
+    font-size: medium;
+    width: 50%;
+    display: inline-block;
+}
+.messagesessions .line .line-info .line-info-right {
+    width: 50%;
+}
+.messagesessions .line .line-info .line-info-left, .messagesessions .line .line-info .line-info-right {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.messagesessions .line .line-title {
+    color: gray;
+    font-size: large;
+    margin-top: 7px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.messagesessions .line .line-main {
+    height: 48px;
+    margin-left: 50px;
+}
+.feedback textarea, .content.task form textarea, .content form textarea {
 	vertical-align: top;
 	overflow-y:visible;
     width: 100%;

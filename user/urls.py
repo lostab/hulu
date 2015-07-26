@@ -18,4 +18,6 @@ urlpatterns = patterns('',
     url(r'^password_reset_complete/$', 'django.contrib.auth.views.password_reset_complete', name='password_reset_complete'),
     url(r'^feedback/$', views.Feedback, name='feedback'),
     url(r'^list/$', views.List, name='list'),
+    url(r'^m/$', views.MessageList, name='messagelist'),
+    url(r'^m/(.+)/$', views.Message, name='message'),
 )

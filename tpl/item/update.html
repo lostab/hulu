@@ -54,3 +54,12 @@
         </div>
     {% endif %}
 {% endblock %}
+{% block footer %}
+<script type="text/javascript">
+$(document).ready(function(){
+    $("form").submit(function(){
+        $(".submit").attr("disabled", true);
+    });
+});
+</script>
+{% endblock %}

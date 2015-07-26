@@ -1,3 +1,0 @@
-..\cf.exe api https://api.ng.bluemix.net
-..\cf login -u lostab@gmail.com -o lostab@gmail.com -s hulu
-..\cf push hulu

@@ -24,6 +24,7 @@ urlpatterns = patterns('',
     url(r'^i/', include('item.urls')),
     url(r'^tg/', main.ttt, name='ttt'),
     url(r'^sq/', main.sq, name='sq'),
+    url(r'^app/', main.app, name='app'),
     url(r'^(.+)/$', user.UserPage, name='userpage'),
 )
 

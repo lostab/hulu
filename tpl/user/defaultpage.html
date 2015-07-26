@@ -12,11 +12,13 @@
                     <div class="username">{% if viewuser.userprofile.info %}{{ viewuser.userprofile.info }}{% else %}{{ viewuser.username }}{% endif %}</div>
                 </div>
             </a></h3>
-            {% if request.user == viewuser %}
             <p class="operate">
+            {% if request.user == viewuser %}
                 <a href="/u/settings/"><button>完善资料</button></a>
-            </p>
+            {% else %}
+                <a href="/u/m/{{ viewuser.username }}/"><button>发送消息</button></a>
             {% endif %}
+            </p>
             <pre class="description">{{ viewuser.userprofile.profile }}</pre>
         {% else %}
             <p>抱歉，页面不存在。</p>

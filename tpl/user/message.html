@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}{% for touser in tousers %}{% if touser.userprofile.info %}{{ touser.userprofile.info }}{% else %}{{ touser.username }}{% endif %} {% endfor %}- {% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="content message">
+            <div class="msgbox">
+                <div class="historymessages">
+                
+                </div>
+            </div>
+            <form class="sendmessageform" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input class="messagecontent" name="content" {{ form.content.value }} /><input class="sendmessage" type="submit" value="发送" />
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}
+{% block footer %}
+<script type="text/javascript">
+$(document).ready(function(){
+    $(".header").html("<div style=\"background: black;color: white;font-weight: bold;text-align: center;height: 100%;\"><a style=\"color: white;float: left;\" href=\"\/u\/m\/\">《</a>{% for touser in tousers %}{% if touser.userprofile.info %}{{ touser.userprofile.info }}{% else %}{{ touser.username }}{% endif %} {% endfor %}</div>");
+    $(".header").css({"margin": "0", "padding": "0"});
+    $(".container").css({"padding-top": "auto"});
+    $(".footer").hide();
+    $("body").css({"height": "auto"});
+    var refresh = function(messageid){
+        $.ajax({
+            url: "?type=json",
+            dataType: "json",
+            data: {
+                "messageid": messageid
+            },
+            success: function(data){
+                if (data.status == "success") {
+                    for(i in data.messages){
+                        var message = data.messages[i];
+                        var messageclass = message.user.username=="{{ user.username }}"?"message-me":"message-you";
+                        $(".historymessages").append("<div class=\"message " + messageclass + "\"><a href=\"/" +  message.user.username + "\"><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url(" + message.user.avatar + ") no-repeat;background-size: cover;background-position: center;\"><img src=" + message.user.avatar + " /></div></div></a><span class=\"messageid\" style=\"display:none;\">" + message.id + "</span><pre class=\"itemcontent-content " + messageclass + "\">" + message.content + "</pre></div>");
+                        $(".historymessages .currentmessage").remove();
+                    }
+                    $(".historymessages").scrollTop($(".historymessages")[0].scrollHeight);
+                    if($(".historymessages .messageid").length > 0){
+                        refresh($(".historymessages .messageid").last().text());
+                    }
+                }
+            },
+            error: function(){
+                if($(".historymessages .messageid").length > 0){
+                    refresh($(".historymessages .messageid").last().text())
+                }
+            },
+            timeout: 33000
+        });
+    }
+    var sendmessage = function(){
+        var messagecontent = $(".messagecontent").val();
+        $(".messagecontent").val("");
+        $(".messagecontent").focus();
+        if(messagecontent != ""){
+            $(".historymessages").append("<div class=\"currentmessage message-me\"><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url({% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center;\"><img src=\"{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}\" /></div></div><pre class=\"itemcontent-content message-me\">" + messagecontent + "</pre></div>");
+            $(".historymessages").scrollTop($(".historymessages")[0].scrollHeight);
+            $.post(location, {
+                "csrfmiddlewaretoken": "{{ csrf_token }}",
+                "content": messagecontent
+            }, function(){
+                
+            });
+        }
+    }
+    $(".sendmessageform").submit(function(){
+        sendmessage();
+        return false;
+    });
+    $("body").keypress(function(e){
+        if(e.which == 13){
+            sendmessage();
+        }
+    });
+    $(".sendmessage").click(function(){
+        sendmessage();
+        return false;
+    });
+    refresh(0);
+});
+</script>
+{% endblock %}

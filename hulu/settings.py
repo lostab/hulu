@@ -24,7 +24,8 @@ DATABASES = {
 }
 
 import dj_database_url
-DATABASES['default'] =  dj_database_url.config()
+DATABASES['default'] = dj_database_url.config()
+#DATABASES['default']['OPTIONS'] = {'charset': 'utf8mb4'}
 
 CACHES = {
     'default': {

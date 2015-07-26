@@ -95,7 +95,7 @@ def Create(request):
 
 def View(request, id):
     try:
-        item = Item.objects.get(id=id)
+        item = Item.objects.filter(useritemrelationship__isnull=True).get(id=id)
         itemcontent = ItemContent.objects.filter(item=item)
         item.title = itemcontent[0].content.strip().splitlines()[0]
         item.firstcontent = ''.join(itemcontent[0].content.strip().splitlines(True)[1:])

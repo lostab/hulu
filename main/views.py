@@ -50,7 +50,7 @@ def index(request):
         ip = x_forwarded_for.split(', ')[-1]
     
     try:
-        items = Item.objects.select_related('user').filter(Q(belong__isnull=True)).filter(Q(status__isnull=True) | Q(status__exact='')).all()
+        items = Item.objects.select_related('user').filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).filter(Q(status__isnull=True) | Q(status__exact='')).all()
         itemlist = []
         for item in items:
             itemcontent = ItemContent.objects.filter(item=item)
@@ -177,16 +177,18 @@ def ttt(request):
 @csrf_exempt
 def sq(request):
     if request.method == 'GET':
-        mtime_delta = datetime.datetime.now() - datetime.datetime.fromtimestamp(os.path.getmtime(os.path.join(settings.MEDIA_ROOT, 'sq.jpg')))
-        if request.GET.get('type') == 'json':
-            content = {
-                'mtime': mtime_delta.total_seconds()
-            }
-            
-            return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
         content = {
-            'mtime': mtime_delta.total_seconds()
+            
         }
+        if os.path.isfile(os.path.join(settings.MEDIA_ROOT, 'sq.jpg')):
+            mtime_delta = datetime.datetime.now() - datetime.datetime.fromtimestamp(os.path.getmtime(os.path.join(settings.MEDIA_ROOT, 'sq.jpg')))
+            if request.GET.get('type') == 'json':
+                content = {
+                    'mtime': mtime_delta.total_seconds()
+                }
+                
+                return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
+            content['mtime'] = mtime_delta.total_seconds()
         return render_to_response('other/sq.html', content , context_instance=RequestContext(request))
     if request.method == 'POST':
         form = FileUploadForm(request.POST, request.FILES)
@@ -195,3 +197,10 @@ def sq(request):
                 for chunk in request.FILES['file'].chunks():
                     destination.write(chunk)
         return render_to_response('other/sq.html', {} , context_instance=RequestContext(request))
+
+def app(request):
+    if request.method == 'GET':
+        content = {
+            
+        }
+        return render_to_response('main/app.html', content , context_instance=RequestContext(request))
