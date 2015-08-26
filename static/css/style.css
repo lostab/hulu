@@ -469,7 +469,7 @@ img {
 .messagesessions a .line {
     border-bottom: 1px solid lightgray;
     margin: 0;
-    padding: 3px 0 3px 0;
+    padding: 7px 0 7px 0;
 }
 .messagesessions .avatar-area {
     width: 48px;

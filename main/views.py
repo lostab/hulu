@@ -15,6 +15,7 @@ import time
 import HTMLParser
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
+from hulu import *
 from main.forms import *
 from user.models import *
 from item.models import *
@@ -199,8 +200,122 @@ def sq(request):
         return render_to_response('other/sq.html', {} , context_instance=RequestContext(request))
 
 def app(request):
-    if request.method == 'GET':
+    if request.user.is_authenticated():
+        if request.method == 'GET':
+            if request.GET.get('type') == 'json':
+                messagelist = []
+                ursession = []
+                
+                def getuir():
+                    if request.GET.get('uirid'):
+                        useritemrelationship = UserItemRelationship.objects.filter(type="message").filter(user=request.user).filter(id__gt=request.GET.get('uirid')).prefetch_related('item_set').order_by('id')
+                    else:
+                        useritemrelationship = UserItemRelationship.objects.filter(type="message").filter(user=request.user).prefetch_related('item_set').order_by('id')
+                    return useritemrelationship
+                
+                useritemrelationship = getuir()
+                
+                for i in range(30):
+                    if not useritemrelationship:
+                        time.sleep(1)
+                        useritemrelationship = getuir()
+                
+                for ur in useritemrelationship:
+                    for message in ur.item_set.all():
+                        urusers = []
+                        for mur in message.useritemrelationship.all():
+                            if mur.user not in urusers:
+                                urusers.append(mur.user)
+                        if len(urusers) == 2 and request.user in urusers:
+                            urusers.remove(request.user)
+                        urusers = sorted(urusers, key=lambda user: user.username)
+                        
+                        itemcontent = ItemContent.objects.filter(item=message)
+                        message.create = itemcontent[0].create
+                        message.title = itemcontent[0].content.strip().splitlines()[0]
+                        
+                        subitem = message.get_all_items(include_self=False)
+                        if subitem:
+                            subitem.sort(key=lambda item:item.create, reverse=True)
+                            itemcontent = ItemContent.objects.filter(item=subitem[0]).reverse()
+                            message.subitemcount = len(subitem)
+                            message.lastsubitem = subitem[0]
+                        else:
+                            message.lastsubitem = itemcontent[0]
+                        
+                        messagesession = {
+                            'urusers': urusers
+                        }
+                        if urusers not in ursession:
+                            ursession.append(urusers)
+                            messagesession['messages'] = [message]
+                            messagelist.append(messagesession)
+                        else:
+                            for ms in messagelist:
+                                if ms['urusers'] == urusers:
+                                    if message not in ms['messages']:
+                                        ms['messages'].append(message)
+                
+                messagelist = sorted(messagelist, key=lambda item:item['messages'][-1].lastsubitem.create, reverse=False)
+                
+                messagesessions = []
+                for ms in messagelist:
+                    urusers = []
+                    for uruser in ms['urusers']:
+                        urusers.append({
+                            'username': uruser.username,
+                            'info': uruser.userprofile.info,
+                            'avatar': (uruser.userprofile.openid) and str(uruser.userprofile.avatar) or ((uruser.userprofile.avatar) and '/s/' + str(uruser.userprofile.avatar) or '/s/avatar/n.png'),
+                            'profile': uruser.userprofile.profile,
+                            'page': uruser.userprofile.page,
+                        })
+                    
+                    lastmessage = {
+                        'content': ms['messages'][-1].lastsubitem.content,
+                        'datetime': str(ms['messages'][-1].lastsubitem.create)
+                    }
+                    
+                    messages = []
+                    for message in sorted(ms['messages'], key=lambda item:item.lastsubitem.create, reverse=False)[-100:]:
+                        messages.append({
+                            'id': str(message.id),
+                            'user': {
+                                'username': message.user.username,
+                                'info': message.user.userprofile.info,
+                                'avatar': (message.user.userprofile.openid) and str(message.user.userprofile.avatar) or ((message.user.userprofile.avatar) and '/s/' + str(message.user.userprofile.avatar) or '/s/avatar/n.png'),
+                                'profile': message.user.userprofile.profile,
+                                'page': message.user.userprofile.page,
+                            },
+                            'create': str(message.lastsubitem.create),
+                            'content': message.lastsubitem.content
+                        })
+                    
+                    messagesession = {
+                        'urusers': urusers,
+                        'lastmessage': lastmessage,
+                        'messages': messages
+                    }
+                    messagesessions.append(messagesession)
+                
+                uirid = request.GET.get('uirid')
+                if useritemrelationship:
+                    uirid = str(useritemrelationship.reverse()[0].id)
+                
+                content = {
+                    'status': 'success',
+                    'messagesessions': messagesessions,
+                    'uirid': uirid
+                }
+                return jsonp(request, content)
+            
         content = {
             
         }
         return render_to_response('main/app.html', content , context_instance=RequestContext(request))
+    else:
+        if request.GET.get('type') == 'json':
+            content = {
+                'status': 'error'
+            }
+            return jsonp(request, content)
+        return redirect('/u/login/?next=' + request.path + '?' + request.META['QUERY_STRING'])

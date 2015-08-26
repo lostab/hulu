@@ -14,10 +14,12 @@
 <body>
     <div class="container">
         <div class="header">
-            
+            <span class="header-left"><会话</span>
+            <span class="header-center">会话</span>
+            <span class="header-right"></span>
         </div>
         <div class="wrapper">
-            
+            <div class="messagesessions"></div>
         </div>
         <div class="footer">
             
@@ -27,39 +29,124 @@
 <script type="text/javascript" src="/s/js/jquery.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
-        $(".footer").click(function(){
-            $(".wrapper").css({"height": "calc(100% - " + $(".header").height() + "px)", "padding-bottom": "0"});
-            $(this).hide();
-        });
-        var refresh = function(messageid){
+        var tooglefooter = function(){
+            if ($(".footer").is(":hidden")) {
+                $(".wrapper").css({"height": "calc(100% - " + $(".header").height() + "px - " + $(".footer").height() + "px)", "padding-bottom": $(".footer").height()});
+                $(".footer").show();
+            } else {
+                $(".wrapper").css({"height": "calc(100% - " + $(".header").height() + "px)", "padding-bottom": "0"});
+                $(".footer").hide();
+            }
+        }
+        var loaddata = function(uirid){
             $.ajax({
-                url: "/u/m/?type=json",
+                url: "?type=json",
                 dataType: "json",
+                data: {
+                    "uirid": uirid
+                },
                 success: function(data){
                     if (data.status == "success") {
-                        for (i in data.messages){
-                            var message = data.messages[i];
+                        for (i in data.messagesessions){
+                            var messagesession = data.messagesessions[i];
                             var usernames = "";
                             var userinfos = "";
-                            for(i in message.urusers){
+                            for(i in messagesession.urusers){
                                 if(i != 0){
                                     usernames += ",";
                                     userinfos += "、";
                                 }
-                                usernames += message.urusers[i].username;
-                                if(message.urusers[i].info != ""){
-                                    userinfos += message.urusers[i].info;
+                                usernames += messagesession.urusers[i].username;
+                                if(messagesession.urusers[i].info != ""){
+                                    userinfos += messagesession.urusers[i].info;
                                 } else {
-                                    userinfos += message.urusers[i].username;
+                                    userinfos += messagesession.urusers[i].username;
                                 }
                             }
-                            $(".wrapper").append("<a href=\"/u/m/" + usernames + "\"><div class=\"line\"><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url(" + message.urusers[0].avatar + ") no-repeat;background-size: cover;background-position: center;\"><img src=" + message.urusers[0].avatar + " /></div></div><div class=\"line-main\"><div class=\"line-info\"><span class=\"line-info-right\">" + message.lastmessage.datetime.split(".")[0] + "</span><span class=\"line-info-left\">" + userinfos + "</span></div><div class=\"line-title\">" + message.lastmessage.content + "</div></div></div></a>");
+                            
+                            var isnewsession = 1;
+                            $(".wrapper .messagesessions .line").each(function(){
+                                if ($(this).find(".sendmessageform").attr("action") == "/u/m/" + usernames + "/") {
+                                    $(this).find(".line-title").text(messagesession.lastmessage.content);
+                                    $(this).find(".line-info-right").text(messagesession.lastmessage.datetime.split(".")[0].split("+")[0]);
+                                    for (i in messagesession.messages){
+                                        var message = messagesession.messages[i];
+                                        var messageclass = message.user.username=="{{ user.username }}"?"message-me":"message-you";
+                                        $(this).find(".historymessages").append("<div class=\"message " + messageclass + "\"><a href=\"/" +  message.user.username + "\"><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url(" + message.user.avatar + ") no-repeat;background-size: cover;background-position: center;\"><img src=" + message.user.avatar + " /></div></div></a><span class=\"messageid\" style=\"display:none;\">" + message.id + "</span><pre class=\"itemcontent-content " + messageclass + "\">" + message.content + "</pre></div>");
+                                        $(this).find(".historymessages .currentmessage").remove();
+                                        if ($(this).closest(".messagesessions").children(".line").height() > 1) {
+                                            $(this).closest(".messagesessions").prepend($(this).closest(".line"));
+                                        }
+                                    }
+                                    $(this).find(".historymessages").scrollTop($(this).find(".historymessages")[0].scrollHeight);
+                                    
+                                    isnewsession = 0;
+                                }
+                            });
+                            
+                            if (isnewsession == 0) {
+                                loaddata(data.uirid);
+                                return false;
+                            }
+                            
+                            $(".wrapper .messagesessions").append("<div class=\"line\"><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url(" + messagesession.urusers[0].avatar + ") no-repeat;background-size: cover;background-position: center;\"><img src=" + messagesession.urusers[0].avatar + " /></div></div><div class=\"line-main\"><div class=\"line-info\"><span class=\"line-info-right\">" + messagesession.lastmessage.datetime.split(".")[0].split("+")[0] + "</span><span class=\"line-info-left\">" + userinfos + "</span></div><div class=\"line-title\">" + messagesession.lastmessage.content + "</div></div><div class=\"messagesession\"><div class=\"historymessages\"></div><form class=\"sendmessageform\" method=\"post\" enctype=\"multipart/form-data\" action=\"/u/m/" + usernames + "/\">{% csrf_token %}<input class=\"messagecontent\" name=\"content\" /><input class=\"sendmessage\" type=\"submit\" value=\"发送\" /></form></div></div>");
+                            var currentmessagesession = $(".wrapper .messagesessions .line").last();
+                            for (i in messagesession.messages){
+                                var message = messagesession.messages[i];
+                                var messageclass = message.user.username=="{{ user.username }}"?"message-me":"message-you";
+                                currentmessagesession.find(".historymessages").append("<div class=\"message " + messageclass + "\"><a href=\"/" +  message.user.username + "\"><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url(" + message.user.avatar + ") no-repeat;background-size: cover;background-position: center;\"><img src=" + message.user.avatar + " /></div></div></a><span class=\"messageid\" style=\"display:none;\">" + message.id + "</span><pre class=\"itemcontent-content " + messageclass + "\">" + message.content + "</pre></div>");
+                                currentmessagesession.find(".historymessages .currentmessage").remove();
+                                if (currentmessagesession.closest(".messagesessions").children(".line").height() > 1) {
+                                    currentmessagesession.closest(".messagesessions").prepend(currentmessagesession);
+                                }
+                            }
+                            currentmessagesession.find(".historymessages").scrollTop(currentmessagesession.find(".historymessages")[0].scrollHeight);
+                            
+                            currentmessagesession.find(".line-main").click(function(){
+                                $(this).next(".messagesession").css({"visibility": "visible"});
+                                tooglefooter();
+                                $(".header .header-center").text($(this).find(".line-info-left").text());
+                                $(".header .header-left, .header .header-right").show();
+                                $(".header .header-left").unbind("click");
+                                $(".header .header-left").click(function(){
+                                    $(".messagesession").css({"visibility": "hidden"});
+                                    tooglefooter();
+                                    $(".header .header-center").text("会话");
+                                    $(".header .header-left, .header .header-right").hide();
+                                });
+                            });
+                            
+                            currentmessagesession.find(".sendmessageform").submit(function(){
+                                var currentmessagesession = $(this).closest(".wrapper .messagesessions .line");
+                                var messagecontent = $(this).children(".messagecontent").val();
+                                $(".messagecontent").val("");
+                                $(".messagecontent").focus();
+                                if(messagecontent != ""){
+                                    currentmessagesession.find(".historymessages").append("<div class=\"currentmessage message message-me\"><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url({% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center;\"><img src=\"{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}\" /></div></div><pre class=\"itemcontent-content message-me\">" + messagecontent + "</pre></div>");
+                                    currentmessagesession.find(".line-title").text(messagecontent);
+                                    currentmessagesession.find(".line-info-right").text("刚刚");
+                                    currentmessagesession.find(".historymessages").scrollTop(currentmessagesession.find(".historymessages")[0].scrollHeight);
+                                    $.post($(this).attr("action"), {
+                                        "csrfmiddlewaretoken": "{{ csrf_token }}",
+                                        "content": messagecontent
+                                    }, function(){
+                                        
+                                    });
+                                }
+                                return false;
+                            });
                         }
+                        loaddata(data.uirid);
                     }
-                }
+                },
+                error: function(){
+                    loaddata(uirid);
+                },
+                timeout: 33000
             });
         }
-        refresh(0);
+        
+        loaddata(0);
     });
 </script>
 </body>

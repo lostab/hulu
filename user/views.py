@@ -110,7 +110,7 @@ def Signup(request):
 def Login(request):
     next = None
     if request.GET.get('next'):
-        next = request.META['QUERY_STRING'].split('next=')[1]
+        next = request.META['QUERY_STRING'].split('next=')[1].split("&type=qq")[0]
     
     if request.GET.get('type') == 'qq':
         qq_app_id = '101192703'
@@ -489,9 +489,11 @@ def Message(request, username):
         users = sorted(users, key=lambda user: user.username)
         def getmessages():
             try:
-                items = Item.objects.select_related('useritemrelationship').filter(user__in=users).all()
                 if request.GET.get('messageid'):
                     items = Item.objects.select_related('useritemrelationship').filter(user__in=users).filter(id__gt=request.GET.get('messageid')).all()
+                else:
+                    items = Item.objects.select_related('useritemrelationship').filter(user__in=users).all()
+                
                 messages = []
                 for item in items:
                     useritemrelationship = UserItemRelationship.objects.filter(item=item)

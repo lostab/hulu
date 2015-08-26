@@ -1,3 +1,6 @@
+* {
+    font-family: times new roman;
+}
 html, body, .container {
     width: 100%;
     height: 100%;
@@ -9,7 +12,34 @@ html, body, .container {
     top: 0;
     width: 100%;
     height: 50px;
+    line-height: 45px;
     background: black;
+    text-align: center;
+}
+.header .header-left {
+    color: white;
+    width: 20%;
+    display: none;
+    cursor: pointer;
+    float: left;
+    margin-bottom: 3px;
+    text-align: left;
+}
+.header .header-center {
+    color: white;
+    width: 50%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.header .header-right {
+    color: white;
+    width: 20%;
+    display: none;
+    cursor: pointer;
+    float: right;
+    margin-bottom: 3px;
+    text-align: right;
 }
 .wrapper {
     width: 100%;
@@ -23,6 +53,157 @@ html, body, .container {
     bottom: 0;
     width: 100%;
     height: 50px;
-    background: lightgray;
+    background: white;
     border-top: 1px solid lightgray;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: none;
+}
+a:visited {
+    color: black;
+}
+input, textarea {
+    font-size: inherit;
+    font-family: times new roman;
+}
+img {
+    max-width: 100%;
+}
+
+.line {
+    border-bottom: 1px solid lightgray;
+    margin: 0;
+    padding: 7px;
+}
+.avatar-area {
+    width: 48px;
+    float: left;
+	vertical-align: top;
+}
+.avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    -webkit-border-radius: 24px;
+    -moz-border-radius: 24px;
+}
+.avatar img {
+    width: 48px;
+    height: 48px;
+    opacity: 0;
+	filter: alpha(opacity=0);
+}
+.line .line-info .line-info-left {
+    color: black;
+    font-size: medium;
+    width: 50%;
+    display: inline-block;
+}
+.line .line-info .line-info-right {
+    width: 50%;
+    text-align: right;
+    font-size: small;
+}
+.line .line-info .line-info-left, .line .line-info .line-info-right {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.line .line-title {
+    color: gray;
+    font-size: large;
+    margin-top: 7px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.line .line-main {
+    height: 48px;
+    margin-left: 50px;
+    cursor: pointer;
+}
+.line .line-main .line-info .line-info-right {
+    color: lightgray;
+    float: right;
+}
+.line .messagesession {
+    width: 100%;
+    height: calc(100% - 100px);
+    overflow-y: scroll;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    background: white;
+    visibility: hidden;
+	white-space: pre-wrap;
+	white-space: -moz-pre-wrap;
+	white-space: -pre-wrap;
+	white-space: -o-pre-wrap;
+	word-wrap: break-word;
+    word-break: break-all;
+}
+.line .messagesession .historymessages {
+    width: 100%;
+    max-height: 100%;
+    overflow-y: scroll;
+    position: absolute;
+    bottom: 0;
+	white-space: pre-wrap;
+	white-space: -moz-pre-wrap;
+	white-space: -pre-wrap;
+	white-space: -o-pre-wrap;
+	word-wrap: break-word;
+    word-break: break-all;
+}
+.wrapper::-webkit-scrollbar, .line .messagesession::-webkit-scrollbar, .line .messagesession .historymessages::-webkit-scrollbar {
+    display: none;
+}
+.line .messagesession .message-me {
+    text-align: right;
+}
+.line .messagesession .message-me .avatar-area {
+    float: right;
+}
+.line .messagesession .message .avatar-area .avatar {
+    margin-left: 12px;
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+}
+.line .messagesession .message .avatar-area .avatar img {
+    width: 24px;
+    height: 24px;
+    opacity: 0;
+	filter: alpha(opacity=0);
+}
+.line .messagesession .message .itemcontent-content {
+    line-height: 24px;
+}
+.line .messagesession .sendmessageform {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+.line .messagesession .sendmessageform {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    background: white;
+    border-top: 1px solid lightgray;
+}
+.line .messagesession .sendmessageform .messagecontent {
+    width: calc(100% - 30px);
+    margin: 7px;
+    line-height: 30px;
+}
+.line .messagesession .sendmessageform .sendmessage {
+    display: none;
 }
