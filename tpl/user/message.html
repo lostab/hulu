@@ -20,7 +20,7 @@
 {% block footer %}
 <script type="text/javascript">
 $(document).ready(function(){
-    $(".header").html("<div style=\"background: black;color: white;font-weight: bold;text-align: center;height: 100%;\"><a style=\"color: white;float: left;\" href=\"\/u\/m\/\">《</a>{% for touser in tousers %}{% if touser.userprofile.info %}{{ touser.userprofile.info }}{% else %}{{ touser.username }}{% endif %} {% endfor %}</div>");
+    $(".header").html("<div style=\"background: black;color: white;font-weight: bold;text-align: center;height: 100%;\"><a style=\"color: white;float: left;\" href=\"\/app\/\">《</a>{% for touser in tousers %}{% if touser.userprofile.info %}{{ touser.userprofile.info }}{% else %}{{ touser.username }}{% endif %} {% endfor %}</div>");
     $(".header").css({"margin": "0", "padding": "0"});
     $(".container").css({"padding-top": "auto"});
     $(".footer").hide();

@@ -23,9 +23,23 @@ DATABASES = {
     }
 }
 
-import dj_database_url
-DATABASES['default'] = dj_database_url.config()
-#DATABASES['default']['OPTIONS'] = {'charset': 'utf8mb4'}
+#import dj_database_url
+#DATABASES['default'] = dj_database_url.config()
+if 'VCAP_SERVICES' in os.environ:
+    import json
+    vcap = json.loads(os.environ['VCAP_SERVICES'])
+    sqldb = vcap['sqldb'][0]['credentials']
+    DATABASES = {
+      'default': {
+            'ENGINE'     : 'ibm_db_django',
+            'NAME'       : sqldb['db'],
+            'USER'       : sqldb['username'],
+            'PASSWORD'   : sqldb['password'],
+            'HOST'       : sqldb['host'],
+            'PORT'       : str(sqldb['port']),
+            'PCONNECT'   :  True,
+        }
+    }
 
 CACHES = {
     'default': {

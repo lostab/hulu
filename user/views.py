@@ -613,6 +613,7 @@ def Message(request, username):
     else:
         return redirect('/u/login/?next=/u/m/' + username + '/')
 
+'''
 def MessageList(request):
     if request.user.is_authenticated():
         messagelist = []
@@ -689,3 +690,4 @@ def MessageList(request):
             }
             return jsonp(request, content)
         return redirect('/u/login/?next=' + request.path + '?' + request.META['QUERY_STRING'])
+'''
