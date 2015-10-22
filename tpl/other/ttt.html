@@ -28,6 +28,7 @@
         .msg { position: absolute; top: 50%; margin-top: -153px; text-align: center; width: 100%; }
         .menu { position: absolute; top: 50%; margin-top: 133px; text-align: center; width: 100%; }
         .menu .newgame { display: none; }
+        .box span.movechess { width: 100%; margin-left: -50%; }
     </style>
 </head>
 <body>
@@ -373,14 +374,14 @@
                         if(chessqueue.length > 6) {
                             var removebox = $("." + chessqueue[0][1]);
                             chessqueue.shift();
-                            removebox.html("<span>" + removebox.text() + "</span>");
+                            removebox.html("<span class=\"movechess\">" + removebox.text() + "</span>");
                             var removechess = removebox.children("span");
                             removechess.css({"position": "absolute"});
                             
                             removechess.animate({
                                 marginTop: (that.offset().top - removebox.offset().top) + "px",
-                                marginLeft: (that.offset().left - removebox.offset().left) + "px"
-                            }, function(){
+                                marginLeft: (that.offset().left - removebox.offset().left - that.width() / 2) + "px"
+                            }, 500, function(){
                                 that.text(currentchess[0]);
                                 $(this).remove();
                                 removebox.html("");

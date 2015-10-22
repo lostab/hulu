@@ -18,7 +18,7 @@
                 <p>签名：<input name="info" type="text" value="{{ user.userprofile.info }}" /></p>
                 <p class="description">简介：<textarea name="profile">{{ user.userprofile.profile }}</textarea></p>
                 <!--<p class="description">页面：<textarea name="page">{{ user.userprofile.page }}</textarea></p>-->
-                <p>{% if prev == 'signup' %}<a href="{% if next %}{{ next }}{% else %}/{% endif %}"><button>跳过</button></a>{% else %}<a href="/u/">取消</a>{% endif %} <input type="submit" value="提交" /></p>
+                <p>{% if prev == 'signup' %}<a href="{% if next %}{{ next }}{% else %}/{% endif %}">跳过</a>{% else %}<a href="/u/">取消</a>{% endif %} <input type="submit" value="提交" /></p>
             </form>
         </div>
     {% endif %}

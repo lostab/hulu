@@ -10,10 +10,11 @@ import datetime
 from tag.models import *
 
 def attachment_file(instance, filename):
-    if len(filename.split('.')) > 1:
-        return os.path.join('file', str(datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')) + '.' + filename.split('.')[-1])
-    else:
-        return os.path.join('file', str(datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')))
+    return os.path.join('file', str(datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')), filename)
+    #if len(filename.split('.')) > 1:
+    #    return os.path.join('file', str(datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')) + '.' + filename.split('.')[-1])
+    #else:
+    #    return os.path.join('file', str(datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')))
 
 class UserItemRelationship(models.Model):
     user = models.ForeignKey(User)
@@ -52,4 +53,5 @@ class ContentAttachment(models.Model):
     itemcontent = models.ForeignKey(ItemContent)
     title = models.CharField(max_length=30)
     file = models.FileField(storage=FileSystemStorage(location=settings.MEDIA_ROOT), upload_to=attachment_file)
+    content = models.TextField()
     contenttype = models.CharField(max_length=30)

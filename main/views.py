@@ -18,7 +18,9 @@ from django.contrib.sites.models import Site
 from hulu import *
 from main.forms import *
 from user.models import *
+from user.forms import *
 from item.models import *
+from item.forms import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core import serializers
 from main.__init__ import *
@@ -56,7 +58,11 @@ def index(request):
         for item in items:
             itemcontent = ItemContent.objects.filter(item=item)
             item.create = itemcontent[0].create
-            item.title = itemcontent[0].content.strip().splitlines()[0]
+            if itemcontent[0].content:
+                item.title = itemcontent[0].content.strip().splitlines()[0]
+            else:
+                contentattachment = ContentAttachment.objects.filter(itemcontent=itemcontent[0])
+                item.title = contentattachment[0].title
             
             subitem = item.get_all_items(include_self=False)
             if subitem:
@@ -68,18 +74,50 @@ def index(request):
                 item.lastsubitem = itemcontent[0]
             itemlist.append(item)
         
+        
+        fetchitems = []
+        fetchitem = namedtuple('fetchitem', 'user title url lastsubitem')
+        fetchuser=namedtuple('fetchuser', 'username userprofile')
+        fetchprofile=namedtuple('fetchprofile', 'openid avatar')
+        fetchcreate=namedtuple('fetchcreate', 'create')
+        
         cacheitems = cache.get('cacheitems')
-        if cacheitems and cacheitems.has_key('datetime') and cacheitems.has_key('items') and cacheitems['datetime'] and cacheitems['datetime'] + timedelta(hours=1) > datetime.datetime.now():
-            for item in cacheitems['items']:
-                itemlist.append(item)
+        if cacheitems and not request.GET.get('nocache'):
+            cacheitems = json.loads(cacheitems)
+            if cacheitems and cacheitems.has_key('datetime') and cacheitems.has_key('items') and cacheitems['datetime']:
+                cacheitems['datetime'] = datetime.datetime.strptime(cacheitems['datetime'].split('.')[0], '%Y-%m-%d %H:%M:%S')
+                if cacheitems['datetime'] + timedelta(hours=1) > datetime.datetime.now():
+                    for item in cacheitems['items']:
+                        item['lastsubitem']['create'] = datetime.datetime.strptime(item['lastsubitem']['create'].split('+')[0], '%Y-%m-%d %H:%M:%S')
+                        cacheitem = fetchitem(user=fetchuser(username=item['user']['username'], userprofile=fetchprofile(openid=item['user']['userprofile']['openid'], avatar=item['user']['userprofile']['avatar'])), title=item['title'], url=item['url'].replace('http://', 'https://'), lastsubitem=fetchcreate(create=timezone.make_aware(item['lastsubitem']['create'], timezone.get_default_timezone())))
+                        itemlist.append(cacheitem)
         else:
+            def updatecache():
+                import sys
+                reload(sys)  
+                sys.setdefaultencoding('utf8')
+                cacheitems = {
+                    "datetime": str(timezone.make_aware(datetime.datetime.now(), timezone.get_default_timezone())),
+                    "items": []
+                }
+                for item in fetchitems:
+                    cacheitems['items'].append({
+                        'title': item.title.decode().encode('utf-8'),
+                        'url': item.url.encode('utf-8'),
+                        'user': {
+                            'username': item.user.username.encode('utf-8'),
+                            'userprofile': {
+                                'openid': item.user.userprofile.openid.encode('utf-8'),
+                                'avatar': item.user.userprofile.avatar.encode('utf-8')
+                            }
+                        },
+                        'lastsubitem': {
+                            'create': str(item.lastsubitem.create)
+                        }
+                    })
+                cache.set('cacheitems', json.dumps(cacheitems, encoding='utf-8', ensure_ascii=False, indent=4), 3600)
+            
             try:
-                fetchitems = []
-                
-                fetchitem = namedtuple('fetchitem', 'user title url lastsubitem')
-                fetchuser=namedtuple('fetchuser', 'username userprofile')
-                fetchprofile=namedtuple('fetchprofile', 'openid avatar')
-                fetchcreate=namedtuple('fetchcreate', 'create')
                 #Zhihu
                 for fetchdate in [str((datetime.datetime.now() + timedelta(days=1)).strftime('%Y%m%d')), str(datetime.datetime.now().strftime('%Y%m%d')), str((datetime.datetime.now() - timedelta(days=1)).strftime('%Y%m%d'))]:
                     zhihuurl = 'http://news.at.zhihu.com/api/3/news/before/' + fetchdate
@@ -139,12 +177,9 @@ def index(request):
                     #itemlist.append(newsitem)
                     #fetchitems.append(newsitem)
                 
-                #cache.set('cacheitems', json.dumps({
-                #    'datetime': datetime.datetime.now(),
-                #    'items': fetchitems
-                #}, cls=DjangoJSONEncoder), 7200)
+                updatecache()
             except:
-                pass
+                updatecache()
         
         items = itemlist
         
@@ -201,6 +236,9 @@ def sq(request):
 
 def app(request):
     if request.user.is_authenticated():
+        content = {
+            
+        }
         if request.method == 'GET':
             if request.GET.get('type') == 'json':
                 messagelist = []
@@ -308,9 +346,87 @@ def app(request):
                 }
                 return jsonp(request, content)
             
-        content = {
-            
-        }
+        if request.method == 'POST':
+            if request.POST.get('usernames'):
+                usernames = request.POST.get('usernames').split(',')
+                users = []
+                for username in usernames:
+                    try:
+                        user = User.objects.get(username=username)
+                        if user not in users:
+                            users.append(user)
+                    except User.DoesNotExist:
+                        user = None
+                if not users:
+                    return redirect('/')
+                if len(users) > 1 and request.user not in users:
+                    return redirect('/')
+                if request.user not in users:
+                    users.append(User.objects.get(username=request.user))
+                users = sorted(users, key=lambda user: user.username)
+                if request.POST.get('content').strip():
+                    form = ItemContentForm(request.POST)
+                    if form.is_valid():
+                        item = Item(user=request.user)
+                        item.save()
+                        
+                        itemcontent = ItemContent(item=item)
+                        itemcontentform = ItemContentForm(request.POST, instance=itemcontent)
+                        itemcontent = itemcontentform.save()
+                        
+                        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+                        ip = request.META['REMOTE_ADDR']
+                        if x_forwarded_for:
+                            ip = x_forwarded_for.split(', ')[-1]
+                        
+                        itemcontent.ip = ip
+                        itemcontent.ua = request.META['HTTP_USER_AGENT']
+                        itemcontent.save()
+                        
+                        for user in users:
+                            useritemrelationship = UserItemRelationship(user=user)
+                            useritemrelationship.type = 'message'
+                            useritemrelationship.save()
+                            item.useritemrelationship.add(useritemrelationship)
+            if request.POST.get('newusernames'):
+                newusernames = request.POST.get('newusernames').split(',')
+                newusers = []
+                for newusername in newusernames:
+                    try:
+                        newuser = User.objects.get(username=newusername)
+                        if newuser not in newusers:
+                            newusers.append(newuser)
+                    except User.DoesNotExist:
+                        newuser = None
+                if not newusers:
+                    return redirect('/')
+                if len(newusers) > 1 and request.user not in newusers:
+                    return redirect('/')
+                if request.user not in newusers:
+                    newusers.append(User.objects.get(username=request.user))
+                if len(newusers) == 2 and request.user in newusers:
+                    newusers.remove(request.user)
+                newusers = sorted(newusers, key=lambda newuser: newuser.username)
+                
+                newurusers = []
+                for uruser in newusers:
+                    newurusers.append({
+                        'username': uruser.username,
+                        'info': uruser.userprofile.info,
+                        'avatar': (uruser.userprofile.openid) and str(uruser.userprofile.avatar) or ((uruser.userprofile.avatar) and '/s/' + str(uruser.userprofile.avatar) or '/s/avatar/n.png'),
+                        'profile': uruser.userprofile.profile,
+                        'page': uruser.userprofile.page,
+                    })
+                    
+                newmessagesession = {
+                    'urusers': newurusers,
+                    'lastmessage': {
+                        'content': '',
+                        'datetime': ''
+                    },
+                    'messages': []
+                }
+                content['newmessagesession'] = json.dumps(newmessagesession, encoding='utf-8', ensure_ascii=False, indent=4)
         return render_to_response('main/app.html', content , context_instance=RequestContext(request))
     else:
         if request.GET.get('type') == 'json':

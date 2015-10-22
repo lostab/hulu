@@ -23,14 +23,17 @@
             {% for itemcontent in item.itemcontent_set.all %}
                 <div class="itemcontent">
                     {% if forloop.first %}
-                    <pre class="description">{{ item.firstcontent }}</pre>
+                    <pre class="description itemcontent-content">{{ item.firstcontent }}</pre>
                     {% else %}
                     <p class="updated">{{ itemcontent.create|date:'Y-m-d H:i:s' }}</p>
-                    <pre class="description">{{ itemcontent.content }}</pre>
+                    <pre class="itemcontent-content">{{ itemcontent.content }}</pre>
                     {% endif %}
-                    {% for attachmentfile in item.attachmentfiles %}
-                        {% if attachmentfile.contenttype == 'image' %}
-                        <p><img src="/s/{{ attachmentfile.file }}" title="{{ attachmentfile.title }}" /></p>{% elif attachmentfile.contenttype == 'audio' %}
+                    {% for attachmentfile in itemcontent.contentattachment_set.all %}
+                        {% if 'svg' in attachmentfile.contenttype %}
+                        {{ attachmentfile.content|safe }}
+                        {% elif 'image' in attachmentfile.contenttype %}
+                        <p><img src="/s/{{ attachmentfile.file }}" title="{{ attachmentfile.title }}" /></p>
+                        {% elif 'audio' in attachmentfile.contenttype %}
                         <p><audio controls>
                             <source src="/s/{{ attachmentfile.file }}" type="audio/ogg">
                             <a href="/s/{{ attachmentfile.file }}"><span style="font-style: italic;">(附件)</span> {{ attachmentfile.title }}</a>
@@ -41,13 +44,13 @@
                     {% endfor %}
                 </div>
             {% endfor %}
-            <h3>更新信息</h3>
+            <h3 id="update-form">更新信息</h3>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <p class="description"><textarea name="content">{% if form.content.value %}{{ form.content.value }}{% else %}{{ item.content }}{% endif %}</textarea></p>
-                <!--<p>附件：<input name="file" type="file" />
+                <p>附件：<input name="file" type="file" />
                 <br />
-                (小于2MB有效)</p>-->
+                (小于2MB有效)</p>
                 <p><a href="/i/{{ item.id }}/">取消</a> <input type="submit" value="添加更新" /></p>
             </form>
             {% endif %}

@@ -14,6 +14,7 @@ from django.forms.util import ErrorList
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from user.models import *
 from main.__init__ import *
+from item.__init__ import *
 from django.forms.models import inlineformset_factory
 
 def Index(request):
@@ -64,20 +65,42 @@ def Create(request):
             
             form = ItemContentForm(request.POST)
             if form.is_valid():
+                ItemContentInlineFormSet = inlineformset_factory(ItemContent, ContentAttachment, form=ItemContentForm)
+                for attachmentfile in request.FILES.getlist('file'):
+                    attachmentform = ContentAttachmentForm(request.POST, request.FILES)
+                    if attachmentform.is_valid():
+                        pass
+                    else:
+                        content = {
+                            'form': form
+                        }
+                        return render_to_response('item/create.html', content, context_instance=RequestContext(request))
+                
                 item = Item(user=request.user)
                 item.save()
-                
                 itemcontent = ItemContent(item=item)
                 itemcontentform = ItemContentForm(request.POST, instance=itemcontent)
                 itemcontent = itemcontentform.save()
-            
+                itemcontent.save()
+                
+                for attachmentfile in request.FILES.getlist('file'):
+                    attachment = ContentAttachment(itemcontent=itemcontent)
+                    attachmentform = ContentAttachmentForm(request.POST, request.FILES, instance=attachment)
+                    if attachmentform.is_valid():
+                        contentattachment = attachmentform.save()
+                        contentattachment.title = attachmentfile.name
+                        contentattachment.contenttype = str(attachmentfile.content_type)
+                        contentattachment.save()
+                    
+                    #convert img to svg
+                    img2svg(contentattachment)
+                
                 x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
                 ip = request.META['REMOTE_ADDR']
                 if x_forwarded_for:
                     ip = x_forwarded_for.split(', ')[-1]
                 
                 itemcontent.ip = ip
-                
                 itemcontent.ua = request.META['HTTP_USER_AGENT']
                 
                 itemcontent.save()
@@ -97,26 +120,18 @@ def View(request, id):
     try:
         item = Item.objects.filter(useritemrelationship__isnull=True).get(id=id)
         itemcontent = ItemContent.objects.filter(item=item)
-        item.title = itemcontent[0].content.strip().splitlines()[0]
+        if itemcontent[0].content:
+            item.title = itemcontent[0].content.strip().splitlines()[0]
+        else:
+            contentattachment = ContentAttachment.objects.filter(itemcontent=itemcontent[0])
+            item.title = contentattachment[0].title
         item.firstcontent = ''.join(itemcontent[0].content.strip().splitlines(True)[1:])
     except Item.DoesNotExist:
         item = None
     if not item:
         return redirect('/')
     
-    #if item:
-    #    try:
-    #        attachmentfiles = TaskAttachment.objects.all().filter(task=task)
-    #        for attachmentfile in attachmentfiles:
-    #            if attachmentfile.contenttype:
-    #                if len(attachmentfile.contenttype.split('/')) > 1:
-    #                    attachmentfile.contenttype = attachmentfile.contenttype.split('/')[0]
-    #    except TaskAttachment.DoesNotExist:
-    #        attachmentfiles = None
-    #    task.attachmentfiles = attachmentfiles
-    
     try:
-        #items = Item.objects.all().filter(belong=item)
         items = item.get_all_items(include_self=False)
         items.sort(key=lambda item:item.create, reverse=False)
         paginator = Paginator(items, 100)
@@ -129,18 +144,6 @@ def View(request, id):
             items = paginator.page(paginator.num_pages)
     except Item.DoesNotExist:
         items = None
-    
-    #if comments:
-    #    for comment in comments:
-    #        try:
-    #            attachmentfiles = TaskCommentAttachment.objects.all().filter(taskcomment=comment)
-    #            for attachmentfile in attachmentfiles:
-    #                if attachmentfile.contenttype:
-    #                    if len(attachmentfile.contenttype.split('/')) > 1:
-    #                        attachmentfile.contenttype = attachmentfile.contenttype.split('/')[0]
-    #        except TaskCommentAttachment.DoesNotExist:
-    #            attachmentfiles = None
-    #        comment.attachmentfiles = attachmentfiles
     
     if request.method == 'GET':
         try:
@@ -195,6 +198,20 @@ def View(request, id):
             
             form = ItemContentForm(request.POST)
             if form.is_valid():
+                ItemContentInlineFormSet = inlineformset_factory(ItemContent, ContentAttachment, form=ItemContentForm)
+                for attachmentfile in request.FILES.getlist('file'):
+                    attachmentform = ContentAttachmentForm(request.POST, request.FILES)
+                    if attachmentform.is_valid():
+                        pass
+                    else:
+                        content = {
+                            'item': item,
+                            'items': items,
+                            'reply': reply,
+                            'form': form
+                        }
+                        return render_to_response('item/view.html', content, context_instance=RequestContext(request))
+                
                 new_item = Item(user=request.user)
                 new_item.save()
                 if reply:
@@ -205,7 +222,20 @@ def View(request, id):
                 itemcontent = ItemContent(item=new_item)
                 itemcontentform = ItemContentForm(request.POST, instance=itemcontent)
                 itemcontent = itemcontentform.save()
-            
+                itemcontent.save()
+                
+                for attachmentfile in request.FILES.getlist('file'):
+                    attachment = ContentAttachment(itemcontent=itemcontent)
+                    attachmentform = ContentAttachmentForm(request.POST, request.FILES, instance=attachment)
+                    if attachmentform.is_valid():
+                        contentattachment = attachmentform.save()
+                        contentattachment.title = attachmentfile.name
+                        contentattachment.contenttype = str(attachmentfile.content_type)
+                        contentattachment.save()
+                    
+                    #convert img to svg
+                    img2svg(contentattachment)
+                
                 x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
                 ip = request.META['REMOTE_ADDR']
                 if x_forwarded_for:
@@ -245,7 +275,11 @@ def Update(request, id):
                 item = None
             else:
                 itemcontent = ItemContent.objects.filter(item=item)
-                item.title = itemcontent[0].content.strip().splitlines()[0]
+                if itemcontent[0].content:
+                    item.title = itemcontent[0].content.strip().splitlines()[0]
+                else:
+                    contentattachment = ContentAttachment.objects.filter(itemcontent=itemcontent[0])
+                    item.title = contentattachment[0].title
                 item.firstcontent = ''.join(itemcontent[0].content.strip().splitlines(True)[1:])
         except Item.DoesNotExist:
             item = None
@@ -264,10 +298,35 @@ def Update(request, id):
             
                 form = ItemContentForm(request.POST)
                 if form.is_valid():
+                    ItemContentInlineFormSet = inlineformset_factory(ItemContent, ContentAttachment, form=ItemContentForm)
+                    for attachmentfile in request.FILES.getlist('file'):
+                        attachmentform = ContentAttachmentForm(request.POST, request.FILES)
+                        if attachmentform.is_valid():
+                            pass
+                        else:
+                            content = {
+                                'item': item,
+                                'form': form
+                            }
+                            return render_to_response('item/update.html', content, context_instance=RequestContext(request))
+                    
                     itemcontent = ItemContent(item=item)
                     itemcontentform = ItemContentForm(request.POST, instance=itemcontent)
                     itemcontent = itemcontentform.save()
-                
+                    itemcontent.save()
+                    
+                    for attachmentfile in request.FILES.getlist('file'):
+                        attachment = ContentAttachment(itemcontent=itemcontent)
+                        attachmentform = ContentAttachmentForm(request.POST, request.FILES, instance=attachment)
+                        if attachmentform.is_valid():
+                            contentattachment = attachmentform.save()
+                            contentattachment.title = attachmentfile.name
+                            contentattachment.contenttype = str(attachmentfile.content_type)
+                            contentattachment.save()
+                        
+                        #convert img to svg
+                        img2svg(contentattachment)
+                    
                     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
                     ip = request.META['REMOTE_ADDR']
                     if x_forwarded_for:

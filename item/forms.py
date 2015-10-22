@@ -26,7 +26,10 @@ class ContentAttachmentForm(forms.ModelForm):
                 #raise ValidationError("Image file too large ( > 200KB ).")
                 return None
             else:
-                return file
+                if str(file.content_type.split('/')[0]) == 'image':
+                    return file
+                else:
+                    return None
         else:
             #raise ValidationError("Couldn't read uploaded image.")
             return None

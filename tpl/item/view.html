@@ -23,14 +23,17 @@
         {% for itemcontent in item.itemcontent_set.all %}
             <div class="itemcontent">
                 {% if forloop.first %}
-                <pre class="description">{{ item.firstcontent }}</pre>
+                <pre class="description itemcontent-content">{{ item.firstcontent }}</pre>
                 {% else %}
                 <p class="updated">{{ itemcontent.create|date:'Y-m-d H:i:s' }}</p>
                 <pre class="itemcontent-content">{{ itemcontent.content }}</pre>
                 {% endif %}
-                {% for attachmentfile in item.attachmentfiles %}
-                    {% if attachmentfile.contenttype == 'image' %}
-                    <p><img src="/s/{{ attachmentfile.file }}" title="{{ attachmentfile.title }}" /></p>{% elif attachmentfile.contenttype == 'audio' %}
+                {% for attachmentfile in itemcontent.contentattachment_set.all %}
+                    {% if 'svg' in attachmentfile.contenttype %}
+                    {{ attachmentfile.content|safe }}
+                    {% elif 'image' in attachmentfile.contenttype %}
+                    <p><img src="/s/{{ attachmentfile.file }}" title="{{ attachmentfile.title }}" /></p>
+                    {% elif 'audio' in attachmentfile.contenttype %}
                     <p><audio controls>
                         <source src="/s/{{ attachmentfile.file }}" type="audio/ogg">
                         <a href="/s/{{ attachmentfile.file }}"><span style="font-style: italic;">(附件)</span> {{ attachmentfile.title }}</a>
@@ -44,7 +47,7 @@
         </div>
         {% if item.user.username == user.username %}
             <p class="operate">
-                <a href="/i/update/{{ item.id }}/"><button>更新</button></a>
+                <a href="/i/update/{{ item.id }}/#update-form">更新</a>
             </p>
         {% endif %}
         
@@ -66,9 +69,12 @@
                             <div class="item-info">{% if subitem.belong and item not in subitem.belong.all %}<span class="comment-reply-to">回复{% for i in subitem.belong.all %} {{ i.user }}{% endfor %}：</span>{% endif %}</div>
                             <pre class="itemcontent-content">{{ itemcontent.content }}</pre>
                             
-                            {% for attachmentfile in subitem.attachmentfiles %}
-                                {% if attachmentfile.contenttype == 'image' %}
-                                <p><img src="/s/{{ attachmentfile.file }}" title="{{ attachmentfile.title }}" /></p>{% elif attachmentfile.contenttype == 'audio' %}
+                            {% for attachmentfile in itemcontent.contentattachment_set.all %}
+                                {% if 'svg' in attachmentfile.contenttype %}
+                                {{ attachmentfile.content|safe }}
+                                {% elif 'image' in attachmentfile.contenttype %}
+                                <p><img src="/s/{{ attachmentfile.file }}" title="{{ attachmentfile.title }}" /></p>
+                                {% elif 'audio' in attachmentfile.contenttype %}
                                 <p><audio controls>
                                     <source src="/s/{{ attachmentfile.file }}" type="audio/ogg">
                                     <a href="/s/{{ attachmentfile.file }}"><span style="font-style: italic;">(附件)</span> {{ attachmentfile.title }}</a>
@@ -79,7 +85,7 @@
                             {% endfor %}
                             
                             <div class="comment-operate">
-                                <a class="comment-reply" href="{% if user.is_authenticated %}?reply={{ subitem.id }}#comment-form{% else %}{% url 'login' %}?next={{ request.path }}?reply={{ subitem.id }}#comment-form{% endif %}"><button>回复</button></a>
+                                <a class="comment-reply" href="{% if user.is_authenticated %}?reply={{ subitem.id }}#comment-form{% else %}{% url 'login' %}?next={{ request.path }}?reply={{ subitem.id }}#comment-form{% endif %}">回复</a>
                             </div>
                         {% endfor %}
                     </div>
@@ -113,9 +119,9 @@
             {% csrf_token %}
             <input class="comment-parent" name="reply" type="hidden"{% if request.GET.reply %} value="{{ request.GET.reply }}"{% endif %} />
             <p class="comment-content">{% if reply %}<span class="comment-reply-to">回复 {{ reply.user.username }}：</span>{% endif %}<textarea name="content">{{ form.content.value }}</textarea></p>
-            <!--<p>附件：<input name="file" type="file" />
+            <p>附件：<input name="file" type="file" />
             <br />
-            (小于2MB有效)</p>-->
+            (小于2MB有效)</p>
             <p><input class="submit" type="submit" value="提交" /></p>
         </form>
         {% else %}
@@ -146,7 +152,7 @@ $(document).ready(function(){
         $(".comment-form .comment-content .comment-reply-to").remove();
         $(".comment-form .comment-content").prepend("<span class=\"comment-reply-to\">回复 " + $(this).closest(".comment").find(".comment-author span.username").text() + "：</span>");
         $(this).hide();
-        $(this).after("<a class=\"cancel-comment-reply\" href=\"\"><button>取消回复</button></a>");
+        $(this).after("<a class=\"cancel-comment-reply\" href=\"\">取消回复</a>");
         $(".comment-form").appendTo($(this).closest(".comment"));
         $(".comment .comment-operate .cancel-comment-reply").click(function(){
             $(".comment-form .comment-parent").val("");

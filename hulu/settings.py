@@ -25,6 +25,7 @@ DATABASES = {
 
 #import dj_database_url
 #DATABASES['default'] = dj_database_url.config()
+
 if 'VCAP_SERVICES' in os.environ:
     import json
     vcap = json.loads(os.environ['VCAP_SERVICES'])
@@ -32,10 +33,10 @@ if 'VCAP_SERVICES' in os.environ:
     DATABASES = {
       'default': {
             'ENGINE'     : 'ibm_db_django',
-            'NAME'       : sqldb['db'],
-            'USER'       : sqldb['username'],
-            'PASSWORD'   : sqldb['password'],
-            'HOST'       : sqldb['host'],
+            'NAME'       : str(sqldb['db']),
+            'USER'       : str(sqldb['username']),
+            'PASSWORD'   : str(sqldb['password']),
+            'HOST'       : str(sqldb['host']),
             'PORT'       : str(sqldb['port']),
             'PCONNECT'   :  True,
         }

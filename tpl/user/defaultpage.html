@@ -14,9 +14,13 @@
             </a></h3>
             <p class="operate">
             {% if request.user == viewuser %}
-                <a href="/u/settings/"><button>完善资料</button></a>
+                <a href="/u/settings/">完善资料</a>
             {% else %}
-                <a href="/u/m/{{ viewuser.username }}/"><button>发送消息</button></a>
+                <form class"newsendmessageform" method="post" enctype="multipart/form-data" action="/app/" style="display: inline-block;float: right;">
+                    {% csrf_token %}
+                    <input name="newusernames" type="hidden" value="{{ viewuser.username }}" />
+                    <input class="newsendmessage" type="submit" value="发送消息" style="font-size: small;" />
+                </form>
             {% endif %}
             </p>
             <pre class="description">{{ viewuser.userprofile.profile }}</pre>

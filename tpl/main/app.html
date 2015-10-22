@@ -47,6 +47,19 @@
                 },
                 success: function(data){
                     if (data.status == "success") {
+                        
+                        {% if newmessagesession %}
+                        var newmessagesession = {{ newmessagesession|safe }};
+                        data.messagesessions.unshift(newmessagesession);
+                        var newusernames = "";
+                        for(i in newmessagesession.urusers){
+                            if(i != 0){
+                                newusernames += ",";
+                            }
+                            newusernames += newmessagesession.urusers[i].username;
+                        }
+                        {% endif %}
+                        
                         for (i in data.messagesessions){
                             var messagesession = data.messagesessions[i];
                             var usernames = "";
@@ -66,7 +79,7 @@
                             
                             var isnewsession = 1;
                             $(".wrapper .messagesessions .line").each(function(){
-                                if ($(this).find(".sendmessageform").attr("action") == "/u/m/" + usernames + "/") {
+                                if ($(this).find(".sendmessageform").find(".messagetousernames").val() == usernames) {
                                     $(this).find(".line-title").text(messagesession.lastmessage.content);
                                     $(this).find(".line-info-right").text(messagesession.lastmessage.datetime.split(".")[0].split("+")[0]);
                                     for (i in messagesession.messages){
@@ -89,7 +102,7 @@
                                 return false;
                             }
                             
-                            $(".wrapper .messagesessions").append("<div class=\"line\"><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url(" + messagesession.urusers[0].avatar + ") no-repeat;background-size: cover;background-position: center;\"><img src=" + messagesession.urusers[0].avatar + " /></div></div><div class=\"line-main\"><div class=\"line-info\"><span class=\"line-info-right\">" + messagesession.lastmessage.datetime.split(".")[0].split("+")[0] + "</span><span class=\"line-info-left\">" + userinfos + "</span></div><div class=\"line-title\">" + messagesession.lastmessage.content + "</div></div><div class=\"messagesession\"><div class=\"historymessages\"></div><form class=\"sendmessageform\" method=\"post\" enctype=\"multipart/form-data\" action=\"/u/m/" + usernames + "/\">{% csrf_token %}<input class=\"messagecontent\" name=\"content\" /><input class=\"sendmessage\" type=\"submit\" value=\"发送\" /></form></div></div>");
+                            $(".wrapper .messagesessions").append("<div class=\"line\"><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url(" + messagesession.urusers[0].avatar + ") no-repeat;background-size: cover;background-position: center;\"><img src=" + messagesession.urusers[0].avatar + " /></div></div><div class=\"line-main\"><div class=\"line-info\"><span class=\"line-info-right\">" + messagesession.lastmessage.datetime.split(".")[0].split("+")[0] + "</span><span class=\"line-info-left\">" + userinfos + "</span></div><div class=\"line-title\">" + messagesession.lastmessage.content + "</div></div><div class=\"messagesession\"><div class=\"historymessages\"></div><form class=\"sendmessageform\" method=\"post\" enctype=\"multipart/form-data\">{% csrf_token %}<input type=\"hidden\" class=\"messagetousernames\" name=\"usernames\" value=\"" + usernames + "\" /><input class=\"messagecontent\" name=\"content\" /><input class=\"sendmessage\" type=\"submit\" value=\"发送\" /></form></div></div>");
                             var currentmessagesession = $(".wrapper .messagesessions .line").last();
                             for (i in messagesession.messages){
                                 var message = messagesession.messages[i];
@@ -128,6 +141,7 @@
                                     currentmessagesession.find(".historymessages").scrollTop(currentmessagesession.find(".historymessages")[0].scrollHeight);
                                     $.post($(this).attr("action"), {
                                         "csrfmiddlewaretoken": "{{ csrf_token }}",
+                                        "usernames": $(this).find(".messagetousernames").val(),
                                         "content": messagecontent
                                     }, function(){
                                         
@@ -135,6 +149,11 @@
                                 }
                                 return false;
                             });
+                            {% if newmessagesession %}
+                            if (currentmessagesession.find(".sendmessageform").find(".messagetousernames").val() == newusernames) {
+                                currentmessagesession.find(".line-main").click();
+                            }
+                            {% endif %}
                         }
                         loaddata(data.uirid);
                     }
@@ -147,6 +166,11 @@
         }
         
         loaddata(0);
+        
+        {% if newusernames %}
+        var messagesessionexit = 0;
+        
+        {% endif %}
     });
 </script>
 </body>
