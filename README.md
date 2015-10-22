@@ -7,3 +7,7 @@ A simple framework based on Django.
 ~   runing
     
     Such as VPS or Heroku.
+
+~   Demo
+    
+    http://hulu.im
