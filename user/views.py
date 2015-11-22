@@ -53,11 +53,11 @@ def Signup(request):
         next = request.META['QUERY_STRING'].split('next=')[1]
         if request.GET.get('next'):
             if request.GET.get('next')[0] != '/':
-                return redirect('/u/login/')
+                return redirect('/u/signup/')
             else:
                 nextpath = request.GET.get('next').split('?')[0]
                 if nextpath[0] != '/' or nextpath in ['', '/', '/u/login/', '/u/signup/']:
-                    return redirect('/u/login/')
+                    return redirect('/u/signup/')
     if request.user.is_authenticated():
         if request.GET.get('type') == 'json':
             content = {

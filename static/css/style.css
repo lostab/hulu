@@ -31,6 +31,9 @@ img {
 .submit {
     width: 100%;
 }
+.file {
+    width: 100%;
+}
 .tips {
     color: lightgray;
     font-size: small;
@@ -40,10 +43,11 @@ img {
     height: 24px;
     marging: 0;
     padding: 3px;
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid whitesmoke;
     position: fixed;
-    background: white;
+    background: whitesmoke;
     z-index: 1;
+    box-shadow: 0 3px 3px 3px whitesmoke;
 }
 .header .logo {
     position: absolute;
@@ -143,6 +147,15 @@ img {
     margin: 7px;
     padding: 7px;
     min-height: 230px;
+}
+.content.signup p,.content.signup h3, .content.login p,.content.login h3, .content.account p,.content.account h3 {
+    text-align: center;
+}
+.content.login .submit, .content.signup .submit, .content.account .submit {
+    width: 220px;
+}
+p.cancel-btn {
+    text-align: center;
 }
 .content .operate {
     text-align: right;
@@ -265,7 +278,7 @@ img {
 }
 .home .task:not(:last-child), .line:not(:last-child), .comment, .home .createbutton {
     margin-bottom: 3px;
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid whitesmoke;
 }
 .home .createbutton {
     font-size: small;
@@ -390,6 +403,16 @@ img {
 .home .subitemcount:visited {
     background: lightgray;
     color: white;
+}
+.home .next-page, .home .previous-page {
+    width: 100%;
+    display: block;
+    padding: 3px;
+    background: lightgray;
+    color: white;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
 }
 .content.task .avatar-area {
     width: 48px;
@@ -562,6 +585,8 @@ img {
 }
 .footer {
     padding: 7px;
-    border-top: 1px solid lightgray;
+    border-top: 1px solid whitesmoke;
     text-align: center;
+    background: whitesmoke;
+    box-shadow: 0 -3px 3px 3px whitesmoke;
 }

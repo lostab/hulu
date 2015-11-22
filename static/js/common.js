@@ -36,4 +36,5 @@
     $(window).resize(function() {
         svgresize();
     });
+    $(".container").css({"min-height": "calc(100% - " + ($(".header").height() + $(".footer").height()) + "px - " + $(".container").css("padding-top") + ")"});
 });
