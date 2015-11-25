@@ -7,6 +7,7 @@ html, body {
     margin: 0;
     padding: 0;
     font-family: times new roman;
+    /*overflow: hidden;*/
 }
 a {
     color: black;
@@ -142,6 +143,8 @@ img {
 }
 .container {
     padding-top: 27px;
+    /*overflow: scroll;
+    height: 100%;*/
 }
 .content {
     margin: 7px;
