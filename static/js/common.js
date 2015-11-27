@@ -38,10 +38,3 @@
     });
     $(".container").css({"min-height": "calc(100% - " + ($(".header").height() + $(".footer").height()) + "px - " + $(".container").css("padding-top") + ")"});
 });
-
-var iosver = window.navigator.userAgent.match(/(iPad|iPhone|iPod)\s+OS\s([\d_\.]+)/);
-if (iosver && iosver[2][0] < 8 ) {
-    noBounce.init({
-        animate: true
-    });
-}
