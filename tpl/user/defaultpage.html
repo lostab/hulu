@@ -13,7 +13,7 @@
                 </div>
             </a></h3>
             <p class="operate">
-            {% if request.user %}
+            {% if is_authenticated %}
                 {% if request.user == viewuser %}
                     <a href="/u/settings/">完善资料</a>
                 {% else %}
