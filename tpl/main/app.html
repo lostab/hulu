@@ -40,6 +40,7 @@
         }
         
         var loaddatafromjson = function(data){
+            //遍历会话
             for (i in data.messagesessions){
                 var messagesession = data.messagesessions[i];
                 var usernames = "";
@@ -57,8 +58,10 @@
                     }
                 }
                 
+                //默认为新会话
                 var isnewsession = 1;
                 $(".wrapper .messagesessions .line").each(function(){
+                    //如果在已有会话中找到相同的会话对象，则非新会话，在已有会话中追加会话内容
                     if ($(this).find(".sendmessageform").find(".messagetousernames").val() == usernames) {
                         $(this).find(".line-title").text(messagesession.lastmessage.content);
                         $(this).find(".line-info-right").text(messagesession.lastmessage.datetime.split(".")[0].split("+")[0]);
@@ -72,16 +75,15 @@
                             }
                         }
                         $(this).find(".historymessages").scrollTop($(this).find(".historymessages")[0].scrollHeight);
-                        
+                        //同时标记为已有会话
                         isnewsession = 0;
                     }
                 });
-                
+                //如果是已有会话，直接继续下一个会话
                 if (isnewsession == 0 && data.uirid != "") {
-                    loaddata(data.uirid);
-                    return false;
+                    continue;
                 }
-                
+                //如果是新会话，在会话列表页面添加一行会话，并绑定事件
                 $(".wrapper .messagesessions").append("<div class=\"line\"><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url(" + messagesession.urusers[0].avatar + ") no-repeat;background-size: cover;background-position: center;\"><img src=" + messagesession.urusers[0].avatar + " /></div></div><div class=\"line-main\"><div class=\"line-info\"><span class=\"line-info-right\">" + messagesession.lastmessage.datetime.split(".")[0].split("+")[0] + "</span><span class=\"line-info-left\">" + userinfos + "</span></div><div class=\"line-title\">" + messagesession.lastmessage.content + "</div></div><div class=\"messagesession\"><div class=\"historymessages\"></div><form class=\"sendmessageform\" method=\"post\" enctype=\"multipart/form-data\">{% csrf_token %}<input type=\"hidden\" class=\"messagetousernames\" name=\"usernames\" value=\"" + usernames + "\" /><input class=\"messagecontent\" name=\"content\" /><input class=\"sendmessage\" type=\"submit\" value=\"发送\" /></form></div></div>");
                 var currentmessagesession = $(".wrapper .messagesessions .line").last();
                 for (i in messagesession.messages){
@@ -130,6 +132,7 @@
                     return false;
                 });
             }
+            loaddata(data.uirid);
         }
         
         var loaddata = function(uirid){
@@ -142,7 +145,6 @@
                 success: function(data){
                     if (data.status == "success") {
                         loaddatafromjson(data);
-                        loaddata(data.uirid);
                     }
                 },
                 error: function(){
