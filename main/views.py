@@ -368,6 +368,7 @@ def app(request):
                             useritemrelationship.type = 'message'
                             useritemrelationship.save()
                             item.useritemrelationship.add(useritemrelationship)
+                            item.save()
             if request.POST.get('newusernames'):
                 newusernames = request.POST.get('newusernames').split(',')
                 newusers = []
