@@ -64,6 +64,12 @@
                     //如果在已有会话中找到相同的会话对象，则非新会话，在已有会话中追加会话内容
                     if ($(this).find(".sendmessageform").find(".messagetousernames").val() == usernames) {
                         $(this).find(".line-title").text(messagesession.lastmessage.content);
+                        
+                        //系统消息，替换链接
+                        if (usernames == "系统消息") {
+                            $(this).find(".line-title").html(messagesession.lastmessage.content);
+                        }
+                        
                         $(this).find(".line-info-right").text(messagesession.lastmessage.datetime.split(".")[0].split("+")[0]);
                         for (i in messagesession.messages){
                             var message = messagesession.messages[i];
@@ -78,18 +84,24 @@
                         //同时标记为已有会话
                         isnewsession = 0;
                     }
+                    
                 });
                 //如果是已有会话，直接继续下一个会话
                 if (isnewsession == 0 && data.uirid != "") {
                     continue;
                 }
+                //如果是系统消息，标记为已有会话跳过
+                if (isnewsession == 0 && usernames == "系统消息") {
+                    continue;
+                }
+                
                 //如果是新会话，在会话列表页面添加一行会话，并绑定事件
                 $(".wrapper .messagesessions").append("<div class=\"line\"><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url(" + messagesession.urusers[0].avatar + ") no-repeat;background-size: cover;background-position: center;\"><img src=" + messagesession.urusers[0].avatar + " /></div></div><div class=\"line-main\"><div class=\"line-info\"><span class=\"line-info-right\">" + messagesession.lastmessage.datetime.split(".")[0].split("+")[0] + "</span><span class=\"line-info-left\">" + userinfos + "</span></div><div class=\"line-title\">" + messagesession.lastmessage.content + "</div></div><div class=\"messagesession\"><div class=\"historymessages\"></div><form class=\"sendmessageform\" method=\"post\" enctype=\"multipart/form-data\">{% csrf_token %}<input type=\"hidden\" class=\"messagetousernames\" name=\"usernames\" value=\"" + usernames + "\" /><input class=\"messagecontent\" name=\"content\" /><input class=\"sendmessage\" type=\"submit\" value=\"发送\" /></form></div></div>");
                 var currentmessagesession = $(".wrapper .messagesessions .line").last();
                 for (i in messagesession.messages){
                     var message = messagesession.messages[i];
                     var messageclass = message.user.username=="{{ user.username }}"?"message-me":"message-you";
-                    currentmessagesession.find(".historymessages").append("<div class=\"message " + messageclass + "\"><a href=\"/" +  message.user.username + "\"><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url(" + message.user.avatar + ") no-repeat;background-size: cover;background-position: center;\"><img src=" + message.user.avatar + " /></div></div></a><span class=\"messageid\" style=\"display:none;\">" + message.id + "</span><pre class=\"itemcontent-content " + messageclass + "\">" + message.content + "</pre></div>");
+                    currentmessagesession.find(".historymessages").append("<div class=\"message " + messageclass + "\"><a class=\"message-avatar-link\" href=\"/" +  message.user.username + "\"><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url(" + message.user.avatar + ") no-repeat;background-size: cover;background-position: center;\"><img src=" + message.user.avatar + " /></div></div></a><span class=\"messageid\" style=\"display:none;\">" + message.id + "</span><pre class=\"itemcontent-content " + messageclass + "\">" + message.content + "</pre></div>");
                     currentmessagesession.find(".historymessages .currentmessage").remove();
                     if (currentmessagesession.closest(".messagesessions").children(".line").height() > 1) {
                         currentmessagesession.closest(".messagesessions").prepend(currentmessagesession);
@@ -97,6 +109,7 @@
                 }
                 currentmessagesession.find(".historymessages").scrollTop(currentmessagesession.find(".historymessages")[0].scrollHeight);
                 
+                //绑定事件，点击会话显示聊天和历史信息窗口
                 currentmessagesession.find(".line-main").click(function(){
                     $(this).next(".messagesession").css({"visibility": "visible"});
                     tooglefooter();
@@ -111,6 +124,7 @@
                     });
                 });
                 
+                //绑定提交消息事件
                 currentmessagesession.find(".sendmessageform").submit(function(){
                     var currentmessagesession = $(this).closest(".wrapper .messagesessions .line");
                     var messagecontent = $(this).children(".messagecontent").val();
@@ -132,7 +146,9 @@
                     return false;
                 });
             }
-            loaddata(data.uirid);
+            if (data.uirid != "") {
+                loaddata(data.uirid);
+            }
         }
         
         var loaddata = function(uirid){
@@ -152,6 +168,79 @@
                 },
                 timeout: 33000
             });
+            
+                
+            //获取系统消息
+            $.getJSON("/u/notify/?type=json", function(json){
+                if(json.status == "success"){
+                    if(json.notify.count != 0){
+                        var notifycount = 0;
+                        $(".wrapper .messagesessions .line").each(function(){
+                            if ($(this).find(".sendmessageform").find(".messagetousernames").val() == "系统消息") {
+                                notifycount = $(this).find(".historymessages .message").length;
+                            }
+                        });
+                        if (json.notify.messages.length - notifycount > 0) {
+                            var notifymessages = json.notify.messages.slice(0, json.notify.messages.length - notifycount);
+                            var messages = [];
+                            for (i in notifymessages) {
+                                var notify = notifymessages[i];
+                                var message = {
+                                    "content": "您发布的 <a href=\"/i/" + notify.parent.id + "\">" + notify.parent.content.substr(0, 30) + "...</a> 有了 <a href=\"/" + notify.item.user.username + "/\">" + notify.item.user.username + "</a> 的新回应：" + notify.item.content.substr(0, 30) + "...",
+                                    "create": notify.created,
+                                    "id": "",
+                                    "user": {
+                                        "username": "系统消息",
+                                        "info": "",
+                                        "profile": "",
+                                        "avatar": "/s/avatar/n.png",
+                                        "page": ""
+                                    }
+                                };
+                                messages.unshift(message);
+                            }
+                            var notifysessiondata = {
+                                "messagesessions": [
+                                    {
+                                        "urusers": [
+                                            {
+                                                "username": "系统消息",
+                                                "info": "",
+                                                "profile": "",
+                                                "avatar": "/s/avatar/n.png",
+                                                "page": ""
+                                            }
+                                        ],
+                                        "lastmessage": {
+                                            "content": "",
+                                            "datetime": ""
+                                        },
+                                        "messages": messages,
+                                        "lastmessage": {
+                                            "content": messages[messages.length - 1].content,
+                                            "datetime": messages[messages.length - 1].create
+                                        }
+                                    }
+                                ],
+                                "uirid": ""
+                            };
+                            
+                            loaddatafromjson(notifysessiondata);
+                            
+                            //移除系统消息的多余元素
+                            $(".wrapper .messagesessions .line").each(function(){
+                                if($(this).find(".sendmessageform").find(".messagetousernames").val() == "系统消息") {
+                                    $(this).find(".sendmessageform").hide();
+                                    $(this).find(".historymessages").find(".message-avatar-link").removeAttr("href");
+                                    $(this).find(".line-title").find("a").removeAttr("href");
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+            
+            
         }
         
         {% if newmessagesession %}

@@ -185,6 +185,7 @@ img {
 }
 .line .messagesession .message .itemcontent-content {
     line-height: 24px;
+    display: inline-block;
 }
 .line .messagesession .sendmessageform {
     margin: 0;

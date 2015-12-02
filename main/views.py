@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 # Create your views here.
 
 from django.shortcuts import render_to_response
@@ -93,9 +96,6 @@ def index(request):
                         itemlist.append(cacheitem)
         else:
             def updatecache():
-                import sys
-                reload(sys)  
-                sys.setdefaultencoding('utf8')
                 cacheitems = {
                     "datetime": str(timezone.make_aware(datetime.datetime.now(), timezone.get_default_timezone())),
                     "items": []
@@ -119,15 +119,15 @@ def index(request):
             
             try:
                 #Zhihu
-                for fetchdate in [str((datetime.datetime.now() + timedelta(days=1)).strftime('%Y%m%d')), str(datetime.datetime.now().strftime('%Y%m%d')), str((datetime.datetime.now() - timedelta(days=1)).strftime('%Y%m%d'))]:
-                    zhihuurl = 'http://news.at.zhihu.com/api/3/news/before/' + fetchdate
+                for fetchdate in [[str((datetime.datetime.now() + timedelta(days=1)).strftime('%Y%m%d')), str(datetime.datetime.now().strftime('%Y%m%d'))], [str(datetime.datetime.now().strftime('%Y%m%d')), str((datetime.datetime.now() - timedelta(days=1)).strftime('%Y%m%d'))], [str((datetime.datetime.now() - timedelta(days=1)).strftime('%Y%m%d')), str((datetime.datetime.now() - timedelta(days=2)).strftime('%Y%m%d'))]]:
+                    zhihuurl = 'http://news.at.zhihu.com/api/3/news/before/' + fetchdate[0]
                     hdr = {
                         'User-Agent': ''
                     }
                     req = urllib2.Request(zhihuurl, headers=hdr)
                     zhihujson = json.loads(urllib2.urlopen(req).read())
                     zhihudate = zhihujson['date']
-                    if int(zhihudate) == int(fetchdate) - 1:
+                    if int(zhihudate) == int(fetchdate[1]):
                         zhihucontent = zhihujson['stories']
                         for i in zhihucontent:
                             zhihuitem = fetchitem(user=fetchuser(username=u'知乎日报', userprofile=fetchprofile(openid='Zhihu', avatar='http://www.zhihu.com/favicon.ico')), title=i['title'], url='http://daily.zhihu.com/story/'+str(i['id']), lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(str(datetime.datetime.now().strftime('%Y')) + i['ga_prefix'], '%Y%m%d%H'), timezone.get_default_timezone())))
@@ -156,27 +156,7 @@ def index(request):
                     newsitem = fetchitem(user=fetchuser(username='Google News', userprofile=fetchprofile(openid='Google News', avatar='http://www.google.cn/favicon.ico')), title=title, url=url, lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(newstime, '%a, %d %b %Y %H:%M:%S GMT'), timezone.get_default_timezone())))
                     itemlist.append(newsitem)
                     fetchitems.append(newsitem)
-                
-                #Weixin
-                #weixinurl = 'http://weixin.sogou.com/'
-                #hdr = {
-                #    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:32.0) Gecko/20100101 Firefox/32.0'
-                #}
-                #req = urllib2.Request(weixinurl, headers=hdr)
-                #result = urllib2.urlopen(req).read()
-                #items = re.split('<div class="wx-news-info2">|</div></li></ul>', result)
-                #items.pop(0)
-                #items.pop(-1)
-                #print(items[0])
-                #for item in items:
-                #    hp = HTMLParser.HTMLParser()
-                    #title = hp.unescape(re.split('<title>|</title> <title>|</title>', item)[1])
-                    #newstime = re.split('<pubDate>|</pubDate> <pubDate>|</pubDate>', item)[1]
-                    #url = re.split('<link>|</link> <link>|</link>', item)[1].split('url=')[1]
-                    #newsitem = fetchitem(user=fetchuser(username='Google News', userprofile=fetchprofile(openid='Google News', avatar='http://www.google.cn/favicon.ico')), title=title, url=url, lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(newstime, '%a, %d %b %Y %H:%M:%S GMT'), timezone.get_default_timezone())))
-                    #itemlist.append(newsitem)
-                    #fetchitems.append(newsitem)
-                
+                                
                 updatecache()
             except:
                 updatecache()

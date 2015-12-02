@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 # Create your views here.
 
 from django.shortcuts import render_to_response
@@ -376,7 +380,7 @@ def UserPage(request, username):
                     'info': user.userprofile.info,
                     'avatar': (user.userprofile.openid) and str(user.userprofile.avatar) or ((user.userprofile.avatar) and '/s/' + str(user.userprofile.avatar) or '/s/avatar/n.png'),
                     'profile': user.userprofile.profile,
-                    'page': user.userprofile.page,
+                    'page': user.userprofile.page
                 }
             }
         else:
@@ -403,7 +407,7 @@ def Page(request, username):
                     'info': user.userprofile.info,
                     'avatar': (user.userprofile.openid) and str(user.userprofile.avatar) or ((user.userprofile.avatar) and '/s/' + str(user.userprofile.avatar) or '/s/avatar/n.png'),
                     'profile': user.userprofile.profile,
-                    'page': user.userprofile.page,
+                    'page': user.userprofile.page
                 }
             }
         else:
@@ -431,13 +435,35 @@ def Notify(request):
             'notify': notify
         }
         if request.GET.get('type') == 'json':
+            messages = []
+            for i in notify:
+                message = {
+                    'parent': {
+                        'id': str(i.item.belong.all().first().id),
+                        'content': str(i.item.belong.all().first().itemcontent_set.all().first().content)
+                    },
+                    'item': {
+                        'id': str(i.item.id),
+                        'content': str(i.item.itemcontent_set.all().first().content).encode('utf-8'),
+                        'user': {
+                            'username': i.item.user.username,
+                            'info': i.item.user.userprofile.info,
+                            'avatar': (i.item.user.userprofile.openid) and str(i.item.user.userprofile.avatar) or ((i.item.user.userprofile.avatar) and '/s/' + str(i.item.user.userprofile.avatar) or '/s/avatar/n.png'),
+                            'profile': i.item.user.userprofile.profile,
+                            'page': i.item.user.userprofile.page
+                        }
+                    },
+                    'created': str(i.created),
+                }
+                messages.append(message)
             content = {
                 'status': 'success',
                 'notify': {
-                    'count': len(notify)
+                    'count': len(notify),
+                    'messages': messages
                 }
             }
-            return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
+            return jsonp(request, content)
         return render_to_response('user/notify.html', content, context_instance=RequestContext(request))
     else:
         if request.GET.get('type') == 'json':
