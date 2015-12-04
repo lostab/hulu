@@ -229,6 +229,16 @@ def app(request):
                         useritemrelationship = UserItemRelationship.objects.filter(type="message").filter(user=request.user).filter(id__gt=request.GET.get('uirid')).prefetch_related('item_set').order_by('id')
                     else:
                         useritemrelationship = UserItemRelationship.objects.filter(type="message").filter(user=request.user).prefetch_related('item_set').order_by('id')
+                    for ur in useritemrelationship:
+                        for message in ur.item_set.all():
+                            urusers = []
+                            murs = message.useritemrelationship.all()
+                            for mur in murs:
+                                if mur.user not in urusers:
+                                    urusers.append(mur.user)
+                            if len(urusers) != len(murs):
+                                useritemrelationship = None
+                                break
                     return useritemrelationship
                 
                 useritemrelationship = getuir()
@@ -363,12 +373,15 @@ def app(request):
                         itemcontent.ua = request.META['HTTP_USER_AGENT']
                         itemcontent.save()
                         
+                        uirs = []
                         for user in users:
                             useritemrelationship = UserItemRelationship(user=user)
                             useritemrelationship.type = 'message'
                             useritemrelationship.save()
-                            item.useritemrelationship.add(useritemrelationship)
-                            item.save()
+                            uirs.append(useritemrelationship)
+                        item.useritemrelationship.add(*uirs)
+                        item.save()
+            
             if request.POST.get('newusernames'):
                 newusernames = request.POST.get('newusernames').split(',')
                 newusers = []

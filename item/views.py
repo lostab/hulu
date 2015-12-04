@@ -353,12 +353,12 @@ def Update(request, id):
 def Cancel(request, id):
     if request.user.is_authenticated():
         try:
-            task = Task.objects.get(id=id)
-            if task.user.username == request.user.username:
-                task.status = 'cancel'
-                task.save()
-        except Task.DoesNotExist:
+            item = Item.objects.get(id=id)
+            if item.user.username == request.user.username:
+                item.status = 'cancel'
+                item.save()
+        except Item.DoesNotExist:
             pass
-        return redirect('/tasks/' + id)
+        return redirect('/i/' + id)
     else:
-        return redirect('/accounts/login/?next=/tasks/update/' + id)
+        return redirect('/u/login/?next=/i/update/' + id)
