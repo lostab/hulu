@@ -75,7 +75,7 @@
                             var message = messagesession.messages[i];
                             var messageclass = message.user.username=="{{ user.username }}"?"message-me":"message-you";
                             $(this).find(".historymessages").append("<div class=\"message " + messageclass + "\"><a href=\"/" +  message.user.username + "\"><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url(" + message.user.avatar + ") no-repeat;background-size: cover;background-position: center;\"><img src=" + message.user.avatar + " /></div></div></a><span class=\"messageid\" style=\"display:none;\">" + message.id + "</span><pre class=\"itemcontent-content " + messageclass + "\">" + message.content + "</pre></div>");
-                            $(this).find(".historymessages .currentmessage").remove();
+                            $(this).find(".historymessages .sendsuccessmessage").remove();
                             if ($(this).closest(".messagesessions").children(".line").height() > 1) {
                                 $(this).closest(".messagesessions").prepend($(this).closest(".line"));
                             }
@@ -132,15 +132,24 @@
                     $(".messagecontent").focus();
                     if(messagecontent != ""){
                         currentmessagesession.find(".historymessages").append("<div class=\"currentmessage message message-me\"><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url({% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center;\"><img src=\"{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}\" /></div></div><pre class=\"itemcontent-content message-me\">" + messagecontent + "</pre></div>");
+                        var lastcurrentmessage = currentmessagesession.find(".historymessages").find(".currentmessage").last();
                         currentmessagesession.find(".line-title").text(messagecontent);
                         currentmessagesession.find(".line-info-right").text("刚刚");
                         currentmessagesession.find(".historymessages").scrollTop(currentmessagesession.find(".historymessages")[0].scrollHeight);
-                        $.post($(this).attr("action"), {
-                            "csrfmiddlewaretoken": "{{ csrf_token }}",
-                            "usernames": $(this).find(".messagetousernames").val(),
-                            "content": messagecontent
-                        }, function(){
-                            
+                        $.ajax({
+                            type: "post",
+                            url: $(this).attr("action"),
+                            data: {
+                                "csrfmiddlewaretoken": "{{ csrf_token }}",
+                                "usernames": $(this).find(".messagetousernames").val(),
+                                "content": messagecontent
+                            },
+                            success: function(){
+                                lastcurrentmessage.toggleClass("currentmessage sendsuccessmessage");
+                            },
+                            error: function(){
+                                lastcurrentmessage.toggleClass("currentmessage senderrormessage");
+                            }
                         });
                     }
                     return false;

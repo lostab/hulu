@@ -209,3 +209,9 @@ img {
 .line .messagesession .sendmessageform .sendmessage {
     display: none;
 }
+.line .messagesession .currentmessage .itemcontent-content {
+    text-decoration: underline;
+}
+.line .messagesession .senderrormessage .itemcontent-content {
+    color: lightgray;
+}
