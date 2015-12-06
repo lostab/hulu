@@ -17,6 +17,7 @@ from django.contrib.auth import *
 from django.contrib.auth.forms import *
 from django.core.mail import send_mail
 from hulu import *
+from main.__init__ import *
 from user.models import *
 from user.forms import *
 from item.models import *
@@ -49,7 +50,7 @@ def Main(request):
                 'status': 'error'
             }
             return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
-        return redirect('/u/login/?next=/u/')
+        return redirectlogin(request)
 
 def Signup(request):
     next = None
@@ -364,7 +365,7 @@ def Settings(request):
                 'status': 'error'
             }
             return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
-        return redirect('/u/login/?next=/u/settings/')
+        return redirectlogin(request)
 
 def UserPage(request, username):
     try:
@@ -471,7 +472,7 @@ def Notify(request):
                 'status': 'error'
             }
             return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
-        return redirect('/u/login/?next=/u/notify/')
+        return redirectlogin(request)
 
 def Feedback(request):
     if request.method == 'GET':

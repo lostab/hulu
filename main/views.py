@@ -230,15 +230,18 @@ def app(request):
                     else:
                         useritemrelationship = UserItemRelationship.objects.filter(type="message").filter(user=request.user).prefetch_related('item_set').order_by('id')
                     for ur in useritemrelationship:
+                        if not ur:
+                            return None
                         for message in ur.item_set.all():
+                            if not message:
+                                return None
                             urusers = []
                             murs = message.useritemrelationship.all()
                             for mur in murs:
                                 if mur.user not in urusers:
                                     urusers.append(mur.user)
                             if len(urusers) != len(murs):
-                                useritemrelationship = None
-                                break
+                                return None
                     return useritemrelationship
                 
                 useritemrelationship = getuir()
@@ -381,6 +384,12 @@ def app(request):
                             uirs.append(useritemrelationship)
                         item.useritemrelationship.add(*uirs)
                         item.save()
+                        
+                        content = {
+                            'status': 'success',
+                            'create': str(itemcontent.create)
+                        }
+                        return jsonp(request, content)
             
             if request.POST.get('newusernames'):
                 newusernames = request.POST.get('newusernames').split(',')
@@ -428,4 +437,4 @@ def app(request):
                 'status': 'error'
             }
             return jsonp(request, content)
-        return redirect('/u/login/?next=' + request.path + '?' + request.META['QUERY_STRING'])
+        return redirectlogin(request)

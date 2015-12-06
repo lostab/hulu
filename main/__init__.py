@@ -1,4 +1,11 @@
+from django.shortcuts import redirect
 import math
+
+def redirectlogin(request):
+    if request.META['QUERY_STRING']:
+        return redirect('/u/login/?next=' + request.path + '?' + request.META['QUERY_STRING'])
+    else:
+        return redirect('/u/login/?next=' + request.path)
 
 def deg2rad(deg):
     return deg * (math.pi / 180)

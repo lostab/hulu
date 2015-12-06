@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 # Create your views here.
 
 from django.shortcuts import render_to_response
@@ -46,7 +50,7 @@ def Index(request):
             return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
         return render_to_response('item/index.html', content, context_instance=RequestContext(request))
     else:
-        return redirect('/u/login/?next=/i/')
+        return redirectlogin(request)
 
 def Create(request):
     if request.user.is_authenticated():
@@ -114,7 +118,7 @@ def Create(request):
             
             return redirect('/i/' + str(item.id))
     else:
-        return redirect('/u/login/?next=/i/create/')
+        return redirectlogin(request)
 
 def View(request, id):
     try:
@@ -265,7 +269,7 @@ def View(request, id):
                 }
                 return render_to_response('item/view.html', content, context_instance=RequestContext(request))
         else:
-            return redirect('/u/login/?next=/i/create/')
+            return redirectlogin(request)
 
 def Update(request, id):
     if request.user.is_authenticated():
