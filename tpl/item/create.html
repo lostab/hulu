@@ -9,11 +9,11 @@
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <p class="description"><textarea name="content">{{ form.content.value }}</textarea></p>
-                <p>附件：
+                <!--<p>附件：
                 <br />
                 <input class="file" name="file" type="file" value={{ form.file.value }} />
                 <br />
-                (小于2MB有效)</p>
+                (小于2MB有效)</p>-->
                 <p><input class="submit" type="submit" value="发布信息" /></p>
             </form>
         </div>

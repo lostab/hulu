@@ -25,7 +25,7 @@ class Item(models.Model):
     status = models.CharField(max_length=30)
     credit = models.BigIntegerField(default=0)
     useritemrelationship = models.ManyToManyField(UserItemRelationship)
-    belong = models.ManyToManyField('self', symmetrical=False, null=True, blank=True)
+    belong = models.ManyToManyField('self', symmetrical=False, blank=True)
     tag = models.ManyToManyField(Tag)
     
     def get_all_items(self, include_self=True):

@@ -37,6 +37,8 @@ from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
 
 def index(request):
+    resetdb()
+    
     try:
         if Site.objects.all():
             site = Site.objects.all()[0]
@@ -60,22 +62,23 @@ def index(request):
         itemlist = []
         for item in items:
             itemcontent = ItemContent.objects.filter(item=item)
-            item.create = itemcontent[0].create
-            if itemcontent[0].content:
-                item.title = itemcontent[0].content.strip().splitlines()[0]
-            else:
-                contentattachment = ContentAttachment.objects.filter(itemcontent=itemcontent[0])
-                item.title = contentattachment[0].title
-            
-            subitem = item.get_all_items(include_self=False)
-            if subitem:
-                subitem.sort(key=lambda item:item.create, reverse=True)
-                itemcontent = ItemContent.objects.filter(item=subitem[0]).reverse()
-                item.subitemcount = len(subitem)
-                item.lastsubitem = subitem[0]
-            else:
-                item.lastsubitem = itemcontent[0]
-            itemlist.append(item)
+            if itemcontent:
+                item.create = itemcontent[0].create
+                if itemcontent[0].content:
+                    item.title = itemcontent[0].content.strip().splitlines()[0]
+                else:
+                    contentattachment = ContentAttachment.objects.filter(itemcontent=itemcontent[0])
+                    item.title = contentattachment[0].title
+                
+                subitem = item.get_all_items(include_self=False)
+                if subitem:
+                    subitem.sort(key=lambda item:item.create, reverse=True)
+                    itemcontent = ItemContent.objects.filter(item=subitem[0]).reverse()
+                    item.subitemcount = len(subitem)
+                    item.lastsubitem = subitem[0]
+                else:
+                    item.lastsubitem = itemcontent[0]
+                itemlist.append(item)
         
         
         fetchitems = []
@@ -122,7 +125,7 @@ def index(request):
                 for fetchdate in [[str((datetime.datetime.now() + timedelta(days=1)).strftime('%Y%m%d')), str(datetime.datetime.now().strftime('%Y%m%d'))], [str(datetime.datetime.now().strftime('%Y%m%d')), str((datetime.datetime.now() - timedelta(days=1)).strftime('%Y%m%d'))], [str((datetime.datetime.now() - timedelta(days=1)).strftime('%Y%m%d')), str((datetime.datetime.now() - timedelta(days=2)).strftime('%Y%m%d'))]]:
                     zhihuurl = 'http://news.at.zhihu.com/api/3/news/before/' + fetchdate[0]
                     hdr = {
-                        'User-Agent': ''
+                        'User-Agent': 'hulu'
                     }
                     req = urllib2.Request(zhihuurl, headers=hdr)
                     zhihujson = json.loads(urllib2.urlopen(req).read())
@@ -215,6 +218,8 @@ def sq(request):
         return render_to_response('other/sq.html', {} , context_instance=RequestContext(request))
 
 def app(request):
+    resetdb()
+    
     if request.user.is_authenticated():
         content = {
             
@@ -225,23 +230,41 @@ def app(request):
                 ursession = []
                 
                 def getuir():
+                    useritemrelationship = None
                     if request.GET.get('uirid'):
-                        useritemrelationship = UserItemRelationship.objects.filter(type="message").filter(user=request.user).filter(id__gt=request.GET.get('uirid')).prefetch_related('item_set').order_by('id')
+                        try:
+                            useritemrelationship = UserItemRelationship.objects.filter(type="message").filter(user=request.user).filter(id__gt=request.GET.get('uirid')).prefetch_related('item_set').order_by('-id')
+                        except Object.DoesNotExist:
+                            useritemrelationship = None
                     else:
-                        useritemrelationship = UserItemRelationship.objects.filter(type="message").filter(user=request.user).prefetch_related('item_set').order_by('id')
-                    for ur in useritemrelationship:
-                        if not ur:
-                            return None
-                        for message in ur.item_set.all():
-                            if not message:
+                        try:
+                            useritemrelationship = UserItemRelationship.objects.filter(type="message").filter(user=request.user).prefetch_related('item_set').order_by('-id')
+                        except Object.DoesNotExist:
+                            useritemrelationship = None
+                    
+                    if useritemrelationship:
+                        paginator = Paginator(useritemrelationship, 100)
+                        page = request.GET.get('page')
+                        try:
+                            useritemrelationship = paginator.page(page).object_list
+                        except PageNotAnInteger:
+                            useritemrelationship = paginator.page(1).object_list
+                        except EmptyPage:
+                            useritemrelationship = paginator.page(paginator.num_pages).object_list
+                        
+                        for ur in useritemrelationship:
+                            if not ur:
                                 return None
-                            urusers = []
-                            murs = message.useritemrelationship.all()
-                            for mur in murs:
-                                if mur.user not in urusers:
-                                    urusers.append(mur.user)
-                            if len(urusers) != len(murs):
-                                return None
+                            for message in ur.item_set.all():
+                                if not message:
+                                    return None
+                                urusers = []
+                                murs = message.useritemrelationship.all()
+                                for mur in murs:
+                                    if mur.user not in urusers:
+                                        urusers.append(mur.user)
+                                if len(urusers) != len(murs):
+                                    return None
                     return useritemrelationship
                 
                 useritemrelationship = getuir()
@@ -302,12 +325,16 @@ def app(request):
                         })
                     
                     lastmessage = {
-                        'content': ms['messages'][-1].lastsubitem.content,
-                        'datetime': str(ms['messages'][-1].lastsubitem.create)
+                        'content': ms['messages'][0].lastsubitem.content,
+                        'datetime': str(ms['messages'][0].lastsubitem.create + timedelta(hours=8))
                     }
                     
                     messages = []
                     for message in sorted(ms['messages'], key=lambda item:item.lastsubitem.create, reverse=False)[-100:]:
+                        clientcreate = ''
+                        if cache.get('cachemessages' + str(message.id)):
+                            clientcreate = cache.get('cachemessages' + str(message.id))
+                        
                         messages.append({
                             'id': str(message.id),
                             'user': {
@@ -317,8 +344,9 @@ def app(request):
                                 'profile': message.user.userprofile.profile,
                                 'page': message.user.userprofile.page,
                             },
-                            'create': str(message.lastsubitem.create),
-                            'content': message.lastsubitem.content
+                            'create': str(message.lastsubitem.create + timedelta(hours=8)),
+                            'content': message.lastsubitem.content,
+                            'clientcreate': clientcreate
                         })
                     
                     messagesession = {
@@ -330,7 +358,7 @@ def app(request):
                 
                 uirid = request.GET.get('uirid')
                 if useritemrelationship:
-                    uirid = str(useritemrelationship.reverse()[0].id)
+                    uirid = str(useritemrelationship[0].id)
                 
                 content = {
                     'status': 'success',
@@ -363,6 +391,8 @@ def app(request):
                         item = Item(user=request.user)
                         item.save()
                         
+                        cache.set('cachemessages' + str(item.id), request.POST.get('clientcreate').strip())
+                        
                         itemcontent = ItemContent(item=item)
                         itemcontentform = ItemContentForm(request.POST, instance=itemcontent)
                         itemcontent = itemcontentform.save()
@@ -387,7 +417,7 @@ def app(request):
                         
                         content = {
                             'status': 'success',
-                            'create': str(itemcontent.create)
+                            'id': str(item.id)
                         }
                         return jsonp(request, content)
             

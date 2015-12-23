@@ -39,6 +39,8 @@
             }
         }
         
+        var openmessagesession;
+        
         var loaddatafromjson = function(data, uirid){
             //遍历会话
             for (i in data.messagesessions){
@@ -74,14 +76,16 @@
                         for (i in messagesession.messages){
                             var message = messagesession.messages[i];
                             var messageclass = message.user.username=="{{ user.username }}"?"message-me":"message-you";
-                            $(this).find(".historymessages").append("<div class=\"message " + messageclass + "\" create=\"" + message.create + "\"><!--<a href=\"/" +  message.user.username + "\">--><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url(" + message.user.avatar + ") no-repeat;background-size: cover;background-position: center;\"><img src=" + message.user.avatar + " /></div></div><!--</a>--><span class=\"messageid\" style=\"display:none;\">" + message.id + "</span><pre class=\"itemcontent-content " + messageclass + "\">" + message.content + "</pre></div>");
-                            $(this).find(".historymessages .sendsuccessmessage").each(function(){
-                                if (message.create == $(this).attr("create")) {
+                            $(this).find(".historymessages").append("<div class=\"message " + messageclass + "\" id=\"" + message.id + "\"><!--<a href=\"/" +  message.user.username + "\">--><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url(" + message.user.avatar + ") no-repeat;background-size: cover;background-position: center;\"><img src=" + message.user.avatar + " /></div></div><!--</a>--><span class=\"messageid\" style=\"display:none;\">" + message.id + "</span><pre class=\"itemcontent-content " + messageclass + "\">" + message.content + "</pre></div>");
+                            $(this).find(".historymessages .currentmessage").each(function(){
+                                if (message.id == $(this).attr("id") || (message.clientcreate != "" && message.clientcreate == $(this).attr("clientcreate"))) {
                                     $(this).remove();
                                 }
                             });
                             if ($(this).closest(".messagesessions").children(".line").height() > 1) {
-                                $(this).closest(".messagesessions").prepend($(this).closest(".line"));
+                                //$(this).closest(".messagesessions").prepend($(this).closest(".line"));
+                                $(this).closest(".line").after($(this).closest(".line").prevAll());
+                                //首页排序需要换个方式
                             }
                         }
                         $(this).find(".historymessages").scrollTop($(this).find(".historymessages")[0].scrollHeight);
@@ -105,10 +109,10 @@
                 for (i in messagesession.messages){
                     var message = messagesession.messages[i];
                     var messageclass = message.user.username=="{{ user.username }}"?"message-me":"message-you";
-                    currentmessagesession.find(".historymessages").append("<div class=\"message " + messageclass + "\" create=\"" + message.create + "\"><!--<a class=\"message-avatar-link\" href=\"/" +  message.user.username + "\">--><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url(" + message.user.avatar + ") no-repeat;background-size: cover;background-position: center;\"><img src=" + message.user.avatar + " /></div></div><!--</a>--><span class=\"messageid\" style=\"display:none;\">" + message.id + "</span><pre class=\"itemcontent-content " + messageclass + "\">" + message.content + "</pre></div>");
+                    currentmessagesession.find(".historymessages").append("<div class=\"message " + messageclass + "\" id=\"" + message.id + "\"><!--<a class=\"message-avatar-link\" href=\"/" +  message.user.username + "\">--><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url(" + message.user.avatar + ") no-repeat;background-size: cover;background-position: center;\"><img src=" + message.user.avatar + " /></div></div><!--</a>--><span class=\"messageid\" style=\"display:none;\">" + message.id + "</span><pre class=\"itemcontent-content " + messageclass + "\">" + message.content + "</pre></div>");
                     
-                    currentmessagesession.find(".historymessages .sendsuccessmessage").each(function(){
-                        if (message.create == $(this).attr("create")) {
+                    currentmessagesession.find(".historymessages .currentmessage").each(function(){
+                        if (message.id == $(this).attr("id") || (message.clientcreate != "" && message.clientcreate == $(this).attr("clientcreate"))) {
                             $(this).remove();
                         }
                     });
@@ -120,6 +124,7 @@
                 
                 //绑定事件，点击会话显示聊天和历史信息窗口
                 currentmessagesession.find(".line-main").click(function(){
+                    openmessagesession = $(this).parent();
                     $(this).next(".messagesession").css({"visibility": "visible"});
                     tooglefooter();
                     $(".header .header-center").text($(this).find(".line-info-left").text());
@@ -132,6 +137,7 @@
                         $(".header .header-left, .header .header-right").hide();
                     });
                     $(this).closest(".line").find(".historymessages").scrollTop($(this).closest(".line").find(".historymessages")[0].scrollHeight);
+                    openmessagesession.find(".sendmessageform").find(".messagecontent").focus();
                 });
                 currentmessagesession.find(".avatar-area").click(function(){
                     $(this).next(".line-main").click();
@@ -141,10 +147,11 @@
                 currentmessagesession.find(".sendmessageform").submit(function(){
                     var currentmessagesession = $(this).closest(".wrapper .messagesessions .line");
                     var messagecontent = $(this).children(".messagecontent").val();
-                    $(".messagecontent").val("");
-                    $(".messagecontent").focus();
+                    $(this).find(".messagecontent").val("");
+                    $(this).find(".messagecontent").focus();
                     if(messagecontent != ""){
-                        currentmessagesession.find(".historymessages").append("<div class=\"currentmessage message message-me\"><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url({% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center;\"><img src=\"{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}\" /></div></div><pre class=\"itemcontent-content message-me\">" + messagecontent + "</pre></div>");
+                        var clientcreate = $.now();
+                        currentmessagesession.find(".historymessages").append("<div class=\"currentmessage message message-me\" clientcreate=\"" + clientcreate + "\"><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url({% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center;\"><img src=\"{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}\" /></div></div><pre class=\"itemcontent-content message-me\">" + messagecontent + "</pre></div>");
                         var lastcurrentmessage = currentmessagesession.find(".historymessages").find(".currentmessage").last();
                         currentmessagesession.find(".line-title").text(messagecontent);
                         currentmessagesession.find(".line-info-right").text("刚刚");
@@ -155,16 +162,19 @@
                             data: {
                                 "csrfmiddlewaretoken": "{{ csrf_token }}",
                                 "usernames": $(this).find(".messagetousernames").val(),
-                                "content": messagecontent
+                                "content": messagecontent,
+                                "clientcreate": clientcreate
                             },
                             success: function(data){
-                                lastcurrentmessage.toggleClass("currentmessage sendsuccessmessage");
-                                lastcurrentmessage.attr("create", data.create);
+                                lastcurrentmessage.attr("id", data.id);
+                                
+                                /*
                                 currentmessagesession.find(".historymessages .message").each(function(){
-                                    if (data.create == $(this).attr("create")) {
+                                    if (data.id == $(this).attr("id")) {
                                         lastcurrentmessage.remove();
                                     }
                                 });
+                                */
                             },
                             error: function(){
                                 lastcurrentmessage.toggleClass("currentmessage senderrormessage");
@@ -174,6 +184,11 @@
                     return false;
                 });
             }
+            
+            if (openmessagesession) {
+                openmessagesession.find(".sendmessageform").find(".messagecontent").focus();
+            }
+            
             if (data.uirid != "" && data.messagesessions.length > 0) {
                 loaddata(data.uirid);
             } else if(uirid != "") {
@@ -269,7 +284,6 @@
                     }
                 }
             });
-            
             
         }
         

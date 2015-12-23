@@ -48,12 +48,13 @@
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <p class="description"><textarea name="content">{% if form.content.value %}{{ form.content.value }}{% else %}{{ item.content }}{% endif %}</textarea></p>
-                <p>附件：
+                <!--<p>附件：
                 <br />
                 <input class="file" name="file" type="file" />
                 <br />
-                (小于2MB有效)</p>
-                <p><a href="/i/{{ item.id }}/">取消</a> <input class="submit" type="submit" value="添加更新" /></p>
+                (小于2MB有效)</p>-->
+                <p><input class="submit" type="submit" value="添加更新" /></p>
+                <p class="cancel-btn"><a href="/i/{{ item.id }}/">取消</a></p>
             </form>
             {% endif %}
         </div>

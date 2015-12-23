@@ -480,8 +480,11 @@ def Feedback(request):
     if request.method == 'POST':
         if request.POST.get('feedback'):
             feedback = request.POST['feedback']
-            send_mail('Feedback to hulu.im', request.user.username + ': ' + feedback, 'w@sadpast.com',['lostab@gmail.com'], fail_silently=False)
-            return render_to_response('user/feedback.html', { 'submit': 'true' }, context_instance=RequestContext(request))
+            try:
+                send_mail('Feedback to hulu.im', request.user.username + ': ' + feedback, 'w@sadpast.com',['lostab@qq.com'], fail_silently=False)
+                return render_to_response('user/feedback.html', { 'submit': 'true' }, context_instance=RequestContext(request))
+            except:
+                return redirect('/u/feedback/')
         else:
             return redirect('/u/feedback/')
 

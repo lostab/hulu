@@ -119,11 +119,11 @@
             {% csrf_token %}
             <input class="comment-parent" name="reply" type="hidden"{% if request.GET.reply %} value="{{ request.GET.reply }}"{% endif %} />
             <p class="comment-content">{% if reply %}<span class="comment-reply-to">回复 {{ reply.user.username }}：</span>{% endif %}<textarea name="content">{{ form.content.value }}</textarea></p>
-            <p>附件：
+            <!--<p>附件：
             <br />
             <input class="file" name="file" type="file" />
             <br />
-            (小于2MB有效)</p>
+            (小于2MB有效)</p>-->
             <p><input class="submit" type="submit" value="提交" /></p>
         </form>
         {% else %}

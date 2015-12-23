@@ -35,30 +35,16 @@ if 'VCAP_SERVICES' in os.environ:
     sqldb = vcap['sqldb'][0]['credentials']
     DATABASES = {
       'default': {
-            'ENGINE'     : 'ibm_db_django',
-            'NAME'       : str(sqldb['db']),
-            'USER'       : str(sqldb['username']),
-            'PASSWORD'   : str(sqldb['password']),
-            'HOST'       : str(sqldb['host']),
-            'PORT'       : str(sqldb['port']),
-            'PCONNECT'   :  True,
+            'ENGINE'        : 'ibm_db_django',
+            'NAME'          : str(sqldb['db']),
+            'USER'          : str(sqldb['username']),
+            'PASSWORD'      : str(sqldb['password']),
+            'HOST'          : str(sqldb['host']),
+            'PORT'          : str(sqldb['port']),
+            'PCONNECT'      : True,
+            'CONN_MAX_AGE'  : None,
         }
     }
-    #from django.db import connections
-    #try:
-    #    conn = connections['db2'].cursor()
-    #except:
-    #    DATABASES = {
-    #        'default': {
-    #            'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-    #            'NAME': os.path.join(os.path.dirname(os.path.dirname(__file__)), 'hulu.db'),                      # Or path to database file if using sqlite3.
-    #            # The following settings are not used with sqlite3:
-    #            'USER': '',
-    #            'PASSWORD': '',
-    #            'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-    #            'PORT': '',                      # Set to empty string for default.
-    #        }
-    #    }
 
 CACHES = {
     'default': {
@@ -220,6 +206,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.i18n',
 )
 
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
 LOGIN_URL = '/u/login/'
 LOGIN_REDIRECT_URL = '/u/'
 LOGOUT_URL = '/u/logout/'
@@ -227,5 +215,5 @@ LOGOUT_URL = '/u/logout/'
 EMAIL_HOST      = 'smtp.gmail.com'
 EMAIL_PORT      = 587
 EMAIL_USE_TLS   = True
-EMAIL_HOST_USER = 'ACCOUNT'
+EMAIL_HOST_USER = 'USERNAME'
 EMAIL_HOST_PASSWORD = 'PASSWORD'
