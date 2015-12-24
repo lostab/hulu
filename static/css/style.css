@@ -401,7 +401,8 @@ p.cancel-btn {
     line-height: 1em;
 	text-decoration:none;
     float: right;
-    margin: 7px 0 7px 7px;
+    /*margin: 7px 0 7px 7px;*/
+    margin-top: 7px;
 }
 .home .subitemcount:visited {
     background: lightgray;

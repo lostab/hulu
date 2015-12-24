@@ -37,8 +37,6 @@ from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
 
 def index(request):
-    resetdb()
-    
     try:
         if Site.objects.all():
             site = Site.objects.all()[0]
@@ -218,8 +216,6 @@ def sq(request):
         return render_to_response('other/sq.html', {} , context_instance=RequestContext(request))
 
 def app(request):
-    resetdb()
-    
     if request.user.is_authenticated():
         content = {
             
