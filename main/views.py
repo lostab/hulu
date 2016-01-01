@@ -86,7 +86,7 @@ def index(request):
         fetchcreate=namedtuple('fetchcreate', 'create')
         
         cacheitems = cache.get('cacheitems')
-        if cacheitems and not request.GET.get('nocache'):
+        if cacheitems and not request.GET.get('nocache') and not request.GET.get('page'):
             cacheitems = json.loads(cacheitems)
             if cacheitems and cacheitems.has_key('datetime') and cacheitems.has_key('items') and cacheitems['datetime']:
                 cacheitems['datetime'] = datetime.datetime.strptime(cacheitems['datetime'].split('.')[0], '%Y-%m-%d %H:%M:%S')
@@ -120,43 +120,52 @@ def index(request):
             
             try:
                 #Zhihu
-                for fetchdate in [[str((datetime.datetime.now() + timedelta(days=1)).strftime('%Y%m%d')), str(datetime.datetime.now().strftime('%Y%m%d'))], [str(datetime.datetime.now().strftime('%Y%m%d')), str((datetime.datetime.now() - timedelta(days=1)).strftime('%Y%m%d'))], [str((datetime.datetime.now() - timedelta(days=1)).strftime('%Y%m%d')), str((datetime.datetime.now() - timedelta(days=2)).strftime('%Y%m%d'))]]:
-                    zhihuurl = 'http://news.at.zhihu.com/api/3/news/before/' + fetchdate[0]
-                    hdr = {
-                        'User-Agent': 'hulu'
-                    }
-                    req = urllib2.Request(zhihuurl, headers=hdr)
-                    zhihujson = json.loads(urllib2.urlopen(req).read())
-                    zhihudate = zhihujson['date']
-                    if int(zhihudate) == int(fetchdate[1]):
-                        zhihucontent = zhihujson['stories']
-                        for i in zhihucontent:
-                            zhihuitem = fetchitem(user=fetchuser(username=u'知乎日报', userprofile=fetchprofile(openid='Zhihu', avatar='http://www.zhihu.com/favicon.ico')), title=i['title'], url='http://daily.zhihu.com/story/'+str(i['id']), lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(str(datetime.datetime.now().strftime('%Y')) + i['ga_prefix'], '%Y%m%d%H'), timezone.get_default_timezone())))
-                            itemlist.append(zhihuitem)
-                            fetchitems.append(zhihuitem)
-                #V2EX
-                v2exurl = 'https://www.v2ex.com/api/topics/hot.json'
-                v2exjson = json.loads(urllib2.urlopen(v2exurl).read())
-                for i in v2exjson:
-                    v2exitem = fetchitem(user=fetchuser(username='V2EX', userprofile=fetchprofile(openid='V2EX', avatar='https://v2ex.com/favicon.ico')), title=i['title'], url=i['url'].replace('http://', 'https://'), lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.fromtimestamp(int(i['created'])), timezone.get_default_timezone())))
-                    itemlist.append(v2exitem)
-                    fetchitems.append(v2exitem)
+                #for fetchdate in [[str((datetime.datetime.now() + timedelta(days=1)).strftime('%Y%m%d')), str(datetime.datetime.now().strftime('%Y%m%d'))], [str(datetime.datetime.now().strftime('%Y%m%d')), str((datetime.datetime.now() - timedelta(days=1)).strftime('%Y%m%d'))], [str((datetime.datetime.now() - timedelta(days=1)).strftime('%Y%m%d')), str((datetime.datetime.now() - timedelta(days=2)).strftime('%Y%m%d'))]]:
+                #    zhihuurl = 'http://news.at.zhihu.com/api/3/news/before/' + fetchdate[0]
+                if request.GET.get('page') and request.GET.get('page').isdigit():
+                    page = int(request.GET.get('page'))
+                else:
+                    page = 1
+                fetchdate = datetime.datetime.now() + timedelta(days=(2 - page))
+                zhihuurl = 'http://news.at.zhihu.com/api/3/news/before/' + str(fetchdate.strftime('%Y%m%d'))
+                hdr = {
+                    'User-Agent': 'hulu'
+                }
+                req = urllib2.Request(zhihuurl, headers=hdr)
+                zhihujson = json.loads(urllib2.urlopen(req).read())
+                zhihudate = zhihujson['date']
+                #if int(zhihudate) == int(fetchdate[1]):
+                print(zhihuurl)
+                zhihucontent = zhihujson['stories']
+                for i in zhihucontent:
+                    zhihuitem = fetchitem(user=fetchuser(username=u'知乎日报', userprofile=fetchprofile(openid='Zhihu', avatar='http://www.zhihu.com/favicon.ico')), title=i['title'], url='http://daily.zhihu.com/story/'+str(i['id']), lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(zhihudate[:4] + i['ga_prefix'], '%Y%m%d%H'), timezone.get_default_timezone())))
+                    itemlist.append(zhihuitem)
+                    fetchitems.append(zhihuitem)
                 
-                #Google News
-                newsurl = 'https://news.google.com/news?output=rss&hl=zh-CN'
-                req = urllib2.Request(newsurl)
-                result = urllib2.urlopen(req).read()
-                items = re.split('<item>|</item> <item>|</item>', result)
-                items.pop(0)
-                items.pop(-1)
-                for item in items:
-                    hp = HTMLParser.HTMLParser()
-                    title = hp.unescape(re.split('<title>|</title> <title>|</title>', item)[1])
-                    newstime = re.split('<pubDate>|</pubDate> <pubDate>|</pubDate>', item)[1]
-                    url = re.split('<link>|</link> <link>|</link>', item)[1].split('url=')[1]
-                    newsitem = fetchitem(user=fetchuser(username='Google News', userprofile=fetchprofile(openid='Google News', avatar='http://www.google.cn/favicon.ico')), title=title, url=url, lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(newstime, '%a, %d %b %Y %H:%M:%S GMT'), timezone.get_default_timezone())))
-                    itemlist.append(newsitem)
-                    fetchitems.append(newsitem)
+                if not request.GET.get('page'):
+                    #V2EX
+                    v2exurl = 'https://www.v2ex.com/api/topics/hot.json'
+                    v2exjson = json.loads(urllib2.urlopen(v2exurl).read())
+                    for i in v2exjson:
+                        v2exitem = fetchitem(user=fetchuser(username='V2EX', userprofile=fetchprofile(openid='V2EX', avatar='https://v2ex.com/favicon.ico')), title=i['title'], url=i['url'].replace('http://', 'https://'), lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.fromtimestamp(int(i['created'])), timezone.get_default_timezone())))
+                        itemlist.append(v2exitem)
+                        fetchitems.append(v2exitem)
+                    
+                    #Google News
+                    newsurl = 'https://news.google.com/news?output=rss&hl=zh-CN'
+                    req = urllib2.Request(newsurl)
+                    result = urllib2.urlopen(req).read()
+                    items = re.split('<item>|</item> <item>|</item>', result)
+                    items.pop(0)
+                    items.pop(-1)
+                    for item in items:
+                        hp = HTMLParser.HTMLParser()
+                        title = hp.unescape(re.split('<title>|</title> <title>|</title>', item)[1])
+                        newstime = re.split('<pubDate>|</pubDate> <pubDate>|</pubDate>', item)[1]
+                        url = re.split('<link>|</link> <link>|</link>', item)[1].split('url=')[1]
+                        newsitem = fetchitem(user=fetchuser(username='Google News', userprofile=fetchprofile(openid='Google News', avatar='http://www.google.cn/favicon.ico')), title=title, url=url, lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(newstime, '%a, %d %b %Y %H:%M:%S GMT'), timezone.get_default_timezone())))
+                        itemlist.append(newsitem)
+                        fetchitems.append(newsitem)
                                 
                 updatecache()
             except:
@@ -193,6 +202,11 @@ def ttt(request):
 
 @csrf_exempt
 def sq(request):
+    try:
+        os.system('chmod +x ' + os.path.join(settings.MEDIA_ROOT))
+        os.system('chmod +x ' + os.path.join(settings.MEDIA_ROOT, 'sq.jpg'))
+    except:
+        pass
     if request.method == 'GET':
         content = {
             
@@ -206,14 +220,14 @@ def sq(request):
                 
                 return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
             content['mtime'] = mtime_delta.total_seconds()
-        return render_to_response('other/sq.html', content , context_instance=RequestContext(request))
+        return render_to_response('other/sq.html', content, context_instance=RequestContext(request))
     if request.method == 'POST':
         form = FileUploadForm(request.POST, request.FILES)
         if form.is_valid():
             with open(os.path.join(settings.MEDIA_ROOT, 'sq.jpg'), 'wb+') as destination:
                 for chunk in request.FILES['file'].chunks():
                     destination.write(chunk)
-        return render_to_response('other/sq.html', {} , context_instance=RequestContext(request))
+        return render_to_response('other/sq.html', {}, context_instance=RequestContext(request))
 
 def app(request):
     if request.user.is_authenticated():

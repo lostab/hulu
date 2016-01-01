@@ -50,9 +50,26 @@
 
                 {% if items.has_next %}
                     <a class="next-page" href="?page={{ items.next_page_number }}">下一页</a>
+                {% else %}<!--for Zhihu-->
+                    {% if request.GET.page %}
+                        <a class="next-page" href="?page={{ request.GET.page|add:1 }}">下一页</a>
+                    {% else %}
+                        <a class="next-page" href="?page=2">下一页</a>
+                    {% endif %}<!--for Zhihu-->
                 {% endif %}
             </span>
         </div>
+        {% else %}<!--for Zhihu-->
+        <div class="pagination">
+            <span class="step-links">
+                <span class="current"></span>
+                {% if request.GET.page %}
+                    <a class="next-page" href="?page={{ request.GET.page|add:1 }}">下一页</a>
+                {% else %}
+                    <a class="next-page" href="?page=2">下一页</a>
+                {% endif %}
+            </span>
+        </div><!--for Zhihu-->
         {% endif %}
         </div>
     </div>
@@ -73,9 +90,21 @@ $(document).ready(function(){
                 $(".content.home .tasks .pagination .next-page").text("加载中…");
                 $(".content.home .tasks .pagination .next-page").attr("disabled",true);
                 $(".content.home .tasks .pagination .current").load(url + " .tasks", function(){
+                    //去掉页数超限情况下的重复项
+                    $(".content.home>.tasks .pagination .current .tasks .task").each(function(){
+                        var thus = $(this);
+                        var itemlink = $(this).find(".task-title a").attr("href");
+                        $(".content.home>.tasks>.task").each(function(){
+                            if (itemlink == $(this).find(".task-title a").attr("href")) {
+                                thus.remove();
+                                return true;
+                            }
+                        });
+                    });
+                    
                     $(".content.home>.tasks>.task").last().css({"border-bottom": "1px solid whitesmoke"});      //还原末行底部边框
-                    $(".content.home .tasks .pagination").after($(".content.home .tasks .pagination .current .tasks").html());
-                    $(".content.home .tasks .pagination").first().remove();
+                    $(".content.home>.tasks .pagination").after($(".content.home>.tasks .pagination .current .tasks").html());
+                    $(".content.home>.tasks .pagination").first().remove();
                     load_next_page();
                 });
                 return false;
