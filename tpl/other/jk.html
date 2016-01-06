@@ -38,7 +38,7 @@
                 $.getJSON("?type=json", function(json){
                     ct.setSeconds(ct.getSeconds() - json.mtime);
                     $(".mtime").text(ct.getFullYear() + "-" + ("0" + (ct.getMonth()+1)).slice(-2) + "-" + ("0" + ct.getDate()).slice(-2) + " " + ("0" + ct.getHours()).slice(-2) + ":" + ("0" + ct.getMinutes()).slice(-2) + ":" + ("0" + ct.getSeconds()).slice(-2));
-                    var imgurl = "/s/sq.jpg?" + Math.random();
+                    var imgurl = "?type=jkimg&" + Math.random();
                     if ($(".img1").is(":hidden")) {
                         $(".img1").attr({"src": imgurl});
                         $(".img1").onload = function(){

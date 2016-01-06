@@ -138,7 +138,7 @@ def index(request):
                 print(zhihuurl)
                 zhihucontent = zhihujson['stories']
                 for i in zhihucontent:
-                    zhihuitem = fetchitem(user=fetchuser(username=u'知乎日报', userprofile=fetchprofile(openid='Zhihu', avatar='http://www.zhihu.com/favicon.ico')), title=i['title'], url='http://daily.zhihu.com/story/'+str(i['id']), lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(zhihudate[:4] + i['ga_prefix'], '%Y%m%d%H'), timezone.get_default_timezone())))
+                    zhihuitem = fetchitem(user=fetchuser(username=u'知乎日报', userprofile=fetchprofile(openid='Zhihu', avatar='https://www.zhihu.com/favicon.ico')), title=i['title'], url='http://daily.zhihu.com/story/'+str(i['id']), lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(zhihudate[:4] + i['ga_prefix'], '%Y%m%d%H'), timezone.get_default_timezone())))
                     itemlist.append(zhihuitem)
                     fetchitems.append(zhihuitem)
                 
@@ -163,7 +163,7 @@ def index(request):
                         title = hp.unescape(re.split('<title>|</title> <title>|</title>', item)[1])
                         newstime = re.split('<pubDate>|</pubDate> <pubDate>|</pubDate>', item)[1]
                         url = re.split('<link>|</link> <link>|</link>', item)[1].split('url=')[1]
-                        newsitem = fetchitem(user=fetchuser(username='Google News', userprofile=fetchprofile(openid='Google News', avatar='http://www.google.cn/favicon.ico')), title=title, url=url, lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(newstime, '%a, %d %b %Y %H:%M:%S GMT'), timezone.get_default_timezone())))
+                        newsitem = fetchitem(user=fetchuser(username='Google News', userprofile=fetchprofile(openid='Google News', avatar='https://mail.qq.com/favicon.ico')), title=title, url=url, lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(newstime, '%a, %d %b %Y %H:%M:%S GMT'), timezone.get_default_timezone())))
                         itemlist.append(newsitem)
                         fetchitems.append(newsitem)
                                 
@@ -201,33 +201,54 @@ def ttt(request):
     return render_to_response('other/ttt.html', {} , context_instance=RequestContext(request))
 
 @csrf_exempt
-def sq(request):
+def jk(request, username):
     try:
-        os.system('chmod +x ' + os.path.join(settings.MEDIA_ROOT))
-        os.system('chmod +x ' + os.path.join(settings.MEDIA_ROOT, 'sq.jpg'))
-    except:
-        pass
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        user = None
+        return redirect('/')
+    
+    jkimg = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'jk', username, username + '.jpg')
+    
     if request.method == 'GET':
-        content = {
-            
-        }
-        if os.path.isfile(os.path.join(settings.MEDIA_ROOT, 'sq.jpg')):
-            mtime_delta = datetime.datetime.now() - datetime.datetime.fromtimestamp(os.path.getmtime(os.path.join(settings.MEDIA_ROOT, 'sq.jpg')))
-            if request.GET.get('type') == 'json':
+        if request.user.is_authenticated():
+            if request.user.username == username:
                 content = {
-                    'mtime': mtime_delta.total_seconds()
+                    
                 }
-                
-                return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
-            content['mtime'] = mtime_delta.total_seconds()
-        return render_to_response('other/sq.html', content, context_instance=RequestContext(request))
+                if os.path.isfile(jkimg):
+                    mtime_delta = datetime.datetime.now() - datetime.datetime.fromtimestamp(os.path.getmtime(jkimg))
+                    if request.GET.get('type') == 'json':
+                        content = {
+                            'mtime': mtime_delta.total_seconds()
+                        }
+                        
+                        return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
+                    if request.GET.get('type') == 'jkimg':
+                        try:
+                            with open(jkimg, "rb") as destination:
+                                return HttpResponse(destination.read(), content_type="image/jpeg")
+                        except:
+                            return HttpResponse()
+                    content['mtime'] = mtime_delta.total_seconds()
+                return render_to_response('other/jk.html', content, context_instance=RequestContext(request))
+            else:
+                return redirect('/')
+        else:
+            return redirectlogin(request)
     if request.method == 'POST':
+        try:
+            os.system('chmod +x ' + os.path.join(settings.MEDIA_ROOT, 'avatar'))
+            os.system('mkdir -p ' + os.path.dirname(jkimg))
+            os.system('chmod +x ' + os.path.dirname(jkimg))
+        except:
+            pass
         form = FileUploadForm(request.POST, request.FILES)
         if form.is_valid():
-            with open(os.path.join(settings.MEDIA_ROOT, 'sq.jpg'), 'wb+') as destination:
+            with open(jkimg, 'wb+') as destination:
                 for chunk in request.FILES['file'].chunks():
                     destination.write(chunk)
-        return render_to_response('other/sq.html', {}, context_instance=RequestContext(request))
+        return render_to_response('other/jk.html', {}, context_instance=RequestContext(request))
 
 def app(request):
     if request.user.is_authenticated():
