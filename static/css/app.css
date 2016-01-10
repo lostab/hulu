@@ -15,6 +15,7 @@ html, body, .container {
     line-height: 45px;
     background: black;
     text-align: center;
+    z-index: 9999;
 }
 .header .header-left {
     color: white;
