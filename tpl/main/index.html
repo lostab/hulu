@@ -5,27 +5,27 @@
 
 {% block content %}
     <div class="content home">
-        <div class="tasks">
+        <div class="items">
         {% for item in items %}
-        <div class="task">
+        <div class="item">
             <div class="avatar-area"><div class="avatar" style="background: url({% if item.user.userprofile.openid %}{{ item.user.userprofile.avatar }}{% else %}{% if item.user.userprofile.avatar %}/s/{{ item.user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center;"><img src="{% if item.user.userprofile.openid %}{{ item.user.userprofile.avatar }}{% else %}{% if item.user.userprofile.avatar %}/s/{{ item.user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" /></div></div>
-            <div class="task-line">
-                <div class="task-info">
-                    <span class="task-info-right"><a class="task-created">{% blocktrans with item.lastsubitem.create|timesince as update %}{{ update }}{% endblocktrans %}前</a>
+            <div class="item-line">
+                <div class="item-info">
+                    <span class="item-info-right"><a class="item-created">{% blocktrans with item.lastsubitem.create|timesince as update %}{{ update }}{% endblocktrans %}前</a>
                     </span>
                     
-                    <span class="task-info-left">
-                        {% if item.url %}<!--fetch-->
+                    <span class="item-info-left">
+                        {% if item.url %}
                         <span class="username">{{ item.user.username }}</span>
                         {% else %}
-                        <a class="task-author" href="/{{ item.user.username }}/"><span class="username">{{ item.user.username }}</span></a>
+                        <a class="item-author" href="/{{ item.user.username }}/"><span class="username">{{ item.user.username }}</span></a>
                         {% endif %}
                         <br />
                         <span class="userinfo">{{ item.user.userprofile.info }}</span>
                     </span>
                 </div>
-                <div class="task-title">
-                {% if item.url %}<!--fetch-->
+                <div class="item-title">
+                {% if item.url %}
                     <a href="{{ item.url }}" target="_blank">{{ item.title }}</a>
                 {% else %}
                     {% if item.subitemcount %}
@@ -79,38 +79,38 @@
 <script type="text/javascript">
 $(document).ready(function(){
     var load_next_page = function(){
-        if ($(".content.home .tasks .pagination .next-page").length > 0) {
-            $(".content.home>.tasks>.task").last().css({"border": "none"});     //去掉末行底部边框
-            $(".content.home .tasks .pagination .current").hide();
-            $(".content.home .tasks .pagination .previous-page").hide();
-            $(".content.home .tasks .pagination .next-page").text("加载更多");
-            //$(".content.home .tasks .pagination .next-page").css({"width": "100%", "height":"30px"});
-            $(".content.home .tasks .pagination .next-page").click(function(){
+        if ($(".content.home .items .pagination .next-page").length > 0) {
+            $(".content.home>.items>.item").last().css({"border": "none"});     //去掉末行底部边框
+            $(".content.home .items .pagination .current").hide();
+            $(".content.home .items .pagination .previous-page").hide();
+            $(".content.home .items .pagination .next-page").text("加载更多");
+            //$(".content.home .items .pagination .next-page").css({"width": "100%", "height":"30px"});
+            $(".content.home .items .pagination .next-page").click(function(){
                 var url = $(this).attr("href");
-                $(".content.home .tasks .pagination .next-page").text("加载中…");
-                $(".content.home .tasks .pagination .next-page").attr("disabled",true);
-                $(".content.home .tasks .pagination .current").load(url + " .tasks", function(){
+                $(".content.home .items .pagination .next-page").text("加载中…");
+                $(".content.home .items .pagination .next-page").attr("disabled",true);
+                $(".content.home .items .pagination .current").load(url + " .items", function(){
                     //去掉页数超限情况下的重复项
-                    $(".content.home>.tasks .pagination .current .tasks .task").each(function(){
+                    $(".content.home>.items .pagination .current .items .item").each(function(){
                         var thus = $(this);
-                        var itemlink = $(this).find(".task-title a").attr("href");
-                        $(".content.home>.tasks>.task").each(function(){
-                            if (itemlink == $(this).find(".task-title a").attr("href")) {
+                        var itemlink = $(this).find(".item-title a").attr("href");
+                        $(".content.home>.items>.item").each(function(){
+                            if (itemlink == $(this).find(".item-title a").attr("href")) {
                                 thus.remove();
                                 return true;
                             }
                         });
                     });
                     
-                    $(".content.home>.tasks>.task").last().css({"border-bottom": "1px solid whitesmoke"});      //还原末行底部边框
-                    $(".content.home>.tasks .pagination").after($(".content.home>.tasks .pagination .current .tasks").html());
-                    $(".content.home>.tasks .pagination").first().remove();
+                    $(".content.home>.items>.item").last().css({"border-bottom": "1px solid whitesmoke"});      //还原末行底部边框
+                    $(".content.home>.items .pagination").after($(".content.home>.items .pagination .current .items").html());
+                    $(".content.home>.items .pagination").first().remove();
                     load_next_page();
                 });
                 return false;
             });
         } else {
-            $(".content.home .tasks .pagination").remove();
+            $(".content.home .items .pagination").remove();
         }
     }
     load_next_page();
@@ -120,8 +120,8 @@ $(document).ready(function(){
             $(".content.home").before("<p class=\"loading\" style=\"color:gray;text-align:center;display:none;\">加载中…</p>");
             $(".loading").slideDown();
         }
-        $(".content.home").load("/ .tasks", function(response, status, xhr){
-            $(".tasks").show();
+        $(".content.home").load("/ .items", function(response, status, xhr){
+            $(".items").show();
             load_next_page();
             $(".loading").slideUp(function(){
                 $(this).remove();

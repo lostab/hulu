@@ -9,6 +9,11 @@ html, body {
     font-family: times new roman;
     /*overflow: hidden;*/
 }
+.wrapper {
+    width: 980px;
+    height: inherit;
+    margin: 0 auto;
+}
 a {
     color: black;
     text-decoration: none;
@@ -40,14 +45,14 @@ img {
     font-size: small;
 }
 .header {
-    width: 100%;
+    width: inherit;
     height: 24px;
     marging: 0;
     padding: 3px;
     border-bottom: 1px solid whitesmoke;
     position: fixed;
     background: whitesmoke;
-    z-index: 1;
+    z-index: 999;
     box-shadow: 0 3px 3px 3px whitesmoke;
 }
 .header .logo {
@@ -147,9 +152,19 @@ img {
     height: 100%;*/
 }
 .content {
-    margin: 7px;
+    margin: 17px 0 17px 0;
     padding: 7px;
     min-height: 230px;
+}
+.content.item {
+    width: 600px;
+    float: left;
+}
+.sidebar {
+    margin: 17px 0 17px 0;
+    padding: 7px;
+    width: 280px;
+    float: right;
 }
 .content.signup p,.content.signup h3, .content.login p,.content.login h3, .content.account p,.content.account h3 {
     text-align: center;
@@ -198,7 +213,7 @@ p.cancel-btn {
 .userprofile .description {
     width: 80%;
 }
-.userprofile .created, .content.task .updated, .line .updated {
+.userprofile .created, .content.item .updated, .line .updated {
     text-align: right;
     color: lightgray;
     font-size: small;
@@ -240,21 +255,21 @@ p.cancel-btn {
 .userpage .title a {
 	text-decoration:none;
 }
-.content.create .description textarea, .content.task .description textarea, .line .description textarea {
+.content.create .description textarea, .content.item .description textarea, .line .description textarea {
 	vertical-align:top;
 	overflow-y:visible;
     width: 100%;
     height: 7em;
 }
-.content.tasks .task-line .task-title, .content.tasks .task-line .task-info{
+.content.items .item-line .item-title, .content.items .item-line .item-info{
     display: inline-block;
 }
-.content.tasks .task-line .task-title a, .line .line-main .line-title a {
+.content.items .item-line .item-title a, .line .line-main .line-title a {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.content.tasks .task-line .task-info {
+.content.items .item-line .item-info {
     float: right;
     color: lightgray;
     font-size: small;
@@ -279,7 +294,7 @@ p.cancel-btn {
     color: gray;
     font-size: small;
 }
-.home .task:not(:last-child), .line:not(:last-child), .comment, .home .createbutton {
+.home .item:not(:last-child), .line:not(:last-child), .comment, .home .createbutton {
     margin-bottom: 3px;
     border-bottom: 1px solid whitesmoke;
 }
@@ -288,7 +303,7 @@ p.cancel-btn {
     text-align: right;
     margin-top: -7px;
 }
-.home .task .avatar-area, .line .avatar-area, .comment .comment-avatar-area, .content.message .avatar-area {
+.home .item .avatar-area, .line .avatar-area, .comment .comment-avatar-area, .content.message .avatar-area {
     width: 30px;
     float: left;
 	vertical-align: top;
@@ -296,40 +311,40 @@ p.cancel-btn {
 .content.message .message-me .avatar-area {
     float: right;
 }
-.home .task .avatar, .line .avatar, .comment .comment-avatar-area .comment-avatar, .content.message .avatar-area .avatar {
+.home .item .avatar, .line .avatar, .comment .comment-avatar-area .comment-avatar, .content.message .avatar-area .avatar {
     width: 24px;
     height: 24px;
     border-radius: 12px;
     -webkit-border-radius: 12px;
     -moz-border-radius: 12px;
 }
-.home .task .avatar img, .line .avatar img, .comment .comment-avatar-area .comment-avatar img, .content.message .avatar-area .avatar img {
+.home .item .avatar img, .line .avatar img, .comment .comment-avatar-area .comment-avatar img, .content.message .avatar-area .avatar img {
     width: 24px;
     height: 24px;
     opacity: 0;
 	filter: alpha(opacity=0);
 }
-.home .task .task-line, .line .line-main, .comment .comment-line, .comment .itemcontent-content {
+.home .item .item-line, .line .line-main, .comment .comment-line, .comment .itemcontent-content {
     margin-left: 30px;
 }
-.home .task .task-line .task-author, .line .line-main .line-info .line-info-left, .comment .comment-line .comment-author {
+.home .item .item-line .item-author, .line .line-main .line-info .line-info-left, .comment .comment-line .comment-author {
     font-size: small;
     font-weight: normal;
 	vertical-align: top;
     height: 18px;
     color: gray;
 }
-.home .task .task-line .task-author, .comment .comment-line .comment-author {
+.home .item .item-line .item-author, .comment .comment-line .comment-author {
 	text-decoration:none;
     color: gray;
 }
-.home .task .task-line .task-title a:visited {
+.home .item .item-line .item-title a:visited {
     /*color: gray;*/
 }
-.home .tasks {
+.home .items {
     
 }
-.home .tasks .task-line .task-title {
+.home .items .item-line .item-title {
     line-height: 2em;
     vertical-align: middle;
 	word-wrap: break-word;
@@ -367,22 +382,22 @@ p.cancel-btn {
 .comment .comment-operate a {
     
 }
-.home .task .task-info, .line .line-info, .comment .comment-info {
+.home .item .item-info, .line .line-info, .comment .comment-info {
     font-size: small;
     line-height: 18px;
     color: gray;
 }
-.home .task .task-info .task-created, .line .line-info .line-info-right, .home .task .task-info .userinfo {
+.home .item .item-info .item-created, .line .line-info .line-info-right, .home .item .item-info .userinfo {
     color: lightgray;
 }
-.home .task .task-info .task-created:hover, .line .line-info .line-info-right:hover, .home .task .task-info .task-author:hover {
+.home .item .item-info .item-created:hover, .line .line-info .line-info-right:hover, .home .item .item-info .item-author:hover {
     text-decoration: none;
 }
-.home .task .task-info .task-info-right, .line .line-info .line-info-right, .comment .comment-info .comment-created {
+.home .item .item-info .item-info-right, .line .line-info .line-info-right, .comment .comment-info .comment-created {
     float: right;
     text-align: right;
 }
-.home .task .item-title {
+.home .item .item-title {
     
 }
 .home .subitemcount {
@@ -418,50 +433,50 @@ p.cancel-btn {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
 }
-.content.task .avatar-area {
+.content.item .avatar-area {
     width: 48px;
     float: left;
 }
-.content.task .avatar {
+.content.item .avatar {
     width: 48px;
     height: 48px;
     border-radius: 24px;
     -webkit-border-radius: 24px;
     -moz-border-radius: 24px;
 }
-.content.task .avatar img {
+.content.item .avatar img {
     width: 48px;
     height: 48px;
     opacity: 0;
 	filter: alpha(opacity=0);
 }
-.content.task .task-head {
+.content.item .item-head {
     margin-left: 50px;
 }
-.content.task .task-title {
+.content.item .item-title {
     line-height: 30px;
     margin: 0;
 }
-.content.task .task-info {
+.content.item .item-info {
     /*height: 18px;*/
     color: gray;
     font-size: small;
 }
-.content.task .task-info .task-author {
+.content.item .item-info .item-author {
     
 }
-.content.task .task-info a {
+.content.item .item-info a {
 	text-decoration:none;
     color: gray;
 }
-.content.task .task-info .task-created, .line .line-main .line-info .line-info-right {
+.content.item .item-info .item-created, .line .line-main .line-info .line-info-right {
     color: lightgray;
     float: right;
 }
-.content.task .line {
+.content.item .line {
     margin: 7px 0 7px 0;
 }
-.content.task .description {
+.content.item .description {
 	vertical-align: top;
     margin: 0;
     font-family: Consolas;
@@ -581,7 +596,7 @@ p.cancel-btn {
     opacity: 1;
     filter: alpha(opacity=100);
 }
-.feedback textarea, .content.task form textarea, .content form textarea {
+.feedback textarea, .content.item form textarea, .content form textarea {
 	vertical-align: top;
 	overflow-y:visible;
     width: 100%;
@@ -593,4 +608,5 @@ p.cancel-btn {
     text-align: center;
     background: whitesmoke;
     box-shadow: 0 -3px 3px 3px whitesmoke;
+    clear: both;
 }

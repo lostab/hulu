@@ -4,20 +4,20 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-        <div class="content task">
+        <div class="content item">
             {% if item %}
             <div class="avatar-area">
                 <div class="avatar" style="background: url({% if item.user.userprofile.openid %}{{ item.user.userprofile.avatar }}{% else %}{% if item.user.userprofile.avatar %}/s/{{ item.user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center;"><img src="{% if item.user.userprofile.openid %}{{ item.user.userprofile.avatar }}{% else %}{% if item.user.userprofile.avatar %}/s/{{ item.user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" /></div>
             </div>
-            <div class="task-head">
-                <div class="task-info">
-                    <span class="task-info-right"><a class="task-created">{% with item.itemcontent_set.all|first as itemcontent %}{{ itemcontent.create|date:'Y-m-d H:i:s'}}{% endwith %}</a></span>
+            <div class="item-head">
+                <div class="item-info">
+                    <span class="item-info-right"><a class="item-created">{% with item.itemcontent_set.all|first as itemcontent %}{{ itemcontent.create|date:'Y-m-d H:i:s'}}{% endwith %}</a></span>
                     
-                    <span class="task-info-left"><a class="username" href="/{{ item.user.username }}/"><span class="username">{{ item.user.username }}</span></a>
+                    <span class="item-info-left"><a class="username" href="/{{ item.user.username }}/"><span class="username">{{ item.user.username }}</span></a>
                     <br />
                     <span class="userinfo">{{ item.user.userprofile.info }}</span></span>
                 </div>
-                <h3 class="task-title"><a href="/i/{{ item.id }}/">{{ item.title }}</a></h3>
+                <h3 class="item-title"><a href="/i/{{ item.id }}/">{{ item.title }}</a></h3>
             </div>
             <div class="line"><!--<label>详情：</label>-->
             {% for itemcontent in item.itemcontent_set.all %}

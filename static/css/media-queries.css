@@ -1,0 +1,42 @@
+@media screen and (max-width: 980px) {
+    .wrapper {
+        width: 95%;
+    }
+    .content {
+        width: 60%;
+        padding: 3% 4%;
+    }
+    .sidebar {
+        width: 30%;
+    }
+    .sidebar .widget {
+        padding: 8% 7%;
+        margin-bottom: 10px;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .content {
+        width: auto;
+        float: none;
+        margin: 20px 0;
+    }
+    .sidebar {
+        width: auto;
+        float: none;
+        margin: 0;
+    }
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    width: auto\9; /* ie8 */
+}
+
+.video embed,
+.video object,
+.video iframe {
+    width: 100%;
+    height: auto;
+}
