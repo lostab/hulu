@@ -92,25 +92,34 @@ img {
     background: gray;
     color: white;
 }
+.header .right-navbar a.accounts-button {
+    position: relative;
+}
 .header .avatar-area {
 	vertical-align: top;
     display: inline-block;
+    height: 24px;
+    line-height: 24px;
+    width: 24px;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 .header .avatar-area .avatar {
     width: 24px;
     height: 24px;
-	vertical-align: top;
     border-radius: 12px;
     -webkit-border-radius: 12px;
     -moz-border-radius: 12px;
-    display: inline-block;
-	vertical-align: middle;
+    line-height: 24px;
 }
 .header .avatar-area .avatar img {
     width: 24px;
     height: 24px;
     opacity: 0;
 	filter: alpha(opacity=0);
+    line-height: 24px;
+    vertical-align: middle;
 }
 .header .right-navbar a:not(.header-navbar-button){
     font-family: arial,sans-serif;
@@ -138,6 +147,10 @@ img {
     opacity: 0.6;
 	filter: alpha(opacity=60);
     text-decoration: none;
+    display: inline-block;
+    height: 24px;
+    line-height: 24px;
+    vertical-align: top;
 }
 .header .right-navbar a:hover {
     opacity: 1;

@@ -16,7 +16,7 @@
 }
 
 @media screen and (max-width: 650px) {
-    .content {
+    .content, .content.item {
         width: auto;
         float: none;
         margin: 20px 0;

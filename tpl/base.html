@@ -14,7 +14,7 @@
     <div class="wrapper">
     <div class="header">
         <a class="logo" href="/">Hulu</a>
-        <span class="right-navbar">
+        <div class="right-navbar">
         {% if user.is_authenticated %}
             <a href="/u/" class="accounts-button" alt="账户"><div class="avatar-area"><div class="avatar" style="background: url({% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center;"><img src="{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" /></div></div></a>
             {% with user.usernotify_set.all|length as notifyamount %}<a href="/app/" alt="通知" class="notify-amount{% if notifyamount %} notify-amount-new{% endif %}" target="blank">{{ notifyamount }}</a>{% endwith %}
@@ -24,7 +24,7 @@
             <a class="header-navbar-button" alt="注册" href="{% url 'signup' %}{% if request.get_full_path != '/' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.get_full_path }}{% endif %}{% endif %}">注册</a>
             <a href="/i/create/" alt="发布" class="header-navbar-button">发布</a>
         {% endif %}
-        </span>
+        </div>
     </div>
     <div class="container">
         {% block content %}{% endblock %}
