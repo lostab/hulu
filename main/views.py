@@ -36,6 +36,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
 
+import jieba.analyse
+
 def index(request):
     try:
         if Site.objects.all():
@@ -64,6 +66,7 @@ def index(request):
                 item.create = itemcontent[0].create
                 if itemcontent[0].content:
                     item.title = itemcontent[0].content.strip().splitlines()[0]
+                    item.tags = jieba.analyse.extract_tags(itemcontent[0].content, 3)
                 else:
                     contentattachment = ContentAttachment.objects.filter(itemcontent=itemcontent[0])
                     item.title = contentattachment[0].title
@@ -80,7 +83,7 @@ def index(request):
         
         
         fetchitems = []
-        fetchitem = namedtuple('fetchitem', 'user title url lastsubitem')
+        fetchitem = namedtuple('fetchitem', 'user title url lastsubitem tags')
         fetchuser=namedtuple('fetchuser', 'username userprofile')
         fetchprofile=namedtuple('fetchprofile', 'openid avatar')
         fetchcreate=namedtuple('fetchcreate', 'create')
@@ -93,7 +96,7 @@ def index(request):
                 if cacheitems['datetime'] + timedelta(hours=1) > datetime.datetime.now():
                     for item in cacheitems['items']:
                         item['lastsubitem']['create'] = datetime.datetime.strptime(item['lastsubitem']['create'].split('+')[0], '%Y-%m-%d %H:%M:%S')
-                        cacheitem = fetchitem(user=fetchuser(username=item['user']['username'], userprofile=fetchprofile(openid=item['user']['userprofile']['openid'], avatar=item['user']['userprofile']['avatar'])), title=item['title'], url=item['url'], lastsubitem=fetchcreate(create=timezone.make_aware(item['lastsubitem']['create'], timezone.get_default_timezone())))
+                        cacheitem = fetchitem(user=fetchuser(username=item['user']['username'], userprofile=fetchprofile(openid=item['user']['userprofile']['openid'], avatar=item['user']['userprofile']['avatar'])), title=item['title'], url=item['url'], lastsubitem=fetchcreate(create=timezone.make_aware(item['lastsubitem']['create'], timezone.get_default_timezone())), tags=item['tags'])
                         itemlist.append(cacheitem)
         else:
             def updatecache():
@@ -114,7 +117,8 @@ def index(request):
                         },
                         'lastsubitem': {
                             'create': str(item.lastsubitem.create)
-                        }
+                        },
+                        'tags': jieba.analyse.extract_tags(item.title.decode().encode('utf-8'), 3)
                     })
                 cache.set('cacheitems', json.dumps(cacheitems, encoding='utf-8', ensure_ascii=False, indent=4), 3600)
             
@@ -138,7 +142,7 @@ def index(request):
                 print(zhihuurl)
                 zhihucontent = zhihujson['stories']
                 for i in zhihucontent:
-                    zhihuitem = fetchitem(user=fetchuser(username=u'知乎日报', userprofile=fetchprofile(openid='Zhihu', avatar='https://www.zhihu.com/favicon.ico')), title=i['title'], url='http://daily.zhihu.com/story/'+str(i['id']), lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(zhihudate[:4] + i['ga_prefix'], '%Y%m%d%H'), timezone.get_default_timezone())))
+                    zhihuitem = fetchitem(user=fetchuser(username=u'知乎日报', userprofile=fetchprofile(openid='Zhihu', avatar='https://www.zhihu.com/favicon.ico')), title=i['title'], url='http://daily.zhihu.com/story/'+str(i['id']), lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(zhihudate[:4] + i['ga_prefix'], '%Y%m%d%H'), timezone.get_default_timezone())), tags=jieba.analyse.extract_tags(i['title'].decode().encode('utf-8'), 3))
                     itemlist.append(zhihuitem)
                     fetchitems.append(zhihuitem)
                 
@@ -147,7 +151,7 @@ def index(request):
                     v2exurl = 'https://www.v2ex.com/api/topics/hot.json'
                     v2exjson = json.loads(urllib2.urlopen(v2exurl).read())
                     for i in v2exjson:
-                        v2exitem = fetchitem(user=fetchuser(username='V2EX', userprofile=fetchprofile(openid='V2EX', avatar='https://v2ex.com/favicon.ico')), title=i['title'], url=i['url'].replace('http://', 'https://'), lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.fromtimestamp(int(i['created'])), timezone.get_default_timezone())))
+                        v2exitem = fetchitem(user=fetchuser(username='V2EX', userprofile=fetchprofile(openid='V2EX', avatar='https://v2ex.com/favicon.ico')), title=i['title'], url=i['url'].replace('http://', 'https://'), lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.fromtimestamp(int(i['created'])), timezone.get_default_timezone())), tags=jieba.analyse.extract_tags(i['title'].decode().encode('utf-8'), 3))
                         itemlist.append(v2exitem)
                         fetchitems.append(v2exitem)
                     
@@ -163,7 +167,7 @@ def index(request):
                         title = hp.unescape(re.split('<title>|</title> <title>|</title>', item)[1])
                         newstime = re.split('<pubDate>|</pubDate> <pubDate>|</pubDate>', item)[1]
                         url = re.split('<link>|</link> <link>|</link>', item)[1].split('url=')[1]
-                        newsitem = fetchitem(user=fetchuser(username='Google News', userprofile=fetchprofile(openid='Google News', avatar='https://mail.qq.com/favicon.ico')), title=title, url=url, lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(newstime, '%a, %d %b %Y %H:%M:%S GMT'), timezone.get_default_timezone())))
+                        newsitem = fetchitem(user=fetchuser(username='Google News', userprofile=fetchprofile(openid='Google News', avatar='https://mail.qq.com/favicon.ico')), title=title, url=url, lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(newstime, '%a, %d %b %Y %H:%M:%S GMT'), timezone.get_default_timezone())), tags=jieba.analyse.extract_tags(title.decode().encode('utf-8'), 3))
                         itemlist.append(newsitem)
                         fetchitems.append(newsitem)
                                 

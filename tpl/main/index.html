@@ -34,6 +34,7 @@
                     <a class="item-title" href="/i/{{ item.id }}/">{{ item.title }}</a>
                 {% endif %}
                 </div>
+                <div class="item-tags">{% for tag in item.tags %}<div class="item-tag">{{ tag }}</div>{% endfor %}</div>
             </div>
         </div>
         {% endfor %}

@@ -21,6 +21,8 @@ from main.__init__ import *
 from item.__init__ import *
 from django.forms.models import inlineformset_factory
 
+import jieba.analyse
+
 def Index(request):
     if request.user.is_authenticated():
         try:
@@ -126,6 +128,7 @@ def View(request, id):
         itemcontent = ItemContent.objects.filter(item=item)
         if itemcontent[0].content:
             item.title = itemcontent[0].content.strip().splitlines()[0]
+            item.tags = jieba.analyse.extract_tags(itemcontent[0].content, 3)
         else:
             contentattachment = ContentAttachment.objects.filter(itemcontent=itemcontent[0])
             item.title = contentattachment[0].title

@@ -623,3 +623,12 @@ p.cancel-btn {
     box-shadow: 0 -3px 3px 3px whitesmoke;
     clear: both;
 }
+
+.item-tags .item-tag {
+    display: inline-block;
+    margin: 3px;
+    padding: 3px;
+    font-size: x-small;
+    background: lightgray;
+    color: white;
+}

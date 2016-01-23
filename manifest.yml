@@ -5,6 +5,6 @@ applications:
   name: hulu
   path: .
   domain: mybluemix.net
-  instances: 2
-  memory: 128M
+  instances: 1
+  memory: 1G
   command: sh runserver.sh

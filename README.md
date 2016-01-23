@@ -2,7 +2,7 @@ A simple framework based on Django.
 
 ~   required
     
-    Python & Django & PIL.
+    Python & Django & PIL & jieba.
 
 ~   runing
     

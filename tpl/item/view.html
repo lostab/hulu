@@ -18,6 +18,7 @@
                 <span class="userinfo">{{ item.user.userprofile.info }}</span></span>
             </div>
             <h3 class="item-title"><a href="/i/{{ item.id }}/">{{ item.title }}</a></h3>
+            <div class="item-tags">{% for tag in item.tags %}<div class="item-tag">{{ tag }}</div>{% endfor %}</div>
         </div>
         <div class="line">
         {% for itemcontent in item.itemcontent_set.all %}
