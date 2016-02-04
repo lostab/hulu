@@ -45,7 +45,7 @@ html, body, .container {
 .wrapper {
     width: 100%;
     height: calc(100% - 100px);
-    overflow-y: scroll;
+    overflow-y: auto;
     padding-top: 50px;
     padding-bottom: 50px;
 }
@@ -75,7 +75,6 @@ input, textarea {
 img {
     max-width: 100%;
 }
-
 .line {
     border-bottom: 1px solid lightgray;
     margin: 0;
@@ -132,15 +131,14 @@ img {
     color: lightgray;
     float: right;
 }
-.line .messagesession {
+.messagesession {
     width: 100%;
     height: calc(100% - 100px);
-    overflow-y: scroll;
-    position: absolute;
     top: 50px;
     left: 0;
-    background: white;
     visibility: hidden;
+    overflow-y: hidden;
+    background: white;
 	white-space: pre-wrap;
 	white-space: -moz-pre-wrap;
 	white-space: -pre-wrap;
@@ -148,12 +146,15 @@ img {
 	word-wrap: break-word;
     word-break: break-all;
 }
-.line .messagesession .historymessages {
+.messagesession .historymessages {
     width: 100%;
-    max-height: 100%;
-    overflow-y: scroll;
+    max-height: calc(100% - 100px);
+    overflow: hidden;
+    overflow-y: auto;
     position: absolute;
-    bottom: 0;
+    background: white;
+    left: 0;
+    bottom: 50px;
 	white-space: pre-wrap;
 	white-space: -moz-pre-wrap;
 	white-space: -pre-wrap;
@@ -161,16 +162,16 @@ img {
 	word-wrap: break-word;
     word-break: break-all;
 }
-.wrapper::-webkit-scrollbar, .line .messagesession::-webkit-scrollbar, .line .messagesession .historymessages::-webkit-scrollbar {
+.wrapper::-webkit-scrollbar, .messagesession::-webkit-scrollbar, .messagesession .historymessages::-webkit-scrollbar {
     display: none;
 }
-.line .messagesession .message-me {
+.messagesession .message-me {
     text-align: right;
 }
-.line .messagesession .message-me .avatar-area {
+.messagesession .message-me .avatar-area {
     float: right;
 }
-.line .messagesession .message .avatar-area .avatar {
+.messagesession .message .avatar-area .avatar {
     margin-left: 12px;
     width: 24px;
     height: 24px;
@@ -178,24 +179,24 @@ img {
     -webkit-border-radius: 12px;
     -moz-border-radius: 12px;
 }
-.line .messagesession .message .avatar-area .avatar img {
+.messagesession .message .avatar-area .avatar img {
     width: 24px;
     height: 24px;
     opacity: 0;
 	filter: alpha(opacity=0);
 }
-.line .messagesession .message .itemcontent-content {
+.messagesession .message .itemcontent-content {
     line-height: 24px;
     display: inline-block;
     margin-top: 0;
     width: 70%;
 }
-.line .messagesession .sendmessageform {
+.messagesession .sendmessageform {
     margin: 0;
     padding: 0;
     text-align: center;
 }
-.line .messagesession .sendmessageform {
+.messagesession .sendmessageform {
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -203,17 +204,17 @@ img {
     background: white;
     border-top: 1px solid lightgray;
 }
-.line .messagesession .sendmessageform .messagecontent {
+.messagesession .sendmessageform .messagecontent {
     width: calc(100% - 30px);
     margin: 7px;
     line-height: 30px;
 }
-.line .messagesession .sendmessageform .sendmessage {
+.messagesession .sendmessageform .sendmessage {
     display: none;
 }
-.line .messagesession .currentmessage .itemcontent-content {
+.messagesession .currentmessage .itemcontent-content {
     text-decoration: underline;
 }
-.line .messagesession .senderrormessage .itemcontent-content {
+.messagesession .senderrormessage .itemcontent-content {
     color: lightgray;
 }
