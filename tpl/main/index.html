@@ -26,7 +26,7 @@
                 </div>
                 <div class="item-title">
                 {% if item.url %}
-                    <a href="{{ item.url }}" target="_blank">{{ item.title }}</a>
+                    <a href="{{ item.url }}" target="blank">{{ item.title }}</a>
                 {% else %}
                     {% if item.subitemcount %}
                     <a class="subitemcount" href="/i/{{ item.id }}/#{{ item.lastsubitem.id }}">{{ item.subitemcount }}</a>
