@@ -6,5 +6,5 @@ applications:
   path: .
   domain: mybluemix.net
   instances: 1
-  memory: 1G
+  memory: 512M
   command: sh runserver.sh

@@ -100,6 +100,7 @@ def index(request):
                         itemlist.append(cacheitem)
         else:
             def updatecache():
+                cache.delete('cacheitems')
                 cacheitems = {
                     "datetime": str(timezone.make_aware(datetime.datetime.now(), timezone.get_default_timezone())),
                     "items": []
@@ -170,10 +171,16 @@ def index(request):
                         newsitem = fetchitem(user=fetchuser(username='Google News', userprofile=fetchprofile(openid='Google News', avatar='https://mail.qq.com/favicon.ico')), title=title, url=url, lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(newstime, '%a, %d %b %Y %H:%M:%S GMT'), timezone.get_default_timezone())), tags=jieba.analyse.extract_tags(title.decode().encode('utf-8'), 3))
                         itemlist.append(newsitem)
                         fetchitems.append(newsitem)
-                                
-                updatecache()
+                
+                if not request.GET.get('page'):
+                    updatecache()
+                else:
+                    pass
             except:
-                updatecache()
+                if not request.GET.get('page'):
+                    updatecache()
+                else:
+                    pass
         
         items = itemlist
         
