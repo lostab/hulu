@@ -28,7 +28,7 @@
         .msg { position: absolute; top: 50%; margin-top: -153px; text-align: center; width: 100%; }
         .menu { position: absolute; top: 50%; margin-top: 133px; text-align: center; width: 100%; }
         .menu .newgame { display: none; }
-        .box span.movechess { width: 100%; margin-left: -50%; }
+        .box span.movechess { display: inline-block; width: 100%; height: 100%; position: absolute; left: 0; }
     </style>
 </head>
 <body>
@@ -340,7 +340,7 @@
                     randomclick();
                 }
                 if(gamestatus == 0) {
-                    var msgs = new Array("该你下了");
+                    var msgs = new Array("该你下了", "快点，快点");
                     $(".msg").text(msgs[parseInt(Math.random()* msgs.length)]);
                 }
             }
@@ -376,11 +376,9 @@
                             chessqueue.shift();
                             removebox.html("<span class=\"movechess\">" + removebox.text() + "</span>");
                             var removechess = removebox.children("span");
-                            removechess.css({"position": "absolute"});
-                            
                             removechess.animate({
                                 marginTop: (that.offset().top - removebox.offset().top) + "px",
-                                marginLeft: (that.offset().left - removebox.offset().left - that.width() / 2) + "px"
+                                marginLeft: (that.offset().left - removebox.offset().left) + "px"
                             }, 500, function(){
                                 that.text(currentchess[0]);
                                 $(this).remove();

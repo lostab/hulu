@@ -25,6 +25,7 @@ from item.forms import *
 from django.db.models import Q
 from django.forms.util import ErrorList
 from django.core.context_processors import csrf
+import os
 
 def Main(request):
     user = request.user
@@ -481,7 +482,10 @@ def Feedback(request):
         if request.POST.get('feedback'):
             feedback = request.POST['feedback']
             try:
-                send_mail('Feedback to hulu.im', request.user.username + ': ' + feedback, 'w@sadpast.com',['lostab@qq.com'], fail_silently=False)
+                feedbackuser = ''
+                if request.user.username:
+                    feedbackuser = str(request.user.username) + ': '
+                send_mail('Feedback to hulu.im', feedbackuser + feedback, os.environ['system_mail_username'], ['lostab@qq.com'], fail_silently=False)
                 return render_to_response('user/feedback.html', { 'submit': 'true' }, context_instance=RequestContext(request))
             except:
                 return redirect('/u/feedback/')

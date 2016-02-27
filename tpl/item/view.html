@@ -132,6 +132,7 @@
             或
             <a href="{% url 'signup' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.get_full_path }}{% endif %}">注册</a>
             以参与评论。</p>
+            <p><a href="/u/login?type=qq&next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.path }}{% endif %}"><img src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_3.png" /></a></p>
         {% endif %}
     
     {% else %}
