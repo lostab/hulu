@@ -352,7 +352,7 @@ def app(request):
                                     if message not in ms['messages']:
                                         ms['messages'].append(message)
                 
-                messagelist = sorted(messagelist, key=lambda item:item['messages'][-1].lastsubitem.create, reverse=False)
+                messagelist = sorted(messagelist, key=lambda item:item['messages'][0].lastsubitem.create, reverse=False)
                 
                 messagesessions = []
                 for ms in messagelist:
