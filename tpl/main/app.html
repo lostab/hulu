@@ -29,6 +29,13 @@
 <script type="text/javascript" src="/s/js/jquery.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
+        {% if not newmessagesession %}
+        $(".container").after("<div class=\"loading\" style=\"width:100%;height:100%;margin:0;padding:0;vertical-align:middle;\"><div class=\"loading-content\" style=\"text-align:center;width:100%;height:10px;position:absolute;top:50%;margin-top:-5px;\">加载中……</div></div>");
+        $(".container").hide();
+        {% else %}
+        $(".container").show();
+        {% endif %}
+        
         var tooglefooter = function(){
             if ($(".footer").is(":hidden")) {
                 $(".wrapper").css({"height": "calc(100% - " + $(".header").height() + "px - " + $(".footer").height() + "px)", "padding-bottom": $(".footer").height()});
@@ -101,8 +108,8 @@
                 }
                 
                 //如果是新会话，在会话列表页面添加一行会话，并绑定事件
-                $(".wrapper .messagesessions").prepend("<div class=\"line\"><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url(" + messagesession.urusers[0].avatar + ") no-repeat;background-size: cover;background-position: center;\"><img src=" + messagesession.urusers[0].avatar + " /></div></div><div class=\"line-main\"><div class=\"line-info\"><span class=\"line-info-right\">" + messagesession.lastmessage.datetime.split(".")[0].split("+")[0] + "</span><span class=\"line-info-left\">" + userinfos + "</span></div><div class=\"line-title\">" + messagesession.lastmessage.content + "</div></div><div class=\"messagesession\"><div class=\"historymessagesbox\"><div class=\"historymessages\"></div></div><form class=\"sendmessageform\" method=\"post\" enctype=\"multipart/form-data\">{% csrf_token %}<input type=\"hidden\" class=\"messagetousernames\" name=\"usernames\" value=\"" + usernames + "\" /><input class=\"messagecontent\" name=\"content\" /><input class=\"sendmessage\" type=\"submit\" value=\"发送\" /></form></div></div>");
-                var currentmessagesession = $(".wrapper .messagesessions .line").first();
+                $(".wrapper .messagesessions").append("<div class=\"line\"><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url(" + messagesession.urusers[0].avatar + ") no-repeat;background-size: cover;background-position: center;\"><img src=" + messagesession.urusers[0].avatar + " /></div></div><div class=\"line-main\"><div class=\"line-info\"><span class=\"line-info-right\">" + messagesession.lastmessage.datetime.split(".")[0].split("+")[0] + "</span><span class=\"line-info-left\">" + userinfos + "</span></div><div class=\"line-title\">" + messagesession.lastmessage.content + "</div></div><div class=\"messagesession\"><div class=\"historymessagesbox\"><div class=\"historymessages\"></div></div><form class=\"sendmessageform\" method=\"post\" enctype=\"multipart/form-data\">{% csrf_token %}<input type=\"hidden\" class=\"messagetousernames\" name=\"usernames\" value=\"" + usernames + "\" /><input class=\"messagecontent\" name=\"content\" /><input class=\"sendmessage\" type=\"submit\" value=\"发送\" /></form></div></div>");
+                var currentmessagesession = $(".wrapper .messagesessions .line").last();
                 for (i in messagesession.messages){
                     var message = messagesession.messages[i];
                     var messageclass = message.user.username=="{{ user.username }}"?"message-me":"message-you";
@@ -192,6 +199,9 @@
                 success: function(data){
                     if (data.status == "success") {
                         loaddatafromjson(data, uirid);
+                        
+                        $(".container").show();
+                        $(".loading").remove();
                     }
                 },
                 error: function(){

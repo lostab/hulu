@@ -24,10 +24,10 @@
         {% for itemcontent in item.itemcontent_set.all %}
             <div class="itemcontent">
                 {% if forloop.first %}
-                <pre class="description itemcontent-content">{{ item.firstcontent }}</pre>
+                <div class="itemcontent-content"><pre>{{ item.firstcontent }}</pre></div>
                 {% else %}
                 <p class="updated">{{ itemcontent.create|date:'Y-m-d H:i:s' }}</p>
-                <pre class="itemcontent-content">{{ itemcontent.content }}</pre>
+                <div class="itemcontent-content"><pre>{{ itemcontent.content }}</pre></div>
                 {% endif %}
                 {% for attachmentfile in itemcontent.contentattachment_set.all %}
                     {% if 'svg' in attachmentfile.contenttype %}
@@ -68,7 +68,7 @@
                         
                         {% for itemcontent in subitem.itemcontent_set.all %}
                             <div class="item-info">{% if subitem.belong and item not in subitem.belong.all %}<span class="comment-reply-to">回复{% for i in subitem.belong.all %} {{ i.user }}{% endfor %}：</span>{% endif %}</div>
-                            <pre class="itemcontent-content">{{ itemcontent.content }}</pre>
+                            <div class="itemcontent-content"><pre>{{ itemcontent.content }}</pre></div>
                             
                             {% for attachmentfile in itemcontent.contentattachment_set.all %}
                                 {% if 'svg' in attachmentfile.contenttype %}

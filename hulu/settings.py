@@ -215,5 +215,6 @@ LOGOUT_URL = '/u/logout/'
 EMAIL_HOST      = 'smtp.gmail.com'
 EMAIL_PORT      = 587
 EMAIL_USE_TLS   = True
-EMAIL_HOST_USER = os.environ['system_mail_username']
-EMAIL_HOST_PASSWORD = os.environ['system_mail_password']
+if 'system_mail_username' in os.environ and 'system_mail_password' in os.environ:
+    EMAIL_HOST_USER = os.environ['system_mail_username']
+    EMAIL_HOST_PASSWORD = os.environ['system_mail_password']

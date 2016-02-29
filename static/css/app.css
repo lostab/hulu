@@ -7,6 +7,9 @@ html, body, .container {
     margin: 0;
     padding: 0;
 }
+.container {
+    display: none;
+}
 .header {
     position: fixed;
     top: 0;
