@@ -81,6 +81,18 @@ def index(request):
                     item.lastsubitem = itemcontent[0]
                 itemlist.append(item)
         
+        paginator = Paginator(itemlist, 30)
+        itemlist = []
+        page = request.GET.get('page')
+        try:
+            items = paginator.page(page)
+        except PageNotAnInteger:
+            items = paginator.page(1)
+        except EmptyPage:
+            items = paginator.page(paginator.num_pages)
+        
+        for item in items:
+            itemlist.append(item)
         
         fetchitems = []
         fetchitem = namedtuple('fetchitem', 'user title url lastsubitem tags')
@@ -140,7 +152,6 @@ def index(request):
                 zhihujson = json.loads(urllib2.urlopen(req).read())
                 zhihudate = zhihujson['date']
                 #if int(zhihudate) == int(fetchdate[1]):
-                print(zhihuurl)
                 zhihucontent = zhihujson['stories']
                 for i in zhihucontent:
                     zhihuitem = fetchitem(user=fetchuser(username=u'知乎日报', userprofile=fetchprofile(openid='Zhihu', avatar='https://www.zhihu.com/favicon.ico')), title=i['title'], url='http://daily.zhihu.com/story/'+str(i['id']), lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(zhihudate[:4] + i['ga_prefix'], '%Y%m%d%H'), timezone.get_default_timezone())), tags=jieba.analyse.extract_tags(i['title'].decode().encode('utf-8'), 3))
@@ -183,16 +194,7 @@ def index(request):
                     pass
         
         items = itemlist
-        
         items = sorted(items, key=lambda item:item.lastsubitem.create, reverse=True)
-        paginator = Paginator(items, 30)
-        page = request.GET.get('page')
-        try:
-            items = paginator.page(page)
-        except PageNotAnInteger:
-            items = paginator.page(1)
-        except EmptyPage:
-            items = paginator.page(paginator.num_pages)
     except Item.DoesNotExist:
         items = None
     

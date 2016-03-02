@@ -358,17 +358,17 @@
                 } else {
                     $(".menu .newgame").show();
                     if(chessqueue.length == 0) {
-                        var currentchess = [Math.random()>=0.5?"X":"O", $(this).attr("class").split(" ")[1]];
+                        var currentchess = [Math.random()>=0.5?"×":"○", $(this).attr("class").split(" ")[1]];
                         $(this).text(currentchess[0]);
                         chessqueue.push(currentchess);
                         humanchess = currentchess[0];
                         $(".newgame").text("重新开始");
-                        $(".info").text("你:" + humanchess + " 对方:" + (humanchess=="X"?"O":"X"));
+                        $(".info").text("你:" + humanchess + " 对方:" + (humanchess=="×"?"○":"×"));
                         
                         startai();
                     } else {
                         var that = $(this);
-                        var currentchess = [chessqueue[chessqueue.length-1][0]=="O"?"X":"O", $(this).attr("class").split(" ")[1]];
+                        var currentchess = [chessqueue[chessqueue.length-1][0]=="○"?"×":"○", $(this).attr("class").split(" ")[1]];
                         chessqueue.push(currentchess);
                         
                         if(chessqueue.length > 6) {

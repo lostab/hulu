@@ -70,6 +70,7 @@ img {
     background: url(/s/hulu.png) 10px no-repeat;
     background-size: 64px 24px;
     color: transparent;
+    font-size: 0;
 }
 .header .right-navbar {
     position: absolute;
@@ -215,7 +216,6 @@ p.cancel-btn {
     display: inline-block;
     margin: 0;
     font-family: Consolas;
-	font-size: 16px;
 	white-space: pre-wrap;
 	white-space: -moz-pre-wrap;
 	white-space: -pre-wrap;
