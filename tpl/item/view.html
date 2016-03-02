@@ -67,7 +67,15 @@
                         </div>
                         
                         {% for itemcontent in subitem.itemcontent_set.all %}
-                            <div class="item-info">{% if subitem.belong and item not in subitem.belong.all %}<span class="comment-reply-to">回复{% for i in subitem.belong.all %} {{ i.user }}{% endfor %}：</span>{% endif %}</div>
+                            <div class="item-info">
+                            {% if subitem.belong and item not in subitem.belong.all %}
+                                <div class="comment-reply-to">回复
+                                {% for i in subitem.belong.all %}
+                                    {{ i.user }}：<div class="itemcontent-content"><pre>{% with i.itemcontent_set.all|first as itemcontent %}{{ itemcontent.content }}{% endwith %}</pre></div>
+                                {% endfor %}
+                                </div>
+                            {% endif %}
+                            </div>
                             <div class="itemcontent-content"><pre>{{ itemcontent.content }}</pre></div>
                             
                             {% for attachmentfile in itemcontent.contentattachment_set.all %}

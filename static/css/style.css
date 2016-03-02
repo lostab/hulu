@@ -212,7 +212,7 @@ p.cancel-btn {
     color: lightgray;
 }
 .userprofile .description, .userpage .description {
-	vertical-align:top;
+	vertical-align: top;
     display: inline-block;
     margin: 0;
     font-family: Consolas;
@@ -291,7 +291,7 @@ p.cancel-btn {
     border-bottom: 1px dashed lightgray;
     line-height: 2em;
 }
-.itemcontent-content {
+.itemcontent-content pre {
     line-height: 1.5;
 	white-space: pre-wrap;
 	white-space: -moz-pre-wrap;
@@ -302,10 +302,10 @@ p.cancel-btn {
     font-family: Consolas;
 }
 .item-info .comment-reply-to {
+    width: calc(100% - 30px);
     display: inline-block;
-    text-indent: 30px;
+    margin-left: 30px;
     color: gray;
-    font-size: small;
 }
 .home .item:not(:last-child), .line:not(:last-child), .comment, .home .createbutton {
     margin-bottom: 3px;
