@@ -8,7 +8,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse
 from django.shortcuts import redirect
-import datetime
+from datetime import datetime, timedelta
 import urllib2
 import json
 import time
@@ -455,7 +455,7 @@ def Notify(request):
                             'page': i.item.user.userprofile.page
                         }
                     },
-                    'created': str(i.created),
+                    'created': str(i.created + timedelta(hours=8)),
                 }
                 messages.append(message)
             content = {
