@@ -178,6 +178,21 @@
                 });
             }
             
+            //系统消息排序，新增空会话提前
+            $(".wrapper .messagesessions .line").each(function(){
+                if ($(this).find(".line-info-left").text() == "系统消息") {
+                    for (i in $(this).prevAll()) {
+                        if (new Date($(this).find(".line-info-right").text()) > new Date($(this).prevAll().eq(i).find(".line-info-right").text())) {
+                            $(this).insertBefore($(this).prevAll().eq(i));
+                            break;
+                        }
+                    }
+                }
+                if ($(this).find(".line-info-right").text() == "") {
+                    $(this).prependTo($(this).closest(".messagesessions"));
+                }
+            });
+            
             if (openmessagesession) {
                 openmessagesession.find(".sendmessageform").find(".messagecontent").focus();
             }
@@ -227,7 +242,7 @@
                             for (i in notifymessages) {
                                 var notify = notifymessages[i];
                                 var message = {
-                                    "content": "您发布的 <a href=\"/i/" + notify.parent.id + "\">" + notify.parent.content.substr(0, 30) + "...</a> 有了 <a href=\"/" + notify.item.user.username + "/\" target=\"blank\">" + notify.item.user.username + "</a> 的新回应：" + notify.item.content.substr(0, 30) + "...",
+                                    "content": "您发布的 <a href=\"/i/" + notify.parent.id + "\" target=\"blank\">" + notify.parent.content.substr(0, 30) + "...</a> 有了 <a href=\"/" + notify.item.user.username + "/\" target=\"blank\">" + notify.item.user.username + "</a> 的新回应：" + notify.item.content.substr(0, 30) + "...",
                                     "create": notify.created,
                                     "id": "",
                                     "user": {
@@ -278,21 +293,6 @@
                             });
                         }
                     }
-                }
-            });
-            
-            //系统消息排序，新增空会话提前
-            $(".wrapper .messagesessions .line").each(function(){
-                if ($(this).find(".line-info-left").text() == "系统消息") {
-                    for (i in $(this).prevAll()) {
-                        if (new Date($(this).find(".line-info-right").text()) > new Date($(this).prevAll().eq(i).find(".line-info-right").text())) {
-                            $(this).insertBefore($(this).prevAll().eq(i));
-                            break;
-                        }
-                    }
-                }
-                if ($(this).find(".line-info-right").text() == "") {
-                    $(this).prependTo($(this).closest(".messagesessions"));
                 }
             });
         }
