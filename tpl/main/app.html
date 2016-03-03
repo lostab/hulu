@@ -181,9 +181,9 @@
             //系统消息排序，新增空会话提前
             $(".wrapper .messagesessions .line").each(function(){
                 if ($(this).find(".line-info-left").text() == "系统消息") {
-                    for (i in $(this).prevAll()) {
-                        if (new Date($(this).find(".line-info-right").text()) > new Date($(this).prevAll().eq(i).find(".line-info-right").text())) {
-                            $(this).insertBefore($(this).prevAll().eq(i));
+                    for (i in $(".wrapper .messagesessions .line")) {
+                        if (new Date($(this).find(".line-info-right").text()) > new Date($(".wrapper .messagesessions .line").eq(i).find(".line-info-right").text())) {
+                            $(this).insertBefore($(".wrapper .messagesessions .line").eq(i));
                             break;
                         }
                     }
