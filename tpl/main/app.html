@@ -182,7 +182,7 @@
             $(".wrapper .messagesessions .line").each(function(){
                 if ($(this).find(".line-info-left").text() == "系统消息") {
                     for (i in $(".wrapper .messagesessions .line")) {
-                        if (new Date($(this).find(".line-info-right").text()) > new Date($(".wrapper .messagesessions .line").eq(i).find(".line-info-right").text())) {
+                        if (new Date($(this).find(".line-info-right").text().replace(/-/g, "/")) > new Date($(".wrapper .messagesessions .line").eq(i).find(".line-info-right").text().replace(/-/g, "/"))) {
                             $(this).insertBefore($(".wrapper .messagesessions .line").eq(i));
                             break;
                         }
