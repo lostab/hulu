@@ -12,5 +12,5 @@ A community framework based on Django.
 
     SQLite, MySQL, DB2 or other relational databases.
 
-demo:
+Demo:
     https://hulu.im
