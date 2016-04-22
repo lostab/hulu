@@ -1,4 +1,4 @@
-A simple framework based on Django.
+A community framework based on Django.
 
 ~   required
     
@@ -8,6 +8,10 @@ A simple framework based on Django.
     
     Such as VPS or Heroku.
 
-~   Demo
+~   database
+
+    SQLite, MySQL, DB2 or other relational database.
+
+demo:
     
-    http://hulu.im
+    https://hulu.im
