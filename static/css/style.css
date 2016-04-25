@@ -67,19 +67,19 @@ img {
     font-family: Arial;
     padding-left: 7px;
     padding-right: 7px;
-    background: url(/s/hulu.png) 10px no-repeat;
+    background: url(/s/hulu.png) no-repeat;
     background-size: 64px 24px;
     color: transparent;
     font-size: 0;
 }
 .header .right-navbar {
     position: absolute;
-    right: 20px;
+    right: 7px;
 }
 .header .right-navbar .header-navbar-button {
     background: lightgray;
     color: white;
-	text-decoration:none;
+    text-decoration:none;
     border-radius: 3px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
