@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "Update" %} - {% endblock %}
+{% block title %}更新信息 - {% endblock %}
 
 {% block content %}
     {% if user.is_authenticated %}
@@ -45,7 +45,7 @@
                     {% endfor %}
                 </div>
             {% endfor %}
-            <h3 id="update-form">{% trans "Update" %}</h3>
+            <h3 id="update-form">更新信息</h3>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <p class="description"><textarea name="content">{% if form.content.value %}{{ form.content.value }}{% else %}{{ item.content }}{% endif %}</textarea></p>
@@ -54,8 +54,8 @@
                 <input class="file" name="file" type="file" />
                 <br />
                 (小于2MB有效)</p>-->
-                <p><input class="submit" type="submit" value="{% trans "Update" %}" /></p>
-                <p class="cancel-btn"><a href="/i/{{ item.id }}/">{% trans "Cancel" %}</a></p>
+                <p><input class="submit" type="submit" value="更新信息" /></p>
+                <p class="cancel-btn"><a href="/i/{{ item.id }}/">取消</a></p>
             </form>
             {% endif %}
         </div>
