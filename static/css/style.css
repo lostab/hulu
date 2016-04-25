@@ -167,7 +167,7 @@ img {
 }
 .content {
     margin: 17px 0 17px 0;
-    padding: 7px;
+    /*padding: 7px;*/
     min-height: 230px;
 }
 .content.item {
@@ -337,8 +337,8 @@ p.cancel-btn {
     opacity: 0;
 	filter: alpha(opacity=0);
 }
-.home .item .item-line, .line .line-main, .comment .comment-line, .comment .itemcontent-content {
-    /*margin-left: 30px;*/
+.home .item .item-line, .line .line-main/*, .comment .comment-line, .comment .itemcontent-content*/ {
+    margin-left: 30px;
 }
 .home .item .item-line .item-author, .line .line-main .line-info .line-info-left, .comment .comment-line .comment-author {
     font-size: small;
