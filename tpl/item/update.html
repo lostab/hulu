@@ -23,7 +23,7 @@
             {% for itemcontent in item.itemcontent_set.all %}
                 <div class="itemcontent">
                     {% if forloop.first %}
-                    <pre class="description itemcontent-content">{{ item.firstcontent }}</pre>
+                    <pre class="itemcontent-content">{{ item.firstcontent }}</pre>
                     {% else %}
                     <p class="updated">{{ itemcontent.create|date:'Y-m-d H:i:s' }}</p>
                     <pre class="itemcontent-content">{{ itemcontent.content }}</pre>
