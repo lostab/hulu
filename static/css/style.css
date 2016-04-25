@@ -179,6 +179,8 @@ img {
     padding: 7px;
     width: 280px;
     float: right;
+    position: fixed;
+    right: calc((100% - 980px) / 2);
 }
 .content.signup p,.content.signup h3, .content.login p,.content.login h3, .content.account p,.content.account h3 {
     text-align: center;
