@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}更新信息 - {% endblock %}
+{% block title %}{% trans "Update" %} - {% endblock %}
 
 {% block content %}
     {% if user.is_authenticated %}
@@ -19,14 +19,14 @@
                 </div>
                 <h3 class="item-title"><a href="/i/{{ item.id }}/">{{ item.title }}</a></h3>
             </div>
-            <div class="line"><!--<label>详情：</label>-->
+            <div class="line">
             {% for itemcontent in item.itemcontent_set.all %}
                 <div class="itemcontent">
                     {% if forloop.first %}
-                    <pre class="itemcontent-content">{{ item.firstcontent }}</pre>
+                    <div class="itemcontent-content"><pre>{{ item.firstcontent }}</pre></div>
                     {% else %}
                     <p class="updated">{{ itemcontent.create|date:'Y-m-d H:i:s' }}</p>
-                    <pre class="itemcontent-content">{{ itemcontent.content }}</pre>
+                    <div class="itemcontent-content"><pre>{{ itemcontent.content }}</pre></div>
                     {% endif %}
                     {% for attachmentfile in itemcontent.contentattachment_set.all %}
                         {% if 'svg' in attachmentfile.contenttype %}
@@ -44,7 +44,7 @@
                     {% endfor %}
                 </div>
             {% endfor %}
-            <h3 id="update-form">更新信息</h3>
+            <h3 id="update-form">{% trans "Update" %}</h3>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <p class="description"><textarea name="content">{% if form.content.value %}{{ form.content.value }}{% else %}{{ item.content }}{% endif %}</textarea></p>
@@ -53,8 +53,8 @@
                 <input class="file" name="file" type="file" />
                 <br />
                 (小于2MB有效)</p>-->
-                <p><input class="submit" type="submit" value="添加更新" /></p>
-                <p class="cancel-btn"><a href="/i/{{ item.id }}/">取消</a></p>
+                <p><input class="submit" type="submit" value="{% trans "Update" %}" /></p>
+                <p class="cancel-btn"><a href="/i/{{ item.id }}/">{% trans "Cancel" %}</a></p>
             </form>
             {% endif %}
         </div>
