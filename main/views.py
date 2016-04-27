@@ -135,7 +135,8 @@ def index(request):
                     })
                 cache.set('cacheitems', json.dumps(cacheitems, encoding='utf-8', ensure_ascii=False, indent=4), 3600)
             
-            try:
+            #try:
+            if request.user.id == 1:
                 #Zhihu
                 #for fetchdate in [[str((datetime.datetime.now() + timedelta(days=1)).strftime('%Y%m%d')), str(datetime.datetime.now().strftime('%Y%m%d'))], [str(datetime.datetime.now().strftime('%Y%m%d')), str((datetime.datetime.now() - timedelta(days=1)).strftime('%Y%m%d'))], [str((datetime.datetime.now() - timedelta(days=1)).strftime('%Y%m%d')), str((datetime.datetime.now() - timedelta(days=2)).strftime('%Y%m%d'))]]:
                 #    zhihuurl = 'http://news.at.zhihu.com/api/3/news/before/' + fetchdate[0]
@@ -187,11 +188,11 @@ def index(request):
                     updatecache()
                 else:
                     pass
-            except:
-                if not request.GET.get('page'):
-                    updatecache()
-                else:
-                    pass
+            #except:
+            #    if not request.GET.get('page'):
+            #        updatecache()
+            #    else:
+            #        pass
         
         items = itemlist
         items = sorted(items, key=lambda item:item.lastsubitem.create, reverse=True)
