@@ -184,10 +184,10 @@ def index(request):
                         itemlist.append(newsitem)
                         fetchitems.append(newsitem)
                 
-                if not request.GET.get('page'):
-                    updatecache()
-                else:
-                    pass
+            #    if not request.GET.get('page'):
+            #        updatecache()
+            #    else:
+            #        pass
             #except:
             #    if not request.GET.get('page'):
             #        updatecache()
