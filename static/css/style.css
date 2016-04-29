@@ -65,8 +65,8 @@ img {
     font-size: 1.5em;
     color: gray;
     font-family: Arial;
-    padding-left: 7px;
-    padding-right: 7px;
+    /*padding-left: 7px;
+    padding-right: 7px;*/
     background: url(/s/icon.png) no-repeat;
     background-size: 24px 24px;
     filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/s/icon.png', sizingMethod='scale');
