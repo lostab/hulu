@@ -137,10 +137,10 @@
                         $(".header .header-center").text("会话");
                         $(".header .header-left, .header .header-right").hide();
                     });
-                    $(this).closest(".line").find(".historymessages").scrollTop($(this).closest(".line").find(".historymessages")[0].scrollHeight);
+                    //$(this).closest(".line").find(".historymessages").scrollTop($(this).closest(".line").find(".historymessages")[0].scrollHeight);
                     openmessagesession.find(".sendmessageform").find(".messagecontent").click(function(){
-                        $(this).closest(".line").find(".historymessages").scrollTop($(this).closest(".line").find(".historymessages")[0].scrollHeight);
                         $(this).focus();
+                        $(this).closest(".line").find(".historymessages").scrollTop($(this).closest(".line").find(".historymessages")[0].scrollHeight);
                     });
                     openmessagesession.find(".sendmessageform").find(".messagecontent").click();
                 });
