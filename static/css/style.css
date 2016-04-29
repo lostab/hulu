@@ -57,7 +57,7 @@ img {
 }
 .header .logo {
     position: absolute;
-    width: 72px;
+    width: 24px;
     height: 24px;
     display: inline-block;
     text-decoration:none;
@@ -67,8 +67,8 @@ img {
     font-family: Arial;
     padding-left: 7px;
     padding-right: 7px;
-    background: url(/s/hulu.png) no-repeat;
-    background-size: 64px 24px;
+    background: url(/s/icon.png) no-repeat;
+    background-size: 24px 24px;
     color: transparent;
     font-size: 0;
 }
