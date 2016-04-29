@@ -138,7 +138,11 @@
                         $(".header .header-left, .header .header-right").hide();
                     });
                     $(this).closest(".line").find(".historymessages").scrollTop($(this).closest(".line").find(".historymessages")[0].scrollHeight);
-                    openmessagesession.find(".sendmessageform").find(".messagecontent").focus();
+                    openmessagesession.find(".sendmessageform").find(".messagecontent").click(function(){
+                        $(this).closest(".line").find(".historymessages").scrollTop($(this).closest(".line").find(".historymessages")[0].scrollHeight);
+                        $(this).focus();
+                    });
+                    openmessagesession.find(".sendmessageform").find(".messagecontent").click();
                 });
                 currentmessagesession.find(".avatar-area").click(function(){
                     $(this).next(".line-main").click();
