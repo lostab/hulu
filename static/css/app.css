@@ -203,6 +203,12 @@ img {
     margin-top: 0;
     max-width: 70%;
     text-align: left;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+    word-break: break-all;
 }
 .messagesession .sendmessageform {
     margin: 0;
