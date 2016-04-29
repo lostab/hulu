@@ -140,9 +140,8 @@
                     //$(this).closest(".line").find(".historymessages").scrollTop($(this).closest(".line").find(".historymessages")[0].scrollHeight);
                     openmessagesession.find(".sendmessageform").find(".messagecontent").click(function(){
                         $(this).focus();
-                        $(this).closest(".line").find(".historymessages").scrollTop($(this).closest(".line").find(".historymessages")[0].scrollHeight);
+                        setTimeout('$(this).closest(".line").find(".historymessages").scrollTop($(this).closest(".line").find(".historymessages")[0].scrollHeight)', 0);
                     });
-                    openmessagesession.find(".sendmessageform").find(".messagecontent").click();
                     openmessagesession.find(".sendmessageform").find(".messagecontent").click();
                 });
                 currentmessagesession.find(".avatar-area").click(function(){
