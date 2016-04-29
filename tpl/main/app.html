@@ -141,8 +141,9 @@
                         openmessagesession.find(".historymessages").scrollTop(openmessagesession.find(".historymessages")[0].scrollHeight);
                     };
                     openmessagesession.find(".sendmessageform").find(".messagecontent").click(function(){
+                        scrolldown();
                         $(this).focus();
-                        setTimeout(scrolldown, 100);
+                        setTimeout(scrolldown, 300);
                     });
                     openmessagesession.find(".sendmessageform").find(".messagecontent").click();
                 });
