@@ -206,9 +206,9 @@
                 }
             });
             
-            /*if (openmessagesession) {
+            if (openmessagesession && !openmessagesession.find(".sendmessageform").find(".messagecontent").is(":focus")) {
                 openmessagesession.find(".sendmessageform").find(".messagecontent").focus();
-            }*/
+            }
             
             if (data.uirid != "" && data.messagesessions.length > 0) {
                 loaddata(data.uirid);
