@@ -70,6 +70,7 @@
                 //默认为新会话
                 var isnewsession = 1;
                 $(".wrapper .messagesessions .line").each(function(){
+                    var messageline = $(this);
                     //如果在已有会话中找到相同的会话对象，则非新会话，在已有会话中追加会话内容
                     if ($(this).find(".sendmessageform").find(".messagetousernames").val() == usernames) {
                         $(this).find(".line-title").text(messagesession.lastmessage.content);
@@ -93,7 +94,7 @@
                             });
                         }
                         var scrolldown = function(){
-                            $(this).find(".historymessages").scrollTop($(this).find(".historymessages")[0].scrollHeight);
+                            messageline.find(".historymessages").scrollTop(messageline.find(".historymessages")[0].scrollHeight);
                         }
                         //$(this).find(".sendmessageform").find(".messagecontent").click();
                         scrolldown();
