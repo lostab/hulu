@@ -92,7 +92,8 @@
                                 }
                             });
                         }
-                        $(this).find(".historymessages").scrollTop($(this).find(".historymessages")[0].scrollHeight);
+                        //$(this).find(".historymessages").scrollTop($(this).find(".historymessages")[0].scrollHeight);
+                        $(this).find(".sendmessageform").find(".messagecontent").click();
                         //同时标记为已有会话
                         isnewsession = 0;
                     }
@@ -143,7 +144,7 @@
                     openmessagesession.find(".sendmessageform").find(".messagecontent").click(function(){
                         scrolldown();
                         $(this).focus();
-                        setTimeout(scrolldown, 300);
+                        setTimeout(scrolldown, 200);
                     });
                     openmessagesession.find(".sendmessageform").find(".messagecontent").click();
                 });
