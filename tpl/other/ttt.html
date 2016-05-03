@@ -111,6 +111,7 @@
             }
             
             var ai = function() {
+                lockclick = 0;
                 if(chessqueue.length >= 3) {
                     var ifclick = 0;
                     var humanchess1 = chessqueue[chessqueue.length-1][1];
@@ -345,7 +346,6 @@
                     $(".msg").text(msgs[parseInt(Math.random()* msgs.length)]);
                 }
                 
-                lockclick = 0;
             }
             
             var startai = function(){
@@ -380,10 +380,12 @@
                             chessqueue.shift();
                             removebox.html("<span class=\"movechess\">" + removebox.text() + "</span>");
                             var removechess = removebox.children("span");
+                            lockclick = 1;
                             removechess.animate({
                                 marginTop: (that.offset().top - removebox.offset().top) + "px",
                                 marginLeft: (that.offset().left - removebox.offset().left) + "px"
                             }, 500, function(){
+                                lockclick = 0;
                                 that.text(currentchess[0]);
                                 $(this).remove();
                                 removebox.html("");
