@@ -41,7 +41,7 @@
             <div class="box box-bl"></div><div class="box box-bm"></div><div class="box box-br"></div>
         </div>
         <div class="menu">
-            <button class="newgame">新游戏</button>
+            <button class="newgame">≡</button>
         </div>
     </div>
     <script type="text/javascript" src="/s/js/jquery.min.js"></script>
@@ -66,7 +66,8 @@
                     ($(".box-tr").text() == chess && $(".box-mm").text() == chess && $(".box-bl").text() == chess)
                 ) {
                     if(chess == humanchess){
-                        var msgs = new Array("好吧，你赢了", "看起来好厉害的样子", "啊啊…失误了");
+                        //var msgs = new Array("好吧，你赢了", "看起来好厉害的样子", "啊啊…失误了");
+                        var msgs = new Array("");
                         $(".msg").text(msgs[parseInt(Math.random()* msgs.length)]);
                         $(".box").each(function(){
                             if($(this).text() == chess) {
@@ -74,7 +75,8 @@
                             }
                         });
                     } else {
-                        var msgs = new Array("呃…你输了", "一定是你打开方式不对", "耶…终于赢了");
+                        //var msgs = new Array("呃…你输了", "一定是你打开方式不对", "耶…终于赢了");
+                        var msgs = new Array("");
                         $(".msg").text(msgs[parseInt(Math.random()* msgs.length)]);
                         $(".box").each(function(){
                             if($(this).text() == chess) {
@@ -83,7 +85,7 @@
                         });
                     }
                     gamestatus = 1;
-                    $(".newgame").text("新游戏");
+                    //$(".newgame").text("新游戏");
                 } else {
                     if(chessqueue.length == 6) {
                         $("." + chessqueue[0][1]).html("<span>" + $("." + chessqueue[0][1]).text() + "</span>");
@@ -340,13 +342,15 @@
                     randomclick();
                 }
                 if(gamestatus == 0) {
-                    var msgs = new Array("该你下了", "快点，快点");
+                    //var msgs = new Array("该你下了", "快点，快点");
+                    var msgs = new Array("");
                     $(".msg").text(msgs[parseInt(Math.random()* msgs.length)]);
                 }
             }
             
             var startai = function(){
-                var msgs = new Array("嗯…让我想想", "等等哈，马上");
+                //var msgs = new Array("嗯…让我想想", "等等哈，马上");
+                var msgs = new Array("");
                 $(".msg").text(msgs[parseInt(Math.random()* msgs.length)]);
                 lockclick = 1;
                 setTimeout(ai, (parseInt(Math.random()*1000)));
@@ -362,7 +366,7 @@
                         $(this).text(currentchess[0]);
                         chessqueue.push(currentchess);
                         humanchess = currentchess[0];
-                        $(".newgame").text("重新开始");
+                        //$(".newgame").text("重新开始");
                         $(".info").text("你:" + humanchess + " 对方:" + (humanchess=="×"?"○":"×"));
                         
                         startai();
@@ -435,7 +439,7 @@
                 $(".box").css({"color": "black"});
                 $(".info").text("");
                 $(".msg").text("");
-                $(".newgame").text("新游戏");
+                //$(".newgame").text("新游戏");
                 $(this).hide();
             });
         });
