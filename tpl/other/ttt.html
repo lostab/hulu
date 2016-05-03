@@ -111,8 +111,6 @@
             }
             
             var ai = function() {
-                lockclick = 0;
-                
                 if(chessqueue.length >= 3) {
                     var ifclick = 0;
                     var humanchess1 = chessqueue[chessqueue.length-1][1];
@@ -346,6 +344,8 @@
                     var msgs = new Array("");
                     $(".msg").text(msgs[parseInt(Math.random()* msgs.length)]);
                 }
+                
+                lockclick = 0;
             }
             
             var startai = function(){
@@ -367,7 +367,7 @@
                         chessqueue.push(currentchess);
                         humanchess = currentchess[0];
                         //$(".newgame").text("重新开始");
-                        $(".info").text("你:" + humanchess + " 对方:" + (humanchess=="×"?"○":"×"));
+                        //$(".info").text("你:" + humanchess + " 对方:" + (humanchess=="×"?"○":"×"));
                         
                         startai();
                     } else {
