@@ -99,7 +99,7 @@ img {
     position: relative;
 }
 .header .avatar-area {
-	vertical-align: top;
+    vertical-align: top;
     display: inline-block;
     height: 24px;
     line-height: 24px;
@@ -120,7 +120,7 @@ img {
     width: 24px;
     height: 24px;
     opacity: 0;
-	filter: alpha(opacity=0);
+    filter: alpha(opacity=0);
     line-height: 24px;
     vertical-align: middle;
 }
@@ -148,7 +148,7 @@ img {
 .header .right-navbar a {
     background: none;
     opacity: 0.6;
-	filter: alpha(opacity=60);
+    filter: alpha(opacity=60);
     text-decoration: none;
     display: inline-block;
     height: 24px;
@@ -157,7 +157,7 @@ img {
 }
 .header .right-navbar a:hover {
     opacity: 1;
-	filter: alpha(opacity=100);
+    filter: alpha(opacity=100);
 }
 .pagination {
     text-align: center;
@@ -207,25 +207,25 @@ p.cancel-btn {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     opacity: 0.6;
-	filter: alpha(opacity=60);
+    filter: alpha(opacity=60);
 }
 .content .operate a:hover, .content .comment-operate a:hover {
     opacity: 1;
-	filter: alpha(opacity=100);
+    filter: alpha(opacity=100);
 }
 .userinfo {
     color: lightgray;
 }
 .userprofile .description, .userpage .description {
-	vertical-align: top;
+    vertical-align: top;
     display: inline-block;
     margin: 0;
     font-family: Consolas;
-	white-space: pre-wrap;
-	white-space: -moz-pre-wrap;
-	white-space: -pre-wrap;
-	white-space: -o-pre-wrap;
-	word-wrap: break-word;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
     word-break: break-all;
 }
 .userprofile .description {
@@ -237,8 +237,8 @@ p.cancel-btn {
     font-size: small;
 }
 .setting .description textarea{
-	vertical-align:top;
-	overflow-y:visible;
+    vertical-align:top;
+    overflow-y:visible;
     width: 80%;
     height: 7em;
 }
@@ -254,28 +254,28 @@ p.cancel-btn {
     width: 48px;
     height: 48px;
     opacity: 0;
-	filter: alpha(opacity=0);
+    filter: alpha(opacity=0);
 }
 .userpage .title .user {
-	vertical-align:top;
+    vertical-align:top;
     line-height: 48px;
 }
 .userpage .title .user .name {
-	vertical-align:top;
+    vertical-align:top;
     line-height: 30px;
 }
 .userpage .title .user .username {
     font-size: small;
     font-weight: normal;
-	vertical-align:top;
+    vertical-align:top;
     line-height: 18px;
 }
 .userpage .title a {
-	text-decoration:none;
+    text-decoration:none;
 }
 .content.create .description textarea, .content.item .description textarea, .line .description textarea {
-	vertical-align:top;
-	overflow-y:visible;
+    vertical-align:top;
+    overflow-y:visible;
     width: 100%;
     height: 7em;
 }
@@ -298,11 +298,11 @@ p.cancel-btn {
 }
 .itemcontent-content pre {
     line-height: 1.5;
-	white-space: pre-wrap;
-	white-space: -moz-pre-wrap;
-	white-space: -pre-wrap;
-	white-space: -o-pre-wrap;
-	word-wrap: break-word;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
     word-break: break-all;
     font-family: Consolas;
 }
@@ -315,7 +315,7 @@ p.cancel-btn {
 .home .item:not(:last-child), .line:not(:last-child), .comment, .home .createbutton {
     margin-bottom: 7px;
     border-bottom: 1px solid whitesmoke;
-    padding-bottom: 7px;
+    padding-bottom: 5px;
 }
 .home .createbutton {
     font-size: small;
@@ -325,7 +325,7 @@ p.cancel-btn {
 .home .item .avatar-area, .line .avatar-area, .comment .comment-avatar-area, .content.message .avatar-area {
     width: 30px;
     float: left;
-	vertical-align: top;
+    vertical-align: top;
 }
 .content.message .message-me .avatar-area {
     float: right;
@@ -341,7 +341,7 @@ p.cancel-btn {
     width: 24px;
     height: 24px;
     opacity: 0;
-	filter: alpha(opacity=0);
+    filter: alpha(opacity=0);
 }
 .home .item .item-line, .line .line-main/*, .comment .comment-line, .comment .itemcontent-content*/ {
     margin-left: 30px;
@@ -349,12 +349,12 @@ p.cancel-btn {
 .home .item .item-line .item-author, .line .line-main .line-info .line-info-left, .comment .comment-line .comment-author {
     font-size: small;
     font-weight: normal;
-	vertical-align: top;
+    vertical-align: top;
     height: 18px;
     color: gray;
 }
 .home .item .item-line .item-author, .comment .comment-line .comment-author {
-	text-decoration:none;
+    text-decoration:none;
     color: gray;
 }
 .home .item .item-line .item-title a:visited {
@@ -366,7 +366,7 @@ p.cancel-btn {
 .home .items .item-line .item-title {
     line-height: 2em;
     vertical-align: middle;
-	word-wrap: break-word;
+    word-wrap: break-word;
     word-break: break-all;
 }
 .comment-content .comment-reply-to {
@@ -382,16 +382,16 @@ p.cancel-btn {
     cursor: pointer;
 }
 .comment .comment-content {
-	vertical-align: top;
+    vertical-align: top;
     display: inline-block;
     margin: 0;
     font-family: Consolas;
-	font-size: 16px;
-	white-space: pre-wrap;
-	white-space: -moz-pre-wrap;
-	white-space: -pre-wrap;
-	white-space: -o-pre-wrap;
-	word-wrap: break-word;
+    font-size: 16px;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
     word-break: break-all;
     width: 100%;
 }
@@ -434,7 +434,7 @@ p.cancel-btn {
     font-size: small;
     height: 1em;
     line-height: 1em;
-	text-decoration:none;
+    text-decoration:none;
     float: right;
     /*margin: 7px 0 7px 7px;*/
     margin-top: 7px;
@@ -468,7 +468,7 @@ p.cancel-btn {
     width: 48px;
     height: 48px;
     opacity: 0;
-	filter: alpha(opacity=0);
+    filter: alpha(opacity=0);
 }
 .content.item .item-head {
     margin-left: 50px;
@@ -486,7 +486,7 @@ p.cancel-btn {
     
 }
 .content.item .item-info a {
-	text-decoration:none;
+    text-decoration:none;
     color: gray;
 }
 .content.item .item-info .item-created, .line .line-main .line-info .line-info-right {
@@ -497,15 +497,15 @@ p.cancel-btn {
     margin: 7px 0 7px 0;
 }
 .content.item .description {
-	vertical-align: top;
+    vertical-align: top;
     margin: 0;
     font-family: Consolas;
-	font-size: 16px;
-	white-space: pre-wrap;
-	white-space: -moz-pre-wrap;
-	white-space: -pre-wrap;
-	white-space: -o-pre-wrap;
-	word-wrap: break-word;
+    font-size: 16px;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
     word-break: break-all;
 }
 .content.create .amount, .content.update .amount, .content.create .reword, .content.update .reword {
@@ -555,7 +555,7 @@ p.cancel-btn {
 .messagesessions .avatar-area {
     width: 48px;
     float: left;
-	vertical-align: top;
+    vertical-align: top;
 }
 .messagesessions .avatar {
     width: 48px;
@@ -568,7 +568,7 @@ p.cancel-btn {
     width: 48px;
     height: 48px;
     opacity: 0;
-	filter: alpha(opacity=0);
+    filter: alpha(opacity=0);
 }
 .messagesessions .line .line-info .line-info-left {
     color: black;
@@ -617,8 +617,8 @@ p.cancel-btn {
     filter: alpha(opacity=100);
 }
 .feedback textarea, .content.item form textarea, .content form textarea {
-	vertical-align: top;
-	overflow-y:visible;
+    vertical-align: top;
+    overflow-y:visible;
     width: 100%;
     height: 7em;
 }
