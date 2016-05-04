@@ -315,6 +315,7 @@ p.cancel-btn {
 .home .item:not(:last-child), .line:not(:last-child), .comment, .home .createbutton {
     margin-bottom: 11px;
     border-bottom: 1px solid whitesmoke;
+    padding-bottom: 11px;
 }
 .home .createbutton {
     font-size: small;
@@ -407,6 +408,7 @@ p.cancel-btn {
 }
 .home .item .item-info .item-created, .line .line-info .line-info-right, .home .item .item-info .userinfo {
     color: lightgray;
+    font-size: x-small;
 }
 .home .item .item-info .item-created:hover, .line .line-info .line-info-right:hover, .home .item .item-info .item-author:hover {
     text-decoration: none;
