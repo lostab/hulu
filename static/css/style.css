@@ -408,7 +408,7 @@ p.cancel-btn {
 }
 .home .item .item-info .item-created, .line .line-info .line-info-right, .home .item .item-info .userinfo {
     color: lightgray;
-    font-size: x-small;
+    font-size: small;
 }
 .home .item .item-info .item-created:hover, .line .line-info .line-info-right:hover, .home .item .item-info .item-author:hover {
     text-decoration: none;
