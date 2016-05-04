@@ -634,6 +634,6 @@ p.cancel-btn {
     margin: 3px;
     padding: 3px;
     font-size: x-small;
-    background: lightgray;
-    color: white;
+    background: whitesmoke;
+    color: gray;
 }
