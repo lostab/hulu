@@ -313,9 +313,9 @@ p.cancel-btn {
     color: gray;
 }
 .home .item:not(:last-child), .line:not(:last-child), .comment, .home .createbutton {
-    margin-bottom: 11px;
+    margin-bottom: 7px;
     border-bottom: 1px solid whitesmoke;
-    padding-bottom: 11px;
+    padding-bottom: 7px;
 }
 .home .createbutton {
     font-size: small;
