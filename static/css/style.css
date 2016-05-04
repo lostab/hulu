@@ -313,7 +313,7 @@ p.cancel-btn {
     color: gray;
 }
 .home .item:not(:last-child), .line:not(:last-child), .comment, .home .createbutton {
-    margin-bottom: 3px;
+    margin-bottom: 11px;
     border-bottom: 1px solid whitesmoke;
 }
 .home .createbutton {
