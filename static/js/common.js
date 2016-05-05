@@ -8,7 +8,7 @@
         $("<img>", {
             src: url,
             load: function() {
-                urlitem.html($(this));
+                urlitem.parent().html($(this));
             },
             error: function() {
                 
