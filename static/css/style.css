@@ -292,7 +292,7 @@ p.cancel-btn {
     color: lightgray;
     font-size: small;
 }
-.itemcontent {
+.itemcontent:not(:last-child) {
     border-bottom: 1px dashed lightgray;
     line-height: 2em;
 }
