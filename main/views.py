@@ -92,6 +92,8 @@ def index(request):
         except EmptyPage:
             items = paginator.page(paginator.num_pages)
         
+        currentpage = items.number
+        
         for item in items:
             itemlist.append(item)
         
@@ -205,7 +207,7 @@ def index(request):
     }
     if request.GET.get('type') == 'json':
         content = {
-            'page': items.number,
+            'page': currentpage,
             'items': []
         }
         
