@@ -73,7 +73,7 @@
                     var messageline = $(this);
                     //如果在已有会话中找到相同的会话对象，则非新会话，在已有会话中追加会话内容
                     if ($(this).find(".sendmessageform").find(".messagetousernames").val() == usernames) {
-                        $(this).find(".line-title").text(messagesession.lastmessage.content);
+                        $(this).find(".line-title").html(messagesession.lastmessage.content);
                         //提取到列表最前
                         $(this).prependTo($(this).closest(".messagesessions"));
                         
