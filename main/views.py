@@ -371,7 +371,7 @@ def app(request):
                         })
                     
                     lastmessage = {
-                        'content': ms['messages'][0].lastsubitem.content,
+                        'content': escape(ms['messages'][0].lastsubitem.content),
                         'datetime': str(ms['messages'][0].lastsubitem.create + timedelta(hours=8))
                     }
                     
