@@ -35,6 +35,8 @@ html, body, .container {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    word-wrap: break-word;
+    word-break: break-all;
 }
 .header .header-right {
     color: white;
@@ -141,11 +143,11 @@ img {
     visibility: hidden;
     overflow-y: hidden;
     background: white;
-	white-space: pre-wrap;
-	white-space: -moz-pre-wrap;
-	white-space: -pre-wrap;
-	white-space: -o-pre-wrap;
-	word-wrap: break-word;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
     word-break: break-all;
 }
 .messagesession .historymessagesbox {
@@ -167,11 +169,11 @@ img {
     background: white;
     left: 0;
     bottom: 50px;
-	white-space: pre-wrap;
-	white-space: -moz-pre-wrap;
-	white-space: -pre-wrap;
-	white-space: -o-pre-wrap;
-	word-wrap: break-word;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
     word-break: break-all;
 }
 .wrapper::-webkit-scrollbar, .messagesession::-webkit-scrollbar, .messagesession .historymessages::-webkit-scrollbar {
@@ -195,7 +197,7 @@ img {
     width: 24px;
     height: 24px;
     opacity: 0;
-	filter: alpha(opacity=0);
+    filter: alpha(opacity=0);
 }
 .messagesession .message .itemcontent-content {
     line-height: 24px;
