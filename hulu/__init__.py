@@ -1,12 +1,13 @@
 from django.http import HttpResponse
 import json
+from django.utils.html import escape
 
 def jsonp(request, content):
     if request.GET.get('callback'):
         callback = request.GET.get('callback').strip()
         return HttpResponse(callback + '(' + json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4) + ')', content_type="application/json; charset=utf-8")
     else:
-        return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
+        return HttpResponse(json.dumps(escape(content), encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
 
 def resetdb():
     from django.db import connection
