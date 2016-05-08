@@ -37,6 +37,7 @@ html, body, .container {
     text-overflow: ellipsis;
     word-wrap: break-word;
     word-break: break-all;
+    display: inline-block;
 }
 .header .header-right {
     color: white;
@@ -101,7 +102,7 @@ img {
     width: 48px;
     height: 48px;
     opacity: 0;
-	filter: alpha(opacity=0);
+    filter: alpha(opacity=0);
 }
 .line .line-info .line-info-left {
     color: black;
