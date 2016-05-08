@@ -35,6 +35,7 @@ from django.core.cache import cache
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
+from django.utils.html import escape
 
 import jieba.analyse
 
@@ -363,10 +364,10 @@ def app(request):
                     for uruser in ms['urusers']:
                         urusers.append({
                             'username': uruser.username,
-                            'info': uruser.userprofile.info,
+                            'info': escape(uruser.userprofile.info),
                             'avatar': (uruser.userprofile.openid) and str(uruser.userprofile.avatar) or ((uruser.userprofile.avatar) and '/s/' + str(uruser.userprofile.avatar) or '/s/avatar/n.png'),
-                            'profile': uruser.userprofile.profile,
-                            'page': uruser.userprofile.page,
+                            'profile': escape(uruser.userprofile.profile),
+                            'page': escape(uruser.userprofile.page),
                         })
                     
                     lastmessage = {
@@ -384,13 +385,13 @@ def app(request):
                             'id': str(message.id),
                             'user': {
                                 'username': message.user.username,
-                                'info': message.user.userprofile.info,
+                                'info': escape(message.user.userprofile.info),
                                 'avatar': (message.user.userprofile.openid) and str(message.user.userprofile.avatar) or ((message.user.userprofile.avatar) and '/s/' + str(message.user.userprofile.avatar) or '/s/avatar/n.png'),
-                                'profile': message.user.userprofile.profile,
-                                'page': message.user.userprofile.page,
+                                'profile': escape(message.user.userprofile.profile),
+                                'page': escape(message.user.userprofile.page),
                             },
                             'create': str(message.lastsubitem.create + timedelta(hours=8)),
-                            'content': message.lastsubitem.content,
+                            'content': escape(message.lastsubitem.content),
                             'clientcreate': clientcreate
                         })
                     
@@ -490,10 +491,10 @@ def app(request):
                 for uruser in newusers:
                     newurusers.append({
                         'username': uruser.username,
-                        'info': uruser.userprofile.info,
+                        'info': escape(uruser.userprofile.info),
                         'avatar': (uruser.userprofile.openid) and str(uruser.userprofile.avatar) or ((uruser.userprofile.avatar) and '/s/' + str(uruser.userprofile.avatar) or '/s/avatar/n.png'),
-                        'profile': uruser.userprofile.profile,
-                        'page': uruser.userprofile.page,
+                        'profile': escape(uruser.userprofile.profile),
+                        'page': escape(uruser.userprofile.page),
                     })
                     
                 newmessagesession = {
