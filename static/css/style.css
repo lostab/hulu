@@ -52,7 +52,7 @@ textarea {
 .header {
     width: inherit;
     height: 24px;
-    marging: 0px;
+    margin: 0px;
     padding: 3px 0 3px 0;
     border-bottom: 1px solid whitesmoke;
     position: fixed;
