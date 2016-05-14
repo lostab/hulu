@@ -138,6 +138,7 @@
                     $(".header .header-left, .header .header-right").show();
                     $(".header .header-left").unbind("click");
                     $(".header .header-left").click(function(){
+                        $(".wrapper .messagesessions .line").not(openmessagesession).show();
                         $(".messagesession").css({"visibility": "hidden"});
                         tooglefooter();
                         $(".header .header-center").text("会话");
@@ -152,6 +153,7 @@
                         setTimeout(scrolldown, 300);
                     });
                     openmessagesession.find(".sendmessageform").find(".messagecontent").click();
+                    $(".wrapper .messagesessions .line").not(openmessagesession).hide();
                 });
                 currentmessagesession.find(".avatar-area").click(function(){
                     $(this).next(".line-main").click();
