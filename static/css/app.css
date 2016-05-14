@@ -204,7 +204,8 @@ img {
     line-height: 24px;
     display: inline-block;
     margin-top: 0;
-    max-width: calc(100% - 48px);
+    max-width: calc(100% - 60px);
+    padding-left: 12px;
     text-align: left;
     white-space: pre-wrap;
     white-space: -moz-pre-wrap;
