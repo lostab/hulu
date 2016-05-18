@@ -24,9 +24,11 @@
         margin: 20px 0;
     }
     .sidebar {
-        width: auto;
+        width: 100%;
         float: none;
-        margin: 0;
+        padding: 0;
+        position: relative;
+        left: 0;
     }
 }
 
