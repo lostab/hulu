@@ -281,12 +281,12 @@ def app(request):
                     useritemrelationship = None
                     if request.GET.get('uirid'):
                         try:
-                            useritemrelationship = UserItemRelationship.objects.filter(type="message").filter(user=request.user).filter(id__gt=request.GET.get('uirid')).prefetch_related('item_set').order_by('-id')
+                            useritemrelationship = UserItemRelationship.objects.filter(type="message").filter(user=request.user).filter(id__gt=request.GET.get('uirid')).order_by('-id').prefetch_related('item_set', 'item_set__useritemrelationship', 'item_set__useritemrelationship__user')
                         except Object.DoesNotExist:
                             useritemrelationship = None
                     else:
                         try:
-                            useritemrelationship = UserItemRelationship.objects.filter(type="message").filter(user=request.user).prefetch_related('item_set').order_by('-id')
+                            useritemrelationship = UserItemRelationship.objects.filter(type="message").filter(user=request.user).order_by('-id').prefetch_related('item_set', 'item_set__useritemrelationship', 'item_set__useritemrelationship__user')
                         except Object.DoesNotExist:
                             useritemrelationship = None
                     
