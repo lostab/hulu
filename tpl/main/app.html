@@ -14,9 +14,9 @@
 <body>
     <div class="container">
         <div class="header">
-            <span class="header-left"><会话</span>
-            <span class="header-right"></span>
-            <span class="header-center">会话</span>
+            <span class="header-left"><消息</span>
+            <span class="header-right"><a href="/">首页</a></span>
+            <span class="header-center">消息</span>
         </div>
         <div class="wrapper">
             <div class="messagesessions"></div>
@@ -141,7 +141,7 @@
                         $(".wrapper .messagesessions .line").not(openmessagesession).show();
                         $(".messagesession").css({"visibility": "hidden"});
                         tooglefooter();
-                        $(".header .header-center").text("会话");
+                        $(".header .header-center").text("消息");
                         $(".header .header-left, .header .header-right").hide();
                     });
                     var scrolldown = function(){
