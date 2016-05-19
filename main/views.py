@@ -59,23 +59,26 @@ def index(request):
         ip = x_forwarded_for.split(', ')[-1]
     
     try:
-        items = Item.objects.select_related('user').filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).filter(Q(status__isnull=True) | Q(status__exact='')).all()
+        items = Item.objects.select_related('user').filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).filter(Q(status__isnull=True) | Q(status__exact='')).all().prefetch_related('itemcontent_set', 'itemcontent_set__contentattachment_set')
         itemlist = []
         for item in items:
-            itemcontent = ItemContent.objects.filter(item=item)
+            #itemcontent = ItemContent.objects.filter(item=item)
+            itemcontent = item.itemcontent_set.all()
             if itemcontent:
                 item.create = itemcontent[0].create
                 if itemcontent[0].content:
                     item.title = itemcontent[0].content.strip().splitlines()[0]
                     item.tags = jieba.analyse.extract_tags(itemcontent[0].content, 3)
                 else:
-                    contentattachment = ContentAttachment.objects.filter(itemcontent=itemcontent[0])
+                    #contentattachment = ContentAttachment.objects.filter(itemcontent=itemcontent[0])
+                    contentattachment = itemcontent[0].contentattachment_set.all()
                     item.title = contentattachment[0].title
                 
                 subitem = item.get_all_items(include_self=False)
                 if subitem:
                     subitem.sort(key=lambda item:item.create, reverse=True)
-                    itemcontent = ItemContent.objects.filter(item=subitem[0]).reverse()
+                    #itemcontent = ItemContent.objects.filter(item=subitem[0]).reverse()
+                    itemcontent = subitem[0].itemcontent_set.all().reverse()
                     item.subitemcount = len(subitem)
                     item.lastsubitem = subitem[0]
                 else:
@@ -336,16 +339,17 @@ def app(request):
                         itemcontent = message. itemcontent_set.all()
                         message.create = itemcontent[0].create
                         message.title = itemcontent[0].content.strip().splitlines()[0]
+                        message.lastsubitem = itemcontent[0]
                         
-                        subitem = message.get_all_items(include_self=False)
-                        if subitem:
-                            subitem.sort(key=lambda item:item.create, reverse=True)
-                            #itemcontent = ItemContent.objects.filter(item=subitem[0]).reverse()
-                            itemcontent = subitem[0].itemcontent_set.all().reverse()
-                            message.subitemcount = len(subitem)
-                            message.lastsubitem = subitem[0]
-                        else:
-                            message.lastsubitem = itemcontent[0]
+                        #subitem = message.get_all_items(include_self=False)
+                        #if subitem:
+                        #    subitem.sort(key=lambda item:item.create, reverse=True)
+                        #    #itemcontent = ItemContent.objects.filter(item=subitem[0]).reverse()
+                        #    itemcontent = subitem[0].itemcontent_set.all().reverse()
+                        #    message.subitemcount = len(subitem)
+                        #    message.lastsubitem = subitem[0]
+                        #else:
+                        #    message.lastsubitem = itemcontent[0]
                         
                         messagesession = {
                             'urusers': urusers
