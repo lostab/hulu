@@ -42,7 +42,6 @@ html, body, .container {
 .header .header-right {
     color: white;
     width: 20%;
-    display: none;
     cursor: pointer;
     float: right;
     margin-bottom: 3px;
