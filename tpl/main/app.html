@@ -135,14 +135,14 @@
                     $(this).next(".messagesession").css({"visibility": "visible"});
                     tooglefooter();
                     $(".header .header-center").text($(this).find(".line-info-left").text());
-                    $(".header .header-left, .header .header-right").show();
+                    $(".header .header-left").css("visibility", "visible");
                     $(".header .header-left").unbind("click");
                     $(".header .header-left").click(function(){
                         $(".wrapper .messagesessions .line").not(openmessagesession).show();
                         $(".messagesession").css({"visibility": "hidden"});
                         tooglefooter();
                         $(".header .header-center").text("消息");
-                        $(".header .header-left, .header .header-right").hide();
+                        $(".header .header-left").css("visibility", "hidden");
                     });
                     var scrolldown = function(){
                         openmessagesession.find(".historymessages").scrollTop(openmessagesession.find(".historymessages")[0].scrollHeight);
