@@ -47,6 +47,11 @@ html, body, .container {
     margin-bottom: 3px;
     text-align: right;
 }
+.footer .footer-bar {
+    color: black;
+    width: auto;
+    text-align: center;
+}
 .wrapper {
     width: 100%;
     height: calc(100% - 100px);
