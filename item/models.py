@@ -32,12 +32,13 @@ class Item(models.Model):
         items = []
         if include_self:
             items.append(self)
-        for item in Item.objects.filter(belong=self):
+        for item in Item.objects.filter(belong=self).prefetch_related('itemcontent_set'):
             items.append(item)
             for subitem in item.get_all_items(include_self=False):
                 items.append(subitem)
         for item in items:
-            itemcontent = ItemContent.objects.filter(item=item)
+            #itemcontent = ItemContent.objects.filter(item=item)
+            itemcontent = item. itemcontent_set.all()
             item.create = itemcontent[0].create
             item.update = itemcontent.reverse().create
         return items
