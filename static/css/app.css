@@ -23,7 +23,7 @@ html, body, .container {
 .header .header-left {
     color: white;
     width: 20%;
-    display: none;
+    visibility: hidden;
     cursor: pointer;
     float: left;
     margin-bottom: 3px;
