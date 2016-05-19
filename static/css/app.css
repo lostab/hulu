@@ -64,14 +64,14 @@ html, body, .container {
 }
 
 a {
-    color: black;
+    color: white;
     text-decoration: none;
 }
 a:hover {
     text-decoration: none;
 }
 a:visited {
-    color: black;
+    color: white;
 }
 input, textarea {
     font-size: inherit;
@@ -88,7 +88,7 @@ img {
 .avatar-area {
     width: 48px;
     float: left;
-	vertical-align: top;
+    vertical-align: top;
 }
 .avatar {
     width: 48px;
