@@ -49,8 +49,11 @@ html, body, .container {
 }
 .footer .footer-bar {
     color: black;
-    width: auto;
+    display: table-cell;
     text-align: center;
+}
+.footer .footer-bar-focus {
+    background: whitesmoke;
 }
 .wrapper {
     width: 100%;
@@ -66,17 +69,19 @@ html, body, .container {
     height: 50px;
     background: white;
     border-top: 1px solid lightgray;
+    line-height: 45px;
+    display: table;
 }
 
 a {
-    color: white;
+    color: black;
     text-decoration: none;
 }
 a:hover {
     text-decoration: none;
 }
 a:visited {
-    color: white;
+    color: black;
 }
 input, textarea {
     font-size: inherit;
