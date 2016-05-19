@@ -281,12 +281,12 @@ def app(request):
                     useritemrelationship = None
                     if request.GET.get('uirid'):
                         try:
-                            useritemrelationship = UserItemRelationship.objects.filter(type="message").filter(user=request.user).filter(id__gt=request.GET.get('uirid')).order_by('-id').prefetch_related('item_set', 'item_set__useritemrelationship', 'item_set__useritemrelationship__user')
+                            useritemrelationship = UserItemRelationship.objects.filter(type="message").filter(user=request.user).filter(id__gt=request.GET.get('uirid')).order_by('-id').prefetch_related('item_set', 'item_set__useritemrelationship', 'item_set__useritemrelationship__user', 'item_set__itemcontent_set')
                         except Object.DoesNotExist:
                             useritemrelationship = None
                     else:
                         try:
-                            useritemrelationship = UserItemRelationship.objects.filter(type="message").filter(user=request.user).order_by('-id').prefetch_related('item_set', 'item_set__useritemrelationship', 'item_set__useritemrelationship__user')
+                            useritemrelationship = UserItemRelationship.objects.filter(type="message").filter(user=request.user).order_by('-id').prefetch_related('item_set', 'item_set__useritemrelationship', 'item_set__useritemrelationship__user', 'item_set__itemcontent_set')
                         except Object.DoesNotExist:
                             useritemrelationship = None
                     
@@ -332,14 +332,16 @@ def app(request):
                             urusers.remove(request.user)
                         urusers = sorted(urusers, key=lambda user: user.username)
                         
-                        itemcontent = ItemContent.objects.filter(item=message)
+                        #itemcontent = ItemContent.objects.filter(item=message)
+                        itemcontent = message. itemcontent_set.all()
                         message.create = itemcontent[0].create
                         message.title = itemcontent[0].content.strip().splitlines()[0]
                         
                         subitem = message.get_all_items(include_self=False)
                         if subitem:
                             subitem.sort(key=lambda item:item.create, reverse=True)
-                            itemcontent = ItemContent.objects.filter(item=subitem[0]).reverse()
+                            #itemcontent = ItemContent.objects.filter(item=subitem[0]).reverse()
+                            itemcontent = subitem[0].itemcontent_set.all().reverse()
                             message.subitemcount = len(subitem)
                             message.lastsubitem = subitem[0]
                         else:
