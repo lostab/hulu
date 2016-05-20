@@ -452,7 +452,7 @@ p.cancel-btn {
 .home .next-page, .home .previous-page {
     width: 100%;
     display: block;
-    padding: 3px;
+    padding: 3px 0 3px 0;
     background: lightgray;
     color: white;
     border-radius: 3px;
