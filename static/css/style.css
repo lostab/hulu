@@ -302,6 +302,9 @@ p.cancel-btn {
     border-bottom: 1px dashed lightgray;
     line-height: 2em;
 }
+.itemcontent-content {
+    margin-left: 56px;
+}
 .itemcontent-content pre {
     line-height: 1.5;
     white-space: pre-wrap;
@@ -317,6 +320,7 @@ p.cancel-btn {
     display: inline-block;
     margin-left: 30px;
     color: gray;
+    margin-left: 56px;
 }
 .home .item:not(:last-child), .line:not(:last-child), .comment, .home .createbutton {
     margin-bottom: 7px;
