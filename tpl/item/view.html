@@ -69,9 +69,10 @@
                         {% for itemcontent in subitem.itemcontent_set.all %}
                             <div class="item-info">
                             {% if subitem.belong and item not in subitem.belong.all %}
-                                <div class="comment-reply-to">回复
+                                <div class="comment-reply-to">
                                 {% for i in subitem.belong.all %}
-                                    {{ i.user }}：<div class="itemcontent-content"><pre>{% with i.itemcontent_set.all|first as itemcontent %}{{ itemcontent.content }}{% endwith %}</pre></div>
+                                    <span class="comment-author"><a class="username" href="/{{ i.user.username }}/"><span class="username">{{ i.user.username }}</span></a>
+                            <span class="userinfo">{{ i.user.userprofile.info }}</span></span>：<div class="itemcontent-content"><pre>{% with i.itemcontent_set.all|first as itemcontent %}{{ itemcontent.content }}{% endwith %}</pre></div>
                                 {% endfor %}
                                 </div>
                             {% endif %}
