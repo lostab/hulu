@@ -10,7 +10,7 @@ html, body {
     /*overflow: hidden;*/
 }
 .wrapper {
-    width: 980px;
+    width: 960px;
     height: inherit;
     margin: 0 auto;
 }
