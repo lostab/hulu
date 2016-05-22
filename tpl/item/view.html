@@ -67,7 +67,7 @@
                         </div>
                         
                         {% for itemcontent in subitem.itemcontent_set.all %}
-                            <div class="item-info">
+                            <div class="reply-info">
                             {% if subitem.belong and item not in subitem.belong.all %}
                                 <div class="comment-reply-to">
                                 {% for i in subitem.belong.all %}
