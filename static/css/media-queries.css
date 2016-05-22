@@ -7,9 +7,13 @@
         /*padding: 3% 4%;*/
     }
     .sidebar {
-        width: 30%;
-        /*position: fixed;
-        right: calc((100% - 980px) / 2);*/
+        width: 280px;
+        margin: 17px 0 17px 0;
+        padding: 7px;
+        position: fixed;
+        right: 50%;
+        margin-right: -480px;
+        float: right;
     }
     .sidebar .widget {
         padding: 8% 7%;
