@@ -325,9 +325,9 @@ p.cancel-btn {
     margin-left: 56px;
 }
 .home .item:not(:last-child), .line:not(:last-child), .comment, .home .createbutton {
-    margin-bottom: 7px;
+    margin-bottom: 15px;
     border-bottom: 1px solid whitesmoke;
-    padding-bottom: 5px;
+    padding-bottom: 13px;
 }
 .home .createbutton {
     font-size: small;
