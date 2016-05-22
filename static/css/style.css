@@ -318,12 +318,14 @@ p.cancel-btn {
     word-break: break-all;
     font-family: Consolas;
 }
-.item-info .comment-reply-to {
+.reply-info {
+    font-size: small;
+    color: gray;
+}
+.reply-info .comment-reply-to {
     width: calc(100% - 30px);
     display: inline-block;
-    margin-left: 30px;
     color: gray;
-    margin-left: 56px;
 }
 .home .item:not(:last-child), .line:not(:last-child), .comment, .home .createbutton {
     margin-bottom: 15px;
@@ -491,7 +493,7 @@ p.cancel-btn {
     margin: 0;
 }
 .content.item .item-info {
-    /*height: 18px;*/
+    min-height: 48px;
     color: gray;
     font-size: small;
 }
