@@ -181,7 +181,7 @@ textarea {
     width: 600px;
     float: left;
 }
-.sidebar {
+/*.sidebar {
     margin: 17px 0 17px 0;
     padding: 7px;
     width: 280px;
@@ -189,7 +189,7 @@ textarea {
     position: fixed;
     right: 50%;
     margin-right: -480px;
-}
+}*/
 .content.signup p,.content.signup h3, .content.login p,.content.login h3, .content.account p,.content.account h3 {
     text-align: center;
 }
