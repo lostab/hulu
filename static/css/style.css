@@ -379,7 +379,7 @@ p.cancel-btn {
     
 }
 .home .items .item-line .item-title {
-    line-height: 2em;
+    line-height: 30px;
     vertical-align: middle;
     word-wrap: break-word;
     word-break: break-all;
@@ -489,11 +489,11 @@ p.cancel-btn {
     margin-left: 56px;
 }
 .content.item .item-title {
-    line-height: 36px;
+    line-height: 30px;
     margin: 0;
 }
 .content.item .item-info {
-    min-height: 48px;
+    min-height: 18px;
     color: gray;
     font-size: small;
 }
