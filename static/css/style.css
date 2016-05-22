@@ -306,7 +306,7 @@ p.cancel-btn {
     border-bottom: 1px dashed lightgray;
 }
 .itemcontent-content {
-    margin-left: 56px;
+    /*margin-left: 56px;*/
 }
 .itemcontent-content pre {
     line-height: 30px;
