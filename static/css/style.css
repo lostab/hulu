@@ -483,10 +483,11 @@ p.cancel-btn {
     filter: alpha(opacity=0);
 }
 .content.item .item-head {
-    margin-left: 50px;
+    margin-left: 56px;
+    height: 48px;
 }
 .content.item .item-title {
-    line-height: 30px;
+    line-height: 36px;
     margin: 0;
 }
 .content.item .item-info {
