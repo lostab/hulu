@@ -173,7 +173,7 @@ textarea {
     height: 100%;*/
 }
 .content {
-    margin: 17px 0 17px 0;
+    margin: 23px 0 23px 0;
     /*padding: 7px;*/
     min-height: 230px;
 }
@@ -182,7 +182,7 @@ textarea {
     float: left;
 }
 .sidebar {
-    margin: 17px 0 17px 0;
+    margin: 23px 0 23px 0;
     padding: 7px;
     width: 280px;
     float: right;
@@ -337,20 +337,20 @@ p.cancel-btn {
     float: right;
 }
 .home .item .avatar, .line .avatar, .comment .comment-avatar-area .comment-avatar, .content.message .avatar-area .avatar {
-    width: 24px;
-    height: 24px;
-    border-radius: 12px;
-    -webkit-border-radius: 12px;
-    -moz-border-radius: 12px;
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    -webkit-border-radius: 24px;
+    -moz-border-radius: 24px;
 }
 .home .item .avatar img, .line .avatar img, .comment .comment-avatar-area .comment-avatar img, .content.message .avatar-area .avatar img {
-    width: 24px;
-    height: 24px;
+    width: 48px;
+    height: 48px;
     opacity: 0;
     filter: alpha(opacity=0);
 }
 .home .item .item-line, .line .line-main/*, .comment .comment-line, .comment .itemcontent-content*/ {
-    margin-left: 30px;
+    margin-left: 56px;
 }
 .home .item .item-line .item-author, .line .line-main .line-info .line-info-left, .comment .comment-line .comment-author {
     font-size: small;
