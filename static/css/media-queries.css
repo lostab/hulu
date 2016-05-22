@@ -11,8 +11,8 @@
         margin: 17px 0 17px 0;
         padding: 7px;
         position: fixed;
-        left: 60%;
-        margin-right: 0;
+        left: 80%;
+        margin-left: -130px;
         float: right;
     }
     .sidebar .widget {
