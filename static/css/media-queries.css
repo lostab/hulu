@@ -2,7 +2,7 @@
     .wrapper {
         width: 95%;
     }
-    .content {
+    .content.item {
         width: 60%;
         /*padding: 3% 4%;*/
     }
@@ -11,7 +11,7 @@
         margin: 17px 0 17px 0;
         padding: 7px;
         position: fixed;
-        right: 50%;
+        right: 60%;
         margin-right: -480px;
         float: right;
     }
