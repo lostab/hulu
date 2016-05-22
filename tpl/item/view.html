@@ -169,7 +169,7 @@ $(document).ready(function(){
         
         $(".comment-form .comment-parent").val($(this).closest(".comment").attr("id"));
         $(".comment-form .comment-content .comment-reply-to").remove();
-        $(".comment-form .comment-content").prepend("<span class=\"comment-reply-to\">回复 " + $(this).closest(".comment").find(".comment-author span.username").text() + "：</span>");
+        $(".comment-form .comment-content").prepend("<span class=\"comment-reply-to\">回复 " + $(this).closest(".comment").find(".item-info .comment-author span.username").text() + "：</span>");
         $(this).hide();
         $(this).after("<a class=\"cancel-comment-reply\" href=\"\">取消回复</a>");
         $(".comment-form").appendTo($(this).closest(".comment"));
