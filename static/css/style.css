@@ -309,7 +309,7 @@ p.cancel-btn {
     margin-left: 56px;
 }
 .itemcontent-content pre {
-    line-height: 1.5;
+    line-height: 30px;
     white-space: pre-wrap;
     white-space: -moz-pre-wrap;
     white-space: -pre-wrap;
@@ -321,6 +321,8 @@ p.cancel-btn {
 .reply-info {
     font-size: small;
     color: gray;
+    margin-left: 56px;
+    margin-top: 30px;
 }
 .reply-info .comment-reply-to {
     width: calc(100% - 30px);
@@ -500,7 +502,7 @@ p.cancel-btn {
 .content.item .item-info .item-author {
     
 }
-.content.item .item-info a {
+.content.item .item-info a, .content.item .reply-info a {
     text-decoration:none;
     color: gray;
 }
