@@ -2,7 +2,7 @@ A community framework based on Django.
 
 ~   required
     
-    Python & Django & PIL & jieba.
+    Python & Django & PIL.
 
 ~   runing
     
