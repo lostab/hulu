@@ -335,7 +335,7 @@ p.cancel-btn {
     margin-top: -7px;
 }
 .home .item .avatar-area, .line .avatar-area, .comment .comment-avatar-area, .content.message .avatar-area {
-    width: 30px;
+    width: 56px;
     float: left;
     vertical-align: top;
 }
