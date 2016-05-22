@@ -7,12 +7,12 @@
         /*padding: 3% 4%;*/
     }
     .sidebar {
-        width: 280px;
+        width: auto;
         margin: 17px 0 17px 0;
         padding: 7px;
         position: fixed;
-        right: 60%;
-        margin-right: -480px;
+        left: 60%;
+        margin-right: 0;
         float: right;
     }
     .sidebar .widget {
