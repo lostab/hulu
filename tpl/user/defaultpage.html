@@ -17,6 +17,7 @@
                 {% if request.user == viewuser %}
                     <a href="/u/settings/">完善资料</a>
                 {% else %}
+                    <a class="sendmessagebtn" onclick="$('.newsendmessageform').submit();" style="cursor:pointer;">发送消息</a>
                     <form class"newsendmessageform" method="post" enctype="multipart/form-data" action="/app/" style="display: inline-block;float: right;margin-top: -53px;">
                         {% csrf_token %}
                         <input name="newusernames" type="hidden" value="{{ viewuser.username }}" />
