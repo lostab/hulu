@@ -299,8 +299,10 @@ p.cancel-btn {
     font-size: small;
 }
 .itemcontent:not(:last-child) {
-    border-bottom: 1px dashed lightgray;
     line-height: 2em;
+}
+.itemcontent:not(:last-child) .itemcontent-content {
+    border-bottom: 1px dashed lightgray;
 }
 .itemcontent-content {
     margin-left: 56px;
