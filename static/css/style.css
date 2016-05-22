@@ -30,6 +30,7 @@ input:not(.file-input), textarea {
 }
 img {
     max-width: 100%;
+    border: 0;
 }
 textarea {
     -webkit-box-sizing: border-box;
@@ -173,7 +174,7 @@ textarea {
     height: 100%;*/
 }
 .content {
-    margin: 23px 0 23px 0;
+    margin: 27px 0 23px 0;
     /*padding: 7px;*/
     min-height: 230px;
 }
@@ -327,7 +328,7 @@ p.cancel-btn {
 .home .item:not(:last-child), .line:not(:last-child), .comment, .home .createbutton {
     margin-bottom: 15px;
     border-bottom: 1px solid whitesmoke;
-    padding-bottom: 13px;
+    padding-bottom: 10px;
 }
 .home .createbutton {
     font-size: small;
