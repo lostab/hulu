@@ -125,7 +125,7 @@ def Create(request):
 
 def View(request, id):
     try:
-        item = Item.objects.filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).get(id=id).select_related('itemcontent_set')
+        item = Item.objects.filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).get(id=id)
         #itemcontent = ItemContent.objects.filter(item=item)
         itemcontent = item.itemcontent_set.all()
         if itemcontent[0].content:
