@@ -325,7 +325,6 @@ p.cancel-btn {
     margin-top: 30px;
 }
 .reply-info .comment-reply-to {
-    width: calc(100% - 30px);
     display: inline-block;
     color: gray;
 }
