@@ -66,7 +66,6 @@
                             <span class="userinfo">{{ subitem.user.userprofile.info }}</span></span>
                         </div>
                         
-                        {% for itemcontent in subitem.itemcontent_set.all %}
                             <div class="reply-info">
                             {% if subitem.belong and item not in subitem.belong.all %}
                                 <div class="comment-reply-to">
@@ -77,6 +76,7 @@
                                 </div>
                             {% endif %}
                             </div>
+                        {% for itemcontent in subitem.itemcontent_set.all %}
                             <div class="itemcontent-content"><pre>{{ itemcontent.content }}</pre></div>
                             
                             {% for attachmentfile in itemcontent.contentattachment_set.all %}
@@ -93,11 +93,11 @@
                                 <p><a href="/s/{{ attachmentfile.file }}"><span style="font-style: italic;">(附件)</span> {{ attachmentfile.title }}</a></p>
                                 {% endif %}
                             {% endfor %}
+                        {% endfor %}
                             
                             <div class="comment-operate">
                                 <a class="comment-reply" href="{% if user.is_authenticated %}?reply={{ subitem.id }}#comment-form{% else %}{% url 'login' %}?next={{ request.path }}?reply={{ subitem.id }}#comment-form{% endif %}">回复</a>
                             </div>
-                        {% endfor %}
                     </div>
                 </div>
             {% endfor %}
