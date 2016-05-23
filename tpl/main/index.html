@@ -8,7 +8,7 @@
         <div class="items">
         {% for item in items %}
         <div class="item">
-            <div class="avatar-area"><div class="avatar" style="background: url({% if item.user.userprofile.openid %}{{ item.user.userprofile.avatar }}{% else %}{% if item.user.userprofile.avatar %}/s/{{ item.user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center;"><img src="{% if item.user.userprofile.openid %}{{ item.user.userprofile.avatar }}{% else %}{% if item.user.userprofile.avatar %}/s/{{ item.user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" alt="avatar" /></div></div>
+            <div class="avatar-area"><div class="avatar" style="background: url({% if item.user.userprofile.openid %}{{ item.user.userprofile.avatar }}{% else %}{% if item.user.userprofile.avatar %}/s/{{ item.user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center;"><img src="{% if item.user.userprofile.openid %}{{ item.user.userprofile.avatar }}{% else %}{% if item.user.userprofile.avatar %}/s/{{ item.user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" alt="{{ item.user.username }}" /></div></div>
             <div class="item-line">
                 <div class="item-info">
                     <span class="item-info-right"><a class="item-created">{% blocktrans with item.lastsubitem.create|timesince as update %}{{ update }}{% endblocktrans %}前</a>
