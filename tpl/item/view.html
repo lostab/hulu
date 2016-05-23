@@ -77,6 +77,7 @@
                             {% endif %}
                             </div>
                         {% for itemcontent in subitem.itemcontent_set.all %}
+                        <div class="itemcontent">
                             <div class="itemcontent-content"><pre>{{ itemcontent.content }}</pre></div>
                             
                             {% for attachmentfile in itemcontent.contentattachment_set.all %}
@@ -93,6 +94,7 @@
                                 <p><a href="/s/{{ attachmentfile.file }}"><span style="font-style: italic;">(附件)</span> {{ attachmentfile.title }}</a></p>
                                 {% endif %}
                             {% endfor %}
+                        </div>
                         {% endfor %}
                             
                             <div class="comment-operate">
