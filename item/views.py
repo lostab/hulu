@@ -279,11 +279,11 @@ def View(request, id):
 def Update(request, id):
     if request.user.is_authenticated():
         try:
-            item = Item.objects.get(id=id)
+            item = Item.objects.filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).get(id=id)
             if item.user.username != request.user.username:
                 item = None
             else:
-                itemcontent = ItemContent.objects.filter(item=item)
+                itemcontent = item.itemcontent_set.all()
                 if itemcontent[0].content:
                     item.title = itemcontent[0].content.strip().splitlines()[0]
                 else:
@@ -292,6 +292,8 @@ def Update(request, id):
                 item.firstcontent = ''.join(itemcontent[0].content.strip().splitlines(True)[1:])
         except Item.DoesNotExist:
             item = None
+        if not item:
+            return redirect('/i/' + id)
         if request.method == 'GET':
             content = {
                 'item': item
