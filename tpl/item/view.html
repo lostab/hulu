@@ -97,10 +97,11 @@
                         </div>
                         {% endfor %}
                             
+                    </div>
+                    
                             <div class="comment-operate">
                                 <a class="comment-reply" href="{% if user.is_authenticated %}?reply={{ subitem.id }}#comment-form{% else %}{% url 'login' %}?next={{ request.path }}?reply={{ subitem.id }}#comment-form{% endif %}">回复</a>
                             </div>
-                    </div>
                 </div>
             {% endfor %}
             {% if items.paginator.num_pages > 1 %}
