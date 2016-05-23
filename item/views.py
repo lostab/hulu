@@ -20,6 +20,7 @@ from user.models import *
 from main.__init__ import *
 from item.__init__ import *
 from django.forms.models import inlineformset_factory
+from django.db.models import Q
 
 #import jieba.analyse
 
