@@ -124,8 +124,9 @@ def Create(request):
 
 def View(request, id):
     try:
-        item = Item.objects.filter(useritemrelationship__isnull=True).get(id=id)
-        itemcontent = ItemContent.objects.filter(item=item)
+        item = Item.objects.filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).get(id=id).prefetch_related('itemcontent_set')
+        #itemcontent = ItemContent.objects.filter(item=item)
+        itemcontent = item.itemcontent_set.all()
         if itemcontent[0].content:
             item.title = itemcontent[0].content.strip().splitlines()[0]
             #item.tags = jieba.analyse.extract_tags(itemcontent[0].content, 3)
