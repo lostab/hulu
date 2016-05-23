@@ -26,6 +26,7 @@ from django.db.models import Q
 from django.forms.util import ErrorList
 from django.core.context_processors import csrf
 import os
+from django.utils.html import escape
 
 def Main(request):
     user = request.user
@@ -40,7 +41,7 @@ def Main(request):
                     'name': user.userprofile.info,
                     'avatar': (user.userprofile.openid) and str(user.userprofile.avatar) or ((user.userprofile.avatar) and '/s/' + str(user.userprofile.avatar) or '/s/avatar/n.png'),
                     'page': user.userprofile.page,
-                    'create': str(user.userprofile.create),
+                    'create': str(user.userprofile.create)
                 }
             }
             return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
@@ -442,17 +443,17 @@ def Notify(request):
                 message = {
                     'parent': {
                         'id': str(i.item.belong.all().first().id),
-                        'content': str(i.item.belong.all().first().itemcontent_set.all().first().content)
+                        'content': escape(str(i.item.belong.all().first().itemcontent_set.all().first().content.strip().splitlines()[0]))
                     },
                     'item': {
                         'id': str(i.item.id),
-                        'content': str(i.item.itemcontent_set.all().first().content).encode('utf-8'),
+                        'content': escape(str(i.item.itemcontent_set.all().first().content.strip().splitlines()[0]).encode('utf-8')),
                         'user': {
                             'username': i.item.user.username,
-                            'info': i.item.user.userprofile.info,
+                            'info': escape(i.item.user.userprofile.info),
                             'avatar': (i.item.user.userprofile.openid) and str(i.item.user.userprofile.avatar) or ((i.item.user.userprofile.avatar) and '/s/' + str(i.item.user.userprofile.avatar) or '/s/avatar/n.png'),
-                            'profile': i.item.user.userprofile.profile,
-                            'page': i.item.user.userprofile.page
+                            'profile': escape(i.item.user.userprofile.profile),
+                            'page': escape(i.item.user.userprofile.page)
                         }
                     },
                     'created': str(i.created + timedelta(hours=8)),
