@@ -524,7 +524,7 @@ def Avatar(request, avatar):
     if 'VCAP_SERVICES' in os.environ:
         container = 'avatar'
         avatar_objects = []
-        for obj in OC.get_container(container):
+        for obj in OC.get_container(container)[1]:
             avatar_objects.append(obj['name'])
         if avatar in avatar_objects:
             avatar_object = OC.get_object(container, avatar)
