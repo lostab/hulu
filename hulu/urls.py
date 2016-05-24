@@ -5,6 +5,8 @@ from main import views as main
 
 import settings
 
+from django.contrib.staticfiles.url import staticfiles_urlpatterns
+
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
@@ -32,3 +34,6 @@ urlpatterns = patterns('',
 #urlpatterns += patterns('',
 #(r'^s/(.*)$', 'django.views.static.serve', {'document_root' :settings.STATIC_ROOT}),
 #)
+
+if 'VCAP_SERVICES' in os.environ:
+    urlpatterns += staticfiles_urlpatterns
