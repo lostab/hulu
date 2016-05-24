@@ -3,4 +3,4 @@ https://pypi.python.org/packages/source/P/Pillow/Pillow-3.0.0.tar.gz
 dj-database-url==0.3.0
 https://pypi.python.org/packages/source/i/ibm_db_django/ibm_db_django-1.0.7.tar.gz
 #https://pypi.python.org/packages/source/j/jieba/jieba-0.38.zip
-python-swftclient
+python-swftclient==2.7.0
