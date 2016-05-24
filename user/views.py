@@ -342,7 +342,7 @@ def Settings(request):
                             vcap = json.loads(os.environ['VCAP_SERVICES'])
                             ocp = vcap['Object-Storage'][0]['credentials']
                             import swiftclient
-                            OC = swiftclient.Connection(key=ocp['password'], authurl=ocp['auth_url'], auth_version='3', os_options={'project_id': ocp['projectId'], 'userid': ocp['userId'], 'region_name': ocp['region']})
+                            OC = swiftclient.Connection(key=ocp['password'], authurl=ocp['auth_url'] + '/v3', auth_version='3', os_options={'project_id': ocp['projectId'], 'userid': ocp['userId'], 'region_name': ocp['region']})
                             containers = []
                             for container in OC.get_account()[1]:
                                 containers.append(container['name'])
