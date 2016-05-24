@@ -337,6 +337,17 @@ def Settings(request):
                                 avatar.save(avatar_file, optimize=True)
                                 resize_avatar(avatar, p)
                         resize_avatar(avatar, 1)
+                        
+                        if OC:
+                            containers = []
+                            for container in OC.get_account()[1]:
+                                containers.append(container['name'])
+                            if 'avatar' not in containers:
+                                OC.put_container('avatar')
+                            with open(avatar_file, 'r') as oc_avatar:
+                                OC.delete_object('avatar', str(request.user.username) + '.png')
+                                OC.put_object('avatar', str(request.user.username) + '.png', contents=oc_avatar.read(), content_type=str(oc_avatar.content_type))
+                            oc_avatar.close()
                 
                 if request.GET.get('type') == 'json':
                     content = {
@@ -502,4 +513,3 @@ def List(request):
         'users': users
     }
     return render_to_response('user/list.html', content, context_instance=RequestContext(request))
-
