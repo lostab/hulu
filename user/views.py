@@ -28,6 +28,12 @@ from django.core.context_processors import csrf
 import os
 from django.utils.html import escape
 
+if 'VCAP_SERVICES' in os.environ:
+    vcap = json.loads(os.environ['VCAP_SERVICES'])
+    ocp = vcap['Object-Storage'][0]['credentials']
+    import swiftclient
+    OC = swiftclient.Connection(key=ocp['password'], authurl=ocp['auth_url'] + '/v3', auth_version='3', os_options={'project_id': ocp['projectId'], 'user_id': ocp['userId'], 'region_name': ocp['region']})
+
 def Main(request):
     user = request.user
     if user.is_authenticated():
@@ -339,19 +345,15 @@ def Settings(request):
                         resize_avatar(avatar, 1)
                         
                         if 'VCAP_SERVICES' in os.environ:
-                            vcap = json.loads(os.environ['VCAP_SERVICES'])
-                            ocp = vcap['Object-Storage'][0]['credentials']
-                            import swiftclient
-                            OC = swiftclient.Connection(key=ocp['password'], authurl=ocp['auth_url'] + '/v3', auth_version='3', os_options={'project_id': ocp['projectId'], 'user_id': ocp['userId'], 'region_name': ocp['region']})
                             containers = []
                             for container in OC.get_account()[1]:
                                 containers.append(container['name'])
                             if 'avatar' not in containers:
                                 OC.put_container('avatar')
-                            with open(avatar_file, 'r') as oc_avatar:
+                            with open(avatar_file, 'r') as os_avatar:
                                 #OC.delete_object('avatar', str(request.user.username) + '.png')
-                                OC.put_object('avatar', str(request.user.username) + '.png', contents=oc_avatar.read(), content_type='image/png')
-                            oc_avatar.close()
+                                OC.put_object('avatar', str(request.user.username) + '.png', contents=os_avatar.read(), content_type='image/png')
+                            os_avatar.close()
                 
                 if request.GET.get('type') == 'json':
                     content = {
@@ -517,3 +519,23 @@ def List(request):
         'users': users
     }
     return render_to_response('user/list.html', content, context_instance=RequestContext(request))
+
+def Avatar(request, avatar):
+    if 'VCAP_SERVICES' in os.environ:
+        container = 'avatar'
+        avatar_objects = []
+        for obj in OC.get_container(container):
+            avatar_objects.append(obj['name'])
+        if avatar in avatar_objects:
+            avatar_object = OC.get_object(container, avatar)
+            return HttpResponse(avatar_object, content_type='image/png')
+        else:
+            avatar_file = os.path.join(settings.MEDIA_ROOT, 'avatar', avatar)
+            if not os.path.isfile(avatar_file):
+                avatar_file = os.path.join(settings.MEDIA_ROOT, 'avatar', 'n.png')
+            return HttpResponse(open(avatar_file, 'rb').read(), content_type='image/png')
+    else:
+        avatar_file = os.path.join(settings.MEDIA_ROOT, 'avatar', avatar)
+        if not os.path.isfile(avatar_file):
+            avatar_file = os.path.join(settings.MEDIA_ROOT, 'avatar', 'n.png')
+        return HttpResponse(open(avatar_file, 'rb').read(), content_type='image/png')
