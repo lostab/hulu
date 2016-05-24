@@ -4,7 +4,7 @@ from user import views as user
 from main import views as main
 
 import settings
-
+import os
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 # Uncomment the next two lines to enable the admin:
