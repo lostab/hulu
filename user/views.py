@@ -528,12 +528,12 @@ def Avatar(request, avatar):
             avatar_objects.append(obj['name'])
         if avatar in avatar_objects:
             avatar_object = OC.get_object(container, avatar)
-            return HttpResponse(open(avatar_object, 'rb').read(), content_type='image/png')
+            return HttpResponse(avatar_object[1], content_type='image/png')
         else:
             avatar_file = os.path.join(settings.MEDIA_ROOT, 'avatar', avatar)
             if not os.path.isfile(avatar_file):
                 avatar_file = os.path.join(settings.MEDIA_ROOT, 'avatar', 'n.png')
-            return HttpResponse(avatar_file[1], content_type='image/png')
+            return HttpResponse(open(avatar_file, 'rb').read(), content_type='image/png')
     else:
         avatar_file = os.path.join(settings.MEDIA_ROOT, 'avatar', avatar)
         if not os.path.isfile(avatar_file):
