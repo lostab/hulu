@@ -354,6 +354,7 @@ def Settings(request):
                                 #OC.delete_object('avatar', str(request.user.username) + '.png')
                                 OC.put_object('avatar', str(request.user.username) + '.png', contents=os_avatar.read(), content_type='image/png')
                             os_avatar.close()
+                            os.remove(avatar_file)
                 
                 if request.GET.get('type') == 'json':
                     content = {
