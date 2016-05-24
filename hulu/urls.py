@@ -26,7 +26,7 @@ urlpatterns = patterns('',
     url(r'^jk/(.+)/$', main.jk, name='jk'),
     url(r'^app/', main.app, name='app'),
     url(r'^(.+)/$', user.UserPage, name='userpage'),
-    url(r'^s/avatar/(.+)\.png$', user.Avatar, name='avatar'),
+    url(r'^s/avatar/(.+)$', user.Avatar, name='avatar'),
 )
 
 #urlpatterns += patterns('',
