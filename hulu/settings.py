@@ -48,7 +48,7 @@ if 'VCAP_SERVICES' in os.environ:
     
     ocp = vcap['Object-Storage'][0]['credentials']
     import swiftclient
-    OC = swiftclient.Connection(key=ocp['password'], authurl=ocp['auth_url'], auth_version='3', os_options={'project_id': ocp['projectId'], 'userid': ocp['userid'], 'region_name': ocp['region']})
+    OC = swiftclient.Connection(key=ocp['password'], authurl=ocp['auth_url'], auth_version='3', os_options={'project_id': ocp['projectId'], 'userid': ocp['userId'], 'region_name': ocp['region']})
 
 CACHES = {
     'default': {
