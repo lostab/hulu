@@ -350,7 +350,7 @@ def Settings(request):
                                 OC.put_container('avatar')
                             with open(avatar_file, 'r') as oc_avatar:
                                 #OC.delete_object('avatar', str(request.user.username) + '.png')
-                                OC.put_object('avatar', str(request.user.username) + '.png', contents=oc_avatar.read(), content_type=str(oc_avatar.content_type))
+                                OC.put_object('avatar', str(request.user.username) + '.png', contents=oc_avatar.read(), content_type='image/png')
                             oc_avatar.close()
                 
                 if request.GET.get('type') == 'json':
