@@ -45,6 +45,8 @@ if 'VCAP_SERVICES' in os.environ:
             'CONN_MAX_AGE'  : None,
         }
     }
+    
+    OC = vcap['Object-Storage'][0]['credentials']
 
 CACHES = {
     'default': {
