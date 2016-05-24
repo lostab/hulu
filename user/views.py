@@ -528,7 +528,7 @@ def Avatar(request, avatar):
             avatar_objects.append(obj['name'])
         if avatar in avatar_objects:
             avatar_object = OC.get_object(container, avatar)
-            return HttpResponse(avatar_object, content_type='image/png')
+            return HttpResponse(open(avatar_object, 'rb').read(), content_type='image/png')
         else:
             avatar_file = os.path.join(settings.MEDIA_ROOT, 'avatar', avatar)
             if not os.path.isfile(avatar_file):
