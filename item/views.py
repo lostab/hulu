@@ -90,17 +90,18 @@ def Create(request):
                 itemcontent = itemcontentform.save()
                 itemcontent.save()
                 
-                for attachmentfile in request.FILES.getlist('file'):
-                    attachment = ContentAttachment(itemcontent=itemcontent)
-                    attachmentform = ContentAttachmentForm(request.POST, request.FILES, instance=attachment)
-                    if attachmentform.is_valid():
-                        contentattachment = attachmentform.save()
-                        contentattachment.title = attachmentfile.name
-                        contentattachment.contenttype = str(attachmentfile.content_type)
-                        contentattachment.save()
-                    
-                    #convert img to svg
-                    img2svg(contentattachment)
+                #attach save
+                #for attachmentfile in request.FILES.getlist('file'):
+                #    attachment = ContentAttachment(itemcontent=itemcontent)
+                #    attachmentform = ContentAttachmentForm(request.POST, request.FILES, instance=attachment)
+                #    if attachmentform.is_valid():
+                #        contentattachment = attachmentform.save()
+                #        contentattachment.title = attachmentfile.name
+                #        contentattachment.contenttype = str(attachmentfile.content_type)
+                #        contentattachment.save()
+                #    
+                #    #convert img to svg
+                #    img2svg(contentattachment)
                 
                 x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
                 ip = request.META['REMOTE_ADDR']
@@ -233,17 +234,18 @@ def View(request, id):
                 itemcontent = itemcontentform.save()
                 itemcontent.save()
                 
-                for attachmentfile in request.FILES.getlist('file'):
-                    attachment = ContentAttachment(itemcontent=itemcontent)
-                    attachmentform = ContentAttachmentForm(request.POST, request.FILES, instance=attachment)
-                    if attachmentform.is_valid():
-                        contentattachment = attachmentform.save()
-                        contentattachment.title = attachmentfile.name
-                        contentattachment.contenttype = str(attachmentfile.content_type)
-                        contentattachment.save()
-                    
-                    #convert img to svg
-                    img2svg(contentattachment)
+                #attach save
+                #for attachmentfile in request.FILES.getlist('file'):
+                #    attachment = ContentAttachment(itemcontent=itemcontent)
+                #    attachmentform = ContentAttachmentForm(request.POST, request.FILES, instance=attachment)
+                #    if attachmentform.is_valid():
+                #        contentattachment = attachmentform.save()
+                #        contentattachment.title = attachmentfile.name
+                #        contentattachment.contenttype = str(attachmentfile.content_type)
+                #        contentattachment.save()
+                #    
+                #    #convert img to svg
+                #    img2svg(contentattachment)
                 
                 x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
                 ip = request.META['REMOTE_ADDR']
