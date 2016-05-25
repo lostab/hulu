@@ -301,9 +301,10 @@ def Settings(request):
         prev = request.GET.get('prev')
     next = None
     if request.GET.get('next'):
-        next = request.GET.get('next')
-    if prev and next and (next == '' or next[0] != '/' or next == '/u/login/' or next == '/u/signup/'):
-        return redirect('/u/settings/?prev=' + prev)
+        next = request.META['QUERY_STRING'].split('next=')[1]
+        nextpath = request.GET.get('next').split('?')[0]
+        if prev and next and (nextpath[0] != '/' or nextpath in['', '/u/login/', '/u/signup/']):
+            return redirect('/u/settings/?prev=' + prev)
     if request.user.is_authenticated():
         if request.method == 'GET':
             if request.GET.get('type') == 'json':
