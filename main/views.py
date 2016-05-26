@@ -37,7 +37,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
 from django.utils.html import escape
-
+import requests
 #import jieba.analyse
 
 def index(request):
@@ -540,6 +540,6 @@ def WBIMG(request):
             'status': '',
             'pic': request.FILES['img']
         }
-        req = urllib2.Request(url, data, headers)
-        content = urllib2.urlopen(req).read()
+        req = requests.post(url, data=data)
+        content = req.text()
         return jsonp(request, content)
