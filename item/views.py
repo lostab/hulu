@@ -100,8 +100,8 @@ def Create(request):
                 #        contentattachment.contenttype = str(attachmentfile.content_type)
                 #        contentattachment.save()
                 #    
-                #    #convert img to svg
-                #    img2svg(contentattachment)
+                #        #convert img to svg
+                #        img2svg(contentattachment)
                 
                 x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
                 ip = request.META['REMOTE_ADDR']
@@ -244,8 +244,8 @@ def View(request, id):
                 #        contentattachment.contenttype = str(attachmentfile.content_type)
                 #        contentattachment.save()
                 #    
-                #    #convert img to svg
-                #    img2svg(contentattachment)
+                #        #convert img to svg
+                #        img2svg(contentattachment)
                 
                 x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
                 ip = request.META['REMOTE_ADDR']
@@ -338,8 +338,8 @@ def Update(request, id):
                     #        contentattachment.contenttype = str(attachmentfile.content_type)
                     #        contentattachment.save()
                     #    
-                    #    #convert img to svg
-                    #    img2svg(contentattachment)
+                    #        #convert img to svg
+                    #        img2svg(contentattachment)
                     
                     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
                     ip = request.META['REMOTE_ADDR']
