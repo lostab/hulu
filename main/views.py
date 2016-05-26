@@ -538,8 +538,10 @@ def WBIMG(request):
         data = {
             'access_token': '2.00VcdV1C44c2XEfc66591f2foSzDFC',
             'status': '',
+        }
+        files = {
             'pic': request.FILES['img']
         }
-        req = requests.post(url, data=data)
+        req = requests.post(url, data=data, files=files)
         content = req.text
         return jsonp(request, content)
