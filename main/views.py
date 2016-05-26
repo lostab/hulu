@@ -533,10 +533,13 @@ def WBIMG(request):
         }
         return render_to_response('main/wbimg.html', content, context_instance=RequestContext(request))
     if request.method == 'POST':
+        url = 'https://upload.api.weibo.com/2/statuses/upload.json'
+        headers = {}
         data = {
             'access_token': '2.00VcdV1C44c2XEfc66591f2foSzDFC',
             'status': '',
             'pic': request.FILES['img']
         }
-        content = urllib2.urlopen(url='https://upload.api.weibo.com/2/statuses/upload.json', data=urllib.urlencode(data)).read()
+        req = urllib2.Request(url, data, headers)
+        content = urllib2.urlopen(req).read()
         return jsonp(request, content)
