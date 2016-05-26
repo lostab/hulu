@@ -516,7 +516,7 @@ def app(request):
                     'messages': []
                 }
                 content['newmessagesession'] = json.dumps(newmessagesession, encoding='utf-8', ensure_ascii=False, indent=4)
-        return render_to_response('main/app.html', content , context_instance=RequestContext(request))
+        return render_to_response('main/app.html', content, context_instance=RequestContext(request))
     else:
         if request.GET.get('type') == 'json':
             content = {
@@ -524,3 +524,18 @@ def app(request):
             }
             return jsonp(request, content)
         return redirectlogin(request)
+
+def WBIMG(request):
+    if request.method = 'GET':
+        content = {
+            
+        }
+        return render_to_response('main/wbimg.html', content, context_instance=RequestContext(request))
+    if request.method = 'POST':
+        data = {
+            'access_token': '2.00VcdV1C44c2XEfc66591f2foSzDFC',
+            'status': '',
+            'pic': request.FILES['img']
+        }
+        content = urllib2.urlopen(url='https://upload.api.weibo.com/2/statuses/upload.json', data = urllib.urlencode(data)).read()
+        return jsonp(request, content)
