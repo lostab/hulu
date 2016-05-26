@@ -526,16 +526,20 @@ def app(request):
             return jsonp(request, content)
         return redirectlogin(request)
 
+if 'weibo_username' in os.environ:
+    from weibo import Client
 
-from weibo import Client
 def WBIMG(request):
-    if request.method == 'GET':
-        content = {
+    if 'weibo_username' in os.environ:
+        if request.method == 'GET':
+            content = {
             
-        }
-        return render_to_response('main/wbimg.html', content, context_instance=RequestContext(request))
-    if request.method == 'POST':
-        url = 'https://upload.api.weibo.com/2/statuses/upload.json'
-        weiboclient = Client('4157302825', '517583a4b3197943dda94a45c5823c61', 'hulu.im', username=os.environ['weibo_username'], password=os.environ['weibo_password'])
-        content = weiboclient.post('statuses/upload', status='https://hulu.im', pic=request.FILES['img'])
-        return jsonp(request, content)
+            }
+            return render_to_response('main/wbimg.html', content, context_instance=RequestContext(request))
+        if request.method == 'POST':
+            url = 'https://upload.api.weibo.com/2/statuses/upload.json'
+            weiboclient = Client('4157302825', '517583a4b3197943dda94a45c5823c61', 'hulu.im', username=os.environ['weibo_username'], password=os.environ['weibo_password'])
+            content = weiboclient.post('statuses/upload', status='https://hulu.im', pic=request.FILES['img'])
+            return jsonp(request, content)
+    else:
+        return redirect('/')
