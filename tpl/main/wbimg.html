@@ -1,5 +1,14 @@
-<form method="post" enctype="multipart/form-data">
-{% csrf_token %}
-<input type="file" name="img">
-<input type="submit">
-</form>
+<!doctype html>
+<html>
+<head>
+    <title>微博图床</title>
+    <meta name="viewport" content="maximum-scale=1,width=device-width,initial-scale=1,minimal-ui" />
+</head>
+<body>
+    <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="img">
+    <input type="submit">
+    </form>
+</body>
+</html>
