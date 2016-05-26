@@ -527,12 +527,12 @@ def app(request):
         return redirectlogin(request)
 
 def WBIMG(request):
-    if request.method = 'GET':
+    if request.method == 'GET':
         content = {
             
         }
         return render_to_response('main/wbimg.html', content, context_instance=RequestContext(request))
-    if request.method = 'POST':
+    if request.method == 'POST':
         data = {
             'access_token': '2.00VcdV1C44c2XEfc66591f2foSzDFC',
             'status': '',
