@@ -537,9 +537,9 @@ def WBIMG(request):
         headers = {}
         data = {
             
+            'access_token': '2.00VcdV1C44c2XEfc66591f2foSzDFC'
         }
         files = {
-            'access_token': '2.00VcdV1C44c2XEfc66591f2foSzDFC',
             'status': '',
             'pic': request.FILES['img']
         }
