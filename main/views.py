@@ -37,7 +37,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
 from django.utils.html import escape
-import requests
+
 #import jieba.analyse
 
 def index(request):
@@ -526,6 +526,8 @@ def app(request):
             return jsonp(request, content)
         return redirectlogin(request)
 
+
+from weibo import Client
 def WBIMG(request):
     if request.method == 'GET':
         content = {
@@ -534,15 +536,7 @@ def WBIMG(request):
         return render_to_response('main/wbimg.html', content, context_instance=RequestContext(request))
     if request.method == 'POST':
         url = 'https://upload.api.weibo.com/2/statuses/upload.json'
-        headers = {}
-        data = {
-            
-            'access_token': '2.00VcdV1C44c2XEfc66591f2foSzDFC'
-        }
-        files = {
-            'status': '',
-            'pic': request.FILES['img']
-        }
-        req = requests.post(url, data=data, files=files)
-        content = req.text
+        token = Client('4157302825', '517583a4b3197943dda94a45c5823c61', 'hulu.im').token
+        weiboclient = Client('4157302825', '517583a4b3197943dda94a45c5823c61', 'hulu.im', token)
+        content = weiboclient.post(url, status='', pic=request.FILES['img'])
         return jsonp(request, content)
