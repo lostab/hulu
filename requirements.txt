@@ -6,3 +6,4 @@ https://pypi.python.org/packages/source/i/ibm_db_django/ibm_db_django-1.0.7.tar.
 https://pypi.python.org/packages/74/bd/3f06dd32f9d50705633ee7d45501915c5dd4a2a5919aa6d06c1da5a55ec6/python-swiftclient-3.0.0.tar.gz
 
 https://pypi.python.org/packages/45/9e/de957806f2f04f195ebb6dda5e963335c1c2050d4c4ad1069e9695d0b67a/python-keystoneclient-3.1.0.tar.gz
+https://pypi.python.org/packages/49/6f/183063f01aae1e025cf0130772b55848750a2f3a89bfa11b385b35d7329d/requests-2.10.0.tar.gz
