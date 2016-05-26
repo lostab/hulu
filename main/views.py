@@ -537,6 +537,6 @@ def WBIMG(request):
     if request.method == 'POST':
         url = 'https://upload.api.weibo.com/2/statuses/upload.json'
         token = Client('4157302825', '517583a4b3197943dda94a45c5823c61', 'hulu.im').token
-        weiboclient = Client('4157302825', '517583a4b3197943dda94a45c5823c61', 'hulu.im', token)
+        weiboclient = Client('4157302825', '517583a4b3197943dda94a45c5823c61', 'hulu.im', username=os.environ['weibo_username'], password=os.environ['weibo_password'])
         content = weiboclient.post(url, status='', pic=request.FILES['img'])
         return jsonp(request, content)
