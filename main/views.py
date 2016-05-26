@@ -538,5 +538,5 @@ def WBIMG(request):
             'status': '',
             'pic': request.FILES['img']
         }
-        content = urllib2.urlopen(url='https://upload.api.weibo.com/2/statuses/upload.json', data = urllib.urlencode(data)).read()
+        content = urllib2.urlopen(url='https://upload.api.weibo.com/2/statuses/upload.json', data=urllib.urlencode(data)).read()
         return jsonp(request, content)
