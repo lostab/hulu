@@ -541,5 +541,5 @@ def WBIMG(request):
             'pic': request.FILES['img']
         }
         req = requests.post(url, data=data)
-        content = req.text()
+        content = req.text
         return jsonp(request, content)
