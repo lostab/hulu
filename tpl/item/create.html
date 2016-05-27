@@ -14,8 +14,9 @@
                 <input class="file" name="file" type="file" value={{ form.file.value }} />
                 <br />
                 (小于2MB有效)</p>-->
-                <input id="wbimg" type="file" name="img" />
-                <br />
+                
+                <p><input id="wbimg" type="file" name="img" /></p>
+                
                 <div class="process" style="width: 100%">
                     <div class="processbar" style="width: 0%; height: 18px; background: green"></div>
                 </div>
@@ -31,7 +32,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
     $("#wbimg").fileupload({
-        url: "wbimg",
+        url: "/wbimg/",
         dataType: "jsonp",
         done: function(e, data){
             var wbimgurl = data.result.bmiddle_pic;
