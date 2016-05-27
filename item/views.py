@@ -64,6 +64,7 @@ def Create(request):
             return render_to_response('item/create.html', content, context_instance=RequestContext(request))
         
         if request.method == 'POST':
+            request.FILES = None
             if request.POST.get('content').strip() == '' and not request.FILES:
                 content = {
                     
@@ -201,6 +202,7 @@ def View(request, id):
                 except UserNotify.DoesNotExist:
                     pass
             
+            request.FILES = None
             if request.POST.get('content').strip() == '' and not request.FILES:
                 content = {
                     'item': item,
@@ -309,6 +311,7 @@ def Update(request, id):
             return render_to_response('item/update.html', content, context_instance=RequestContext(request))
         if request.method == 'POST':
             if item:
+                request.FILES = None
                 if request.POST.get('content').strip() == '' and not request.FILES:
                     content = {
                         'item': item
