@@ -283,7 +283,7 @@ p.cancel-btn {
     vertical-align:top;
     overflow-y:visible;
     width: 100%;
-    height: 60vh;
+    height: 50vh;
     min-height: 7em;
 }
 .content.items .item-line .item-title, .content.items .item-line .item-info{
