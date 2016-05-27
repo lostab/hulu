@@ -35,6 +35,8 @@ $(document).ready(function(){
         url: "/wbimg/",
         dataType: "jsonp",
         done: function(e, data){
+            $(this).show();
+            alert(data);
             var wbimgurl = data.result.bmiddle_pic;
             $("textarea.content").val($("textarea.content").val() + wbimgurl);
             
@@ -44,6 +46,7 @@ $(document).ready(function(){
             $(".process .processbar").css("width", process + "%");
         },
         add: function(e, data){
+            $(this).hide();
             data.submit();
         }
     });
