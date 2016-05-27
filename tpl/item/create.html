@@ -34,7 +34,6 @@ $(document).ready(function(){
     $("#wbimg").fileupload({
         url: "/wbimg/",
         dataType: "jsonp",
-        autoUpload: true,
         done: function(e, data){
             var wbimgurl = data.result.bmiddle_pic;
             $("textarea.content").val($("textarea.content").val() + wbimgurl);
@@ -45,7 +44,7 @@ $(document).ready(function(){
             $(".process .processbar").css("width", process + "%");
         },
         add: function(e, data){
-            data.submit();
+            
         }
     });
 });
