@@ -133,8 +133,11 @@ def View(request, id):
             item.title = itemcontent[0].content.strip().splitlines()[0]
             #item.tags = jieba.analyse.extract_tags(itemcontent[0].content, 3)
         else:
-            contentattachment = ContentAttachment.objects.filter(itemcontent=itemcontent[0])
-            item.title = contentattachment[0].title
+            contentattachment = itemcontent[0].contentattachment_set.all()
+            if contentattachment:
+                item.title = contentattachment[0].title
+            else:
+                item.title = str(item.id)
         item.firstcontent = ''.join(itemcontent[0].content.strip().splitlines(True)[1:])
     except Item.DoesNotExist:
         item = None
