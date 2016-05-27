@@ -16,13 +16,33 @@
                 (小于2MB有效)</p>-->
                 <p><input class="submit" type="submit" value="发布信息" /></p>
             </form>
+            <p>
+                <input class="wbimg" type="file" name="img" />
+                <br />
+                <div class="process">
+                    <div class="processbar" style="width: 0%; height: 18px; background: green"></div>
+                </div>
+            </p>
         </div>
     {% endif %}
 {% endblock %}
 {% block footer %}
+<script type="text/javascript" src="/s/js/jquery.fileupload.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-    
+    $(".wbimg").fileupload({
+        url: "wbimg",
+        dataType: "jsonp",
+        done: function(e, data){
+            var wbimgurl = data.result.bmiddle_pic;
+            $("textarea.content").val($("textarea.content").val() + wbimgurl;
+            
+        },
+        processall: function(e, data){
+            var process = parseInt(data.loaded / data.total * 100, 10);
+            $(".process .processbar").css("width", process + "%");
+        }
+    });
 });
 </script>
 {% endblock %}
