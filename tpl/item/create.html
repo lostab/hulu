@@ -43,6 +43,9 @@ $(document).ready(function(){
         processall: function(e, data){
             var process = parseInt(data.loaded / data.total * 100, 10);
             $(".process .processbar").css("width", process + "%");
+        },
+        add: function(e, data){
+            data.submit();
         }
     });
 });
