@@ -33,7 +33,7 @@ $(document).ready(function(){
         dataType: "jsonp",
         done: function(e, data){
             var wbimgurl = data.result.bmiddle_pic;
-            $("textarea.content").val($("textarea.content").val() + wbimgurl;
+            $("textarea.content").val($("textarea.content").val() + wbimgurl);
             
         },
         processall: function(e, data){
