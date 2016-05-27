@@ -74,7 +74,10 @@ def index(request):
                 else:
                     #contentattachment = ContentAttachment.objects.filter(itemcontent=itemcontent[0])
                     contentattachment = itemcontent[0].contentattachment_set.all()
-                    item.title = contentattachment[0].title
+                    if contentattachment:
+                        item.title = contentattachment[0].title
+                    else:
+                        item.title = str(item.id)
                 
                 subitem = item.get_all_items(include_self=False)
                 if subitem:
