@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 
 from user import views as user
 from main import views as main
+from item import views as item
 
 import settings
 import os
