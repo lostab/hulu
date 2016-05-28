@@ -6,7 +6,7 @@
     {% if user.is_authenticated %}
         <div class="content create">
             <h3>发布信息</h3>
-            <form method="post" enctype="multipart/form-data">
+            <form class="itemform" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <p class="description"><textarea name="content">{{ form.content.value }}</textarea></p>
                 <!--<p>附件：
