@@ -527,10 +527,10 @@ def Avatar(request, avatar):
         container = 'avatar'
         avatar_object = None
         containers = []
-        for container in OC.get_account()[1]:
-            containers.append(container['name'])
-        if 'avatar' not in containers:
-            OC.put_container('avatar')
+        for ctn in OC.get_account()[1]:
+            containers.append(ctn['name'])
+        if container not in containers:
+            OC.put_container(container）
         for obj in OC.get_container(container)[1]:
             if obj['name'] == avatar:
                 avatar_object = OC.get_object(container, avatar)
