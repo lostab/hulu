@@ -130,7 +130,7 @@ textarea {
     line-height: 24px;
     vertical-align: middle;
 }
-.header .right-navbar a:not(.header-navbar-button), .header .right-navbar-login a {
+.header .right-navbar a:not(.header-navbar-button) {
     font-family: arial,sans-serif;
     /*background: gray;*/
     color: white;
@@ -165,6 +165,9 @@ textarea {
 .header .right-navbar a:hover {
     opacity: 1;
     filter: alpha(opacity=100);
+}
+.header .right-navbar-login a {
+    width: 24px;
 }
 .pagination {
     text-align: center;
