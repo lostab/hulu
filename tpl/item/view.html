@@ -128,7 +128,7 @@
         
         {% if user.is_authenticated %}
         {{ form.content.errors }}{{ form.file.errors }}
-        <form method="post" class="comment-form" id="comment-form" enctype="multipart/form-data">
+        <form method="post" class="comment-form itemform" id="comment-form" enctype="multipart/form-data">
             {% csrf_token %}
             <input class="comment-parent" name="reply" type="hidden"{% if request.GET.reply %} value="{{ request.GET.reply }}"{% endif %} />
             <p class="comment-content">{% if reply %}<span class="comment-reply-to">回复 {{ reply.user.username }}：</span>{% endif %}<textarea name="content">{{ form.content.value }}</textarea></p>
