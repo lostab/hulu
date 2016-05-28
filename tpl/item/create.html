@@ -20,7 +20,7 @@
                 <div class="process" style="width: 100%; display: none;">
                     <div class="processbar" style="width: 0%; height: 18px; background: green;"></div>
                 </div>
-                <div class="failinfo" style="text-align: center;"></div>
+                <div class="uploadinfo" style="text-align: center;"></div>
                 <p><input class="submit" type="submit" value="发布信息" /></p>
             </form>
         </div>
@@ -44,12 +44,12 @@ $(document).ready(function(){
         fail: function(e, data){
             $(this).prop("disable", false);
             $(".process").hide();
-            $(".failinfo").show();
-            $(".failinfo").text("上传失败");
+            $(".uploadinfo").show();
+            $(".uploadinfo").text("上传失败");
         },
         progressall: function(e, data){
             $(".process").show();
-            $(".failinfo").hide();
+            $(".uploadinfo").hide();
             var process = parseInt(data.loaded / data.total * 100, 10);
             $(".process .processbar").css("width", process + "%");
         },
