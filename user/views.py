@@ -525,11 +525,16 @@ def List(request):
 def Avatar(request, avatar):
     if 'VCAP_SERVICES' in os.environ:
         container = 'avatar'
-        #avatar_objects = []
-        #for obj in OC.get_container(container)[1]:
-        #    avatar_objects.append(obj['name'])
-        #if avatar in avatar_objects:
-        avatar_object = OC.get_object(container, avatar)
+        avatar_object = None
+        containers = []
+        for container in OC.get_account()[1]:
+            containers.append(container['name'])
+        if iavatar' not in containers:
+            OC.put_container('avatar')
+        for obj in OC.get_container(container)[1]:
+            if obj['name'] == avatar:
+                avatar_object = OC.get_object(container, avatar)
+                break
         if avatar_object:
             return HttpResponse(avatar_object[1], content_type='image/png')
         else:
