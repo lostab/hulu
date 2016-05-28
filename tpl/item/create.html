@@ -37,14 +37,16 @@ $(document).ready(function(){
         dataType: "jsonp",
         done: function(e, data){
             $(this).prop("disabled", false);
-            $("submit").prop("disabled", false);
+            $(".submit").prop("disabled", false);
             var wbimgurl = data.result.bmiddle_pic;
             $("form textarea").val($("form textarea").val() + " " + wbimgurl);
+            $(".process").hide();
+            $(".uploadinfo").show();
             
         },
         fail: function(e, data){
             $(this).prop("disabled", false);
-            $("submit").prop("disabled", false);
+            $(".submit").prop("disabled", false);
             $(".process").hide();
             $(".uploadinfo").show();
             $(".uploadinfo").text("上传失败，请检查文件后重试。");
@@ -57,7 +59,7 @@ $(document).ready(function(){
         },
         add: function(e, data){
             $(this).prop("disabled", true);
-            $("submit").prop("disabled", true);
+            $(".submit").prop("disabled", true);
             $(".process").hide();
             $(".uploadinfo").show();
             $(".uploadinfo").text("正在上传…");
