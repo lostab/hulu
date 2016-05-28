@@ -17,6 +17,7 @@ from item.forms import *
 from django.forms.util import ErrorList
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from user.models import *
+from hulu import *
 from main.__init__ import *
 from item.__init__ import *
 from django.forms.models import inlineformset_factory
