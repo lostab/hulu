@@ -15,11 +15,12 @@
                 <br />
                 (小于2MB有效)</p>-->
                 
-                <p><input id="wbimg" type="file" name="file" /></p>
+                <div style="text-align: center;"><input id="wbimg" type="file" name="file" /></div>
                 
-                <div class="process" style="width: 100%">
-                    <div class="processbar" style="width: 0%; height: 18px; background: green"></div>
+                <div class="process" style="width: 100%; display: none;">
+                    <div class="processbar" style="width: 0%; height: 18px; background: green;"></div>
                 </div>
+                <div class="failinfo" style="text-align: center;"></div>
                 <p><input class="submit" type="submit" value="发布信息" /></p>
             </form>
         </div>
@@ -35,23 +36,28 @@ $(document).ready(function(){
         url: "/wbimg/",
         dataType: "jsonp",
         done: function(e, data){
-            //$(this).css("disable", "false");
+            $(this).prop("disable", false);
             var wbimgurl = data.result.bmiddle_pic;
             $("form textarea").val($("form textarea").val() + wbimgurl);
             
         },
-        error: function(e, data){
-            //$(this).css("disable", "true");
+        fail: function(e, data){
+            $(this).prop("disable", false);
+            $(".process").hide();
+            $(".failinfo").show();
+            $(".failinfo").text("上传失败");
         },
-        processall: function(e, data){
+        progressall: function(e, data){
+            $(".process").show();
+            $(".failinfo").hide();
             var process = parseInt(data.loaded / data.total * 100, 10);
             $(".process .processbar").css("width", process + "%");
         },
         add: function(e, data){
-            //$(this).css("disable", "true");
+            $(this).prop("disable", true);
             data.submit();
         }
-    }).prop('disabled', !$.support.fileInput);
+    });
 });
 </script>
 {% endblock %}
