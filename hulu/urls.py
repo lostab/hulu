@@ -28,7 +28,7 @@ urlpatterns = patterns('',
     url(r'^jk/(.+)/$', main.jk, name='jk'),
     url(r'^app/', main.app, name='app'),
     url(r'^s/avatar/(.+)$', user.Avatar, name='avatar'),
-    url(r'^wi/', main.wbimg, name='wbimg'),
+    url(r'^wi/', item.wbimg, name='wbimg'),
     url(r'^(.+)/$', user.UserPage, name='userpage'),
 )
 
