@@ -15,12 +15,12 @@
                 <br />
                 (小于2MB有效)</p>-->
                 
-                <div style="text-align: center;"><input id="wbimg" type="file" name="file" /></div>
+                <p style="text-align: center;"><input id="wbimg" type="file" name="file" /></p>
                 
                 <div class="process" style="width: 100%; display: none;">
                     <div class="processbar" style="width: 0%; height: 18px; background: green;"></div>
                 </div>
-                <div class="uploadinfo" style="text-align: center;"></div>
+                <div class="uploadinfo" style="text-align: center; height: 18px;"></div>
                 <p><input class="submit" type="submit" value="发布信息" /></p>
             </form>
         </div>
@@ -36,16 +36,16 @@ $(document).ready(function(){
         url: "/wbimg/",
         dataType: "jsonp",
         done: function(e, data){
-            $(this).prop("disable", false);
+            $(this).prop("disabled", false);
             var wbimgurl = data.result.bmiddle_pic;
             $("form textarea").val($("form textarea").val() + wbimgurl);
             
         },
         fail: function(e, data){
-            $(this).prop("disable", false);
+            $(this).prop("disabled", false);
             $(".process").hide();
             $(".uploadinfo").show();
-            $(".uploadinfo").text("上传失败");
+            $(".uploadinfo").text("上传失败，请检查文件后重试。");
         },
         progressall: function(e, data){
             $(".process").show();
@@ -54,7 +54,10 @@ $(document).ready(function(){
             $(".process .processbar").css("width", process + "%");
         },
         add: function(e, data){
-            $(this).prop("disable", true);
+            $(this).prop("disabled", true);
+            $(".process").hide();
+            $(".uploadinfo").show();
+            $(".uploadinfo").text("正在上传…");
             data.submit();
         }
     });
