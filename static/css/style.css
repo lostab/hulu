@@ -130,7 +130,7 @@ textarea {
     line-height: 24px;
     vertical-align: middle;
 }
-.header .right-navbar a:not(.header-navbar-button){
+.header .right-navbar a:not(.header-navbar-button), .header .right-navbar-login a {
     font-family: arial,sans-serif;
     /*background: gray;*/
     color: white;
