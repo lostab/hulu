@@ -42,6 +42,7 @@ $(document).ready(function(){
             $("form textarea").val($("form textarea").val() + " " + wbimgurl);
             $(".process").hide();
             $(".uploadinfo").show();
+            $(".uploadinfo").text("");
             
         },
         fail: function(e, data){
