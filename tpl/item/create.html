@@ -15,12 +15,12 @@
                 <br />
                 (小于2MB有效)</p>-->
                 
-                <p style="text-align: center;"><input id="wbimg" type="file" name="file" /></p>
-                
+                <p style="text-align: center;"><input class="wbimg" type="file" name="file" style="width: 80px;" /></p>
                 <div class="process" style="width: 100%; display: none;">
                     <div class="processbar" style="width: 0%; height: 18px; background: green;"></div>
                 </div>
                 <div class="uploadinfo" style="text-align: center; height: 18px;"></div>
+                
                 <p><input class="submit" type="submit" value="发布信息" /></p>
             </form>
         </div>
@@ -32,7 +32,7 @@
 <script type="text/javascript" src="/s/js/jquery.fileupload.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-    $("#wbimg").fileupload({
+    $(".wbimg").fileupload({
         url: "/wi/",
         dataType: "jsonp",
         done: function(e, data){
