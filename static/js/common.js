@@ -38,4 +38,56 @@ $(document).ready(function(){
         svgresize();
     });
     $(".container").css({"min-height": "calc(100% - " + ($(".header").height() + 12 + $(".footer").height()) + "px - " + $(".container").css("padding-top") + ")"});
+    
+    $(".itemform .submit").parent().before('\
+        <p style="text-align: center;">\
+            <input class="wbimg" type="file" name="file" style="display: none;" />\
+            <input class="fileselectbutton" type="button" value="上传图片" />\
+        </p>\
+        <div class="process" style="width: 100%; display: none;">\
+            <div class="processbar" style="width: 0%; height: 18px; background: black;"></div>\
+        </div>\
+        <div class="uploadinfo" style="text-align: center; height: 18px;"></div>\
+    ');
+    $(".itemform .fileselectbutton").click(function(){
+        $(this).closest(".itemform").find(".wbimg").click();
+    });
+    $(".itemform .wbimg").fileupload({
+        url: "/wi/",
+        dataType: "jsonp",
+        done: function(e, data){
+            $(this).prop("disabled", false);
+            $(this).next(".fileselectbutton").prop("disabled", false);
+            $(this).closest(".itemform").find(".submit").prop("disabled", false);
+            var wbimgurl = data.result.bmiddle_pic;
+            $(this).closest(".itemform").find("textarea").val($(this).closest(".itemform").find("textarea").val() + " " + wbimgurl);
+            $(this).closest(".itemform").find(".process").hide();
+            $(this).closest(".itemform").find(".uploadinfo").show();
+            $(this).closest(".itemform").find(".uploadinfo").text("");
+            
+        },
+        fail: function(e, data){
+            $(this).prop("disabled", false);
+            $(this).next(".fileselectbutton").prop("disabled", false);
+            $(this).closest(".itemform").find(".submit").prop("disabled", false);
+            $(this).closest(".itemform").find(".process").hide();
+            $(this).closest(".itemform").find(".uploadinfo").show();
+            $(this).closest(".itemform").find(".uploadinfo").text("上传失败，请检查文件后重试。");
+        },
+        progressall: function(e, data){
+            $(this).closest(".itemform").find(".process").show();
+            $(this).closest(".itemform").find(".uploadinfo").hide();
+            var process = parseInt(data.loaded / data.total * 100, 10);
+            $(this).closest(".itemform").find(".process .processbar").css("width", process + "%");
+        },
+        add: function(e, data){
+            $(this).prop("disabled", true);
+            $(this).next(".fileselectbutton").prop("disabled", true);
+            $(this).closest(".itemform").find(".submit").prop("disabled", true);
+            $(this).closest(".itemform").find(".process").hide();
+            $(this).closest(".itemform").find(".uploadinfo").show();
+            $(this).closest(".itemform").find(".uploadinfo").text("正在上传…");
+            data.submit();
+        }
+    });
 });
