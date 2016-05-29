@@ -39,6 +39,13 @@ $(document).ready(function(){
     });
     $(".container").css({"min-height": "calc(100% - " + ($(".header").height() + 12 + $(".footer").height()) + "px - " + $(".container").css("padding-top") + ")"});
     
+    $(".itemform .submit").click(function{
+        if($.trim($(this).closest(".itemform").find("textarea").val()) == "") {
+            $(this).closest(".itemform").find("textarea").focus();
+            return false;
+        }
+    });
+    
     $(".itemform .submit").parent().before('\
         <p style="text-align: center;">\
             <input class="wbimg" type="file" name="file" style="display: none;" />\
