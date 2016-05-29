@@ -151,9 +151,6 @@ textarea {
 .header .right-navbar a.notify-amount-new, .header .right-navbar a.notify-amount-new:hover {
     background: crimson;
 }
-.header .right-navbar a.create-button {
-    background: green;
-}
 .header .right-navbar a {
     background: none;
     opacity: 0.6;
@@ -173,6 +170,9 @@ textarea {
     width: 24px;
     background: gray;
     color: white;
+}
+.header .right-navbar a.create-button {
+    background: green;
 }
 .pagination {
     text-align: center;
