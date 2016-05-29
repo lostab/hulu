@@ -49,12 +49,12 @@ $(document).ready(function(){
     $(".itemform .submit").parent().before('\
         <div class="fileselect" style="text-align: center;">\
             <input class="wbimg" type="file" name="file" style="display: none;" />\
-            <input class="fileselectbutton" type="button" value="上传图片" />\
+            <input class="fileselectbutton" type="button" value="上传图片" style="font-size: small;" />\
         </div>\
         <div class="process" style="width: 100%; display: none;">\
             <div class="processbar" style="width: 0%; height: 22px; background: black;"></div>\
         </div>\
-        <div class="uploadinfo" style="text-align: center; height: 18px;"></div>\
+        <div class="uploadinfo" style="text-align: center; height: 18px; color: gray;"></div>\
     ');
     $(".itemform .fileselectbutton").click(function(){
         $(this).closest(".itemform").find(".wbimg").click();
@@ -71,7 +71,7 @@ $(document).ready(function(){
             $(this).closest(".itemform").find("textarea").val($(this).closest(".itemform").find("textarea").val() + " " + wbimgurl);
             $(this).closest(".itemform").find(".process").hide();
             $(this).closest(".itemform").find(".uploadinfo").show();
-            $(this).closest(".itemform").find(".uploadinfo").text("");
+            $(this).closest(".itemform").find(".uploadinfo").text("上传成功，请记住图片链接。");
             
         },
         fail: function(e, data){
@@ -88,6 +88,7 @@ $(document).ready(function(){
             //$(this).closest(".itemform").find(".uploadinfo").hide();
             var process = parseInt(data.loaded / data.total * 100, 10);
             $(this).closest(".itemform").find(".process .processbar").css("width", process + "%");
+            $(this).closest(".itemform").find(".uploadinfo").text(process + "%");
         },
         add: function(e, data){
             $(this).prop("disabled", true);
