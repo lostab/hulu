@@ -54,7 +54,7 @@ $(document).ready(function(){
         <div class="process" style="width: 100%; display: none;">\
             <div class="processbar" style="width: 0%; height: 22px; background: black;"></div>\
         </div>\
-        <div class="uploadinfo" style="text-align: center; height: 18px; color: gray;"></div>\
+        <div class="uploadinfo" style="text-align: center; height: 18px; font-size: small; color: gray;"></div>\
     ');
     $(".itemform .fileselectbutton").click(function(){
         $(this).closest(".itemform").find(".wbimg").click();
