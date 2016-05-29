@@ -174,7 +174,7 @@ textarea {
 .header .right-navbar a.create-button {
     background: green;
 }
-.header .right-navbar a:create-button:hover {
+.header .right-navbar a.create-button:hover {
     background: green;
 }
 .pagination {
