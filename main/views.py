@@ -176,7 +176,7 @@ def index(request):
                     v2exurl = 'https://www.v2ex.com/api/topics/hot.json'
                     v2exjson = json.loads(urllib2.urlopen(v2exurl).read())
                     for i in v2exjson:
-                        v2exitem = fetchitem(user=fetchuser(username='V2EX', userprofile=fetchprofile(openid='V2EX', avatar='https://v2ex.com/favicon.ico')), title=i['title'], url=i['url'].replace('http://', 'https://'), lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.fromtimestamp(int(i['created'])), timezone.get_default_timezone())), tags=None)
+                        v2exitem = fetchitem(user=fetchuser(username='V2EX', userprofile=fetchprofile(openid='V2EX', avatar='https://www.v2ex.com/static/img/icon_rayps_64.png')), title=i['title'], url=i['url'].replace('http://', 'https://'), lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.fromtimestamp(int(i['created'])), timezone.get_default_timezone())), tags=None)
                         itemlist.append(v2exitem)
                         fetchitems.append(v2exitem)
                     
