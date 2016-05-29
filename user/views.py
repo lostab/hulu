@@ -523,27 +523,33 @@ def List(request):
     return render_to_response('user/list.html', content, context_instance=RequestContext(request))
 
 def Avatar(request, avatar):
-    if 'VCAP_SERVICES' in os.environ:
-        container = 'avatar'
+    def get_avatar_object():
         avatar_object = None
-        containers = []
-        for ctn in OC.get_account()[1]:
-            containers.append(ctn['name'])
-        if container not in containers:
-            OC.put_container(container)
-        for obj in OC.get_container(container)[1]:
-            if obj['name'] == avatar:
-                avatar_object = OC.get_object(container, avatar)
-                break
-        if avatar_object:
-            return HttpResponse(avatar_object[1], content_type='image/png')
+        if 'VCAP_SERVICES' in os.environ:
+            container = 'avatar'
+            containers = []
+            for ctn in OC.get_account()[1]:
+                containers.append(ctn['name'])
+            if container not in containers:
+                OC.put_container(container)
+            for obj in OC.get_container(container)[1]:
+                if obj['name'] == avatar:
+                    avatar_object = OC.get_object(container, avatar)[1]
+                    break
+            if not avatar_object:
+                avatar_file = os.path.join(settings.MEDIA_ROOT, 'avatar', avatar)
+                if not os.path.isfile(avatar_file):
+                    avatar_file = os.path.join(settings.MEDIA_ROOT, 'avatar', 'n.png')
+                avatar_object = open(avatar_file, 'rb').read()
         else:
             avatar_file = os.path.join(settings.MEDIA_ROOT, 'avatar', avatar)
             if not os.path.isfile(avatar_file):
                 avatar_file = os.path.join(settings.MEDIA_ROOT, 'avatar', 'n.png')
-            return HttpResponse(open(avatar_file, 'rb').read(), content_type='image/png')
-    else:
-        avatar_file = os.path.join(settings.MEDIA_ROOT, 'avatar', avatar)
-        if not os.path.isfile(avatar_file):
-            avatar_file = os.path.join(settings.MEDIA_ROOT, 'avatar', 'n.png')
-        return HttpResponse(open(avatar_file, 'rb').read(), content_type='image/png')
+            avatar_object = open(avatar_file, 'rb').read()
+        
+        if avatar_object:
+            return avatar_object
+        else:
+            return get_avatar_object()
+    
+    return HttpResponse(get_avatar_object(), content_type='image/png')
