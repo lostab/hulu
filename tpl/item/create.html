@@ -28,7 +28,7 @@
 $(document).ready(function(){
     $(".itemform .submit").parent().before('\
         <p style="text-align: center;">\
-            <input class="wbimg" type="file" name="file" style="display: hidden;" />\
+            <input class="wbimg" type="file" name="file" style="display: none;" />\
             <input class="fileselectbutton" type="button" value="上传图片" />\
         </p>\
         <div class="process" style="width: 100%; display: none;">\
@@ -44,6 +44,7 @@ $(document).ready(function(){
         dataType: "jsonp",
         done: function(e, data){
             $(this).prop("disabled", false);
+            $(this).next(".fileselectbutton").prop("disabled", false);
             $(this).clostest(".itemform").find(".submit").prop("disabled", false);
             var wbimgurl = data.result.bmiddle_pic;
             $(this).clostest(".itemform").find("textarea").val($(this).clostest(".itemform").find("textarea").val() + " " + wbimgurl);
@@ -54,6 +55,7 @@ $(document).ready(function(){
         },
         fail: function(e, data){
             $(this).prop("disabled", false);
+            $(this).next(".fileselectbutton").prop("disabled", false);
             $(this).clostest(".itemform").find(".submit").prop("disabled", false);
             $(this).clostest(".itemform").find(".process").hide();
             $(this).clostest(".itemform").find(".uploadinfo").show();
@@ -66,7 +68,8 @@ $(document).ready(function(){
             $(this).clostest(".itemform").find(".process .processbar").css("width", process + "%");
         },
         add: function(e, data){
-            $(this).clostest(".itemform").find(this).prop("disabled", true);
+            $(this).prop("disabled", true);
+            $(this).next(".fileselectbutton").prop("disabled", true);
             $(this).clostest(".itemform").find(".submit").prop("disabled", true);
             $(this).clostest(".itemform").find(".process").hide();
             $(this).clostest(".itemform").find(".uploadinfo").show();
