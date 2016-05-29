@@ -15,12 +15,6 @@
                 <br />
                 (小于2MB有效)</p>-->
                 
-                <p style="text-align: center;"><input class="wbimg" type="file" name="file" style="width: 80px;" /></p>
-                <div class="process" style="width: 100%; display: none;">
-                    <div class="processbar" style="width: 0%; height: 18px; background: green;"></div>
-                </div>
-                <div class="uploadinfo" style="text-align: center; height: 18px;"></div>
-                
                 <p><input class="submit" type="submit" value="发布信息" /></p>
             </form>
         </div>
@@ -32,38 +26,51 @@
 <script type="text/javascript" src="/s/js/jquery.fileupload.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-    $(".wbimg").fileupload({
+    $(".itemform .submit").parent().before('\
+        <p style="text-align: center;">\
+            <input class="wbimg" type="file" name="file" style="display: hidden;" />\
+            <input class="fileselectbutton" type="button" value="上传图片" />\
+        </p>\
+        <div class="process" style="width: 100%; display: none;">\
+            <div class="processbar" style="width: 0%; height: 18px; background: black;"></div>\
+        </div>\
+        <div class="uploadinfo" style="text-align: center; height: 18px;"></div>\
+    ');
+    $(".itemform .fileselectbutton").click(function(){
+        $(this).clostest(".itemform").find(".wbimg").click();
+    });
+    $(".itemform .wbimg").fileupload({
         url: "/wi/",
         dataType: "jsonp",
         done: function(e, data){
             $(this).prop("disabled", false);
-            $(".submit").prop("disabled", false);
+            $(this).clostest(".itemform").find(".submit").prop("disabled", false);
             var wbimgurl = data.result.bmiddle_pic;
-            $("form textarea").val($("form textarea").val() + " " + wbimgurl);
-            $(".process").hide();
-            $(".uploadinfo").show();
-            $(".uploadinfo").text("");
+            $(this).clostest(".itemform").find("textarea").val($(this).clostest(".itemform").find("textarea").val() + " " + wbimgurl);
+            $(this).clostest(".itemform").find(".process").hide();
+            $(this).clostest(".itemform").find(".uploadinfo").show();
+            $(this).clostest(".itemform").find(".uploadinfo").text("");
             
         },
         fail: function(e, data){
             $(this).prop("disabled", false);
-            $(".submit").prop("disabled", false);
-            $(".process").hide();
-            $(".uploadinfo").show();
-            $(".uploadinfo").text("上传失败，请检查文件后重试。");
+            $(this).clostest(".itemform").find(".submit").prop("disabled", false);
+            $(this).clostest(".itemform").find(".process").hide();
+            $(this).clostest(".itemform").find(".uploadinfo").show();
+            $(this).clostest(".itemform").find(".uploadinfo").text("上传失败，请检查文件后重试。");
         },
         progressall: function(e, data){
-            $(".process").show();
-            $(".uploadinfo").hide();
+            $(this).clostest(".itemform").find(".process").show();
+            $(this).clostest(".itemform").find(".uploadinfo").hide();
             var process = parseInt(data.loaded / data.total * 100, 10);
-            $(".process .processbar").css("width", process + "%");
+            $(this).clostest(".itemform").find(".process .processbar").css("width", process + "%");
         },
         add: function(e, data){
-            $(this).prop("disabled", true);
-            $(".submit").prop("disabled", true);
-            $(".process").hide();
-            $(".uploadinfo").show();
-            $(".uploadinfo").text("正在上传…");
+            $(this).clostest(".itemform").find(this).prop("disabled", true);
+            $(this).clostest(".itemform").find(".submit").prop("disabled", true);
+            $(this).clostest(".itemform").find(".process").hide();
+            $(this).clostest(".itemform").find(".uploadinfo").show();
+            $(this).clostest(".itemform").find(".uploadinfo").text("正在上传…");
             data.submit();
         }
     });
