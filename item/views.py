@@ -28,8 +28,8 @@ from django.db.models import Q
 def Index(request):
     if request.user.is_authenticated():
         try:
-            items = Item.objects.all().filter(user=request.user).order_by('-created')
-            paginator = Paginator(items, 100)
+            items = Item.objects.filter(user=request.user).filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).order_by('-id')
+            paginator = Paginator(items, 10)
             page = request.GET.get('page')
             try:
                 items = paginator.page(page)
