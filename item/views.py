@@ -32,9 +32,10 @@ def Index(request):
             subitems = Item.objects.filter(user=request.user).filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=False)).order_by('-id').prefetch_related('itemcontent_set')
             belongitems = []
             for subitem in subitems:
-                root_item = subitem.get_root_item()
-                if root_item not in belongitems and root_item.user != request.user:
-                    belongitems.append(root_item)
+                rootitems = subitem.get_root_items()
+                for rootitem in rootitems:
+                    if rootitem not in belongitems and rootitem.user != request.user:
+                        belongitems.append(rootitem)
             belongitems = sorted(belongitems, key=lambda belongitem:belongitem.id, reverse=True)
             
             for item in items, belongitems:
