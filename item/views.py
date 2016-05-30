@@ -30,8 +30,14 @@ def Index(request):
         try:
             items = Item.objects.select_related('user').filter(user=request.user).filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).order_by('-id').prefetch_related('itemcontent_set')
             subitems = Item.objects.filter(user=request.user).filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=False)).order_by('-id').prefetch_related('itemcontent_set')
+            belongitems = []
+            for subitem in subitems:
+                root_item = subitem.get_root_item()
+                if root_item not in belongitems and root_item.user != request.user:
+                    belongitems.append(root_item)
+            belongitems = sorted(belongitems, key=lambda belongitem:belongitem.id, reverse=True)
             
-            for item in items:
+            for item in items, belongitems:
                 itemcontent = item.itemcontent_set.all()
                 if itemcontent:
                     item.create = itemcontent[0].create
@@ -53,10 +59,21 @@ def Index(request):
                 items = paginator.page(1)
             except EmptyPage:
                 items = paginator.page(paginator.num_pages)
+            
+            paginator_belong = Paginator(belongitems, 10)
+            page = request.GET.get('page')
+            try:
+                belongitems = paginator_belong.page(page)
+            except PageNotAnInteger:
+                belongitems = paginator_belong.page(1)
+            except EmptyPage:
+                belongitems = paginator_belong.page(paginator.num_pages)
         except Item.DoesNotExist:
             items = None
+            belongitems = None
         content = {
-            'items': items
+            'items': items,
+            'belongitems': belongitems
         }
         if request.GET.get('type') == 'json':
             content = {
