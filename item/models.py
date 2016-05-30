@@ -48,7 +48,8 @@ class Item(models.Model):
         if self.belong:
             for belongitem in self.belong:
                 for rootitem in belongitem.get_root_items():
-                    rootitems.append(rootitem)
+                    if rootitem not in rootitems:
+                        rootitems.append(rootitem)
         else:
             rootitems.append(self)
         return rootitems
