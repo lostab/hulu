@@ -29,6 +29,7 @@ def Index(request):
     if request.user.is_authenticated():
         try:
             items = Item.objects.select_related('user').filter(user=request.user).filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).order_by('-id').prefetch_related('itemcontent_set')
+            subitems = Item.objects.filter(user=request.user).filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=False)).order_by('-id').prefetch_related('itemcontent_set')
             
             for item in items:
                 itemcontent = item.itemcontent_set.all()
