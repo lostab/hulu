@@ -5,7 +5,7 @@
             <div class="avatar-area"><div class="avatar" style="background: url({% if item.user.userprofile.openid %}{{ item.user.userprofile.avatar }}{% else %}{% if item.user.userprofile.avatar %}/s/{{ item.user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center;"><img src="{% if item.user.userprofile.openid %}{{ item.user.userprofile.avatar }}{% else %}{% if item.user.userprofile.avatar %}/s/{{ item.user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" alt="{{ item.user.username }}" /></div></div>
             <div class="item-line">
                 <div class="item-info">
-                    <span class="item-info-right"><a class="item-created">{% blocktrans with item.lastsubitem.create|timesince as update %}{{ update }}{% endblocktrans %}前</a>
+                    <span class="item-info-right"><a class="item-created">{% blocktrans with item.itemcontent_set.first.create|timesince as update %}{{ update }}{% endblocktrans %}前</a>
                     </span>
                     
                     <span class="item-info-left">
@@ -22,9 +22,6 @@
                 {% if item.url %}
                     <a href="{{ item.url }}" target="blank">{{ item.title }}</a>
                 {% else %}
-                    {% if item.subitemcount %}
-                    <a class="subitemcount" href="/i/{{ item.id }}/#{{ item.lastsubitem.id }}">{{ item.subitemcount }}</a>
-                    {% endif %}
                     <a class="item-title" href="/i/{{ item.id }}/">{{ item.title }}</a>
                 {% endif %}
                 </div>
@@ -45,25 +42,8 @@
 
                 {% if items.has_next %}
                     <a class="next-page" href="?page={{ items.next_page_number }}">下一页</a>
-                {% elif request.user.id == 1 and request.get_full_path == '/' %}<!--for Zhihu-->
-                    {% if request.GET.page %}
-                        <a class="next-page" href="?page={{ request.GET.page|add:1 }}">下一页</a>
-                    {% else %}
-                        <a class="next-page" href="?page=2">下一页</a>
-                    {% endif %}<!--for Zhihu-->
                 {% endif %}
             </span>
         </div>
-        {% elif request.user.id == 1 and request.get_full_path == '/' %}<!--for Zhihu-->
-        <div class="pagination">
-            <span class="step-links">
-                <span class="current"></span>
-                {% if request.GET.page %}
-                    <a class="next-page" href="?page={{ request.GET.page|add:1 }}">下一页</a>
-                {% else %}
-                    <a class="next-page" href="?page=2">下一页</a>
-                {% endif %}
-            </span>
-        </div><!--for Zhihu-->
         {% endif %}
         </div>
