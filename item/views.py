@@ -29,6 +29,23 @@ def Index(request):
     if request.user.is_authenticated():
         try:
             items = Item.objects.select_related('user').filter(user=request.user).filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).order_by('-id').prefetch_related('itemcontent_set')
+            
+            itemlist = []
+            for item in items:
+                itemcontent = item.itemcontent_set.all()
+                if itemcontent:
+                    item.create = itemcontent[0].create
+                    if itemcontent[0].content:
+                        item.title = itemcontent[0].content.strip().splitlines()[0]
+                        item.tags = None
+                    else:
+                        contentattachment = itemcontent[0].contentattachment_set.all()
+                        if contentattachment:
+                            item.title = contentattachment[0].title
+                        else:
+                            item.title = str(item.id)
+                itemlist.append(item)
+            
             paginator = Paginator(items, 10)
             page = request.GET.get('page')
             try:
