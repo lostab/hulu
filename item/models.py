@@ -45,7 +45,7 @@ class Item(models.Model):
     
     def get_root_item(self):
         if self.belong:
-            return get_root_item(self.belong)
+            return self.belong.get_root_item()
         else:
             return self
 
