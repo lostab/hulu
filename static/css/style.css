@@ -412,7 +412,7 @@ p.cancel-btn {
 .comment .comment-content {
     vertical-align: top;
     display: inline-block;
-    margin: 0;
+    margin-top: 0;
     font-family: Consolas;
     font-size: 16px;
     white-space: pre-wrap;
