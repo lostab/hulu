@@ -38,7 +38,21 @@ def Index(request):
                         belongitems.append(rootitem)
             belongitems = sorted(belongitems, key=lambda belongitem:belongitem.id, reverse=True)
             
-            for item in items, belongitems:
+            for item in items:
+                itemcontent = item.itemcontent_set.all()
+                if itemcontent:
+                    item.create = itemcontent[0].create
+                    if itemcontent[0].content:
+                        item.title = itemcontent[0].content.strip().splitlines()[0]
+                        item.tags = None
+                    else:
+                        contentattachment = itemcontent[0].contentattachment_set.all()
+                        if contentattachment:
+                            item.title = contentattachment[0].title
+                        else:
+                            item.title = str(item.id)
+            
+            for item in belongitems:
                 itemcontent = item.itemcontent_set.all()
                 if itemcontent:
                     item.create = itemcontent[0].create
