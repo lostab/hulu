@@ -30,7 +30,6 @@ def Index(request):
         try:
             items = Item.objects.select_related('user').filter(user=request.user).filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).order_by('-id').prefetch_related('itemcontent_set')
             
-            itemlist = []
             for item in items:
                 itemcontent = item.itemcontent_set.all()
                 if itemcontent:
@@ -44,7 +43,6 @@ def Index(request):
                             item.title = contentattachment[0].title
                         else:
                             item.title = str(item.id)
-                itemlist.append(item)
             
             paginator = Paginator(items, 10)
             page = request.GET.get('page')
