@@ -28,7 +28,7 @@ from django.db.models import Q
 def Index(request):
     if request.user.is_authenticated():
         try:
-            items = Item.objects.filter(user=request.user).filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).order_by('-id')
+            items = Item.objects.select_related('user').filter(user=request.user).filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).order_by('-id').prefetch_related('itemcontent_set')
             paginator = Paginator(items, 10)
             page = request.GET.get('page')
             try:
