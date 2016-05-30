@@ -38,10 +38,16 @@ class Item(models.Model):
                 items.append(subitem)
         for item in items:
             #itemcontent = ItemContent.objects.filter(item=item)
-            itemcontent = item. itemcontent_set.all()
+            itemcontent = item.itemcontent_set.all()
             item.create = itemcontent[0].create
             item.update = itemcontent.reverse().create
         return items
+    
+    def get_root_item(self):
+        if self.belong:
+            return get_root_item(self.belong)
+        else:
+            return self
 
 class ItemContent(models.Model):
     item = models.ForeignKey(Item)
