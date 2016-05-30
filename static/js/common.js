@@ -47,7 +47,13 @@ $(document).ready(function(){
     });
     
     if(window.localStorage){
-        
+        var ls = localStorage.getItem("itemcontent");
+        if($(".itemform").find("textarea").val() == "" && ls != null && ls != ""){
+            $(".itemform").find("textarea").val(ls);
+        }
+        $(".itemform").find("textarea").change(function(){
+            localStorage.setItem("itemcontent", $(".itemform").find("textarea").val());
+        });
     }
     
     $(".itemform .submit").parent().before('\
