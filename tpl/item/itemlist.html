@@ -19,7 +19,7 @@
                     </span>
                 </div>
                 <div class="item-title">
-                    <a class="item-title" href="/i/{{ item.id }}/">{% if item.itemcontent_set.first.content|slice:100 %}{{ item.title }}{% else %}{{ item.id }}{% endif %}</a>
+                    <a class="item-title" href="/i/{{ item.id }}/">{% if item.itemcontent_set.first.content|slice:'100' %}{{ item.title }}{% else %}{{ item.id }}{% endif %}</a>
                 </div>
                 <div class="item-tags">{% for tag in item.tags %}<div class="item-tag">{{ tag }}</div>{% endfor %}</div>
             </div>
