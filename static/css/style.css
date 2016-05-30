@@ -391,7 +391,7 @@ p.cancel-btn {
 .home .items {
     
 }
-.items .items .item-line .item-title {
+.items .item-line .item-title {
     line-height: 30px;
     vertical-align: middle;
     word-wrap: break-word;
@@ -434,11 +434,11 @@ p.cancel-btn {
     line-height: 18px;
     color: gray;
 }
-.items .item .item-info .item-created, .line .line-info .line-info-right, .home .item .item-info .userinfo {
+.items .item .item-info .item-created, .line .line-info .line-info-right, .items .item .item-info .userinfo {
     color: lightgray;
     font-size: small;
 }
-.items .item .item-info .item-created:hover, .line .line-info .line-info-right:hover, .home .item .item-info .item-author:hover {
+.items .item .item-info .item-created:hover, .line .line-info .line-info-right:hover, .items .item .item-info .item-author:hover {
     text-decoration: none;
 }
 .items .item .item-info .item-info-right, .line .line-info .line-info-right, .comment .comment-info .comment-created {
