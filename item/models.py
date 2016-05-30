@@ -43,11 +43,15 @@ class Item(models.Model):
             item.update = itemcontent.reverse().create
         return items
     
-    def get_root_item(self):
+    def get_root_items(self):
+        rootitems = []
         if self.belong:
-            return self.belong.get_root_item()
+            for belongitem in self.belong:
+                for rootitem in belongitem.get_root_items():
+                    rootitems.append(rootitem)
         else:
-            return self
+            rootitems.append(self)
+        return rootitems
 
 class ItemContent(models.Model):
     item = models.ForeignKey(Item)
