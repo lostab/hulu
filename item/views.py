@@ -35,22 +35,10 @@ def Index(request):
                 rootitems = subitem.get_root_items()
                 for rootitem in rootitems:
                     if rootitem not in belongitems and rootitem.user != request.user:
-                        rootitemcontent = rootitem.itemcontent_set.all()
-                        if rootitemcontent:
-                            rootitem.create = rootitemcontent[0].create
-                            if rootitemcontent[0].content:
-                                rootitem.title = rootitemcontent[0].content.strip().splitlines()[0]
-                                rootitem.tags = None
-                            else:
-                                rootcontentattachment = rootitemcontent[0].contentattachment_set.all()
-                                if rootcontentattachment:
-                                    rootitem.title = rootcontentattachment[0].title
-                                else:
-                                    rootitem.title = str(rootitem.id)
                         belongitems.append(rootitem)
             belongitems = sorted(belongitems, key=lambda belongitem:belongitem.id, reverse=True)
             
-            for item in items:
+            for item in items, belongitems:
                 itemcontent = item.itemcontent_set.all()
                 if itemcontent:
                     item.create = itemcontent[0].create
