@@ -46,7 +46,7 @@ class Item(models.Model):
     def get_root_items(self):
         rootitems = []
         if self.belong:
-            for belongitem in self.belong.all():
+            for belongitem in self.belong.all().prefetch_related('itemcontent_set'):
                 for rootitem in belongitem.get_root_items():
                     if rootitem not in rootitems:
                         rootitems.append(rootitem)
