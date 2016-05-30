@@ -340,7 +340,7 @@ p.cancel-btn {
     display: inline-block;
     color: gray;
 }
-.home .item:not(:last-child), .line:not(:last-child), .comment, .home .createbutton {
+.items .item:not(:last-child), .line:not(:last-child), .comment, .home .createbutton {
     margin-bottom: 15px;
     border-bottom: 1px solid whitesmoke;
     padding-bottom: 10px;
@@ -371,27 +371,27 @@ p.cancel-btn {
     opacity: 0;
     filter: alpha(opacity=0);
 }
-.home .item .item-line, .line .line-main/*, .comment .comment-line, .comment .itemcontent-content*/ {
+.items .item .item-line, .line .line-main/*, .comment .comment-line, .comment .itemcontent-content*/ {
     margin-left: 56px;
 }
-.home .item .item-line .item-author, .line .line-main .line-info .line-info-left, .comment .comment-line .comment-author {
+.items .item .item-line .item-author, .line .line-main .line-info .line-info-left, .comment .comment-line .comment-author {
     font-size: small;
     font-weight: normal;
     vertical-align: top;
     height: 18px;
     color: gray;
 }
-.home .item .item-line .item-author, .comment .comment-line .comment-author {
+.items .item .item-line .item-author, .comment .comment-line .comment-author {
     text-decoration:none;
     color: gray;
 }
-.home .item .item-line .item-title a:visited {
+.items .item .item-line .item-title a:visited {
     /*color: gray;*/
 }
 .home .items {
     
 }
-.home .items .item-line .item-title {
+.items .items .item-line .item-title {
     line-height: 30px;
     vertical-align: middle;
     word-wrap: break-word;
@@ -429,23 +429,23 @@ p.cancel-btn {
 .comment .comment-operate a {
     
 }
-.home .item .item-info, .line .line-info, .comment .comment-info {
+.items .item .item-info, .line .line-info, .comment .comment-info {
     font-size: small;
     line-height: 18px;
     color: gray;
 }
-.home .item .item-info .item-created, .line .line-info .line-info-right, .home .item .item-info .userinfo {
+.items .item .item-info .item-created, .line .line-info .line-info-right, .home .item .item-info .userinfo {
     color: lightgray;
     font-size: small;
 }
-.home .item .item-info .item-created:hover, .line .line-info .line-info-right:hover, .home .item .item-info .item-author:hover {
+.items .item .item-info .item-created:hover, .line .line-info .line-info-right:hover, .home .item .item-info .item-author:hover {
     text-decoration: none;
 }
-.home .item .item-info .item-info-right, .line .line-info .line-info-right, .comment .comment-info .comment-created {
+.items .item .item-info .item-info-right, .line .line-info .line-info-right, .comment .comment-info .comment-created {
     float: right;
     text-align: right;
 }
-.home .item .item-title {
+.items .item .item-title {
     
 }
 .home .subitemcount {
@@ -471,7 +471,7 @@ p.cancel-btn {
     background: lightgray;
     color: white;
 }
-.home .next-page, .home .previous-page {
+.items .next-page, .home .previous-page {
     width: 100%;
     display: block;
     padding: 3px 0 3px 0;
