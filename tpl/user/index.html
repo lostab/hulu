@@ -6,9 +6,9 @@
     {% if user.is_authenticated %}
         <div class="content userprofile">
             <h3>我的资料</h3>
-            <div class="avatar" style="background: url({% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center;"><img src="{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" /></div>
+            <a href="/{{ user.username }}/"><div class="avatar" style="background: url({% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center;"><img src="{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" /></div></a>
             <p class="operate">
-                <a href="/{{ user.username }}/">个人页面</a>
+                <a href="/i/">我的分享</a>
                 <a href="/u/settings/">完善资料</a>
                 <br />
                 {% if not user.userprofile.openid %}<a href="/u/password_change/">修改密码</a>{% endif %}
