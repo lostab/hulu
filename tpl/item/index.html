@@ -6,29 +6,7 @@
     {% if user.is_authenticated %}
         <div class="content items">
             <h3>我发布的信息</h3>
-            {% for item in itemss %}
-            <div class="item-line">
-                <div class="item-title"><a href="/i/{{ item.id }}/">{{ item.title }}</a></div>
-                <div class="item-info">{% if item.status == 'cancel' %}(已取消){% endif %} {{ item.created|date:"Y-m-d H:i:s" }}</div>
-            </div>
-            {% endfor %}
-            {% if items.paginator.num_pages > 1 %}
-            <div class="pagination">
-                <span class="step-links">
-                    {% if items.has_previous %}
-                        <a href="?page={{ items.previous_page_number }}">上一页</a>
-                    {% endif %}
-
-                    <span class="current">
-                        {{ items.number }}/{{ items.paginator.num_pages }}
-                    </span>
-
-                    {% if items.has_next %}
-                        <a href="?page={{ items.next_page_number }}">下一页</a>
-                    {% endif %}
-                </span>
-            </div>
-            {% endif %}
+            {% include "item/itemlist.html" %}
         </div>
     {% endif %}
 {% endblock %}
