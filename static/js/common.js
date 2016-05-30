@@ -46,6 +46,10 @@ $(document).ready(function(){
         }
     });
     
+    if(window.localStorage){
+        
+    }
+    
     $(".itemform .submit").parent().before('\
         <div class="fileselect" style="text-align: center;">\
             <input class="wbimg" type="file" name="file" style="display: none;" />\
