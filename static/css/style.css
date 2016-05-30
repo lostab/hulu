@@ -350,7 +350,7 @@ p.cancel-btn {
     text-align: right;
     margin-top: -7px;
 }
-.home .item .avatar-area, .line .avatar-area, .comment .comment-avatar-area, .content.message .avatar-area {
+.items .item .avatar-area, .line .avatar-area, .comment .comment-avatar-area, .content.message .avatar-area {
     width: 56px;
     float: left;
     vertical-align: top;
@@ -358,14 +358,14 @@ p.cancel-btn {
 .content.message .message-me .avatar-area {
     float: right;
 }
-.home .item .avatar, .line .avatar, .comment .comment-avatar-area .comment-avatar, .content.message .avatar-area .avatar {
+.items .item .avatar, .line .avatar, .comment .comment-avatar-area .comment-avatar, .content.message .avatar-area .avatar {
     width: 48px;
     height: 48px;
     border-radius: 24px;
     -webkit-border-radius: 24px;
     -moz-border-radius: 24px;
 }
-.home .item .avatar img, .line .avatar img, .comment .comment-avatar-area .comment-avatar img, .content.message .avatar-area .avatar img {
+.items .item .avatar img, .line .avatar img, .comment .comment-avatar-area .comment-avatar img, .content.message .avatar-area .avatar img {
     width: 48px;
     height: 48px;
     opacity: 0;
