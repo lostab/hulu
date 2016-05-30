@@ -80,7 +80,7 @@ def Index(request):
             except PageNotAnInteger:
                 belongitems = paginator_belong.page(1)
             except EmptyPage:
-                belongitems = paginator_belong.page(paginator.num_pages)
+                belongitems = paginator_belong.page(paginator_belong.num_pages)
         except Item.DoesNotExist:
             items = None
             belongitems = None
