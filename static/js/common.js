@@ -43,6 +43,10 @@ $(document).ready(function(){
         if($.trim($(this).closest(".itemform").find("textarea").val()) == "") {
             $(this).closest(".itemform").find("textarea").focus();
             return false;
+        } else {
+            if(window.localStorage){
+                localStorage.deleteItem("itemcontent");
+            }
         }
     });
     
