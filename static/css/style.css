@@ -526,7 +526,7 @@ p.cancel-btn {
 }
 .content.item .description {
     vertical-align: top;
-    margin: 0;
+    /*margin: 0;*/
     font-family: Consolas;
     font-size: 16px;
     white-space: pre-wrap;
