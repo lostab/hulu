@@ -45,7 +45,7 @@ $(document).ready(function(){
             return false;
         } else {
             if(window.localStorage){
-                localStorage.deleteItem("itemcontent");
+                localStorage.removeItem("itemcontent");
             }
         }
     });
