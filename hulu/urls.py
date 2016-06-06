@@ -3,6 +3,7 @@ from django.conf.urls import patterns, include, url
 from user import views as user
 from item import views as item
 from main import views as main
+from hulu import *
 
 import settings
 import os
@@ -39,3 +40,5 @@ urlpatterns = patterns('',
 
 if 'VCAP_SERVICES' in os.environ:
     urlpatterns += staticfiles_urlpatterns()
+
+setdomain()
