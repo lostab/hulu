@@ -19,7 +19,7 @@ def resetdb():
     else:
         connected = True
 
-def setdomain():
+def setdomain(request):
     try:
         if Site.objects.all():
             site = Site.objects.get_current()
