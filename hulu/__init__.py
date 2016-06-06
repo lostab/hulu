@@ -19,16 +19,3 @@ def resetdb():
     else:
         connected = True
 
-def setdomain(request):
-    try:
-        if Site.objects.all():
-            site = Site.objects.get_current()
-            if site.domain != request.get_host():
-                site.domain = request.get_host()
-                site.save()
-        else:
-            site = Site()
-            site.domain = request.get_host()
-            site.save()
-    except Site.DoesNotExist:
-        site = None
