@@ -505,7 +505,7 @@ def Feedback(request):
                 feedbackuser = ''
                 if request.user.username:
                     feedbackuser = str(request.user.username) + ': '
-                send_mail('Feedback to hulu.im', feedbackuser + feedback, os.environ['system_mail_username'], ['lostab@qq.com'], fail_silently=False)
+                send_mail('Feedback to ' + reuqest.get_host(), feedbackuser + feedback, os.environ['system_mail_username'], [os.environ['receive_mail']], fail_silently=False)
                 return render_to_response('user/feedback.html', { 'submit': 'true' }, context_instance=RequestContext(request))
             except:
                 return redirect('/u/feedback/')
