@@ -43,7 +43,7 @@ from django.utils.html import escape
 def index(request):
     try:
         if Site.objects.all():
-            site = Site.objects.all()[0]
+            site = Site.objects.get_current()
             if site.domain != request.get_host():
                 site.domain = request.get_host()
                 site.save()
