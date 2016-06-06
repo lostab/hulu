@@ -3,6 +3,7 @@ from django.conf.urls import patterns, include, url
 from user import views as user
 from item import views as item
 from main import views as main
+from django.contrib.sites.models import Site
 from hulu import *
 
 import settings
