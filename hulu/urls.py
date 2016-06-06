@@ -40,5 +40,3 @@ urlpatterns = patterns('',
 
 if 'VCAP_SERVICES' in os.environ:
     urlpatterns += staticfiles_urlpatterns()
-
-setdomain(request)
