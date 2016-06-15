@@ -30,9 +30,10 @@ from django.utils.html import escape
 
 if 'VCAP_SERVICES' in os.environ:
     vcap = json.loads(os.environ['VCAP_SERVICES'])
-    ocp = vcap['Object-Storage'][0]['credentials']
-    import swiftclient
-    OC = swiftclient.Connection(key=ocp['password'], authurl=ocp['auth_url'] + '/v3', auth_version='3', os_options={'project_id': ocp['projectId'], 'user_id': ocp['userId'], 'region_name': ocp['region']})
+    if 'Object-Storage' in vcap:
+        ocp = vcap['Object-Storage'][0]['credentials']
+        import swiftclient
+        OC = swiftclient.Connection(key=ocp['password'], authurl=ocp['auth_url'] + '/v3', auth_version='3', os_options={'project_id': ocp['projectId'], 'user_id': ocp['userId'], 'region_name': ocp['region']})
 
 def Main(request):
     user = request.user
@@ -346,16 +347,18 @@ def Settings(request):
                         resize_avatar(avatar, 1)
                         
                         if 'VCAP_SERVICES' in os.environ:
-                            containers = []
-                            for container in OC.get_account()[1]:
-                                containers.append(container['name'])
-                            if 'avatar' not in containers:
-                                OC.put_container('avatar')
-                            with open(avatar_file, 'r') as os_avatar:
-                                #OC.delete_object('avatar', str(request.user.username) + '.png')
-                                OC.put_object('avatar', str(request.user.username) + '.png', contents=os_avatar.read(), content_type='image/png')
-                            os_avatar.close()
-                            os.remove(avatar_file)
+                            vcap = json.loads(os.environ['VCAP_SERVICES'])
+                            if 'Object-Storage' in vcap:
+                                containers = []
+                                for container in OC.get_account()[1]:
+                                    containers.append(container['name'])
+                                if 'avatar' not in containers:
+                                    OC.put_container('avatar')
+                                with open(avatar_file, 'r') as os_avatar:
+                                    #OC.delete_object('avatar', str(request.user.username) + '.png')
+                                    OC.put_object('avatar', str(request.user.username) + '.png', contents=os_avatar.read(), content_type='image/png')
+                                os_avatar.close()
+                                os.remove(avatar_file)
                 
                 if request.GET.get('type') == 'json':
                     content = {
@@ -526,24 +529,31 @@ def Avatar(request, avatar):
     def get_avatar_object():
         avatar_object = None
         if 'VCAP_SERVICES' in os.environ:
-            container = 'avatar'
-            containers = []
-            try:
-                for ctn in OC.get_account()[1]:
-                    containers.append(ctn['name'])
-                if container not in containers:
-                    OC.put_container(container)
-                for obj in OC.get_container(container)[1]:
-                    if obj['name'] == avatar:
-                        avatar_object = OC.get_object(container, avatar)[1]
-                        break
-                if not avatar_object:
-                    avatar_file = os.path.join(settings.MEDIA_ROOT, 'avatar', avatar)
-                    if not os.path.isfile(avatar_file):
-                        avatar_file = os.path.join(settings.MEDIA_ROOT, 'avatar', 'n.png')
-                    avatar_object = open(avatar_file, 'rb').read()
-            except:
-                pass
+            vcap = json.loads(os.environ['VCAP_SERVICES'])
+            if 'Object-Storage' in vcap:
+                container = 'avatar'
+                containers = []
+                try:
+                    for ctn in OC.get_account()[1]:
+                        containers.append(ctn['name'])
+                    if container not in containers:
+                        OC.put_container(container)
+                    for obj in OC.get_container(container)[1]:
+                        if obj['name'] == avatar:
+                            avatar_object = OC.get_object(container, avatar)[1]
+                            break
+                    if not avatar_object:
+                        avatar_file = os.path.join(settings.MEDIA_ROOT, 'avatar', avatar)
+                        if not os.path.isfile(avatar_file):
+                            avatar_file = os.path.join(settings.MEDIA_ROOT, 'avatar', 'n.png')
+                        avatar_object = open(avatar_file, 'rb').read()
+                except:
+                    pass
+            else:
+                avatar_file = os.path.join(settings.MEDIA_ROOT, 'avatar', avatar)
+                if not os.path.isfile(avatar_file):
+                    avatar_file = os.path.join(settings.MEDIA_ROOT, 'avatar', 'n.png')
+                avatar_object = open(avatar_file, 'rb').read()
         else:
             avatar_file = os.path.join(settings.MEDIA_ROOT, 'avatar', avatar)
             if not os.path.isfile(avatar_file):

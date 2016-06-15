@@ -41,18 +41,18 @@ from django.utils.html import escape
 #import jieba.analyse
 
 def index(request):
-    try:
-        if Site.objects.all():
-            site = Site.objects.get_current()
-            if site.domain != request.get_host():
-                site.domain = request.get_host()
-                site.save()
-        else:
-            site = Site()
-            site.domain = request.get_host()
-            site.save()
-    except Site.DoesNotExist:
-        site = None
+    #try:
+    #    if Site.objects.all():
+    #        site = Site.objects.get_current()
+    #        if site.domain != request.get_host():
+    #            site.domain = request.get_host()
+    #            site.save()
+    #    else:
+    #        site = Site()
+    #        site.domain = request.get_host()
+    #        site.save()
+    #except Site.DoesNotExist:
+    #    pass
     
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     ip = request.META['REMOTE_ADDR']

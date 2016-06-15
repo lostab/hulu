@@ -32,19 +32,23 @@ DATABASES = {
 if 'VCAP_SERVICES' in os.environ:
     import json
     vcap = json.loads(os.environ['VCAP_SERVICES'])
-    sqldb = vcap['sqldb'][0]['credentials']
-    DATABASES = {
-      'default': {
-            'ENGINE'        : 'ibm_db_django',
-            'NAME'          : str(sqldb['db']),
-            'USER'          : str(sqldb['username']),
-            'PASSWORD'      : str(sqldb['password']),
-            'HOST'          : str(sqldb['host']),
-            'PORT'          : str(sqldb['port']),
-            'PCONNECT'      : True,
-            'CONN_MAX_AGE'  : None,
+    if 'sqldb' in vcap:
+        sqldb = vcap['sqldb'][0]['credentials']
+        DATABASES = {
+          'default': {
+                'ENGINE'        : 'ibm_db_django',
+                'NAME'          : str(sqldb['db']),
+                'USER'          : str(sqldb['username']),
+                'PASSWORD'      : str(sqldb['password']),
+                'HOST'          : str(sqldb['host']),
+                'PORT'          : str(sqldb['port']),
+                'PCONNECT'      : True,
+                'CONN_MAX_AGE'  : None,
+            }
         }
-    }
+    if 'elephantsql' in vcap:
+        import dj_database_url
+        DATABASES['default'] = dj_database_url.config()
 
 CACHES = {
     'default': {
