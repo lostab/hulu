@@ -1,9 +1,7 @@
 from django import forms
-
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from user.models import *
-from PIL import Image
 
 class UserCreationForm(UserCreationForm):
     username = forms.CharField(min_length=3)
@@ -18,11 +16,11 @@ class UserProfileForm(forms.ModelForm):
     profile = forms.CharField(required=False, widget=forms.Textarea)
     page = forms.CharField(required=False, widget=forms.Textarea)
     avatar = forms.FileField(required=False)
-    
+
     class Meta:
         model = UserProfile
         fields = ('info', 'profile', 'page', 'avatar')
-    
+
     def clean_avatar(self):
         avatar = self.cleaned_data['avatar']
         if avatar:

@@ -81,7 +81,7 @@ $(document).ready(function(){
             $(this).next(".fileselectbutton").prop("disabled", false);
             $(this).parent().show();
             $(this).closest(".itemform").find(".submit").prop("disabled", false);
-            var wbimgurl = data.result.bmiddle_pic;
+            var wbimgurl = data.result.original_pic;
             $(this).closest(".itemform").find("textarea").val($(this).closest(".itemform").find("textarea").val() + " " + wbimgurl);
             $(this).closest(".itemform").find(".process").hide();
             $(this).closest(".itemform").find(".uploadinfo").show();

@@ -23,7 +23,7 @@ from user.forms import *
 from item.models import *
 from item.forms import *
 from django.db.models import Q
-from django.forms.util import ErrorList
+from django.forms.utils import ErrorList
 from django.core.context_processors import csrf
 import os
 from django.utils.html import escape
@@ -125,7 +125,7 @@ def Login(request):
     next = None
     if request.GET.get('next'):
         next = request.META['QUERY_STRING'].split('next=')[1].split("&type=qq")[0]
-    
+
     if request.GET.get('type') == 'qq':
         qq_app_id = '101192703'
         qq_app_key = '639215ae3f5947c4a5012fab25e0345f'
@@ -158,7 +158,7 @@ def Login(request):
                     try:
                         user_info = str(urllib2.urlopen('https://graph.qq.com/user/get_user_info?access_token=' + access_token + '&oauth_consumer_key=' + qq_app_id + '&openid=' + openid).read()).strip()
                         user_info = json.loads(user_info)
-                        
+
                         def getrandomusername(randomusernameplus):
                             randomusernametime = 'QQ' + str(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
                             if randomusernameplus == 0:
@@ -175,7 +175,7 @@ def Login(request):
                                         return getrandomusername(randomusernameplus)
                                 except User.DoesNotExist:
                                     return randomusernametime + str(randomusernameplus)
-                        
+
                         user = User.objects.create_user(username=getrandomusername(0), email=openid + '@qq.com')
                         user.save()
                         userprofile = UserProfile(user=user)
@@ -204,7 +204,7 @@ def Login(request):
                 return redirect('https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=' + qq_app_id + '&redirect_uri=' + urllib2.quote('http://' + request.get_host() + '/u/login/?next=' + next + '&type=qq'))
             else:
                 return redirect('https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=' + qq_app_id + '&redirect_uri=' + urllib2.quote('http://' + request.get_host() + '/u/login/?type=qq'))
-    
+
     if request.GET.get('next'):
         if request.GET.get('next')[0] != '/':
             return redirect('/u/login/')
@@ -325,8 +325,9 @@ def Settings(request):
             form = UserProfileForm(request.POST, request.FILES, instance=userprofile)
             if form.is_valid():
                 userprofile = form.save()
-                
-                if userprofile.avatar:
+
+                if userprofile.avatar and checkmodule('PIL'):
+                    from PIL import Image
                     avatar_file = os.path.join(settings.MEDIA_ROOT, 'avatar', str(request.user.username) + '.png')
                     if os.path.isfile(avatar_file):
                         avatar = Image.open(avatar_file)
@@ -336,16 +337,18 @@ def Settings(request):
                         else:
                             size = (int(max_size * avatar.size[0] / avatar.size[1]), max_size)
                         avatar.thumbnail(size, Image.ANTIALIAS)
-                        
+
                         def resize_avatar(avatar, p):
-                            if os.path.getsize(avatar_file) > 5 * 1024 and avatar.size[0] > 1 and avatar.size[1] > 1:
+                            avatar_size = os.path.getsize(avatar_file)
+                            if avatar_size > 5 * 1024 and avatar.size[0] > 1 and avatar.size[1] > 1:
                                 p = p * 0.75
                                 avatar.thumbnail([int(p * s) for s in avatar.size], Image.ANTIALIAS)
                                 avatar = avatar.resize(size)
                                 avatar.save(avatar_file, optimize=True)
-                                resize_avatar(avatar, p)
+                                if os.path.getsize(avatar_file) >= avatar_size:
+                                    resize_avatar(avatar, p)
                         resize_avatar(avatar, 1)
-                        
+
                         if 'VCAP_SERVICES' in os.environ:
                             vcap = json.loads(os.environ['VCAP_SERVICES'])
                             if 'Object-Storage' in vcap:
@@ -359,7 +362,7 @@ def Settings(request):
                                     OC.put_object('avatar', str(request.user.username) + '.png', contents=os_avatar.read(), content_type='image/png')
                                 os_avatar.close()
                                 os.remove(avatar_file)
-                
+
                 if request.GET.get('type') == 'json':
                     content = {
                         'status': 'success'
@@ -559,10 +562,10 @@ def Avatar(request, avatar):
             if not os.path.isfile(avatar_file):
                 avatar_file = os.path.join(settings.MEDIA_ROOT, 'avatar', 'n.png')
             avatar_object = open(avatar_file, 'rb').read()
-        
+
         if avatar_object:
             return avatar_object
         else:
             return get_avatar_object()
-    
+
     return HttpResponse(get_avatar_object(), content_type='image/png')

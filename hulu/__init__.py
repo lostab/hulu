@@ -1,5 +1,4 @@
 from django.http import HttpResponse
-from django.contrib.sites.models import Site
 import json
 
 def jsonp(request, content):
@@ -19,3 +18,10 @@ def resetdb():
     else:
         connected = True
 
+def checkmodule(module):
+    import imp
+    try:
+        imp.find_module(module)
+        return True
+    except ImportError:
+        return False

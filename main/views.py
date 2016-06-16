@@ -53,12 +53,12 @@ def index(request):
     #        site.save()
     #except Site.DoesNotExist:
     #    pass
-    
+
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     ip = request.META['REMOTE_ADDR']
     if x_forwarded_for:
         ip = x_forwarded_for.split(', ')[-1]
-    
+
     try:
         items = Item.objects.select_related('user').filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).filter(Q(status__isnull=True) | Q(status__exact='')).all().prefetch_related('itemcontent_set', 'itemcontent_set__contentattachment_set')
         itemlist = []
@@ -78,7 +78,7 @@ def index(request):
                         item.title = contentattachment[0].title
                     else:
                         item.title = str(item.id)
-                
+
                 subitem = item.get_all_items(include_self=False)
                 if subitem:
                     subitem.sort(key=lambda item:item.create, reverse=True)
@@ -89,7 +89,7 @@ def index(request):
                 else:
                     item.lastsubitem = itemcontent[0]
                 itemlist.append(item)
-        
+
         paginator = Paginator(itemlist, 30)
         itemlist = []
         page = request.GET.get('page')
@@ -99,18 +99,18 @@ def index(request):
             items = paginator.page(1)
         except EmptyPage:
             items = paginator.page(paginator.num_pages)
-        
+
         currentpage = items.number
-        
+
         for item in items:
             itemlist.append(item)
-        
+
         fetchitems = []
         fetchitem = namedtuple('fetchitem', 'user title url lastsubitem tags')
         fetchuser=namedtuple('fetchuser', 'username userprofile')
         fetchprofile=namedtuple('fetchprofile', 'openid avatar')
         fetchcreate=namedtuple('fetchcreate', 'create')
-        
+
         cacheitems = cache.get('cacheitems')
         if cacheitems and not request.GET.get('nocache') and not request.GET.get('page'):
             cacheitems = json.loads(cacheitems)
@@ -146,9 +146,9 @@ def index(request):
                         'tags': None
                     })
                 cache.set('cacheitems', json.dumps(cacheitems, encoding='utf-8', ensure_ascii=False, indent=4), 3600)
-            
+
             #try:
-            if request.user.id == 1:
+            if request.user.id == 0:
                 #Zhihu
                 #for fetchdate in [[str((datetime.datetime.now() + timedelta(days=1)).strftime('%Y%m%d')), str(datetime.datetime.now().strftime('%Y%m%d'))], [str(datetime.datetime.now().strftime('%Y%m%d')), str((datetime.datetime.now() - timedelta(days=1)).strftime('%Y%m%d'))], [str((datetime.datetime.now() - timedelta(days=1)).strftime('%Y%m%d')), str((datetime.datetime.now() - timedelta(days=2)).strftime('%Y%m%d'))]]:
                 #    zhihuurl = 'http://news.at.zhihu.com/api/3/news/before/' + fetchdate[0]
@@ -170,7 +170,7 @@ def index(request):
                     zhihuitem = fetchitem(user=fetchuser(username=u'知乎日报', userprofile=fetchprofile(openid='Zhihu', avatar='https://www.zhihu.com/favicon.ico')), title=i['title'], url='http://daily.zhihu.com/story/'+str(i['id']), lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(zhihudate[:4] + i['ga_prefix'], '%Y%m%d%H'), timezone.get_default_timezone())), tags=None)
                     itemlist.append(zhihuitem)
                     fetchitems.append(zhihuitem)
-                
+
                 if not request.GET.get('page'):
                     #V2EX
                     v2exurl = 'https://www.v2ex.com/api/topics/hot.json'
@@ -179,7 +179,7 @@ def index(request):
                         v2exitem = fetchitem(user=fetchuser(username='V2EX', userprofile=fetchprofile(openid='V2EX', avatar='https://www.v2ex.com/static/img/icon_rayps_64.png')), title=i['title'], url=i['url'].replace('http://', 'https://'), lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.fromtimestamp(int(i['created'])), timezone.get_default_timezone())), tags=None)
                         itemlist.append(v2exitem)
                         fetchitems.append(v2exitem)
-                    
+
                     #Google News
                     newsurl = 'https://news.google.com/news?output=rss&hl=zh-CN'
                     req = urllib2.Request(newsurl)
@@ -195,7 +195,7 @@ def index(request):
                         newsitem = fetchitem(user=fetchuser(username='Google News', userprofile=fetchprofile(openid='Google News', avatar='https://mail.qq.com/favicon.ico')), title=title, url=url, lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(newstime, '%a, %d %b %Y %H:%M:%S GMT'), timezone.get_default_timezone())), tags=None)
                         itemlist.append(newsitem)
                         fetchitems.append(newsitem)
-                
+
             #    if not request.GET.get('page'):
             #        updatecache()
             #    else:
@@ -205,12 +205,12 @@ def index(request):
             #        updatecache()
             #    else:
             #        pass
-        
+
         items = itemlist
         items = sorted(items, key=lambda item:item.lastsubitem.create, reverse=True)
     except Item.DoesNotExist:
         items = None
-    
+
     content = {
         'items': items
     }
@@ -219,7 +219,7 @@ def index(request):
             'page': currentpage,
             'items': []
         }
-        
+
         return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
     return render_to_response('main/index.html', content , context_instance=RequestContext(request))
 
@@ -233,14 +233,14 @@ def jk(request, username):
     except User.DoesNotExist:
         user = None
         return redirect('/')
-    
+
     jkimg = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'jk', username, username + '.jpg')
-    
+
     if request.method == 'GET':
         if request.user.is_authenticated():
             if request.user.username == username:
                 content = {
-                    
+
                 }
                 if os.path.isfile(jkimg):
                     mtime_delta = datetime.datetime.now() - datetime.datetime.fromtimestamp(os.path.getmtime(jkimg))
@@ -248,7 +248,7 @@ def jk(request, username):
                         content = {
                             'mtime': mtime_delta.total_seconds()
                         }
-                        
+
                         return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
                     if request.GET.get('type') == 'jkimg':
                         try:
@@ -279,13 +279,13 @@ def jk(request, username):
 def app(request):
     if request.user.is_authenticated():
         content = {
-            
+
         }
         if request.method == 'GET':
             if request.GET.get('type') == 'json':
                 messagelist = []
                 ursession = []
-                
+
                 def getuir():
                     useritemrelationship = None
                     if request.GET.get('uirid'):
@@ -298,7 +298,7 @@ def app(request):
                             useritemrelationship = UserItemRelationship.objects.filter(type="message").filter(user=request.user).order_by('-id').prefetch_related('item_set', 'item_set__useritemrelationship', 'item_set__useritemrelationship__user', 'item_set__itemcontent_set')
                         except Object.DoesNotExist:
                             useritemrelationship = None
-                    
+
                     if useritemrelationship:
                         paginator = Paginator(useritemrelationship, 100)
                         page = request.GET.get('page')
@@ -308,7 +308,7 @@ def app(request):
                             useritemrelationship = paginator.page(1).object_list
                         except EmptyPage:
                             useritemrelationship = paginator.page(paginator.num_pages).object_list
-                        
+
                         for ur in useritemrelationship:
                             if not ur:
                                 return None
@@ -323,14 +323,14 @@ def app(request):
                                 if len(urusers) != len(murs):
                                     return None
                     return useritemrelationship
-                
+
                 useritemrelationship = getuir()
-                
+
                 for i in range(30):
                     if not useritemrelationship:
                         time.sleep(1)
                         useritemrelationship = getuir()
-                
+
                 for ur in useritemrelationship:
                     for message in ur.item_set.all():
                         urusers = []
@@ -340,13 +340,13 @@ def app(request):
                         if len(urusers) == 2 and request.user in urusers:
                             urusers.remove(request.user)
                         urusers = sorted(urusers, key=lambda user: user.username)
-                        
+
                         #itemcontent = ItemContent.objects.filter(item=message)
                         itemcontent = message. itemcontent_set.all()
                         message.create = itemcontent[0].create
                         message.title = itemcontent[0].content.strip().splitlines()[0]
                         message.lastsubitem = itemcontent[0]
-                        
+
                         #subitem = message.get_all_items(include_self=False)
                         #if subitem:
                         #    subitem.sort(key=lambda item:item.create, reverse=True)
@@ -356,7 +356,7 @@ def app(request):
                         #    message.lastsubitem = subitem[0]
                         #else:
                         #    message.lastsubitem = itemcontent[0]
-                        
+
                         messagesession = {
                             'urusers': urusers
                         }
@@ -369,9 +369,9 @@ def app(request):
                                 if ms['urusers'] == urusers:
                                     if message not in ms['messages']:
                                         ms['messages'].append(message)
-                
+
                 messagelist = sorted(messagelist, key=lambda item:item['messages'][0].lastsubitem.create, reverse=False)
-                
+
                 messagesessions = []
                 for ms in messagelist:
                     urusers = []
@@ -383,18 +383,18 @@ def app(request):
                             'profile': escape(uruser.userprofile.profile),
                             'page': escape(uruser.userprofile.page),
                         })
-                    
+
                     lastmessage = {
                         'content': escape(ms['messages'][0].lastsubitem.content),
                         'datetime': str(ms['messages'][0].lastsubitem.create + timedelta(hours=8))
                     }
-                    
+
                     messages = []
                     for message in sorted(ms['messages'], key=lambda item:item.lastsubitem.create, reverse=False)[-100:]:
                         clientcreate = ''
                         if cache.get('cachemessages' + str(message.id)):
                             clientcreate = cache.get('cachemessages' + str(message.id))
-                        
+
                         messages.append({
                             'id': str(message.id),
                             'user': {
@@ -408,25 +408,25 @@ def app(request):
                             'content': escape(message.lastsubitem.content),
                             'clientcreate': clientcreate
                         })
-                    
+
                     messagesession = {
                         'urusers': urusers,
                         'lastmessage': lastmessage,
                         'messages': messages
                     }
                     messagesessions.append(messagesession)
-                
+
                 uirid = request.GET.get('uirid')
                 if useritemrelationship:
                     uirid = str(useritemrelationship[0].id)
-                
+
                 content = {
                     'status': 'success',
                     'messagesessions': messagesessions,
                     'uirid': uirid
                 }
                 return jsonp(request, content)
-            
+
         if request.method == 'POST':
             if request.POST.get('usernames'):
                 usernames = request.POST.get('usernames').split(',')
@@ -450,22 +450,22 @@ def app(request):
                     if form.is_valid():
                         item = Item(user=request.user)
                         item.save()
-                        
+
                         cache.set('cachemessages' + str(item.id), request.POST.get('clientcreate').strip())
-                        
+
                         itemcontent = ItemContent(item=item)
                         itemcontentform = ItemContentForm(request.POST, instance=itemcontent)
                         itemcontent = itemcontentform.save()
-                        
+
                         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
                         ip = request.META['REMOTE_ADDR']
                         if x_forwarded_for:
                             ip = x_forwarded_for.split(', ')[-1]
-                        
+
                         itemcontent.ip = ip
                         itemcontent.ua = request.META['HTTP_USER_AGENT']
                         itemcontent.save()
-                        
+
                         uirs = []
                         for user in users:
                             useritemrelationship = UserItemRelationship(user=user)
@@ -474,13 +474,13 @@ def app(request):
                             uirs.append(useritemrelationship)
                         item.useritemrelationship.add(*uirs)
                         item.save()
-                        
+
                         content = {
                             'status': 'success',
                             'id': str(item.id)
                         }
                         return jsonp(request, content)
-            
+
             if request.POST.get('newusernames'):
                 newusernames = request.POST.get('newusernames').split(',')
                 newusers = []
@@ -500,7 +500,7 @@ def app(request):
                 if len(newusers) == 2 and request.user in newusers:
                     newusers.remove(request.user)
                 newusers = sorted(newusers, key=lambda newuser: newuser.username)
-                
+
                 newurusers = []
                 for uruser in newusers:
                     newurusers.append({
@@ -510,7 +510,7 @@ def app(request):
                         'profile': escape(uruser.userprofile.profile),
                         'page': escape(uruser.userprofile.page),
                     })
-                    
+
                 newmessagesession = {
                     'urusers': newurusers,
                     'lastmessage': {

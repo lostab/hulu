@@ -1,8 +1,8 @@
 import os
 from django.conf import settings
-from PIL import Image
 import shutil
 import re
+from hulu import *
 
 def deletedir(dir):
     try:
@@ -11,7 +11,8 @@ def deletedir(dir):
         deletedir(dir)
 
 def img2svg(contentattachment):
-    if 'image' in contentattachment.contenttype:
+    if 'image' in contentattachment.contenttype and checkmodule('PIL'):
+        from PIL import Image
         contentattachmentfile = os.path.join(settings.MEDIA_ROOT, str(contentattachment.file))
         contentattachment.contenttype = 'svg'
         contentattachment.file = None

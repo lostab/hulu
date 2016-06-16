@@ -14,7 +14,7 @@ import urllib2
 import json
 from item.models import *
 from item.forms import *
-from django.forms.util import ErrorList
+from django.forms.utils import ErrorList
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from user.models import *
 from hulu import *
@@ -37,7 +37,7 @@ def Index(request):
                     if rootitem not in belongitems and rootitem.user != request.user:
                         belongitems.append(rootitem)
             belongitems = sorted(belongitems, key=lambda belongitem:belongitem.id, reverse=True)
-            
+
             for item in items:
                 itemcontent = item.itemcontent_set.all()
                 if itemcontent:
@@ -51,7 +51,7 @@ def Index(request):
                             item.title = contentattachment[0].title
                         else:
                             item.title = str(item.id)
-            
+
             for item in belongitems:
                 itemcontent = item.itemcontent_set.all()
                 if itemcontent:
@@ -65,7 +65,7 @@ def Index(request):
                             item.title = contentattachment[0].title
                         else:
                             item.title = str(item.id)
-            
+
             paginator = Paginator(items, 10)
             page = request.GET.get('page')
             try:
@@ -74,7 +74,7 @@ def Index(request):
                 items = paginator.page(1)
             except EmptyPage:
                 items = paginator.page(paginator.num_pages)
-            
+
             paginator_belong = Paginator(belongitems, 10)
             page = request.GET.get('page')
             try:
@@ -108,17 +108,17 @@ def Create(request):
     if request.user.is_authenticated():
         if request.method == 'GET':
             content = {
-                
+
             }
             return render_to_response('item/create.html', content, context_instance=RequestContext(request))
-        
+
         if request.method == 'POST':
             if request.POST.get('content').strip() == '' and (not request.FILES or 'VCAP_SERVICES' in os.environ):
                 content = {
-                    
+
                 }
                 return render_to_response('item/create.html', content, context_instance=RequestContext(request))
-            
+
             form = ItemContentForm(request.POST)
             if form.is_valid():
                 ItemContentInlineFormSet = inlineformset_factory(ItemContent, ContentAttachment, form=ItemContentForm)
@@ -131,14 +131,14 @@ def Create(request):
                             'form': form
                         }
                         return render_to_response('item/create.html', content, context_instance=RequestContext(request))
-                
+
                 item = Item(user=request.user)
                 item.save()
                 itemcontent = ItemContent(item=item)
                 itemcontentform = ItemContentForm(request.POST, instance=itemcontent)
                 itemcontent = itemcontentform.save()
                 itemcontent.save()
-                
+
                 if 'VCAP_SERVICES' not in os.environ:
                     #attach save
                     for attachmentfile in request.FILES.getlist('file'):
@@ -149,18 +149,18 @@ def Create(request):
                             contentattachment.title = attachmentfile.name
                             contentattachment.contenttype = str(attachmentfile.content_type)
                             contentattachment.save()
-                        
+
                             #convert img to svg
                             img2svg(contentattachment)
-                
+
                 x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
                 ip = request.META['REMOTE_ADDR']
                 if x_forwarded_for:
                     ip = x_forwarded_for.split(', ')[-1]
-                
+
                 itemcontent.ip = ip
                 itemcontent.ua = request.META['HTTP_USER_AGENT']
-                
+
                 itemcontent.save()
             else:
                 content = {
@@ -169,7 +169,7 @@ def Create(request):
                     'form': form
                 }
                 return render_to_response('item/create.html', content, context_instance=RequestContext(request))
-            
+
             return redirect('/i/' + str(item.id))
     else:
         return redirectlogin(request)
@@ -193,7 +193,7 @@ def View(request, id):
         item = None
     if not item:
         return redirect('/')
-    
+
     try:
         items = item.get_all_items(include_self=False)
         items.sort(key=lambda item:item.create, reverse=False)
@@ -207,14 +207,14 @@ def View(request, id):
             items = paginator.page(paginator.num_pages)
     except Item.DoesNotExist:
         items = None
-    
+
     if request.method == 'GET':
         try:
             UserNotify.objects.filter(user=request.user.id).filter(item=item).delete()
             UserNotify.objects.filter(user=request.user.id).filter(item__in=set(item.id for item in items)).delete()
         except UserNotify.DoesNotExist:
             pass
-        
+
         reply = None
         if request.GET.get('reply'):
             replyid = str(request.GET.get('reply'))
@@ -222,14 +222,14 @@ def View(request, id):
                 reply = Item.objects.get(id=replyid)
             except UserNotify.DoesNotExist:
                 pass
-        
+
         if item.user != request.user:
             if not item or item.status == 'private':
                 content = {
                     'item': None
                 }
                 return render_to_response('item/view.html', content, context_instance=RequestContext(request))
-        
+
         content = {
             'item': item,
             'items': items,
@@ -250,7 +250,7 @@ def View(request, id):
                     reply = Item.objects.get(id=replyid)
                 except UserNotify.DoesNotExist:
                     pass
-            
+
             if request.POST.get('content').strip() == '' and (not request.FILES or 'VCAP_SERVICES' in os.environ):
                 content = {
                     'item': item,
@@ -258,7 +258,7 @@ def View(request, id):
                     'reply': reply
                 }
                 return render_to_response('item/view.html', content, context_instance=RequestContext(request))
-            
+
             form = ItemContentForm(request.POST)
             if form.is_valid():
                 ItemContentInlineFormSet = inlineformset_factory(ItemContent, ContentAttachment, form=ItemContentForm)
@@ -274,19 +274,19 @@ def View(request, id):
                             'form': form
                         }
                         return render_to_response('item/view.html', content, context_instance=RequestContext(request))
-                
+
                 new_item = Item(user=request.user)
                 new_item.save()
                 if reply:
                     new_item.belong.add(reply)
                 else:
                     new_item.belong.add(item)
-                
+
                 itemcontent = ItemContent(item=new_item)
                 itemcontentform = ItemContentForm(request.POST, instance=itemcontent)
                 itemcontent = itemcontentform.save()
                 itemcontent.save()
-                
+
                 if 'VCAP_SERVICES' not in os.environ:
                     #attach save
                     for attachmentfile in request.FILES.getlist('file'):
@@ -297,21 +297,21 @@ def View(request, id):
                             contentattachment.title = attachmentfile.name
                             contentattachment.contenttype = str(attachmentfile.content_type)
                             contentattachment.save()
-                        
+
                             #convert img to svg
                             img2svg(contentattachment)
-                
+
                 x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
                 ip = request.META['REMOTE_ADDR']
                 if x_forwarded_for:
                     ip = x_forwarded_for.split(', ')[-1]
-                
+
                 itemcontent.ip = ip
-                
+
                 itemcontent.ua = request.META['HTTP_USER_AGENT']
-                
+
                 itemcontent.save()
-                
+
                 if reply:
                     if request.user != reply.user:
                         notify = UserNotify(user=reply.user, item=new_item)
@@ -320,7 +320,7 @@ def View(request, id):
                     if request.user != item.user:
                         notify = UserNotify(user=item.user, item=new_item)
                         notify.save()
-                
+
                 return redirect('/i/' + id + '#' + str(new_item.id))
             else:
                 content = {
@@ -365,7 +365,7 @@ def Update(request, id):
                         'item': item
                     }
                     return render_to_response('item/update.html', content, context_instance=RequestContext(request))
-            
+
                 form = ItemContentForm(request.POST)
                 if form.is_valid():
                     ItemContentInlineFormSet = inlineformset_factory(ItemContent, ContentAttachment, form=ItemContentForm)
@@ -379,12 +379,12 @@ def Update(request, id):
                                 'form': form
                             }
                             return render_to_response('item/update.html', content, context_instance=RequestContext(request))
-                    
+
                     itemcontent = ItemContent(item=item)
                     itemcontentform = ItemContentForm(request.POST, instance=itemcontent)
                     itemcontent = itemcontentform.save()
                     itemcontent.save()
-                    
+
                     if 'VCAP_SERVICES' not in os.environ:
                         #attach save
                         for attachmentfile in request.FILES.getlist('file'):
@@ -395,23 +395,23 @@ def Update(request, id):
                                 contentattachment.title = attachmentfile.name
                                 contentattachment.contenttype = str(attachmentfile.content_type)
                                 contentattachment.save()
-                            
+
                                 #convert img to svg
                                 img2svg(contentattachment)
-                    
+
                     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
                     ip = request.META['REMOTE_ADDR']
                     if x_forwarded_for:
                         ip = x_forwarded_for.split(', ')[-1]
-                    
+
                     itemcontent.ip = ip
-                
+
                     itemcontent.ua = request.META['HTTP_USER_AGENT']
-                    
+
                     itemcontent.save()
-                    
+
                     return redirect('/i/' + id)
-                        
+
                 else:
                     content = {
                         'form': form

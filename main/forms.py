@@ -1,11 +1,9 @@
 from django import forms
-
 from main.models import *
-from PIL import Image
 
 class FileUploadForm(forms.Form):
     file = forms.FileField(required=True)
-        
+
     def clean_file(self):
         file = self.cleaned_data['file']
         if file:
