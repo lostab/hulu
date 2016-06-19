@@ -1,4 +1,4 @@
-$(document).ready(function(){   
+$(document).ready(function(){
     $(".itemcontent-content").each(function(){
         $(this).html($(this).html().replace(/((http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-\|]*[\w@?^=%&amp;\/~+#-\|])?)/g, "<a href=\"$1\" target=\"_blank\">$1</a>"));
     });
@@ -12,7 +12,7 @@ $(document).ready(function(){
                 urlitem.remove();
             },
             error: function() {
-                
+
             }
         });
     });
@@ -37,8 +37,8 @@ $(document).ready(function(){
     $(window).resize(function() {
         svgresize();
     });
-    $(".container").css({"min-height": "calc(100% - " + ($(".header").height() + 12 + $(".footer").height()) + "px - " + $(".container").css("padding-top") + ")"});
-    
+    $(".container").css({"min-height": "calc(100% - " + ($(".header").height() + 14 + $(".footer").height()) + "px - " + $(".container").css("padding-top") + ")"});
+
     $(".itemform .submit").click(function(){
         if($.trim($(this).closest(".itemform").find("textarea").val()) == "") {
             $(this).closest(".itemform").find("textarea").focus();
@@ -49,7 +49,7 @@ $(document).ready(function(){
             }
         }
     });
-    
+
     if(window.localStorage){
         var ls = localStorage.getItem("itemcontent");
         if($(".itemform").find("textarea").val() == "" && ls != null && ls != ""){
@@ -59,7 +59,7 @@ $(document).ready(function(){
             localStorage.setItem("itemcontent", $(".itemform").find("textarea").val());
         });
     }
-    
+
     $(".itemform .submit").parent().before('\
         <div class="fileselect" style="text-align: center;">\
             <input class="wbimg" type="file" name="file" style="display: none;" />\
@@ -86,7 +86,7 @@ $(document).ready(function(){
             $(this).closest(".itemform").find(".process").hide();
             $(this).closest(".itemform").find(".uploadinfo").show();
             $(this).closest(".itemform").find(".uploadinfo").text("上传成功，请记住图片链接。");
-            
+
         },
         fail: function(e, data){
             $(this).prop("disabled", false);
