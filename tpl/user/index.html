@@ -18,7 +18,7 @@
             <p>帐号：{{ user.username }}</p>
             {% if not user.userprofile.openid %}<p>邮箱：{{ user.email }}</p>{% endif %}
             <p>签名：{{ user.userprofile.info }}</p>
-            <span>简介：</span><pre class="description">{{ user.userprofile.profile }}</pre>
+            <span class="descriptionlabel">简介：</span><pre class="description">{{ user.userprofile.profile }}</pre>
             <p class="created">注册于{{ user.userprofile.create|date:'Y年m月d日' }}</p>
         </div>
     {% endif %}

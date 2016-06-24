@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <link href="/s/css/style.css" rel="stylesheet"  type="text/css" />
     <link href="/s/css/media-queries.css" rel="stylesheet" type="text/css">
-    <link rel="shortcut icon" href="/s/favicon.ico" />
+    <link rel="shortcut icon" href="/s/logo.png" />
 </head>
 <body>
     <div class="wrapper">
@@ -17,7 +17,7 @@
         {% if user.is_authenticated %}
         <div class="right-navbar right-navbar-login">
             <a href="/u/" class="accounts-button" title="账户"><div class="avatar-area"><div class="avatar" style="background: url({% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center;"><img src="{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" alt="avatar" /></div></div></a>
-            {% with user.usernotify_set.all|length as notifyamount %}<a href="/app/" title="通知" class="notify-amount{% if notifyamount %} notify-amount-new{% endif %}">{{ notifyamount }}</a>{% endwith %}
+            {% with user.usernotify_set.all|length as notifyamount %}<a href="/m/" title="通知" class="notify-amount{% if notifyamount %} notify-amount-new{% endif %}">{{ notifyamount }}</a>{% endwith %}
             <a href="/i/create/" title="发布" class="create-button">+</a>
         {% else %}
         <div class="right-navbar">
