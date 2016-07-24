@@ -10,8 +10,8 @@
         {% else %}
         <form method="post">
             {% csrf_token %}
-            <p><textarea name="feedback" class="feedback"></textarea></p>
-            <p><input class="submit" type="submit" value="提交" /></p>
+            <p><textarea name="feedback" class="feedbackinput"></textarea></p>
+            <p class="submit-btn"><input class="submit" type="submit" value="提交" /></p>
         </form>
         {% endif %}
     </div>

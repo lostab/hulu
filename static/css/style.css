@@ -267,7 +267,7 @@ p.submit-btn, p.cancel-btn {
     width: 80%;
     line-height: 1em;
 }
-.setting .description textarea{
+.setting .description textarea {
     vertical-align:top;
     overflow-y:visible;
     width: 80%;
@@ -308,7 +308,7 @@ p.submit-btn, p.cancel-btn {
 .userpage .title a {
     text-decoration:none;
 }
-.content.create .description textarea, .content.item .description textarea, .line .description textarea {
+.content.create .description textarea, .content.item .description textarea, .line .description textarea, .feedback textarea {
     vertical-align:top;
     overflow-y:visible;
     width: 100%;
@@ -346,6 +346,9 @@ p.submit-btn, p.cancel-btn {
     word-wrap: break-word;
     word-break: break-all;
     font-family: Consolas;
+}
+.content.item .updateitemform {
+    display: none;
 }
 .reply-info {
     font-size: small;
@@ -663,7 +666,7 @@ p.submit-btn, p.cancel-btn {
     opacity: 1;
     filter: alpha(opacity=100);
 }
-.feedback textarea, .content.item form textarea, .content form textarea {
+.content.item form textarea, .content form textarea, .content.item .updateitemform textarea {
     vertical-align: top;
     overflow-y:visible;
     width: 100%;
