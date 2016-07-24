@@ -12,9 +12,9 @@
         <div class="item-head">
             <div class="item-info">
                 <span class="item-info-right"><a class="item-created">{% with item.itemcontent_set.all|first as itemcontent %}{{ itemcontent.create|date:'Y-m-d H:i:s'}}{% endwith %}</a></span>
-                
+
                 <span class="item-info-left"><a class="username" href="/{{ item.user.username }}/"><span class="username">{{ item.user.username }}</span></a>
-                
+
                 <span class="userinfo">{{ item.user.userprofile.info }}</span></span>
             </div>
             <h3 class="item-title"><a href="/i/{{ item.id }}/">{{ item.title }}</a></h3>
@@ -51,7 +51,7 @@
                 <a href="/i/update/{{ item.id }}/#update-form">更新</a>
             </p>
         {% endif %}
-        
+
         <h3>评论</h3>
         <div class="comments">
         {% if items %}
@@ -61,11 +61,11 @@
                     <div class="item-line">
                         <div class="item-info">
                             <span class="item-info-right"><a class="item-created">{% with subitem.itemcontent_set.all|first as itemcontent %}{{ itemcontent.create|date:'Y-m-d H:i:s' }}{% endwith %}</a></span>
-                            
+
                             <span class="comment-author"><a class="username" href="/{{ subitem.user.username }}/"><span class="username">{{ subitem.user.username }}</span></a>
                             <span class="userinfo">{{ subitem.user.userprofile.info }}</span></span>
                         </div>
-                        
+
                             <div class="reply-info">
                             {% if subitem.belong and item not in subitem.belong.all %}
                                 <div class="comment-reply-to">
@@ -79,7 +79,7 @@
                         {% for itemcontent in subitem.itemcontent_set.all %}
                         <div class="itemcontent">
                             <div class="itemcontent-content"><pre>{{ itemcontent.content }}</pre></div>
-                            
+
                             {% for attachmentfile in itemcontent.contentattachment_set.all %}
                                 {% if 'svg' in attachmentfile.contenttype %}
                                 {{ attachmentfile.content|safe }}
@@ -96,9 +96,9 @@
                             {% endfor %}
                         </div>
                         {% endfor %}
-                            
+
                     </div>
-                    
+
                             <div class="comment-operate">
                                 <a class="comment-reply" href="{% if user.is_authenticated %}?reply={{ subitem.id }}#comment-form{% else %}{% url 'login' %}?next={{ request.path }}?reply={{ subitem.id }}#comment-form{% endif %}">回复</a>
                             </div>
@@ -125,7 +125,7 @@
             <p>暂无评论。</p>
         {% endif %}
         </div>
-        
+
         {% if user.is_authenticated %}
         {{ form.content.errors }}{{ form.file.errors }}
         <form method="post" class="comment-form itemform" id="comment-form" enctype="multipart/form-data">
@@ -137,7 +137,7 @@
             <input class="file" name="file" type="file" />
             <br />
             (小于2MB有效)</p>-->
-            <p><input class="submit" type="submit" value="提交" /></p>
+            <p class="submit-btn"><input class="submit" type="submit" value="提交" /></p>
         </form>
         {% else %}
             <p><a href="{% url 'login' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.get_full_path }}{% endif %}">登录</a>
@@ -146,7 +146,7 @@
             以参与评论。</p>
             <p><a href="/u/login?type=qq&next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.path }}{% endif %}"><img src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_3.png" /></a></p>
         {% endif %}
-    
+
     {% else %}
         <p>抱歉，页面不存在。</p>
     {% endif %}
@@ -169,10 +169,10 @@ $(document).ready(function(){
             $(this).remove();
             return false;
         });
-        
+
         $(".comment-form .comment-parent").val($(this).closest(".comment").attr("id"));
         $(".comment-form .comment-content .comment-reply-to").remove();
-        $(".comment-form .comment-content").prepend("<span class=\"comment-reply-to\">回复 " + $(this).closest(".comment").find(".item-info .comment-author span.username").text() + "：</span>");
+        $(".comment-form .comment-content").prepend("<div class=\"comment-reply-to\">回复 <a class=\"comment-reply-to-user\">" + $(this).closest(".comment").find(".item-info .comment-author span.username").text() + "</a></div>");
         $(this).hide();
         $(this).after("<a class=\"cancel-comment-reply\" href=\"\">取消回复</a>");
         $(".comment-form").appendTo($(this).closest(".comment"));

@@ -7,7 +7,7 @@
         <h3>注册</h3>
         <form method="post">
             {% csrf_token %}
-            <p>邮箱：<input name="email" type="email" value="{{ form.email.value }}" />
+            <p><input name="email" type="email" value="{{ form.email.value }}" placeholder="请输入邮箱" />
                 {% if form.email.errors %}
                     <br />
                     {% if form.email.value %}
@@ -23,7 +23,7 @@
                     {% endif %}
                 {% endif %}
             </p>
-            <p>账号：<input name="username" type="text" value="{{ form.username.value }}" />
+            <p><input name="username" type="text" value="{{ form.username.value }}" placeholder="请输入账号" />
                 {% if form.username.errors %}
                     <br />
                     {% if form.username.value %}
@@ -41,13 +41,13 @@
                     {% endif %}
                 {% endif %}
             </p>
-            <p>密码：<input name="password1" type="password" />
+            <p><input name="password1" type="password" placeholder="请输入密码" />
                 {% if form.errors and not form.email.errors and not form.username.errors %}
                     <br />
                     <span class="error">密码填写错误</span>
                 {% endif %}
             </p>
-            <p>重复：<input name="password2" type="password" /></p>
+            <p><input name="password2" type="password" placeholder="请再次输入密码" /></p>
             <p><input class="submit" type="submit" value="注册" /></p>
             <p>已有帐号？<a href="{% url 'login' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.path }}{% endif %}">现在登录</a></p>
             <p><a href="?type=qq&next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.path }}{% endif %}"><img src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_3.png" /></a></p>

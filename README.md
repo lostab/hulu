@@ -2,7 +2,7 @@ A community framework based on Django.
 
 ~   required
 
-    Python & Django & PIL.
+    Python & Django & PIL(optional).
 
 ~   runing
 
@@ -13,4 +13,4 @@ A community framework based on Django.
     SQLite, PostgreSQL, MySQL, DB2 or other relational databases.
 
 Demo:
-    https://hulu.im
+    http://hulu.im

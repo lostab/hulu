@@ -35,6 +35,10 @@
         left: 0;
         margin-left: 0;
     }
+    input:not(.file-input), textarea {
+        width: 100%;
+        max-width: 360px;
+    }
 }
 
 img {

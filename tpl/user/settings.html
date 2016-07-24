@@ -15,10 +15,10 @@
                 <br />
                 <p>账号：{{ user.username }}</p>
                 {% if not user.userprofile.openid %}<p>邮箱：{{ user.email }}</p>{% endif %}
-                <p>签名：<input name="info" type="text" value="{{ user.userprofile.info }}" /></p>
+                <p class="info">签名：<input name="info" type="text" value="{{ user.userprofile.info }}" /></p>
                 <p class="description">简介：<textarea name="profile">{{ user.userprofile.profile }}</textarea></p>
                 <!--<p class="description">页面：<textarea name="page">{{ user.userprofile.page }}</textarea></p>-->
-                <p><input class="submit" type="submit" value="提交" /></p>
+                <p class="submit-btn"><input class="submit" type="submit" value="提交" /></p>
                 <p class="cancel-btn">{% if prev == 'signup' %}<a href="{% if next %}{{ next }}{% else %}/{% endif %}">跳过</a>{% else %}<a href="/u/">取消</a>{% endif %}</p>
             </form>
         </div>
