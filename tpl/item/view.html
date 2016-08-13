@@ -18,8 +18,21 @@
                 <span class="userinfo">{{ item.user.userprofile.info }}</span></span>
             </div>
             <h3 class="item-title"><a href="/i/{{ item.id }}/">{{ item.title }}</a></h3>
-            <div class="item-tags">{% for tag in item.tags %}<div class="item-tag">{{ tag }}</div>{% endfor %}</div>
+            <div class="item-tags">{% for tag in item.tag.all %}<div class="item-tag"><a href="/t/{{ tag.id }}/">{{ tag.name }}</a></div>{% endfor %}</div>
+
         </div>
+        {% if item.user.username == user.username %}
+            <form class="additemtag" method="post">
+                <span class="additemtagform" style="display: none;">
+                    {% csrf_token %}
+                    <input class="item-tag-name" name="tagname" type="text" />
+                    <input class="submit item-tag-submit" type="submit" value="添加" />
+                </span>
+                <span class="operate">
+                    <a class="updatetag-btn" href="" style="">编辑话题</a>
+                </span>
+            </form>
+        {% endif %}
         <div class="line">
         {% for itemcontent in item.itemcontent_set.all %}
             <div class="itemcontent">
@@ -48,7 +61,7 @@
         </div>
         {% if item.user.username == user.username %}
             <p class="operate">
-                <a class="updateitem-btn" href="/i/update/{{ item.id }}/#update-form">更新</a>
+                <a class="updateitem-btn" href="/i/update/{{ item.id }}/#update-form">更新信息</a>
             </p>
             <form class="itemform updateitemform" method="post" enctype="multipart/form-data" action="/i/update/{{ item.id }}/">
                 {% csrf_token %}
@@ -73,7 +86,7 @@
                         <div class="item-info">
                             <span class="item-info-right"><a class="item-created">{% with subitem.itemcontent_set.all|first as itemcontent %}{{ itemcontent.create|date:'Y-m-d H:i:s' }}{% endwith %}</a></span>
 
-                            <span class="comment-author"><a class="username" href="/{{ subitem.user.username }}/"><span class="username">{{ subitem.user.username }}</span></a>
+                            <span class="comment-author"><a class="usernamelabel" href="/{{ subitem.user.username }}/"><span class="username">{{ subitem.user.username }}</span></a>
                             <span class="userinfo">{{ subitem.user.userprofile.info }}</span></span>
                         </div>
 
@@ -81,7 +94,7 @@
                             {% if subitem.belong and item not in subitem.belong.all %}
                                 <div class="comment-reply-to">
                                 {% for i in subitem.belong.all %}
-                                    <span class="comment-author"><a class="username" href="/{{ i.user.username }}/"><span class="username">{{ i.user.username }}</span></a>
+                                    <span class="comment-author"><a class="usernamelabel" href="/{{ i.user.username }}/"><span class="username">{{ i.user.username }}</span></a>
                             <span class="userinfo">{{ i.user.userprofile.info }}</span></span><div class="itemcontent-content"><pre>{% with i.itemcontent_set.all|first as itemcontent %}{{ itemcontent.content }}{% endwith %}</pre></div>
                                 {% endfor %}
                                 </div>
@@ -109,10 +122,9 @@
                         {% endfor %}
 
                     </div>
-
-                            <div class="comment-operate">
-                                <a class="comment-reply" href="{% if user.is_authenticated %}?reply={{ subitem.id }}#comment-form{% else %}{% url 'login' %}?next={{ request.path }}?reply={{ subitem.id }}#comment-form{% endif %}">回复</a>
-                            </div>
+                    <div class="comment-operate">
+                        <a class="comment-reply" href="{% if user.is_authenticated %}?reply={{ subitem.id }}#comment-form{% else %}{% url 'login' %}?next={{ request.path }}?reply={{ subitem.id }}#comment-form{% endif %}">回复</a>
+                    </div>
                 </div>
             {% endfor %}
             {% if items.paginator.num_pages > 1 %}
@@ -166,7 +178,8 @@
 
 {% block sidebar %}
     <div class="sidebar">
-        <div class="wxpay" style="width: 240px; height: 240px; background: url(/s/wxpay.png) no-repeat; background-size: cover; background-position: center; margin: 0 auto;"></div>
+        {% include "widget/tag.html" %}
+        {% include "widget/wxpay.html" %}
     </div>
 {% endblock %}
 
@@ -183,13 +196,13 @@ $(document).ready(function(){
 
         $(".comment-form .comment-parent").val($(this).closest(".comment").attr("id"));
         $(".comment-form .comment-content .comment-reply-to").remove();
-        $(".comment-form .comment-content").prepend("<div class=\"comment-reply-to\">回复 <a class=\"comment-reply-to-user\">" + $(this).closest(".comment").find(".item-info .comment-author span.username").text() + "</a></div>");
+        $(".comment-form .comment-content").prepend("<div class=\"comment-reply-to-users\">回复 <a class=\"comment-reply-to-user\">" + $(this).closest(".comment").find(".item-info .comment-author span.username").text() + "</a></div>");
         $(this).hide();
         $(this).after("<a class=\"cancel-comment-reply\" href=\"\">取消回复</a>");
         $(".comment-form").appendTo($(this).closest(".comment"));
         $(".comment .comment-operate .cancel-comment-reply").click(function(){
             $(".comment-form .comment-parent").val("");
-            $(".comment-form .comment-content .comment-reply-to").remove();
+            $(".comment-form .comment-content .comment-reply-to-users").remove();
             $(this).closest(".comment .comment-operate").find(".comment-reply").show();
             $(this).remove();
             $(".comment-form").appendTo(".content");
@@ -208,6 +221,67 @@ $(document).ready(function(){
         $(".updateitem-btn").show();
         $(".updateitemform").hide();
         return false;
+    });
+
+    var removetag = function(tagdom){
+        var itemtag = $(this);
+        $.ajax({
+            type: "post",
+            data: {
+                "csrfmiddlewaretoken": "{{ csrf_token }}",
+                "tagname": $(this).text(),
+                "operate": "remove"
+            },
+            success: function(){
+                itemtag.remove();
+            }
+        });
+        return false;
+    };
+    $(".updatetag-btn").click(function(){
+        if ($(".additemtagform").is(":visible")) {
+            $(".additemtagform").hide();
+            $(this).text("编辑话题");
+            $(".item-tags .item-tag").each(function(){
+                $(this).unbind("click");
+            });
+        } else {
+            $(".additemtagform").show();
+            $(this).text("保存话题");
+            $(".item-tags .item-tag").each(function(){
+                $(this).bind("click", removetag);
+            });
+        }
+        return false;
+    });
+    $(".additemtag").submit(function(){
+        var itemtag = $(this).find(".item-tag-name");
+        var itemtaglist = new Array();
+        $(".item-tags .item-tag").each(function(){
+            itemtaglist.push($(this).text());
+        });
+        if ( itemtag.val() == "" || $.inArray(itemtag.val(), itemtaglist) != -1 ) {
+            itemtag.val("");
+            itemtag.focus();
+            $(".additemtagform .submit").attr("disabled", false);
+            return false;
+        } else {
+            $.ajax({
+                type: "post",
+                data: {
+                    "csrfmiddlewaretoken": "{{ csrf_token }}",
+                    "tagname": itemtag.val(),
+                    "type": "json"
+                },
+                success: function(data){
+                    $(".item-tags").append("<div class=\"item-tag\"><a href=\"/t/" + data + "/\">" + itemtag.val() + "</a></div>");
+                    $(".item-tags .item-tag").last().bind("click", removetag);
+                    itemtag.val("");
+                    $(".additemtagform .submit").attr("disabled", false);
+                }
+            });
+            return false;
+        }
     });
 {% endif %}
 });

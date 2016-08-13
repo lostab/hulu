@@ -3,7 +3,7 @@
 {% block title %}用户列表 - {% endblock %}
 
 {% block content %}
-    <div class="content userlist home">
+    <div class="content userlist">
         <h3>用户列表</h3>
         <div class="items">
         {% for user in users %}
@@ -13,7 +13,7 @@
                 <div class="item-info">
                     <span class="item-info-right"><a class="item-created">{{ user.userprofile.create|date:'Y年m月d日' }}</a>
                     </span>
-                    
+
                     <span class="item-info-left">
                         {% if url %}<!--fetch-->
                         <span class="username">{{ user.username }}</span>

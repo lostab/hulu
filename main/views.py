@@ -25,6 +25,7 @@ from user.models import *
 from user.forms import *
 from item.models import *
 from item.forms import *
+from tag.models import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core import serializers
 from main.__init__ import *
@@ -90,6 +91,8 @@ def index(request):
                     item.lastsubitem = itemcontent[0]
                 itemlist.append(item)
 
+        itemlist = sorted(itemlist, key=lambda item:item.lastsubitem.create, reverse=True)
+
         paginator = Paginator(itemlist, 30)
         itemlist = []
         page = request.GET.get('page')
@@ -107,9 +110,9 @@ def index(request):
 
         fetchitems = []
         fetchitem = namedtuple('fetchitem', 'user title url lastsubitem tags')
-        fetchuser=namedtuple('fetchuser', 'username userprofile')
-        fetchprofile=namedtuple('fetchprofile', 'openid avatar')
-        fetchcreate=namedtuple('fetchcreate', 'create')
+        fetchuser = namedtuple('fetchuser', 'username userprofile')
+        fetchprofile = namedtuple('fetchprofile', 'openid avatar')
+        fetchcreate = namedtuple('fetchcreate', 'create')
 
         cacheitems = cache.get('cacheitems')
         if cacheitems and not request.GET.get('nocache') and not request.GET.get('page'):
@@ -211,8 +214,14 @@ def index(request):
     except Item.DoesNotExist:
         items = None
 
+    try:
+        tags = Tag.objects.all().order_by('?')[:10]
+    except Tag.DoesNotExist:
+        tags = None
+
     content = {
-        'items': items
+        'items': items,
+        'tags': tags
     }
     if request.GET.get('type') == 'json':
         content = {

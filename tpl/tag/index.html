@@ -1,10 +1,22 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% endblock %}
+{% block title %}{% if tag %}{{ tag.name }}{% else %}页面不存在{% endif %} - {% endblock %}
 
 {% block content %}
     <div class="content home">
+        {% if tag %}
+        <div class="content-header">
+            <p>
+                <a href="/">首页</a>
+                >
+                <a href="/t/{{ tag.id }}/">{{ tag.name }}</a>
+                <a class="createintagbtn" href="/i/create/?t={{ tag.name }}">发布信息</a>
+            </p>
+        </div>
+        {% else %}
+            <p>抱歉，页面不存在。</p>
+        {% endif %}
         <div class="items">
         {% for item in items %}
         <div class="item">
@@ -51,26 +63,9 @@
 
                 {% if items.has_next %}
                     <a class="next-page" href="?page={{ items.next_page_number }}">下一页</a>
-                {% elif request.user.id == 1 %}<!--for Zhihu-->
-                    {% if request.GET.page %}
-                        <a class="next-page" href="?page={{ request.GET.page|add:1 }}">下一页</a>
-                    {% else %}
-                        <a class="next-page" href="?page=2">下一页</a>
-                    {% endif %}<!--for Zhihu-->
                 {% endif %}
             </span>
         </div>
-        {% elif request.user.id == 1 %}<!--for Zhihu-->
-        <div class="pagination">
-            <span class="step-links">
-                <span class="current"></span>
-                {% if request.GET.page %}
-                    <a class="next-page" href="?page={{ request.GET.page|add:1 }}">下一页</a>
-                {% else %}
-                    <a class="next-page" href="?page=2">下一页</a>
-                {% endif %}
-            </span>
-        </div><!--for Zhihu-->
         {% endif %}
         </div>
     </div>
@@ -121,81 +116,7 @@ $(document).ready(function(){
         }
     }
     load_next_page();
-    var loading = function(){
-        if($(".loading").length <= 0){
-            $(".loading").remove();
-            $(".content.home").before("<p class=\"loading\" style=\"color:gray;text-align:center;display:none;\">加载中…</p>");
-            $(".loading").slideDown();
-        }
-        $(".content.home").load("/ .items", function(response, status, xhr){
-            $(".items").show();
-            load_next_page();
-            $(".loading").slideUp(function(){
-                $(this).remove();
-            });
-        });
-        $.getJSON("/u/notify/?type=json", function(json){
-            if(json.status == "success"){
-                if(json.notify.count != 0){
-                    if ($(".notify-amount").length > 0){
-                        $(".notify-amount").text(json.notify.count);
-                        $(".notify-amount").addClass("notify-amount-new");
-                    } else {
-                        $(".header .right-navbar .accounts-button").after(" <a href=\"/u/notify/\" class=\"notify-amount notify-amount-new\">" + json.notify.count + "</a>");
-                    }
-                } else {
-                    $(".notify-amount").text(json.notify.count);
-                    $(".notify-amount").removeClass("notify-amount-new");
-                }
-            }
-        });
-    }
-    $(".header .logo").click(function(){
-        $(window).scrollTop(0);
-        loading();
-        return false;
-    });
-    /*
-    var b = document.getElementsByClassName("container")[0];
-    var x,y,scrollTop;
-    var isTouch,isPullDown=false,isPullUp=false;
 
-    b.addEventListener("touchstart", function(evt){
-        var touch = evt.touches[0]; //获取第一个触点
-        //x = Number(touch.pageX); //页面触点X坐标
-        y = Number(touch.pageY); //页面触点Y坐标
-        scrollTop=b.scrollTop;
-        isTouch=true;
-    });
-    b.addEventListener("touchend", function(evt){
-        isTouch=false;
-        isPullDown=false;
-        isPullUp=false;
-    });
-    b.addEventListener("touchmove", function(evt){
-        var touch = evt.touches[0]; //获取第一个触点
-        //var mx = Number(touch.pageX); //页面触点X坐标
-        var my = Number(touch.pageY); //页面触点Y坐标
-
-        if(isTouch){
-            if(my - y > 120){
-                if(b.scrollTop==0){
-                    if(!isPullUp){
-                        isPullUp=true;
-                        loading();
-                    }
-                }
-            }
-            //if( y-my > 100 ){
-            //    if(scrollTop!=0 && scrollTop == b.scrollTop){
-            //        if(!isPullDown){
-            //            isPullDown=true;
-            //        }
-            //    }
-            //}
-        }
-    });
-    */
 });
 </script>
 {% endblock %}

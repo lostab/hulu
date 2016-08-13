@@ -14,6 +14,7 @@ import urllib2
 import json
 from item.models import *
 from item.forms import *
+from tag.models import *
 from django.forms.utils import ErrorList
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from user.models import *
@@ -106,9 +107,22 @@ def Index(request):
 
 def Create(request):
     if request.user.is_authenticated():
+        if request.GET.get('t'):
+            tagname = request.GET.get('t').strip()
+            if tagname:
+                try:
+                    tag = Tag.objects.filter(name=tagname)[:1].get()
+                except Tag.DoesNotExist:
+                    tag = None
+            else:
+                tag = None
+        else:
+            tagname = None
+            tag = None
+
         if request.method == 'GET':
             content = {
-
+                'tagname': tagname
             }
             return render_to_response('item/create.html', content, context_instance=RequestContext(request))
 
@@ -138,6 +152,15 @@ def Create(request):
                 itemcontentform = ItemContentForm(request.POST, instance=itemcontent)
                 itemcontent = itemcontentform.save()
                 itemcontent.save()
+
+                if tagname:
+                    if not tag:
+                        tag = Tag()
+                        tag.name = tagname
+                        tag.save()
+                    item.tag.add(tag)
+                    item.save()
+
 
                 if 'VCAP_SERVICES' not in os.environ:
                     #attach save
@@ -223,26 +246,57 @@ def View(request, id):
             except UserNotify.DoesNotExist:
                 pass
 
-        if item.user != request.user:
-            if not item or item.status == 'private':
-                content = {
-                    'item': None
-                }
-                return render_to_response('item/view.html', content, context_instance=RequestContext(request))
+        if not item or (item.status == 'private' and item.user != request.user):
+            content = {
+                'item': None
+            }
+            return render_to_response('item/view.html', content, context_instance=RequestContext(request))
+
+        try:
+            tags = Tag.objects.all().order_by('?')[:10]
+        except Tag.DoesNotExist:
+            tags = None
 
         content = {
             'item': item,
             'items': items,
-            'reply': reply
+            'reply': reply,
+            'tags': tags
         }
         return render_to_response('item/view.html', content, context_instance=RequestContext(request))
     if request.method == 'POST':
-        if not item or item.status == 'private':
+        if not item or (item.status == 'private' and item.user != request.user):
             content = {
                 'item': None
             }
             return render_to_response('item/view.html', content, context_instance=RequestContext(request))
         if request.user.is_authenticated():
+            if item.user == request.user and request.POST.get('tagname'):
+                tagname = request.POST.get('tagname').strip()
+                if tagname != '':
+                    if request.POST.get('operate') == 'remove':
+                        try:
+                            tags = Tag.objects.filter(name=tagname).all()
+                            for tag in tags:
+                                item.tag.remove(tag)
+                                item.save()
+                        except:
+                            pass
+                    else:
+                        try:
+                            tag = Tag.objects.filter(name=tagname)[:1].get()
+                        except Tag.DoesNotExist:
+                            tag = Tag()
+                            tag.name = tagname
+                            tag.save()
+                        if tag not in item.tag.all():
+                            item.tag.add(tag)
+                            item.save()
+                        if request.POST.get('type') == 'json':
+                            content = str(tag.id)
+                            return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
+                return redirect('/i/' + id + '/')
+
             reply = None
             if request.POST.get('reply'):
                 replyid = str(request.POST.get('reply'))
@@ -251,7 +305,7 @@ def View(request, id):
                 except UserNotify.DoesNotExist:
                     pass
 
-            if request.POST.get('content').strip() == '' and (not request.FILES or 'VCAP_SERVICES' in os.environ):
+            if (not request.POST.get('content') or request.POST.get('content').strip() == '') and (not request.FILES or 'VCAP_SERVICES' in os.environ):
                 content = {
                     'item': item,
                     'items': items,

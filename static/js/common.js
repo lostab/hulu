@@ -115,4 +115,13 @@ $(document).ready(function(){
             data.submit();
         }
     });
+
+    $(".newtagform").submit(function(){
+        var itemtag = $(this).find(".item-tag-name");
+        if ( itemtag.val() == "") {
+            itemtag.focus();
+            $(".newtagform .submit").attr("disabled", false);
+            return false;
+        }
+    });
 });
