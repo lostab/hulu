@@ -24,12 +24,12 @@ from item.__init__ import *
 from django.forms.models import inlineformset_factory
 from django.db.models import Q
 
-#import jieba.analyse
-
 def Index(request):
     if request.user.is_authenticated():
         try:
             items = Item.objects.select_related('user').filter(user=request.user).filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).order_by('-id').prefetch_related('itemcontent_set')
+            items = sorted(items, key=lambda item:item.id, reverse=True)
+
             subitems = Item.objects.filter(user=request.user).filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=False)).order_by('-id').prefetch_related('itemcontent_set')
             belongitems = []
             for subitem in subitems:
@@ -45,7 +45,6 @@ def Index(request):
                     item.create = itemcontent[0].create
                     if itemcontent[0].content:
                         item.title = itemcontent[0].content.strip().splitlines()[0]
-                        item.tags = None
                     else:
                         contentattachment = itemcontent[0].contentattachment_set.all()
                         if contentattachment:
@@ -59,7 +58,6 @@ def Index(request):
                     item.create = itemcontent[0].create
                     if itemcontent[0].content:
                         item.title = itemcontent[0].content.strip().splitlines()[0]
-                        item.tags = None
                     else:
                         contentattachment = itemcontent[0].contentattachment_set.all()
                         if contentattachment:

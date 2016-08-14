@@ -70,8 +70,6 @@ def index(request):
                 item.create = itemcontent[0].create
                 if itemcontent[0].content:
                     item.title = itemcontent[0].content.strip().splitlines()[0]
-                    #item.tags = jieba.analyse.extract_tags(itemcontent[0].content, 3)
-                    item.tags = None
                 else:
                     #contentattachment = ContentAttachment.objects.filter(itemcontent=itemcontent[0])
                     contentattachment = itemcontent[0].contentattachment_set.all()
@@ -88,7 +86,7 @@ def index(request):
                     item.subitemcount = len(subitem)
                     item.lastsubitem = subitem[0]
                 else:
-                    item.lastsubitem = itemcontent[0]
+                    item.lastsubitem = itemcontent.last()
                 itemlist.append(item)
 
         itemlist = sorted(itemlist, key=lambda item:item.lastsubitem.create, reverse=True)
@@ -144,9 +142,7 @@ def index(request):
                         },
                         'lastsubitem': {
                             'create': str(item.lastsubitem.create)
-                        },
-                        #'tags': jieba.analyse.extract_tags(item.title.decode().encode('utf-8'), 3)
-                        'tags': None
+                        }
                     })
                 cache.set('cacheitems', json.dumps(cacheitems, encoding='utf-8', ensure_ascii=False, indent=4), 3600)
 

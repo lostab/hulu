@@ -43,8 +43,6 @@ def View(request, id):
                 item.create = itemcontent[0].create
                 if itemcontent[0].content:
                     item.title = itemcontent[0].content.strip().splitlines()[0]
-                    #item.tags = jieba.analyse.extract_tags(itemcontent[0].content, 3)
-                    item.tags = None
                 else:
                     #contentattachment = ContentAttachment.objects.filter(itemcontent=itemcontent[0])
                     contentattachment = itemcontent[0].contentattachment_set.all()
@@ -61,7 +59,7 @@ def View(request, id):
                     item.subitemcount = len(subitem)
                     item.lastsubitem = subitem[0]
                 else:
-                    item.lastsubitem = itemcontent[0]
+                    item.lastsubitem = itemcontent.last()
                 itemlist.append(item)
 
         itemlist = sorted(itemlist, key=lambda item:item.lastsubitem.create, reverse=True)

@@ -210,7 +210,7 @@ def Login(request):
             return redirect('/u/login/')
         else:
             nextpath = request.GET.get('next').split('?')[0]
-            if nextpath[0] != '/' or nextpath in ['', '/', '/u/login/', '/u/signup/']:
+            if nextpath[0] != '/' or nextpath in ['', '/', '/a/', '/u/login/', '/u/signup/']:
                 return redirect('/u/login/')
     if request.user.is_authenticated():
         if request.GET.get('type') == 'json':
