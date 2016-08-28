@@ -1,6 +1,7 @@
 $(document).ready(function(){
-    $(".itemcontent-content").each(function(){
-        $(this).html($(this).html().replace(/((http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-\|]*[\w@?^=%&amp;\/~+#-\|])?)/g, "<a href=\"$1\" target=\"_blank\">$1</a>"));
+    $(".itemcontent-content pre").each(function(){
+        //$(this).html($(this).html().replace(/((http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-\|]*[\w@?^=%&amp;\/~+#-\|])?)/g, "<a href=\"$1\" target=\"blank\">$1</a>"));
+        $(this).html($(this).html().replace(/([a-zA-z]+\:\/\/[^\s]*)/, "<a href=\"$1\" target=\"blank\">$1</a>"));
     });
     $(".itemcontent-content a").each(function(){
         var url = $(this).text();

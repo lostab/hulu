@@ -315,7 +315,7 @@ p.submit-btn, p.cancel-btn {
     vertical-align:top;
     overflow-y:visible;
     width: 100%;
-    height: 50vh;
+    height: 48vh;
     min-height: 7em;
 }
 .content .items .item, .comment {
