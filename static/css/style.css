@@ -351,7 +351,7 @@ p.submit-btn, p.cancel-btn {
     white-space: -o-pre-wrap;
     word-wrap: break-word;
     word-break: break-all;
-    font-family: Consolas;
+    /*font-family: Consolas;*/
 }
 .content.item .updateitemform {
     display: none;

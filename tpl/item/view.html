@@ -242,13 +242,13 @@ $(document).ready(function(){
         if ($(".additemtagform").is(":visible")) {
             $(".additemtagform").hide();
             $(this).text("编辑话题");
-            $(".item-tags .item-tag").each(function(){
+            $(".item-head .item-tags .item-tag").each(function(){
                 $(this).unbind("click");
             });
         } else {
             $(".additemtagform").show();
             $(this).text("保存话题");
-            $(".item-tags .item-tag").each(function(){
+            $(".item-head .item-tags .item-tag").each(function(){
                 $(this).bind("click", removetag);
             });
         }
@@ -257,7 +257,7 @@ $(document).ready(function(){
     $(".additemtag").submit(function(){
         var itemtag = $(this).find(".item-tag-name");
         var itemtaglist = new Array();
-        $(".item-tags .item-tag").each(function(){
+        $(".item-head .item-tags .item-tag").each(function(){
             itemtaglist.push($(this).text());
         });
         if ( itemtag.val() == "" || $.inArray(itemtag.val(), itemtaglist) != -1 ) {
@@ -274,8 +274,8 @@ $(document).ready(function(){
                     "type": "json"
                 },
                 success: function(data){
-                    $(".item-tags").append("<div class=\"item-tag\"><a href=\"/t/" + data + "/\">" + itemtag.val() + "</a></div>");
-                    $(".item-tags .item-tag").last().bind("click", removetag);
+                    $(".item-head .item-tags").append("<div class=\"item-tag\"><a href=\"/t/" + data + "/\">" + itemtag.val() + "</a></div>");
+                    $(".item-head .item-tags .item-tag").last().bind("click", removetag);
                     itemtag.val("");
                     $(".additemtagform .submit").attr("disabled", false);
                 }
