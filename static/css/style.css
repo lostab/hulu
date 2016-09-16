@@ -297,6 +297,7 @@ p.submit-btn, p.cancel-btn {
 .userpage .title .user {
     vertical-align:top;
     line-height: 48px;
+    margin-left: 56px;
 }
 .userpage .title .user .name {
     vertical-align:top;
