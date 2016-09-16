@@ -27,7 +27,7 @@ a:visited {
 input:not(.file-input), textarea {
     width: 360px;
     height: 36px;
-    line-height: 36px;
+    /*line-height: 36px;*/
     font-size: inherit;
     font-family: times new roman;
     border: 1px solid lightgray;
