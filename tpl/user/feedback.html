@@ -8,7 +8,7 @@
         {% if submit %}
         <p>提交成功，多谢您的意见和建议。</p>
         {% else %}
-        <form method="post">
+        <form method="post" class="itemform">
             {% csrf_token %}
             <p><textarea name="feedback" class="feedbackinput"></textarea></p>
             <p class="submit-btn"><input class="submit" type="submit" value="提交" /></p>

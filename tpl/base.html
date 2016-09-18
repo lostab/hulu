@@ -14,6 +14,9 @@
     <div class="wrapper">
     <div class="header">
         <a class="logo" href="/">Hulu</a>
+        <!--<form class="search" action="/">
+            <input class="qstr" type="text" name="q" placeholder="搜索" />
+        </form>-->
         {% if user.is_authenticated %}
         <div class="right-navbar right-navbar-login">
             <a href="/u/" class="accounts-button" title="账户"><div class="avatar-area"><div class="avatar" style="background: url({% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center;"><img src="{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" alt="avatar" /></div></div></a>
