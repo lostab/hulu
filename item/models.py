@@ -27,7 +27,7 @@ class Item(models.Model):
     useritemrelationship = models.ManyToManyField(UserItemRelationship)
     belong = models.ManyToManyField('self', symmetrical=False, blank=True)
     tag = models.ManyToManyField(Tag)
-    
+
     def get_all_items(self, include_self=True):
         items = []
         if include_self:
@@ -42,7 +42,7 @@ class Item(models.Model):
             item.create = itemcontent[0].create
             item.update = itemcontent.reverse().create
         return items
-    
+
     def get_root_items(self):
         rootitems = []
         if self.belong.all():
@@ -60,6 +60,9 @@ class ItemContent(models.Model):
     content = models.TextField()
     ip = models.CharField(max_length=255)
     ua = models.CharField(max_length=255)
+
+    class Meta:
+        ordering = ['id']
 
 class ContentAttachment(models.Model):
     itemcontent = models.ForeignKey(ItemContent)
