@@ -202,7 +202,6 @@ def View(request, id):
         itemcontent = item.itemcontent_set.all()
         if itemcontent[0].content:
             item.title = itemcontent[0].content.strip().splitlines()[0]
-            #item.tags = jieba.analyse.extract_tags(itemcontent[0].content, 3)
         else:
             contentattachment = itemcontent[0].contentattachment_set.all()
             if contentattachment:

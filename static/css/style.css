@@ -263,7 +263,7 @@ p.submit-btn, p.cancel-btn {
     vertical-align: top;
     display: inline-block;
     margin: 0;
-    font-family: Consolas;
+    /*font-family: Consolas;*/
     font-size: inherit;
     white-space: pre-wrap;
     white-space: -moz-pre-wrap;
