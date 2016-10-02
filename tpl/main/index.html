@@ -4,6 +4,13 @@
 {% block title %}{% endblock %}
 
 {% block content %}
+    <div class="content-header">
+        <p>
+            <a class="pathlink" href="/">首页</a>
+            <a class="createintagbtn" href="/i/create/">发布信息</a>
+        </p>
+    </div>
+
     <div class="content home">
         <div class="items">
         {% for item in items %}

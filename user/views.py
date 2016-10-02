@@ -9,6 +9,7 @@ from django.template import RequestContext
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from datetime import datetime, timedelta
+from django.utils import timezone
 import urllib2
 import json
 import time
@@ -176,7 +177,7 @@ def Login(request):
                                 except User.DoesNotExist:
                                     return randomusernametime + str(randomusernameplus)
 
-                        user = User.objects.create_user(username=getrandomusername(0), email=openid + '@qq.com')
+                        user = User.objects.create_user(username=getrandomusername(0), email=openid + '@qq.com', last_login = timezone.now())
                         user.save()
                         userprofile = UserProfile(user=user)
                         userprofile.openid = 'QQ' + openid

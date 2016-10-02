@@ -4,19 +4,20 @@
 {% block title %}{% if tag %}{{ tag.name }}{% else %}页面不存在{% endif %} - {% endblock %}
 
 {% block content %}
+    <div class="content-header">
+    {% if tag %}
+        <p>
+            <a class="pathlink" href="/">首页</a>
+            >
+            <a class="pathlink" href="/t/{{ tag.id }}/">{{ tag.name }}</a>
+            <a class="createintagbtn" href="/i/create/?t={{ tag.name }}">发布信息</a>
+        </p>
+    {% else %}
+        <p>抱歉，页面不存在。</p>
+    {% endif %}
+    </div>
+
     <div class="content home">
-        {% if tag %}
-        <div class="content-header">
-            <p>
-                <a href="/">首页</a>
-                >
-                <a href="/t/{{ tag.id }}/">{{ tag.name }}</a>
-                <a class="createintagbtn" href="/i/create/?t={{ tag.name }}">发布信息</a>
-            </p>
-        </div>
-        {% else %}
-            <p>抱歉，页面不存在。</p>
-        {% endif %}
         <div class="items">
         {% for item in items %}
         <div class="item">

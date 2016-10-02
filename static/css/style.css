@@ -216,7 +216,7 @@ textarea {
     /*padding: 7px;*/
     min-height: 230px;
 }
-.content.item, .content.home {
+.content.item, .content.home, .content-header {
     width: 600px;
     /*float: left;*/
 }
@@ -297,6 +297,7 @@ p.submit-btn, p.cancel-btn {
 }
 .setting .file-input, .setting .tips {
     margin-left: 7px;
+    margin-top: 5px;
 }
 .userpage .title .avatar, .content.userprofile .avatar, .content.setting .avatar {
     width: 48px;

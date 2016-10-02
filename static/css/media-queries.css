@@ -2,7 +2,7 @@
     .wrapper {
         width: 95%;
     }
-    .content.item, .content.home {
+    .content.item, .content.home, .content-header {
         width: 60%;
         /*padding: 3% 4%;*/
     }
@@ -23,7 +23,7 @@
 }
 
 @media screen and (max-width: 650px) {
-    .content, .content.item, .content.home {
+    .content, .content.item, .content.home, .content-header {
         width: auto;
         float: none;
         margin: 20px 0;

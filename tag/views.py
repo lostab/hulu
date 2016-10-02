@@ -26,7 +26,7 @@ from django.db.models import Q
 
 def Index(request):
     if request.user.is_authenticated():
-        return None
+        return redirect('/')
 
 def View(request, id):
     try:
