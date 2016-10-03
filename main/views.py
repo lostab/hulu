@@ -60,8 +60,16 @@ def index(request):
     if x_forwarded_for:
         ip = x_forwarded_for.split(', ')[-1]
 
-    if request.GET.get('q') == '':
+    q = request.GET.get('q')
+    if q == '':
         return redirect('/')
+    if q:
+        if q != q.strip():
+            q = q.strip()
+            if q == '':
+                return redirect('/')
+            else:
+                return redirect('/?q=' + q)
 
     try:
         items = Item.objects.select_related('user').filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).filter(Q(status__isnull=True) | Q(status__exact='')).all().prefetch_related('itemcontent_set', 'itemcontent_set__contentattachment_set')
