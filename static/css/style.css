@@ -721,6 +721,13 @@ p.submit-btn, p.cancel-btn {
     min-height: 36px;
     line-height: 36px;
 }
+.content-header a.pathlink {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 60%;
+    white-space: nowrap;
+    display: inline-block;
+}
 a.createintagbtn {
     float: right;
     background: green;
