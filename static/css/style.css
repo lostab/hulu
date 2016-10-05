@@ -724,9 +724,13 @@ p.submit-btn, p.cancel-btn {
 .content-header a.pathlink {
     text-overflow: ellipsis;
     overflow: hidden;
-    max-width: 60%;
+    max-width: 50%;
     white-space: nowrap;
     display: inline-block;
+}
+.content-header .homepathlink {
+    width: 48px;
+    text-align: center;
 }
 a.createintagbtn {
     float: right;

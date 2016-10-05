@@ -128,8 +128,8 @@ def Login(request):
         next = request.META['QUERY_STRING'].split('next=')[1].split("&type=qq")[0]
 
     if request.GET.get('type') == 'qq':
-        qq_app_id = '101192703'
-        qq_app_key = '639215ae3f5947c4a5012fab25e0345f'
+        qq_app_id = os.environ['qq_app_id']
+        qq_app_key = os.environ['qq_app_key']
         if request.GET.get('code'):
             openid = None
             try:
