@@ -7,6 +7,7 @@
         <h3>用户列表</h3>
         <div class="items">
         {% for user in users %}
+        {% if user.userprofile %}
         <div class="item">
             <div class="avatar-area"><div class="avatar" style="background: url({% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center;"><img src="{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" /></div></div>
             <div class="item-line">
@@ -29,6 +30,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
         {% endfor %}
         {% if items.paginator.num_pages > 1 %}
         <div class="pagination">

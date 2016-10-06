@@ -96,7 +96,7 @@ def Signup(request):
             newuser = form.save(commit=False)
             newuser.last_login = timezone.now()
             newuser.save()
-            
+
             email = form.cleaned_data['email']
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1'] = form.cleaned_data['password2']
@@ -401,6 +401,10 @@ def Settings(request):
 def UserPage(request, username):
     try:
         user = User.objects.get(username=username)
+        try:
+            userprofile = UserProfile.objects.get(user=user)
+        except UserProfile.DoesNotExist:
+            user = None
     except User.DoesNotExist:
         user = None
     if request.GET.get('type') == 'json':
@@ -428,6 +432,10 @@ def UserPage(request, username):
 def Page(request, username):
     try:
         user = User.objects.get(username=username)
+        try:
+            userprofile = UserProfile.objects.get(user=user)
+        except UserProfile.DoesNotExist:
+            user = None
     except User.DoesNotExist:
         user = None
     if request.GET.get('type') == 'json':
