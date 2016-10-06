@@ -93,7 +93,10 @@ def Signup(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
+            newuser = form.save(commit=False)
+            newuser.last_login = timezone.now()
+            newuser.save()
+            
             email = form.cleaned_data['email']
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1'] = form.cleaned_data['password2']

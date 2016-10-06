@@ -15,7 +15,7 @@
     <div class="header">
         <a class="logo" href="/">Hulu</a>
         <form class="search" action="/">
-            <input class="qstr" type="text" name="q" placeholder="搜索" />
+            <input class="qstr" type="text" name="q" placeholder="搜索" value="{{ request.GET.q }}" />
         </form>
         {% if user.is_authenticated %}
         <div class="right-navbar right-navbar-login">
