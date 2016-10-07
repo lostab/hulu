@@ -386,6 +386,9 @@ p.submit-btn, p.cancel-btn {
     display: inline-block;
     color: gray;
 }
+.comment-reply-to-users {
+    padding: 7px;
+}
 .items .item:not(:last-child), .line:not(:last-child), .comment, .home .createbutton {
     margin-bottom: 15px;
     border-bottom: 1px solid whitesmoke;

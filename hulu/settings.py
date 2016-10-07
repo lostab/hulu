@@ -3,7 +3,7 @@
 import os
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+#TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -127,11 +127,11 @@ STATICFILES_FINDERS = (
 SECRET_KEY = 'g0$co#vn8%5f^$v9=x09t)&t67+ij=3%b^cj@f(t2c^%ua4yut'
 
 # List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
+#TEMPLATE_LOADERS = (
+#    'django.template.loaders.filesystem.Loader',
+#    'django.template.loaders.app_directories.Loader',
 #     'django.template.loaders.eggs.Loader',
-)
+#)
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -149,13 +149,28 @@ ROOT_URLCONF = 'hulu.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'hulu.wsgi.application'
 
-TEMPLATE_DIRS = (
+#TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 
-    os.path.join(os.path.dirname(os.path.dirname(__file__)), 'tpl'),
-)
+#    os.path.join(os.path.dirname(os.path.dirname(__file__)), 'tpl'),
+#)
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(os.path.dirname(os.path.dirname(__file__)), 'tpl'),
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                "django.contrib.auth.context_processors.auth",
+            ]
+        },
+    },
+]
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -205,11 +220,11 @@ LOGGING = {
     }
 }
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.request',
-    'django.core.context_processors.i18n',
-)
+#TEMPLATE_CONTEXT_PROCESSORS = (
+#    'django.contrib.auth.context_processors.auth',
+#    'django.core.context_processors.request',
+#    'django.core.context_processors.i18n',
+#)
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 

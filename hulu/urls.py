@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 
 from django.contrib import admin
 from user import views as user
@@ -14,7 +14,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 # from django.contrib import admin
 # admin.autodiscover()
 
-urlpatterns = patterns('',
+urlpatterns = [
     # Examples:
     # url(r'^$', 'hulu.views.main', name='main'),
     # url(r'^hulu/', include('hulu.foo.urls')),
@@ -36,7 +36,7 @@ urlpatterns = patterns('',
     url(r'^s/avatar/(.+)$', user.Avatar, name='avatar'),
     url(r'^wi/', item.wbimg, name='wbimg'),
     url(r'^(.+)/$', user.UserPage, name='userpage'),
-)
+]
 
 #urlpatterns += patterns('',
 #(r'^s/(.*)$', 'django.views.static.serve', {'document_root' :settings.STATIC_ROOT}),

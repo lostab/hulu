@@ -4,10 +4,9 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 # Create your views here.
 
-from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 import datetime
 from django.utils.timezone import utc
 import urllib2
@@ -101,7 +100,7 @@ def View(request, id):
         }
 
         return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
-    return render_to_response('tag/index.html', content , context_instance=RequestContext(request))
+    return render(request, 'tag/index.html', content)
 
 def Update(request, id):
     if request.user.is_authenticated():

@@ -4,10 +4,9 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 # Create your views here.
 
-from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from datetime import datetime, timedelta
 from django.utils import timezone
 import urllib2
@@ -25,7 +24,7 @@ from item.models import *
 from item.forms import *
 from django.db.models import Q
 from django.forms.utils import ErrorList
-from django.core.context_processors import csrf
+from django.views.decorators import csrf
 import os
 from django.utils.html import escape
 
@@ -53,7 +52,7 @@ def Main(request):
                 }
             }
             return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
-        return render_to_response('user/index.html', content, context_instance=RequestContext(request))
+        return render(request, 'user/index.html', content)
     else:
         if request.GET.get('type') == 'json':
             content = {
@@ -89,7 +88,7 @@ def Signup(request):
                 'csrf_token': unicode(csrf(request)['csrf_token'])
             }
             return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
-        return render_to_response('user/signup.html', {}, context_instance=RequestContext(request))
+        return render(request, 'user/signup.html', {})
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -123,7 +122,7 @@ def Signup(request):
                     'errors': [(k, map(unicode, v)) for k, v in form.errors.items()]
                 }
                 return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
-            return render_to_response('user/signup.html', { 'form': form }, context_instance=RequestContext(request))
+            return render(request, 'user/signup.html', { 'form': form })
 
 def Login(request):
     next = None
@@ -232,7 +231,7 @@ def Login(request):
                 'csrf_token': unicode(csrf(request)['csrf_token'])
             }
             return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
-        return render_to_response('registration/login.html', { 'next': next }, context_instance=RequestContext(request))
+        return render(request, 'registration/login.html', { 'next': next })
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
@@ -259,7 +258,7 @@ def Login(request):
                             'errors': [(k, map(unicode, v)) for k, v in form.errors.items()]
                         }
                         return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
-                    return render_to_response('registration/login.html', { 'form': form, 'next': next }, context_instance=RequestContext(request))
+                    return render(request, 'registration/login.html', { 'form': form, 'next': next })
             else:
                 if request.GET.get('type') == 'json':
                     content = {
@@ -268,7 +267,7 @@ def Login(request):
                         'errors': [(k, map(unicode, v)) for k, v in form.errors.items()]
                     }
                     return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
-                return render_to_response('registration/login.html', { 'form': form, 'next': next }, context_instance=RequestContext(request))
+                return render(request, 'registration/login.html', { 'form': form, 'next': next })
         else:
             if request.GET.get('type') == 'json':
                 content = {
@@ -277,7 +276,7 @@ def Login(request):
                     'errors': [(k, map(unicode, v)) for k, v in form.errors.items()]
                 }
                 return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
-            return render_to_response('registration/login.html', { 'form': form, 'next': next }, context_instance=RequestContext(request))
+            return render(request, 'registration/login.html', { 'form': form, 'next': next })
 
 def Logout(request):
     next = None
@@ -323,7 +322,7 @@ def Settings(request):
                 'prev': prev,
                 'next': next
             }
-            return render_to_response('user/settings.html', content, context_instance=RequestContext(request))
+            return render(request, 'user/settings.html', content)
         if request.method == 'POST':
             userprofile = UserProfile.objects.get(user=request.user)
             form = UserProfileForm(request.POST, request.FILES, instance=userprofile)
@@ -389,7 +388,7 @@ def Settings(request):
                     'next': next,
                     'form': form
                 }
-                return render_to_response('user/settings.html', content, context_instance=RequestContext(request))
+                return render(request, 'user/settings.html', content)
     else:
         if request.GET.get('type') == 'json':
             content = {
@@ -427,7 +426,7 @@ def UserPage(request, username):
     content = {
         'viewuser': user
     }
-    return render_to_response('user/defaultpage.html', content, context_instance=RequestContext(request))
+    return render(request, 'user/defaultpage.html', content)
 
 def Page(request, username):
     try:
@@ -459,9 +458,9 @@ def Page(request, username):
         'user': user
     }
     if user and user.userprofile.page:
-        return render_to_response('user/page.html', content, context_instance=RequestContext(request))
+        return render(request, 'user/page.html', content)
     else:
-        return render_to_response('user/defaultpage.html', content, context_instance=RequestContext(request))
+        return render(request, 'user/defaultpage.html', content)
 
 def Notify(request):
     user = request.user
@@ -504,7 +503,7 @@ def Notify(request):
                 }
             }
             return jsonp(request, content)
-        return render_to_response('user/notify.html', content, context_instance=RequestContext(request))
+        return render(request, 'user/notify.html', content)
     else:
         if request.GET.get('type') == 'json':
             content = {
@@ -515,7 +514,7 @@ def Notify(request):
 
 def Feedback(request):
     if request.method == 'GET':
-        return render_to_response('user/feedback.html', {}, context_instance=RequestContext(request))
+        return render(request, 'user/feedback.html', {})
     if request.method == 'POST':
         if request.POST.get('feedback'):
             feedback = request.POST['feedback']
@@ -524,7 +523,7 @@ def Feedback(request):
                 if request.user.username:
                     feedbackuser = str(request.user.username) + ': '
                 send_mail('Feedback', feedbackuser + feedback, os.environ['system_mail_username'], [os.environ['receive_mail']], fail_silently=False)
-                return render_to_response('user/feedback.html', { 'submit': 'true' }, context_instance=RequestContext(request))
+                return render(request, 'user/feedback.html', { 'submit': 'true' })
             except:
                 return redirect('/u/feedback/')
         else:
@@ -538,7 +537,7 @@ def List(request):
     content = {
         'users': users
     }
-    return render_to_response('user/list.html', content, context_instance=RequestContext(request))
+    return render(request, 'user/list.html', content)
 
 def Avatar(request, avatar):
     def get_avatar_object():

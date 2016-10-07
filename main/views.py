@@ -4,10 +4,9 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 # Create your views here.
 
-from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from datetime import datetime, timedelta
 from django.utils.timezone import utc
 import urllib2
@@ -237,10 +236,10 @@ def index(request):
         }
 
         return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
-    return render_to_response('main/index.html', content , context_instance=RequestContext(request))
+    return render(request, 'main/index.html', content)
 
 def ttt(request):
-    return render_to_response('other/ttt.html', {} , context_instance=RequestContext(request))
+    return render(request, 'other/ttt.html', {})
 
 @csrf_exempt
 def jk(request, username):
@@ -273,7 +272,7 @@ def jk(request, username):
                         except:
                             return HttpResponse()
                     content['mtime'] = mtime_delta.total_seconds()
-                return render_to_response('other/jk.html', content, context_instance=RequestContext(request))
+                return render(request, 'other/jk.html', content)
             else:
                 return redirect('/')
         else:
@@ -290,7 +289,7 @@ def jk(request, username):
             with open(jkimg, 'wb+') as destination:
                 for chunk in request.FILES['file'].chunks():
                     destination.write(chunk)
-        return render_to_response('other/jk.html', {}, context_instance=RequestContext(request))
+        return render(reuqest, 'other/jk.html', {})
 
 def app(request):
     if request.user.is_authenticated():
@@ -536,7 +535,7 @@ def app(request):
                     'messages': []
                 }
                 content['newmessagesession'] = json.dumps(newmessagesession, encoding='utf-8', ensure_ascii=False, indent=4)
-        return render_to_response('main/app.html', content, context_instance=RequestContext(request))
+        return render(request, 'main/app.html', content)
     else:
         if request.GET.get('type') == 'json':
             content = {

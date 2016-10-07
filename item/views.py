@@ -4,10 +4,9 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 # Create your views here.
 
-from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 import datetime
 from django.utils.timezone import utc
 import urllib2
@@ -99,7 +98,7 @@ def Index(request):
                     'id': item.id
                 })
             return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
-        return render_to_response('item/index.html', content, context_instance=RequestContext(request))
+        return render(request, 'item/index.html', content)
     else:
         return redirectlogin(request)
 
@@ -122,14 +121,14 @@ def Create(request):
             content = {
                 'tagname': tagname
             }
-            return render_to_response('item/create.html', content, context_instance=RequestContext(request))
+            return render(request, 'item/create.html', content)
 
         if request.method == 'POST':
             if request.POST.get('content').strip() == '' and (not request.FILES or 'VCAP_SERVICES' in os.environ):
                 content = {
 
                 }
-                return render_to_response('item/create.html', content, context_instance=RequestContext(request))
+                return render(request, 'item/create.html', content)
 
             form = ItemContentForm(request.POST)
             if form.is_valid():
@@ -142,7 +141,7 @@ def Create(request):
                         content = {
                             'form': form
                         }
-                        return render_to_response('item/create.html', content, context_instance=RequestContext(request))
+                        return render(request, 'item/create.html', content)
 
                 item = Item(user=request.user)
                 item.save()
@@ -189,7 +188,7 @@ def Create(request):
                     'reply': reply,
                     'form': form
                 }
-                return render_to_response('item/create.html', content, context_instance=RequestContext(request))
+                return render(request, 'item/create.html', content)
 
             return redirect('/i/' + str(item.id))
     else:
@@ -247,7 +246,7 @@ def View(request, id):
             content = {
                 'item': None
             }
-            return render_to_response('item/view.html', content, context_instance=RequestContext(request))
+            return render(request, 'item/view.html', content)
 
         try:
             tags = Tag.objects.all().order_by('?')[:10]
@@ -260,13 +259,13 @@ def View(request, id):
             'reply': reply,
             'tags': tags
         }
-        return render_to_response('item/view.html', content, context_instance=RequestContext(request))
+        return render(request, 'item/view.html', content)
     if request.method == 'POST':
         if not item or (item.status == 'private' and item.user != request.user):
             content = {
                 'item': None
             }
-            return render_to_response('item/view.html', content, context_instance=RequestContext(request))
+            return render(request, 'item/view.html', content)
         if request.user.is_authenticated():
             if item.user == request.user and request.POST.get('tagname'):
                 tagname = request.POST.get('tagname').strip()
@@ -308,7 +307,7 @@ def View(request, id):
                     'items': items,
                     'reply': reply
                 }
-                return render_to_response('item/view.html', content, context_instance=RequestContext(request))
+                return render(request, 'item/view.html', content)
 
             form = ItemContentForm(request.POST)
             if form.is_valid():
@@ -324,7 +323,7 @@ def View(request, id):
                             'reply': reply,
                             'form': form
                         }
-                        return render_to_response('item/view.html', content, context_instance=RequestContext(request))
+                        return render(request, 'item/view.html', content)
 
                 new_item = Item(user=request.user)
                 new_item.save()
@@ -379,7 +378,7 @@ def View(request, id):
                     'reply': reply,
                     'form': form
                 }
-                return render_to_response('item/view.html', content, context_instance=RequestContext(request))
+                return render(request, 'item/view.html', content)
         else:
             return redirectlogin(request)
 
@@ -408,14 +407,14 @@ def Update(request, id):
             content = {
                 'item': item
             }
-            return render_to_response('item/update.html', content, context_instance=RequestContext(request))
+            return render(request, 'item/update.html', content)
         if request.method == 'POST':
             if item:
                 if request.POST.get('content').strip() == '' and (not request.FILES or 'VCAP_SERVICES' in os.environ):
                     content = {
                         'item': item
                     }
-                    return render_to_response('item/update.html', content, context_instance=RequestContext(request))
+                    return render(request, 'item/update.html', content)
 
                 form = ItemContentForm(request.POST)
                 if form.is_valid():
@@ -429,7 +428,7 @@ def Update(request, id):
                                 'item': item,
                                 'form': form
                             }
-                            return render_to_response('item/update.html', content, context_instance=RequestContext(request))
+                            return render(request,'item/update.html', content)
 
                     itemcontent = ItemContent(item=item)
                     itemcontentform = ItemContentForm(request.POST, instance=itemcontent)
@@ -467,7 +466,7 @@ def Update(request, id):
                     content = {
                         'form': form
                     }
-                    return render_to_response('item/update.html', content, context_instance=RequestContext(request))
+                    return render(request,'item/update.html', content)
             else:
                 return redirect('/i/' + id)
     else:
