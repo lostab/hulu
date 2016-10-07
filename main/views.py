@@ -157,7 +157,8 @@ def index(request):
                 cache.set('cacheitems', json.dumps(cacheitems, encoding='utf-8', ensure_ascii=False, indent=4), 3600)
 
             #try:
-            if request.user.id == 1 and 'VCAP_SERVICES' in os.environ:
+            #if request.user.id == 1 and 'VCAP_SERVICES' in os.environ:
+            if 'VCAP_SERVICES' in os.environ:
                 #Zhihu
                 #for fetchdate in [[str((datetime.datetime.now() + timedelta(days=1)).strftime('%Y%m%d')), str(datetime.datetime.now().strftime('%Y%m%d'))], [str(datetime.datetime.now().strftime('%Y%m%d')), str((datetime.datetime.now() - timedelta(days=1)).strftime('%Y%m%d'))], [str((datetime.datetime.now() - timedelta(days=1)).strftime('%Y%m%d')), str((datetime.datetime.now() - timedelta(days=2)).strftime('%Y%m%d'))]]:
                 #    zhihuurl = 'http://news.at.zhihu.com/api/3/news/before/' + fetchdate[0]

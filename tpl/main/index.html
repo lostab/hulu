@@ -29,7 +29,7 @@
 
                 {% if items.has_next %}
                     <a class="next-page" href="?page={{ items.next_page_number }}">下一页</a>
-                {% elif request.user.id == 1 %}<!--for Zhihu-->
+                {% else %}<!--for Zhihu-->
                     {% if request.GET.page %}
                         <a class="next-page" href="?page={{ request.GET.page|add:1 }}">下一页</a>
                     {% else %}
@@ -38,7 +38,7 @@
                 {% endif %}
             </span>
         </div>
-        {% elif request.user.id == 1 %}<!--for Zhihu-->
+        {% else %}<!--for Zhihu-->
         <div class="pagination">
             <span class="step-links">
                 <span class="current"></span>
@@ -102,7 +102,7 @@ $(document).ready(function(){
     var loading = function(){
         if($(".loading").length <= 0){
             $(".loading").remove();
-            $(".content.home").before("<p class=\"loading\" style=\"color:gray;text-align:center;display:none;\">加载中…</p>");
+            $(".content-header").append("<p class=\"loading\" style=\"color:gray;text-align:center;display:none;\">加载中…</p>");
             $(".loading").slideDown();
         }
         $(".content.home").load("/ .items", function(response, status, xhr){
