@@ -24,10 +24,9 @@ a:hover {
 a:visited {
     color: black;
 }
-input:not(.file-input), textarea {
+input:not(.file-input):not(.qstr):not(.item-tag-name):not(.item-tag-submit):not(.userinfoinput), textarea {
     width: 360px;
     height: 36px;
-    /*line-height: 36px;*/
     font-size: inherit;
     font-family: times new roman;
     border: 1px solid lightgray;
@@ -35,7 +34,8 @@ input:not(.file-input), textarea {
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
     box-sizing: border-box;         /* Opera/IE 8+ */
 }
-input:not(.file-input, .submit, .fileselectbutton) {
+input:not(.file-input):not(.qstr):not(.item-tag-name):not(.item-tag-submit) {
+    max-width: 100%;
     line-height: 36px;
 }
 img {
@@ -49,9 +49,6 @@ textarea {
 }
 .error {
     color: red;
-}
-.submit {
-    width: 100%;
 }
 .file {
     width: 100%;
@@ -91,19 +88,20 @@ textarea {
     font-size: 0;
 }
 .header .search {
+    height: 24px;
     float: right;
     margin-right: 90px;
     width: calc(100% - 120px);
 }
 .header .search .qstr {
     width: 100%;
-    height: 24px;
-    line-height: 24px;
+    height: 20px;
+    line-height: 20px;
     border: 1px solid lightgray;
     border-radius: 9px;
     -webkit-border-radius: 9px;
     -moz-border-radius: 9px;
-    padding: 6px;
+    /*padding: 6px;*/
 }
 .header .right-navbar {
     position: absolute;
@@ -286,7 +284,15 @@ p.submit-btn, p.cancel-btn {
 }
 .setting .info input {
     width: 80%;
+    height: 36px;
     line-height: 1em;
+    height: 36px;
+    font-size: inherit;
+    font-family: times new roman;
+    border: 1px solid lightgray;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
 }
 .setting .description textarea {
     vertical-align:top;
@@ -388,6 +394,7 @@ p.submit-btn, p.cancel-btn {
 }
 .comment-reply-to-users {
     padding: 7px;
+    font-size: small;
 }
 .items .item:not(:last-child), .line:not(:last-child), .comment, .home .createbutton {
     margin-bottom: 15px;
