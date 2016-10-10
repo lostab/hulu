@@ -34,7 +34,7 @@ input:not(.file-input):not(.qstr):not(.item-tag-name):not(.item-tag-submit):not(
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
     box-sizing: border-box;         /* Opera/IE 8+ */
 }
-input:not(.file-input):not(.qstr):not(.item-tag-name):not(.item-tag-submit):not(.submit):not(.fileselectbutton) {
+input:not(.file-input):not(.qstr):not(.item-tag-name):not(.item-tag-submit) {
     max-width: 100%;
     line-height: 36px;
 }
