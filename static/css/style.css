@@ -34,9 +34,21 @@ input:not(.file-input):not(.qstr):not(.item-tag-name):not(.item-tag-submit):not(
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
     box-sizing: border-box;         /* Opera/IE 8+ */
 }
-input:not(.file-input):not(.qstr):not(.item-tag-name):not(.item-tag-submit) {
+input:not(.file-input):not(.qstr):not(.item-tag-name):not(.item-tag-submit):not(.submit):not(.fileselectbutton) {
     max-width: 100%;
     line-height: 36px;
+}
+::-webkit-input-placeholder {
+   text-align: center;
+}
+:-moz-placeholder { /* Firefox 18- */
+   text-align: center;
+}
+::-moz-placeholder {  /* Firefox 19+ */
+   text-align: center;
+}
+:-ms-input-placeholder {
+   text-align: center;
 }
 img {
     max-width: 100%;

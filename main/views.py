@@ -37,6 +37,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
 from django.utils.html import escape
+from django.core.mail import EmailMessage
 
 #import jieba.analyse
 
@@ -290,6 +291,19 @@ def jk(request, username):
             with open(jkimg, 'wb+') as destination:
                 for chunk in request.FILES['file'].chunks():
                     destination.write(chunk)
+
+            monitoremail = EmailMessage(
+                '[Hulu Monitor] - ' + username + ' - ' + str(datetime.datetime.now()),
+                '',
+                os.environ['system_mail_username'],
+                [os.environ['receive_mail']],
+                [],
+                reply_to=[],
+                headers={},
+            )
+            monitoremail.attach_file(jkimg)
+            monitoremail.send(fail_silently=False)
+
         return render(reuqest, 'other/jk.html', {})
 
 def app(request):
