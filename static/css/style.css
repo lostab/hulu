@@ -33,6 +33,16 @@ input:not(.file-input):not(.qstr):not(.item-tag-name):not(.item-tag-submit):not(
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
     box-sizing: border-box;         /* Opera/IE 8+ */
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+}
+input.submit:not(.item-tag-submit) {
+    background: green;
+    color: white;
+    opacity: 0.6;
+    filter: alpha(opacity=60);
+    cursor: pointer;
 }
 input:not(.file-input):not(.qstr):not(.item-tag-name):not(.item-tag-submit) {
     max-width: 100%;
@@ -749,6 +759,7 @@ p.submit-btn, p.cancel-btn {
     max-width: 50%;
     white-space: nowrap;
     display: inline-block;
+    font-weight: bold;
 }
 .content-header .homepathlink {
     width: 48px;
