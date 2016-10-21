@@ -765,6 +765,9 @@ p.submit-btn, p.cancel-btn {
     width: 48px;
     text-align: center;
 }
+.content-header .subpathlink {
+    padding-left: 7px;
+}
 a.createintagbtn {
     float: right;
     background: green;
