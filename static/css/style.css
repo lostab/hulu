@@ -801,3 +801,7 @@ input.item-tag-submit {
     border: none;
     font-size: small;
 }
+ul.errorlist {
+    width: 360px;
+    margin: 0 auto;
+}

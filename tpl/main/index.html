@@ -33,7 +33,7 @@
 
                 {% if items.has_next %}
                     <a class="next-page" href="?page={{ items.next_page_number }}">下一页</a>
-                {% else %}<!--for Zhihu-->
+                {% elif 'VCAP_SERVICES' in os.environ %}<!--for Zhihu-->
                     {% if request.GET.page %}
                         <a class="next-page" href="?page={{ request.GET.page|add:1 }}">下一页</a>
                     {% else %}
@@ -42,7 +42,7 @@
                 {% endif %}
             </span>
         </div>
-        {% else %}<!--for Zhihu-->
+        {% elif 'VCAP_SERVICES' in os.environ %}<!--for Zhihu-->
         <div class="pagination">
             <span class="step-links">
                 <span class="current"></span>
@@ -77,7 +77,8 @@ $(document).ready(function(){
             $(".content.home .items .pagination .next-page").click(function(){
                 var url = $(this).attr("href");
                 $(".content.home .items .pagination .next-page").text("加载中…");
-                $(".content.home .items .pagination .next-page").attr("disabled",true);
+                $(".content.home .items .pagination .next-page").css("background", "whitesmoke");
+                $(".content.home .items .pagination .next-page").attr("disabled", true);
                 $(".content.home .items .pagination .current").load(url + " .items", function(){
                     //去掉页数超限情况下的重复项
                     $(".content.home>.items .pagination .current .items .item").each(function(){

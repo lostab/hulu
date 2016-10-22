@@ -243,6 +243,16 @@ def index(request):
 def ttt(request):
     return render(request, 'other/ttt.html', {})
 
+def sitemap(request):
+    try:
+        tags = Tag.objects.all().order_by('?')[:10]
+    except Tag.DoesNotExist:
+        tags = None
+    content = {
+        'tags': tags
+    }
+    return render(request, 'main/sitemap.txt', content)
+
 @csrf_exempt
 def jk(request, username):
     try:
