@@ -229,7 +229,8 @@ def index(request):
 
     content = {
         'items': items,
-        'tags': tags
+        'tags': tags,
+        'bluemix': 'True' if 'VCAP_SERVICES' in os.environ else None
     }
     if request.GET.get('type') == 'json':
         content = {
