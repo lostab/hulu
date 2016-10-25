@@ -118,6 +118,9 @@ def Create(request):
             tag = None
 
         if request.method == 'GET':
+            if request.GET.get('t') and not tagname:
+                return redirect('/i/create/')
+            
             content = {
                 'tagname': tagname
             }

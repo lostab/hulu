@@ -163,7 +163,7 @@
             <p class="submit-btn"><input class="submit" type="submit" value="提交" /></p>
         </form>
         {% else %}
-            <p><a href="{% url 'login' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.get_full_path }}{% endif %}">登录</a>
+            <p class="login-link"><a href="{% url 'login' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.get_full_path }}{% endif %}">登录</a>
             或
             <a href="{% url 'signup' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.get_full_path }}{% endif %}">注册</a>
             以参与评论。</p>

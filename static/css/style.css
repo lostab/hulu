@@ -805,3 +805,18 @@ ul.errorlist {
     width: 360px;
     margin: 0 auto;
 }
+.login-link a {
+    color: white;
+    background: gray;
+    padding: 3px;
+    line-height: 24px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    opacity: 0.6;
+    filter: alpha(opacity=60);
+}
+.login-link a:hover {
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
