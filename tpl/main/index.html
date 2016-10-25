@@ -33,7 +33,7 @@
 
                 {% if items.has_next %}
                     <a class="next-page" href="?page={{ items.next_page_number }}">下一页</a>
-                {% elif bluemix %}<!--for Zhihu-->
+                {% elif request.user.id == 1 and bluemix %}<!--for Zhihu-->
                     {% if request.GET.page %}
                         <a class="next-page" href="?page={{ request.GET.page|add:1 }}">下一页</a>
                     {% else %}
@@ -42,7 +42,7 @@
                 {% endif %}
             </span>
         </div>
-        {% elif bluemix %}<!--for Zhihu-->
+        {% elif request.user.id == 1 and bluemix %}<!--for Zhihu-->
         <div class="pagination">
             <span class="step-links">
                 <span class="current"></span>

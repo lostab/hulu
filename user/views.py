@@ -101,7 +101,6 @@ def Signup(request):
             password = form.cleaned_data['password1'] = form.cleaned_data['password2']
             user = User.objects.get(username=username)
             userprofile = UserProfile(user=user)
-            userprofile.coin = 10
             userprofile.save()
             user = authenticate(username=username, password=password)
             login(request, user)
