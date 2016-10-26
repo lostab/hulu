@@ -474,6 +474,8 @@ p.submit-btn, p.cancel-btn {
     vertical-align: middle;
     word-wrap: break-word;
     word-break: break-all;
+    padding-right: 30px;
+    display: block;
 }
 .comment-content .comment-reply-to {
     display: inline-block;
@@ -522,9 +524,6 @@ p.submit-btn, p.cancel-btn {
 .items .item .item-info .item-info-right, .line .line-info .line-info-right, .comment .comment-info .comment-created {
     float: right;
     text-align: right;
-}
-.items .item .item-title {
-
 }
 .home .subitemcount {
     font-family: arial, sans-serif;
