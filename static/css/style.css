@@ -469,13 +469,30 @@ p.submit-btn, p.cancel-btn {
 .home .items {
 
 }
+.items .item-title-line {
+    position: relative;
+}
+.items .item-line .item-title-box {
+    padding-right: 30px;
+    display: block;
+}
+.items .item-line .subitemcount-box {
+    display: block;
+    right: 0;
+    position: absolute;
+    height: 100%;
+}
+.items .item-line .subitemcount {
+    position: absolute;
+    top: 50%;
+    margin-left: -17px;
+    margin-top: -9px;
+}
 .items .item-line .item-title {
     line-height: 30px;
     vertical-align: middle;
     word-wrap: break-word;
     word-break: break-all;
-    padding-right: 30px;
-    display: block;
 }
 .comment-content .comment-reply-to {
     display: inline-block;

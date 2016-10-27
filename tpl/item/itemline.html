@@ -18,12 +18,12 @@
         </div>
         <div class="item-title-line">
         {% if item.url %}
-            <a href="{{ item.url }}" target="blank">{{ item.title }}</a>
+            <div class="item-title-box"><a class="item-title" href="{{ item.url }}" target="blank">{{ item.title }}</a></div>
         {% else %}
             {% if item.subitemcount %}
-            <a class="subitemcount" href="/i/{{ item.id }}/#{{ item.lastsubitem.id }}">{{ item.subitemcount }}</a>
+            <div class="subitemcount-box"><a class="subitemcount" href="/i/{{ item.id }}/#{{ item.lastsubitem.id }}">{{ item.subitemcount }}</a></div>
             {% endif %}
-            <a class="item-title" href="/i/{{ item.id }}/">{{ item.title }}</a>
+            <div class="item-title-box"><a class="item-title" href="/i/{{ item.id }}/">{{ item.title }}</a></div>
         {% endif %}
         </div>
         <div class="item-tags">{% for tag in item.tag.all %}<div class="item-tag"><a href="/t/{{ tag.id }}/">{{ tag.name }}</a></div>{% endfor %}</div>
