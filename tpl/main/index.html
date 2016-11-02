@@ -74,7 +74,13 @@ $(document).ready(function(){
             $(".content.home .items .pagination .previous-page").hide();
             $(".content.home .items .pagination .next-page").text("加载更多");
             //$(".content.home .items .pagination .next-page").css({"width": "100%", "height":"30px"});
+            var loadstatus = 0;
             $(".content.home .items .pagination .next-page").click(function(){
+                if (loadstatus == 1) {
+                    return false;
+                } else {
+                    loadstatus = 1;
+                }
                 var url = $(this).attr("href");
                 $(".content.home .items .pagination .next-page").text("加载中…");
                 $(".content.home .items .pagination .next-page").css("background", "whitesmoke");
