@@ -113,6 +113,7 @@ def index(request):
             items = paginator.page(paginator.num_pages)
 
         currentpage = items.number
+        pitems = items
 
         for item in items:
             itemlist.append(item)
@@ -216,7 +217,6 @@ def index(request):
             #        updatecache()
             #    else:
             #        pass
-
         items = itemlist
         items = sorted(items, key=lambda item:item.lastsubitem.create, reverse=True)
     except Item.DoesNotExist:
@@ -230,6 +230,7 @@ def index(request):
     content = {
         'items': items,
         'tags': tags,
+        'pitems': pitems,
         'bluemix': 'True' if 'VCAP_SERVICES' in os.environ else None
     }
     if request.GET.get('type') == 'json':

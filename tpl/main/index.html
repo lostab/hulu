@@ -20,19 +20,19 @@
         {% for item in items %}
             {% include "item/itemline.html" %}
         {% endfor %}
-        {% if items.paginator.num_pages > 1 %}
+        {% if pitems.paginator.num_pages > 1 %}
         <div class="pagination">
             <span class="step-links">
-                {% if items.has_previous %}
-                    <a class="previous-page" href="?page={{ items.previous_page_number }}">上一页</a>
+                {% if pitems.has_previous %}
+                    <a class="previous-page" href="?page={{ pitems.previous_page_number }}">上一页</a>
                 {% endif %}
 
                 <span class="current">
-                    {{ items.number }} / {{ items.paginator.num_pages }}
+                    {{ pitems.number }} / {{ pitems.paginator.num_pages }}
                 </span>
 
-                {% if items.has_next %}
-                    <a class="next-page" href="?page={{ items.next_page_number }}">下一页</a>
+                {% if pitems.has_next %}
+                    <a class="next-page" href="?page={{ pitems.next_page_number }}">下一页</a>
                 {% elif request.user.id == 1 and bluemix %}<!--for Zhihu-->
                     {% if request.GET.page %}
                         <a class="next-page" href="?page={{ request.GET.page|add:1 }}">下一页</a>
@@ -83,9 +83,9 @@ $(document).ready(function(){
                     //去掉页数超限情况下的重复项
                     $(".content.home>.items .pagination .current .items .item").each(function(){
                         var thus = $(this);
-                        var itemlink = $(this).find(".item-title a").attr("href");
+                        var itemlink = thus.find("a.item-title").attr("href");
                         $(".content.home>.items>.item").each(function(){
-                            if (itemlink == $(this).find(".item-title a").attr("href")) {
+                            if (itemlink == $(this).find("a.item-title").attr("href")) {
                                 thus.remove();
                                 return true;
                             }
