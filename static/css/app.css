@@ -55,6 +55,11 @@ html, body, .container {
 .footer .footer-bar-focus {
     background: whitesmoke;
 }
+.footer .footer-bar a {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
 .wrapper {
     width: 100%;
     height: calc(100% - 100px);
