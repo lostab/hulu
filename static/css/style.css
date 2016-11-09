@@ -359,7 +359,7 @@ p.submit-btn, p.cancel-btn {
 .userpage .title a {
     text-decoration:none;
 }
-.content.create .description textarea, .content.item .description textarea, .line .description textarea, .feedback textarea {
+.content.create .description textarea, .content.item .description textarea, .line .description textarea, .content.feedback textarea {
     vertical-align:top;
     overflow-y:visible;
     width: 100%;
@@ -400,6 +400,7 @@ p.submit-btn, p.cancel-btn {
     word-wrap: break-word;
     word-break: break-all;
     /*font-family: Consolas;*/
+    font-size: 16px;
 }
 .content.item .updateitemform {
     display: none;

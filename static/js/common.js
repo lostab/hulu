@@ -7,14 +7,12 @@ $(document).ready(function(){
         var url = $(this).text();
         var urlitem = $(this);
         $("<img>", {
-            src: url,
-            load: function() {
-                urlitem.after($(this));
-                urlitem.remove();
-            },
-            error: function() {
+            src: url
+        }).on("load", function() {
+            urlitem.after($(this));
+            urlitem.remove();
+        }).on("error", function() {
 
-            }
         });
     });
     $("form").each(function(){
@@ -56,7 +54,7 @@ $(document).ready(function(){
         if($(".itemform").find("textarea").val() == "" && ls != null && ls != ""){
             $(".itemform").find("textarea").val(ls);
         }
-        $(".itemform").find("textarea").change(function(){
+        $(".itemform").find("textarea").on("input propertychange paste change", function(){
             localStorage.setItem("itemcontent", $(".itemform").find("textarea").val());
         });
     }
@@ -83,10 +81,14 @@ $(document).ready(function(){
             $(this).parent().show();
             $(this).closest(".itemform").find(".submit").prop("disabled", false);
             var wbimgurl = data.result.original_pic;
-            $(this).closest(".itemform").find("textarea").val($(this).closest(".itemform").find("textarea").val() + " " + wbimgurl);
+            if ($(this).closest(".itemform").find("textarea").val() == "") {
+                $(this).closest(".itemform").find("textarea").val(wbimgurl);
+            } else {
+                $(this).closest(".itemform").find("textarea").val($(this).closest(".itemform").find("textarea").val() + "\r\n" + wbimgurl);
+            }
             $(this).closest(".itemform").find(".process").hide();
             $(this).closest(".itemform").find(".uploadinfo").show();
-            $(this).closest(".itemform").find(".uploadinfo").text("上传成功，请记住图片链接。");
+            $(this).closest(".itemform").find(".uploadinfo").text("上传成功，请备份图片链接。");
 
         },
         fail: function(e, data){
@@ -125,4 +127,5 @@ $(document).ready(function(){
             return false;
         }
     });
+
 });
