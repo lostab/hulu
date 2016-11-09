@@ -67,6 +67,6 @@ class ItemContent(models.Model):
 class ContentAttachment(models.Model):
     itemcontent = models.ForeignKey(ItemContent)
     title = models.CharField(max_length=30)
-    file = models.FileField(storage=FileSystemStorage(location=settings.MEDIA_ROOT), upload_to=attachment_file)
+    file = models.FileField(max_length=255, storage=FileSystemStorage(location=settings.MEDIA_ROOT), upload_to=attachment_file)
     content = models.TextField()
     contenttype = models.CharField(max_length=30)
