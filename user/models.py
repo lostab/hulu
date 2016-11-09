@@ -31,7 +31,7 @@ class UserProfile(models.Model):
     info = models.CharField(max_length=255)
     profile = models.TextField()
     page = models.TextField()
-    avatar = models.FileField(max_length=255, storage=OverwriteStorage(), upload_to=avatar_file)
+    avatar = models.FileField(storage=OverwriteStorage(), max_length=None, upload_to=avatar_file)
     userrelationship = models.ManyToManyField(UserRelationship)
 
 class UserNotify(models.Model):

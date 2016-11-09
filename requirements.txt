@@ -1,4 +1,4 @@
-Django==1.10.2
+Django==1.10.3
 dj-database-url==0.3.0
 https://pypi.python.org/packages/source/P/Pillow/Pillow-3.0.0.tar.gz
 https://pypi.python.org/packages/86/fd/cc8315be63a41fe000cce20482a917e874cdc1151e62cb0141f5e55f711e/psycopg2-2.6.1.tar.gz

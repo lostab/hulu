@@ -7,7 +7,7 @@ from django.utils import timezone
 class UserCreationForm(UserCreationForm):
     username = forms.CharField(min_length=3)
     email = forms.EmailField(required=True)
-    
+
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2', 'last_login')
