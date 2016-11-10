@@ -412,8 +412,14 @@ p.submit-btn, p.cancel-btn {
     margin-top: 36px;
 }
 .reply-info .comment-reply-to {
-    display: inline-block;
+    display: block;
     color: gray;
+    border: 1px solid lightgray;
+    background: whitesmoke;
+    padding: 7px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
 }
 .comment-reply-to-users {
     padding: 7px;
