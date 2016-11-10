@@ -83,7 +83,6 @@ $(document).ready(function(){
                 }
                 var url = $(this).attr("href");
                 $(".content.home .items .pagination .next-page").text("加载中…");
-                $(".content.home .items .pagination .next-page").css("background", "whitesmoke");
                 $(".content.home .items .pagination .next-page").attr("disabled", true);
                 $(".content.home .items .pagination .current").load(url + " .items", function(){
                     //去掉页数超限情况下的重复项

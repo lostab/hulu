@@ -13,7 +13,7 @@ def avatar_file(instance, filename):
     return os.path.join('avatar', str(instance.user.username) + '.png')
 
 class OverwriteStorage(FileSystemStorage):
-    def get_available_name(self, name):
+    def get_available_name(self, name, max_length=None):
         if self.exists(name):
             os.remove(os.path.join(settings.MEDIA_ROOT, name))
         return name
@@ -31,7 +31,7 @@ class UserProfile(models.Model):
     info = models.CharField(max_length=255)
     profile = models.TextField()
     page = models.TextField()
-    avatar = models.FileField(storage=OverwriteStorage(), max_length=None, upload_to=avatar_file)
+    avatar = models.FileField(storage=OverwriteStorage(), upload_to=avatar_file)
     userrelationship = models.ManyToManyField(UserRelationship)
 
 class UserNotify(models.Model):
