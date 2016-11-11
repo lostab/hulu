@@ -193,7 +193,7 @@ def Create(request):
                 }
                 return render(request, 'item/create.html', content)
 
-            return redirect('/i/' + str(item.id))
+            return redirect('/i/' + str(item.id) + '/')
     else:
         return redirectlogin(request)
 
@@ -374,7 +374,7 @@ def View(request, id):
                         notify = UserNotify(user=item.user, item=new_item)
                         notify.save()
 
-                return redirect('/i/' + id + '#' + str(new_item.id))
+                return redirect('/i/' + id + '/#' + str(new_item.id))
             else:
                 content = {
                     'item': item,
