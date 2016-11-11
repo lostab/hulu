@@ -466,9 +466,14 @@ def Notify(request):
     if user.is_authenticated():
         try:
             notify = UserNotify.objects.all().filter(user=request.user).order_by('-created')
+            for i in notify:
+                if i.item.get_root_items():
+                    i.rootitem = i.item.get_root_items()[0]
+                else:
+                    i.rootitem = None
         except User.DoesNotExist:
             notify = None
-        #notify = None
+
         content = {
             'notify': notify
         }
@@ -476,6 +481,9 @@ def Notify(request):
             messages = []
             for i in notify:
                 message = {
+                    'rootitem': {
+                        'id': str(i.rootitem.id)
+                    },
                     'parent': {
                         'id': str(i.item.belong.all().first().id),
                         'content': escape(str(i.item.belong.all().first().itemcontent_set.all().first().content.strip().splitlines()[0]))

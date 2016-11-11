@@ -226,6 +226,15 @@ img {
     white-space: -o-pre-wrap;
     word-wrap: break-word;
     word-break: break-all;
+    border: 1px solid lightgray;
+    background: whitesmoke;
+    padding: 0 7px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+}
+.messagesession .message .itemcontent-content a {
+    color: skyblue;
 }
 .messagesession .sendmessageform {
     margin: 0;

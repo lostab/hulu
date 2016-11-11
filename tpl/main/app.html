@@ -267,7 +267,7 @@
                             for (i in notifymessages) {
                                 var notify = notifymessages[i];
                                 var message = {
-                                    "content": "您发布的 <a href=\"/i/" + notify.parent.id + "\" target=\"blank\">" + notify.parent.content.substr(0, 30) + "...</a> 有了 <a href=\"/" + notify.item.user.username + "/\" target=\"blank\">" + notify.item.user.username + "</a> 的新回应：" + notify.item.content.substr(0, 30) + "...",
+                                    "content": "您发布的 <a href=\"/i/" + notify.rootitem.id + "/#" + notify.parent.id + "\">" + notify.parent.content.substr(0, 30) + "...</a> 有了 <a href=\"/" + notify.item.user.username + "/\">" + notify.item.user.username + "</a> 的新回应：<a href=\"/i/" + notify.rootitem.id + "/#" + notify.item.id + "\">" + notify.item.content.substr(0, 30) + "...</a>",
                                     "create": notify.created,
                                     "id": "",
                                     "user": {
