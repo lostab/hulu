@@ -1,20 +1,20 @@
-@media screen and (max-width: 980px) {
+@media screen and (max-width: 1200px) {
     .wrapper {
-        width: 95%;
+        width: 96%;
     }
     .content.item, .content.home, .content-header {
-        width: 60%;
+        width: 55%;
         /*padding: 3% 4%;*/
     }
     .sidebar {
-        width: auto;
         min-width: 230px;
         margin: 17px 0 17px 0;
         padding: 7px;
         position: fixed;
-        left: 80%;
+        /*left: 80%;
         margin-left: -130px;
-        float: right;
+        float: right;*/
+        right: 2%;
     }
     .sidebar .widget {
         padding: 8% 7%;
@@ -22,7 +22,7 @@
     }
 }
 
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 720px) {
     .content, .content.item, .content.home, .content-header {
         width: auto;
         float: none;
