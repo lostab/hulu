@@ -4,16 +4,12 @@
     }
     .content.item, .content.home, .content-header {
         width: 55%;
-        /*padding: 3% 4%;*/
     }
     .sidebar {
         min-width: 230px;
         margin: 17px 0 17px 0;
         padding: 7px;
         position: fixed;
-        /*left: 80%;
-        margin-left: -130px;
-        float: right;*/
         right: 2%;
     }
     .sidebar .widget {
@@ -36,7 +32,7 @@
         left: 0;
         margin-left: 0;
     }
-    input:not(.file-input), textarea {
+    input:not(.file-input):not(.qstr), textarea {
         width: 100%;
         max-width: 360px;
     }
@@ -45,7 +41,6 @@
 img {
     max-width: 100%;
     height: auto;
-    /*width: auto\9;*/ /* ie8 */
 }
 
 .video embed,
