@@ -390,9 +390,6 @@ p.submit-btn, p.cancel-btn {
 .itemcontent:not(:last-child) .itemcontent-content {
     border-bottom: 1px dashed lightgray;
 }
-.itemcontent-content {
-    margin-left: 56px;
-}
 .itemcontent-content pre {
     line-height: 30px;
     white-space: pre-wrap;
@@ -406,6 +403,9 @@ p.submit-btn, p.cancel-btn {
 }
 .content.item .updateitemform {
     display: none;
+}
+.comment .itemcontent-content {
+    margin-left: 24px;
 }
 .reply-info {
     font-size: small;
@@ -757,6 +757,9 @@ p.submit-btn, p.cancel-btn {
 }
 .content.item form p.comment-content, .content.create form p.description, .content.feedback form p {
     text-align: center;
+}
+.content.item form p.comment-content .comment-reply-to-users {
+    text-align: left;
 }
 .footer {
     padding: 7px 0 7px 0;
