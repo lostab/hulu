@@ -194,7 +194,7 @@ $(document).ready(function(){
         });
 
         $(".comment-form .comment-parent").val($(this).closest(".comment").attr("id"));
-        $(".comment-form .comment-content .comment-reply-to-users").remove();
+        $(".comment-form .comment-reply-to-users").remove();
         $(".comment-form .comment-content").prepend("<div class=\"comment-reply-to-users\">回复 <a class=\"comment-reply-to-user\">" + $(this).closest(".comment").find(".item-info .comment-author span.username").text() + "</a></div>");
         $(this).hide();
         $(this).after("<a class=\"cancel-comment-reply\" href=\"\">取消回复</a>");
