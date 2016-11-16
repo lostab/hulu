@@ -38,8 +38,7 @@ from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
 from django.utils.html import escape
 from django.core.mail import EmailMessage
-
-#import jieba.analyse
+import hashlib
 
 def index(request):
     #try:
@@ -570,3 +569,23 @@ def app(request):
             }
             return jsonp(request, content)
         return redirectlogin(request)
+
+def weixin(request):
+    if request.method == 'GET':
+        signature = request.GET.get('signature')
+        timestamp = request.GET.get('timestamp')
+        nonce = request.GET.get('nonce')
+        echostr = request.GET.get('echostr')
+        token = 'weixin'
+
+        if signature and timestamp and nonce and echostr:
+            tmparray = [token, timestamp, nonce]
+            tmparray.sort()
+            tmpstr = ''.join(tmparray)
+            tmpstr = hashlib.sha1(tmpstr).hexdigest()
+            if tmpstr == signature:
+                return HttpResponse(echostr)
+            else:
+                return redirect('/')
+        else:
+            return redirect('/')

@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^m/', main.app, name='app'),
     url(r'^s/avatar/(.+)$', user.Avatar, name='avatar'),
     url(r'^wi/', item.wbimg, name='wbimg'),
+    url(r'^wx/', main.weixin, name='weixin'),
     url(r'^(.+)/$', user.UserPage, name='userpage'),
     url(r'^a/sitemap.txt$', main.sitemap, name='sitemap'),
 ]
