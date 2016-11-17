@@ -154,7 +154,7 @@
         <form method="post" class="comment-form itemform" id="comment-form" enctype="multipart/form-data">
             {% csrf_token %}
             <input class="comment-parent" name="reply" type="hidden"{% if request.GET.reply %} value="{{ request.GET.reply }}"{% endif %} />
-            <p class="comment-content">{% if reply %}<div class="comment-reply-to-users">回复 <a class="comment-reply-to-user">{{ reply.user.username }}</a></div>{% endif %}<textarea name="content">{{ form.content.value }}</textarea></p>
+            <div class="comment-content">{% if reply %}<div class="comment-reply-to-users">回复 <a class="comment-reply-to-user">{{ reply.user.username }}</a></div>{% endif %}<textarea name="content">{{ form.content.value }}</textarea></div>
             <!--<p>附件：
             <br />
             <input class="file" name="file" type="file" />
