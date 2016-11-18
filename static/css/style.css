@@ -253,6 +253,12 @@ textarea {
     right: 10%;
     /*margin-right: -480px;*/
 }
+.sidebar div p, .sidebar div p a {
+    color: gray;
+}
+.sidebar div p a:hover {
+    color: black;
+}
 .content.signup p,.content.signup h3, .content.login p,.content.login h3, .content.account p,.content.account h3 {
     text-align: center;
 }

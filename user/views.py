@@ -529,7 +529,7 @@ def Feedback(request):
                 feedbackuser = ''
                 if request.user.username:
                     feedbackuser = str(request.user.username) + ': '
-                send_mail('Feedback', feedbackuser + feedback, os.environ['system_mail_username'], [os.environ['receive_mail']], fail_silently=False)
+                send_mail('Hulu', feedbackuser + feedback, os.environ['system_mail_username'], [os.environ['receive_mail']], fail_silently=False)
                 return render(request, 'user/feedback.html', { 'submit': 'true' })
             except:
                 return redirect('/u/feedback/')

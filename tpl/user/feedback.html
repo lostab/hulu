@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}反馈建议 - {% endblock %}
+{% block title %}发送邮件 - {% endblock %}
 
 {% block content %}
     <div class="content feedback">
-        <h3>反馈建议</h3>
+        <h3>发送邮件</h3>
         {% if submit %}
-        <p>提交成功，多谢您的意见和建议。</p>
+        <p>提交成功，多谢您的关注。</p>
         {% else %}
         <form method="post" class="itemform">
             {% csrf_token %}
