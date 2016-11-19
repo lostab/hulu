@@ -113,8 +113,8 @@ textarea {
 .header .search {
     height: 24px;
     float: right;
-    margin-right: 90px;
-    width: calc(100% - 120px);
+    margin-right: 96px;
+    width: calc(100% - 126px);
 }
 .header .search .qstr {
     width: 100%;
