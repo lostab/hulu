@@ -782,12 +782,16 @@ p.submit-btn, p.cancel-btn {
 .item-tags .item-tag {
     display: inline-block;
     margin: 3px;
-    padding: 3px;
-    background: whitesmoke;
 }
 .item-tags .item-tag a {
     color: gray;
     font-size: small;
+    padding: 3px;
+    background: whitesmoke;
+}
+.item-tags .item-tag a:hover {
+    color: white;
+    background: lightgray;
 }
 .content-header {
     min-height: 36px;
