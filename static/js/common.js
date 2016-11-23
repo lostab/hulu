@@ -3,7 +3,7 @@ $(document).ready(function(){
         //$(this).html($(this).html().replace(/((http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-\|]*[\w@?^=%&amp;\/~+#-\|])?)/g, "<a href=\"$1\" target=\"blank\">$1</a>"));
         $(this).html($(this).html().replace(/([a-zA-z]+\:\/\/[^\s]*)/g, "<a href=\"$1\" target=\"blank\">$1</a>"));
     });
-    $(".itemcontent-content a, .userprofile a, .userpage a").each(function(){
+    $(".itemcontent-content a, .userprofile .description a, .userpage .description a").each(function(){
         var url = $(this).text();
         var urlitem = $(this);
         $("<img>", {
