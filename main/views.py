@@ -168,8 +168,9 @@ def index(request):
                 else:
                     page = 1
                 #fetchdate = datetime.datetime.now() + timedelta(days=(2 - page))
-                fetchdate = datetime.datetime.now() + timedelta(hours=(13 + (2 - page) * 24))
+                fetchdate = datetime.datetime.now() + timedelta(hours=(8 + (2 - page) * 24))
                 zhihuurl = 'http://news.at.zhihu.com/api/3/news/before/' + str(fetchdate.strftime('%Y%m%d'))
+                print(zhihuurl)
                 hdr = {
                     'User-Agent': 'hulu'
                 }
@@ -316,7 +317,7 @@ def jk(request, username):
             monitoremail.attach_file(jkimg)
             monitoremail.send(fail_silently=False)
 
-        return render(reuqest, 'other/jk.html', {})
+        return render(request, 'other/jk.html', {})
 
 def app(request):
     if request.user.is_authenticated():
