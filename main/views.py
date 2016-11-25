@@ -167,8 +167,8 @@ def index(request):
                     page = int(request.GET.get('page'))
                 else:
                     page = 1
-                #fetchdate = datetime.datetime.now() + timedelta(days=(2 - page))
-                fetchdate = datetime.datetime.now() + timedelta(hours=(8 + (1 - page) * 24))
+                fetchdate = datetime.datetime.now() + timedelta(days=(2 - page))
+                #fetchdate = datetime.datetime.now() + timedelta(hours=(8 + (1 - page) * 24))
                 zhihuurl = 'http://news.at.zhihu.com/api/3/news/before/' + str(fetchdate.strftime('%Y%m%d'))
                 print(str(datetime.datetime.now()))
                 print(zhihuurl)
