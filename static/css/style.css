@@ -271,7 +271,7 @@ p.submit-btn, p.cancel-btn {
 .content .operate a, .content .comment-operate a, .comment-reply-to-users a {
     font-size: small;
     color: white;
-    background: gray;
+    background: lightgray;
     padding: 3px;
     line-height: 24px;
     border-radius: 3px;
