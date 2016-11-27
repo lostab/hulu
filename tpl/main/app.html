@@ -157,6 +157,7 @@
                     var scrolldown = function(){
                         openmessagesession.find(".historymessages").scrollTop(openmessagesession.find(".historymessages")[0].scrollHeight);
                     };
+                    scrolldown();
                     openmessagesession.find(".sendmessageform").find(".messagecontent").click(function(){
                         scrolldown();
                         $(this).focus();
