@@ -128,4 +128,51 @@ $(document).ready(function(){
         }
     });
 
+    $(".search .qstr").attr("placeholder", "搜索并播放歌曲");
+    $(".search").submit(function(){
+        var qstr = $(this).find(".qstr");
+        if (qstr.val() == "") {
+            qstr.focus();
+            return false;
+        } else {
+            $.ajax({
+                type: "get",
+                url: "https://c.y.qq.com/soso/fcgi-bin/search_cp?remoteplace=txt.yqq.center&searchid=53956420086125571&t=0&aggr=1&cr=1&catZhida=1&lossless=0&flag_qc=0&p=1&n=20&w=" + qstr.val() + "&g_tk=938407465&jsonpCallback=searchCallbacksong1662&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0",
+                dataType: "jsonp",
+                jsonpCallback:"searchCallbacksong1662",
+                success: function(data){
+                    var songmid = data.data.song.list[0].songmid;
+                    $.ajax({
+                        type: "get",
+                        url: "https://c.y.qq.com/v8/fcg-bin/fcg_play_single_song.fcg?songmid=" + songmid + "&tpl=yqq_song_detail&format=jsonp&callback=getOneSongInfoCallback&g_tk=938407465&jsonpCallback=getOneSongInfoCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0",
+                        dataType: "jsonp",
+                        jsonpCallback:"getOneSongInfoCallback",
+                        success: function(data){
+                            var url = "";
+                            for(i in data.url){
+                                url = data.url[i];
+                            }
+                            var info = data.data[0].singer[0].name + " - " + data.data[0].title;
+                            if (url != "" && $(".sidebar").length > 0) {
+                                $(".sidebar .musicplayer").remove();
+                                $(".sidebar").append("<div class=\"musicplayer\"><audio autoplay=\"autoplay\" controls=\"controls\" preload=\"preload\" src=\"http://" + url + "\">浏览器不支持</audio></div>");
+                                qstr.attr("placeholder", info);
+                            } else {
+                                qstr.attr("placeholder", "没有找到");
+                            }
+                        },
+                        error: function(){
+                            qstr.attr("placeholder", "没有找到");
+                        }
+                    });
+                },
+                error: function(){
+                    qstr.attr("placeholder", "没有找到");
+                }
+            });
+            qstr.val("");
+            qstr.blur();
+            return false;
+        }
+    });
 });
