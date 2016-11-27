@@ -219,9 +219,10 @@
                 }
             });
 
-            if (openmessagesession && !(openmessagesession.find(".sendmessageform").find(".messagecontent").is(":focus"))) {
-                openmessagesession.find(".sendmessageform").find(".messagecontent").focus();
-            }
+            //当打开对话框并且没有在输入框焦点时，取得焦点
+            //if (openmessagesession && !(openmessagesession.find(".sendmessageform").find(".messagecontent").is(":focus"))) {
+            //    openmessagesession.find(".sendmessageform").find(".messagecontent").focus();
+            //}
 
             if (data.uirid != "" && data.messagesessions.length > 0) {
                 loaddata(data.uirid);
