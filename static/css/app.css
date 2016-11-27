@@ -52,6 +52,9 @@ html, body, .container {
     display: table-cell;
     text-align: center;
 }
+.footer .footer-bar:hover {
+    background: whitesmoke;
+}
 .footer .footer-bar-focus {
     background: whitesmoke;
 }
