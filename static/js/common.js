@@ -155,7 +155,7 @@ $(document).ready(function(){
                             var info = data.data[0].singer[0].name + " - " + data.data[0].title;
                             if (url != "" && $(".sidebar").length > 0) {
                                 $(".sidebar .musicplayer").remove();
-                                $(".sidebar").append("<div class=\"musicplayer\"><audio autoplay=\"autoplay\" controls=\"controls\" preload=\"preload\" src=\"http://" + url + "\">浏览器不支持</audio></div>");
+                                $(".sidebar").append("<div class=\"musicplayer\"><audio autoplay=\"autoplay\" controls=\"controls\" preload=\"preload\" style=\"width: 90%;\" src=\"http://" + url + "\">浏览器不支持</audio></div>");
                                 qstr.attr("placeholder", info);
                             } else {
                                 qstr.attr("placeholder", "没有找到");
@@ -171,7 +171,6 @@ $(document).ready(function(){
                 }
             });
             qstr.val("");
-            qstr.blur();
             return false;
         }
     });
