@@ -142,29 +142,43 @@ $(document).ready(function(){
                 jsonpCallback:"searchCallbacksong1662",
                 success: function(data){
                     var songmid = data.data.song.list[0].songmid;
-                    $.ajax({
-                        type: "get",
-                        url: "https://c.y.qq.com/v8/fcg-bin/fcg_play_single_song.fcg?songmid=" + songmid + "&tpl=yqq_song_detail&format=jsonp&callback=getOneSongInfoCallback&g_tk=938407465&jsonpCallback=getOneSongInfoCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0",
-                        dataType: "jsonp",
-                        jsonpCallback:"getOneSongInfoCallback",
-                        success: function(data){
-                            var url = "";
-                            for(i in data.url){
-                                url = data.url[i];
-                            }
-                            var info = data.data[0].singer[0].name + " - " + data.data[0].title;
-                            if (url != "" && $(".sidebar").length > 0) {
-                                $(".sidebar .musicplayer").remove();
-                                $(".sidebar").append("<div class=\"musicplayer\"><audio autoplay=\"autoplay\" controls=\"controls\" preload=\"preload\" style=\"width: 90%;\" src=\"http://" + url + "\">浏览器不支持</audio></div>");
-                                qstr.attr("placeholder", info);
-                            } else {
+                    if(songmid != ""){
+                        $.ajax({
+                            type: "get",
+                            url: "https://c.y.qq.com/v8/fcg-bin/fcg_play_single_song.fcg?songmid=" + songmid + "&tpl=yqq_song_detail&format=jsonp&callback=getOneSongInfoCallback&g_tk=938407465&jsonpCallback=getOneSongInfoCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0",
+                            dataType: "jsonp",
+                            jsonpCallback:"getOneSongInfoCallback",
+                            success: function(data){
+                                var url = "";
+                                for(i in data.url){
+                                    url = data.url[i];
+                                }
+                                if (url != ""){
+                                    var info = data.data[0].singer[0].name + " - " + data.data[0].title;
+                                    if (url != "" && $(".header").length > 0) {
+                                        $(".header .musicplayer").remove();
+                                        qstr.attr("placeholder", info);
+                                        $(".header").append("<div class=\"musicplayer\"><audio autoplay=\"autoplay\" controls=\"controls\" preload=\"preload\" style=\"width: 100%;margin-top: 10px;\" src=\"http://" + url + "\">浏览器不支持</audio></div>");
+                                        $(".container").css("padding-top", parseInt($(".container").css("padding-top").split("px")[0]) + parseInt($(".header .musicplayer audio").height()) + "px");
+                                        $(".sidebar").css("padding-top", parseInt($(".sidebar").css("padding-top").split("px")[0]) + parseInt($(".header .musicplayer audio").height()) + "px");
+                                        $(".header .musicplayer audio").on("error", function() {
+                                            $(".header .musicplayer").remove();
+                                            qstr.attr("placeholder", "没有找到");
+                                        });
+                                    } else {
+                                        qstr.attr("placeholder", "没有找到");
+                                    }
+                                } else {
+                                    qstr.attr("placeholder", "没有找到");
+                                }
+                            },
+                            error: function(){
                                 qstr.attr("placeholder", "没有找到");
                             }
-                        },
-                        error: function(){
-                            qstr.attr("placeholder", "没有找到");
-                        }
-                    });
+                        });
+                    } else {
+                        qstr.attr("placeholder", "没有找到");
+                    }
                 },
                 error: function(){
                     qstr.attr("placeholder", "没有找到");
