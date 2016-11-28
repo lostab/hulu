@@ -157,9 +157,9 @@ $(document).ready(function(){
                                     var info = data.data[0].singer[0].name + " - " + data.data[0].title;
                                     if (url != "" && $(".header").length > 0) {
                                         if ($(".header .musicplayer").length > 0){
-                                            $(".header .musicplayer").remove();
                                             $(".container").css("padding-top", parseInt($(".container").css("padding-top").split("px")[0]) - parseInt($(".header .musicplayer audio").height()) + "px");
                                             $(".sidebar").css("padding-top", parseInt($(".sidebar").css("padding-top").split("px")[0]) - parseInt($(".header .musicplayer audio").height()) + "px");
+                                            $(".header .musicplayer").remove();
                                         }
                                         qstr.attr("placeholder", info);
                                         $(".header").append("<div class=\"musicplayer\"><audio autoplay=\"autoplay\" controls=\"controls\" loop=\"loop\" preload=\"preload\" style=\"width: 100%;margin-top: 10px;\" src=\"http://" + url + "\">浏览器不支持</audio></div>");
