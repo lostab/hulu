@@ -162,7 +162,7 @@ $(document).ready(function(){
                                             $(".header .musicplayer").remove();
                                         }
                                         qstr.attr("placeholder", info);
-                                        $(".header").append("<div class=\"musicplayer\"><audio autoplay=\"autoplay\" controls=\"controls\" loop=\"loop\" preload=\"preload\" style=\"width: 100%;margin-top: 10px;\" src=\"http://" + url + "\">浏览器不支持</audio></div>");
+                                        $(".header").append("<div class=\"musicplayer\"><audio autoplay=\"autoplay\" controls=\"controls\" loop=\"loop\" preload=\"preload\" style=\"width: 100%;margin-top: 7px;\" src=\"http://" + url + "\">浏览器不支持</audio></div>");
 
                                         $(".container").css("padding-top", parseInt($(".container").css("padding-top").split("px")[0]) + parseInt($(".header .musicplayer audio").height()) + "px");
                                         $(".sidebar").css("padding-top", parseInt($(".sidebar").css("padding-top").split("px")[0]) + parseInt($(".header .musicplayer audio").height()) + "px");
