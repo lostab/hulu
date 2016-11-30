@@ -155,43 +155,92 @@ $(document).ready(function(){
                                 }
                                 if (url != ""){
                                     var info = data.data[0].singer[0].name + " - " + data.data[0].title;
-                                    if (url != "" && $(".header").length > 0) {
-                                        if ($(".header .musicplayer").length > 0){
-                                            $(".container").css("padding-top", parseInt($(".container").css("padding-top").split("px")[0]) - parseInt($(".header .musicplayer audio").height()) + "px");
-                                            $(".sidebar").css("padding-top", parseInt($(".sidebar").css("padding-top").split("px")[0]) - parseInt($(".header .musicplayer audio").height()) + "px");
-                                            $(".header .musicplayer").remove();
+                                    if (url != "" && $("body").length > 0) {
+                                        if ($("body .musicplayer").length > 0){
+                                            $(".search .musicswitch").remove();
+                                            $("body .musicplayer").remove();
                                         }
                                         qstr.attr("placeholder", info);
-                                        $(".header").append("<div class=\"musicplayer\"><audio autoplay=\"autoplay\" controls=\"controls\" loop=\"loop\" preload=\"preload\" style=\"width: 100%;margin-top: 10px;\" src=\"http://" + url + "\">浏览器不支持</audio></div>");
+                                        $("body").append("<div class=\"musicplayer\"><audio autoplay=\"autoplay\" controls=\"controls\" loop=\"loop\" preload=\"preload\" style=\"width: 100%;display: none;\" src=\"http://" + url + "\">浏览器不支持</audio></div>");
+                                        $(".search").append("<a class=\"musicswitch\"></a>");
+                                        $(".search .musicswitch").css({
+                                            "font-family": "arial,sans-serif",
+                                            "color": "white",
+                                            "background": "green",
+                                            "font-weight": "bold",
+                                            "width": "24px",
+                                            "height": "24px",
+                                            "line-height": "24px",
+                                            "border-radius": "12px",
+                                            "-webkit-border-radius": "12px",
+                                            "-moz-border-radius": "12px",
+                                            "text-align": "center",
+                                            "font-size": "small",
+                                            "display": "inline-block",
+                                            "position": "absolute",
+                                            "right": "-3px",
+                                            "top": "0px",
+                                            "cursor": "pointer",
+                                            "opacity": "0.6",
+                                            "filter": "alpha(opacity=60)"
+                                        });
 
-                                        $(".container").css("padding-top", parseInt($(".container").css("padding-top").split("px")[0]) + parseInt($(".header .musicplayer audio").height()) + "px");
-                                        $(".sidebar").css("padding-top", parseInt($(".sidebar").css("padding-top").split("px")[0]) + parseInt($(".header .musicplayer audio").height()) + "px");
+                                        var getplaystatus = function(){
+                                            if($("body .musicplayer audio")[0].paused){
+                                                $(".search .musicswitch").text("开");
+                                            } else {
+                                                $(".search .musicswitch").text("关");
+                                            }
+                                            setTimeout(getplaystatus, 1000);
+                                        }
+                                        getplaystatus();
 
-                                        $(".header .musicplayer audio").on("error", function() {
-                                            /*if ($(".header .musicplayer").length > 0){
-                                                $(".container").css("padding-top", parseInt($(".container").css("padding-top").split("px")[0]) - parseInt($(".header .musicplayer audio").height()) + "px");
-                                                $(".sidebar").css("padding-top", parseInt($(".sidebar").css("padding-top").split("px")[0]) - parseInt($(".header .musicplayer audio").height()) + "px");
-                                                $(".header .musicplayer").remove();
-                                            }*/
+                                        $(".search .musicswitch").click(function(){
+                                            if($(this).text() == "关"){
+                                                $("body .musicplayer audio")[0].pause();
+                                                $(this).text("开");
+                                            } else if ($(this).text() == "开") {
+                                                $("body .musicplayer audio")[0].play();
+                                                $(this).text("关");
+                                            }
+                                        });
+
+                                        $("body .musicplayer audio").on("error", function() {
+                                            if ($("body .musicplayer").length > 0){
+                                                $(".search .musicswitch").remove();
+                                                $("body .musicplayer").remove();
+                                            }
                                             qstr.attr("placeholder", "没有找到");
+                                            $(".search .musicswitch").remove();
+                                            $("body .musicplayer").remove();
                                         });
                                     } else {
                                         qstr.attr("placeholder", "没有找到");
+                                        $(".search .musicswitch").remove();
+                                        $("body .musicplayer").remove();
                                     }
                                 } else {
                                     qstr.attr("placeholder", "没有找到");
+                                    $(".search .musicswitch").remove();
+                                    $("body .musicplayer").remove();
                                 }
                             },
                             error: function(){
                                 qstr.attr("placeholder", "没有找到");
+                                $(".search .musicswitch").remove();
+                                $("body .musicplayer").remove();
                             }
                         });
                     } else {
                         qstr.attr("placeholder", "没有找到");
+                        $(".search .musicswitch").remove();
+                        $("body .musicplayer").remove();
                     }
                 },
                 error: function(){
                     qstr.attr("placeholder", "没有找到");
+                    $(".search .musicswitch").remove();
+                    $("body .musicplayer").remove();
                 }
             });
             qstr.val("");
