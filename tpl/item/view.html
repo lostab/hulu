@@ -30,6 +30,7 @@
                 </span>
                 <span class="operate">
                     <a class="updatetag-btn" href="" style="">编辑话题</a>
+                    <a class="updateitem-btn" href="/i/update/{{ item.id }}/#update-form">更新信息</a>
                 </span>
             </form>
         {% endif %}
@@ -214,7 +215,8 @@ $(document).ready(function(){
 
     $(".updateitem-btn").click(function(){
         $(".updateitemform").show();
-        $(this).hide();
+        $(".updateitemform textarea").focus();
+        $(".updateitem-btn").hide();
         return false;
     });
     $(".updateitemform .cancel-btn").click(function(){
@@ -284,6 +286,20 @@ $(document).ready(function(){
         }
     });
 {% endif %}
+    $(".content.item .operate").css("visibility", "hidden");
+    $(".content.item").mouseover(function(){
+        $(this).find(".operate").css("visibility", "visible");
+    });
+    $(".content.item").mouseout(function(){
+        $(this).find(".operate").css("visibility", "hidden");
+    });
+    $(".comment-operate").css("visibility", "hidden");
+    $(".comment-operate").closest(".comment").mouseover(function(){
+        $(this).find(".comment-operate").css("visibility", "visible");
+    });
+    $(".comment-operate").closest(".comment").mouseout(function(){
+        $(this).find(".comment-operate").css("visibility", "hidden");
+    });
 });
 </script>
 {% endblock %}
