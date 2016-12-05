@@ -21,19 +21,24 @@
             <div class="item-tags">{% for tag in item.tag.all %}<div class="item-tag"><a href="/t/{{ tag.id }}/">{{ tag.name }}</a></div>{% endfor %}</div>
 
         </div>
-        {% if item.user.username == user.username %}
-            <form class="additemtag" method="post">
-                <span class="additemtagform" style="display: none;">
-                    {% csrf_token %}
-                    <input class="item-tag-name" name="tagname" type="text" />
-                    <input class="submit item-tag-submit" type="submit" value="添加" />
-                </span>
-                <span class="operate">
-                    <a class="updatetag-btn" href="" style="">编辑话题</a>
-                    <a class="updateitem-btn" href="/i/update/{{ item.id }}/#update-form">更新信息</a>
-                </span>
-            </form>
-        {% endif %}
+        <form class="additemtag" method="post">
+            {% if item.user.username == user.username %}
+            <span class="additemtagform" style="display: none;">
+                {% csrf_token %}
+                <input class="item-tag-name" name="tagname" type="text" />
+                <input class="submit item-tag-submit" type="submit" value="添加" />
+            </span>
+            {% endif %}
+            <span class="operate">
+                {% if item.user.username == user.username %}
+                <a class="updatetag-btn" href="" style="">编辑话题</a>
+                <a class="updateitem-btn" href="/i/update/{{ item.id }}/#update-form">更新信息</a>
+                {% endif %}
+                {% if user.id == 0 and item.status != 'private' %}
+                <a class="hideitem-btn" href="/i/{{ item.id }}?type=hide" style="">隐藏信息</a>
+                {% endif %}
+            </span>
+        </form>
         <div class="line">
         {% for itemcontent in item.itemcontent_set.all %}
             <div class="itemcontent">

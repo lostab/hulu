@@ -231,6 +231,12 @@ def View(request, id):
         items = None
 
     if request.method == 'GET':
+        #把信息改为只有作者可见
+        if request.user.id == 0 and request.GET.get('type') == 'hide':
+            item.status = 'private'
+            item.save()
+            return redirect('/')
+
         try:
             UserNotify.objects.filter(user=request.user.id).filter(item=item).delete()
             UserNotify.objects.filter(user=request.user.id).filter(item__in=set(item.id for item in items)).delete()
