@@ -71,7 +71,7 @@ def index(request):
                 return redirect('/?q=' + q)
 
     try:
-        items = Item.objects.select_related('user').filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).filter(Q(status__isnull=True) | Q(status__exact='')).all().prefetch_related('itemcontent_set', 'itemcontent_set__contentattachment_set')
+        items = Item.objects.select_related('user').filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).filter(Q(status__isnull=True) | Q(status__exact='') | (Q(status__exact='private') & Q(user__id=request.user.id))).all().prefetch_related('itemcontent_set', 'itemcontent_set__contentattachment_set')
         itemlist = []
         for item in items:
             #itemcontent = ItemContent.objects.filter(item=item)

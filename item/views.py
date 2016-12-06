@@ -232,7 +232,7 @@ def View(request, id):
 
     if request.method == 'GET':
         #把信息改为只有作者可见
-        if request.user.id == 0 and request.GET.get('type') == 'hide':
+        if request.user.id == 1 and request.GET.get('status') == 'private':
             item.status = 'private'
             item.save()
             return redirect('/')

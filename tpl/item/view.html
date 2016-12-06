@@ -34,8 +34,8 @@
                 <a class="updatetag-btn" href="" style="">编辑话题</a>
                 <a class="updateitem-btn" href="/i/update/{{ item.id }}/#update-form">更新信息</a>
                 {% endif %}
-                {% if user.id == 0 and item.status != 'private' %}
-                <a class="hideitem-btn" href="/i/{{ item.id }}?type=hide" style="">隐藏信息</a>
+                {% if user.id == 1 and item.status != 'private' %}
+                <a class="hideitem-btn" href="" style="">隐藏信息</a>
                 {% endif %}
             </span>
         </form>
@@ -289,6 +289,23 @@ $(document).ready(function(){
             });
             return false;
         }
+    });
+    $(".hideitem-btn").click(function(){
+        var thus = $(this);
+        var confirm = prompt("请输入 YES 以确定：", "");
+        if (confirm == "YES") {
+            $.ajax({
+                url: "",
+                type: "get",
+                data: {
+                    "status": "private"
+                },
+                success: function(){
+                    thus.remove();
+                }
+            });
+        }
+        return false;
     });
 {% endif %}
     $(".content.item .operate").css("visibility", "hidden");
