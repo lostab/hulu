@@ -128,7 +128,7 @@ def Create(request):
             return render(request, 'item/create.html', content)
 
         if request.method == 'POST':
-            if request.POST.get('content').strip() == '' and (not request.FILES or 'VCAP_SERVICES' in os.environ):
+            if ((not request.POST.get('content') or request.POST.get('content').strip() == '') and (not request.FILES or 'VCAP_SERVICES' in os.environ)):
                 content = {
 
                 }
