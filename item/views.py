@@ -34,7 +34,8 @@ def Index(request):
             for subitem in subitems:
                 rootitems = subitem.get_root_items()
                 for rootitem in rootitems:
-                    if rootitem not in belongitems and rootitem.user != request.user:
+                    #过滤掉重复的、自己发的、私有的信息
+                    if rootitem not in belongitems and rootitem.user != request.user and rootitem.status != 'private':
                         belongitems.append(rootitem)
             belongitems = sorted(belongitems, key=lambda belongitem:belongitem.id, reverse=True)
 
@@ -231,12 +232,6 @@ def View(request, id):
         items = None
 
     if request.method == 'GET':
-        #把信息改为只有作者可见
-        if request.user.id == 1 and request.GET.get('status') == 'private':
-            item.status = 'private'
-            item.save()
-            return redirect('/')
-
         try:
             UserNotify.objects.filter(user=request.user.id).filter(item=item).delete()
             UserNotify.objects.filter(user=request.user.id).filter(item__in=set(item.id for item in items)).delete()
@@ -276,6 +271,12 @@ def View(request, id):
             }
             return render(request, 'item/view.html', content)
         if request.user.is_authenticated():
+            #把信息改为只有私有
+            if request.user.id == 1 and request.POST.get('status') == 'private':
+                item.status = 'private'
+                item.save()
+                return redirect('/')
+
             if item.user == request.user and request.POST.get('tagname'):
                 tagname = request.POST.get('tagname').strip()
                 if tagname != '':

@@ -296,8 +296,9 @@ $(document).ready(function(){
         if (confirm == "YES") {
             $.ajax({
                 url: "",
-                type: "get",
+                type: "post",
                 data: {
+                    "csrfmiddlewaretoken": "{{ csrf_token }}",
                     "status": "private"
                 },
                 success: function(){
