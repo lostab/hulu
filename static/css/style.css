@@ -242,6 +242,7 @@ textarea {
     /*width: 600px;*/
     width: 66%;
     /*float: left;*/
+    position: relative;
 }
 .sidebar {
     margin: 23px 0 23px 0;
