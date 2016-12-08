@@ -31,7 +31,6 @@
 <script type="text/javascript" src="/s/js/jquery.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
-    try {
         {% if not newmessagesession %}
         $(".container").after("<div class=\"loading\" style=\"width:100%;height:100%;margin:0;padding:0;vertical-align:middle;\"><div class=\"loading-content\" style=\"text-align:center;width:100%;height:10px;position:absolute;top:50%;margin-top:-5px;\">加载中…</div></div>");
         $(".container").hide();
@@ -251,9 +250,8 @@
                 error: function(){
                     loaddata(uirid);
                 },
-                timeout: 33000
+                timeout: 60000
             });
-
 
             //获取系统消息
             $.getJSON("/u/notify/?type=json", function(json){
@@ -353,10 +351,7 @@
         var messagesessionexit = 0;
 
         {% endif %}
-        
-    } catch(error){
 
-    }
     });
 </script>
 </body>
