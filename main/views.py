@@ -39,6 +39,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.utils.html import escape
 from django.core.mail import EmailMessage
 import hashlib
+import ssl
 
 def index(request):
     #try:
@@ -160,6 +161,9 @@ def index(request):
             #try:
             if request.user.id == 1 and 'VCAP_SERVICES' in os.environ:
             #if 'VCAP_SERVICES' in os.environ:
+                ctx = ssl.create_default_context()
+                ctx.check_hostname = False
+                ctx.verify_mode = ssl.CERT_NONE
                 #Zhihu
                 #for fetchdate in [[str((datetime.datetime.now() + timedelta(days=1)).strftime('%Y%m%d')), str(datetime.datetime.now().strftime('%Y%m%d'))], [str(datetime.datetime.now().strftime('%Y%m%d')), str((datetime.datetime.now() - timedelta(days=1)).strftime('%Y%m%d'))], [str((datetime.datetime.now() - timedelta(days=1)).strftime('%Y%m%d')), str((datetime.datetime.now() - timedelta(days=2)).strftime('%Y%m%d'))]]:
                 #    zhihuurl = 'http://news.at.zhihu.com/api/3/news/before/' + fetchdate[0]
@@ -176,7 +180,7 @@ def index(request):
                     'User-Agent': 'hulu'
                 }
                 req = urllib2.Request(zhihuurl, headers=hdr)
-                zhihujson = json.loads(urllib2.urlopen(req).read())
+                zhihujson = json.loads(urllib2.urlopen(req, context=ctx).read())
                 zhihudate = zhihujson['date']
                 #if int(zhihudate) == int(fetchdate[1]):
                 zhihucontent = zhihujson['stories']
@@ -188,7 +192,7 @@ def index(request):
                 if not request.GET.get('page'):
                     #V2EX
                     v2exurl = 'https://www.v2ex.com/api/topics/hot.json'
-                    v2exjson = json.loads(urllib2.urlopen(v2exurl).read())
+                    v2exjson = json.loads(urllib2.urlopen(v2exurl, context=ctx).read())
                     for i in v2exjson:
                         v2exitem = fetchitem(user=fetchuser(username='V2EX', userprofile=fetchprofile(openid='V2EX', avatar='https://www.v2ex.com/static/img/icon_rayps_64.png')), title=i['title'], url=i['url'].replace('http://', 'https://'), lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.fromtimestamp(int(i['created'])), timezone.get_default_timezone())), tags=None)
                         itemlist.append(v2exitem)
@@ -197,7 +201,7 @@ def index(request):
                     #Google News
                     newsurl = 'https://news.google.com/news?output=rss&hl=zh-CN'
                     req = urllib2.Request(newsurl)
-                    result = urllib2.urlopen(req).read()
+                    result = urllib2.urlopen(req, context=ctx).read()
                     items = re.split('<item>|</item> <item>|</item>', result)
                     items.pop(0)
                     items.pop(-1)
