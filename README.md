@@ -14,7 +14,7 @@ A community framework based on Django.
 
 Demo:
 
-    http://hulu.im
+    [http://hulu.im](http://hulu.im)
 
 Installation:
 
