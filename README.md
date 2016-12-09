@@ -1,10 +1,10 @@
 A community framework based on Django.
 
-~   required
+~   requirement
 
     Python & Django & PIL(optional).
 
-~   runing
+~   runtime
 
     All environments, such as VPS or Heroku.
 
@@ -12,12 +12,10 @@ A community framework based on Django.
 
     SQLite, PostgreSQL, MySQL, DB2 or other relational databases.
 
-Installation:
+~   installation([Demo](http://hulu.im))
 
 1. Install [Python](https://www.python.org) and [Django](https://www.djangoproject.com);
 
 2. Download [Hulu](https://github.com/lostab/hulu.git), and decompress to anywhere;
 
 3. Run `python runserver.py` and enjoy it.
-
-[Demo](http://hulu.im)
