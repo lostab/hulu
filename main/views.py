@@ -579,7 +579,6 @@ def app(request):
         return redirectlogin(request)
 
 def weixin(request):
-    from WXBizMsgCrypt import WXBizMsgCrypt
     def get_access_token():
         api_url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' + os.environ['weixin_appid'] + '&secret=' + os.environ['weixin_secret']
         access_token_result = json.loads(urllib2.urlopen(api_url, context=ctx).read())
@@ -624,11 +623,6 @@ def weixin(request):
         timestamp = request.POST.get('timestamp')
         nonce = request.POST.get('nonce')
         encrypt_type = request.POST.get('encrypt_type')
-
-        if encrypt_type == 'aes':
-            decrypt_test = WXBizMsgCrypt(token, aeskey, os.environ['weixin_appid'])
-            ret, decryp_xml = decrypt_test.DecryptMsg(body, msg_signature, timestamp, nonce)
-            body = decryp_xml
 
         fromuser = body.split('<ToUserName><![CDATA[')[1].split(']]></ToUserName>')[0]
         msgtype = body.split('<MsgType><![CDATA[')[1].split(']]></MsgType>')[0]
