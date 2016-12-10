@@ -618,11 +618,6 @@ def weixin(request):
 
     if request.method == 'POST':
         body = request.POST.get('body')
-        aeskey = request.POST.get('encodingaeskey')
-        msg_signature = request.POST.get('msg_signature')
-        timestamp = request.POST.get('timestamp')
-        nonce = request.POST.get('nonce')
-        encrypt_type = request.POST.get('encrypt_type')
 
         fromuser = body.split('<ToUserName><![CDATA[')[1].split(']]></ToUserName>')[0]
         msgtype = body.split('<MsgType><![CDATA[')[1].split(']]></MsgType>')[0]
