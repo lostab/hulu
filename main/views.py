@@ -578,6 +578,7 @@ def app(request):
             return jsonp(request, content)
         return redirectlogin(request)
 
+@csrf_exempt
 def weixin(request):
     def get_access_token():
         api_url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' + os.environ['weixin_appid'] + '&secret=' + os.environ['weixin_secret']
