@@ -615,12 +615,15 @@ def weixin(request):
             else:
                 return redirect('/')
         else:
-            return HttpResponse(cache.get('last_msg'))
+            if cache.get('last_msg'):
+                return HttpResponse(cache.get('last_msg'))
+            else:
+                return HttpResponse('')
 
     if request.method == 'POST':
-        body = request.POST.get('body')
+        body = request.body
 
-        fromuser = body.split('<ToUserName><![CDATA[')[1].split(']]></ToUserName>')[0]
+        fromuser = body.split('<FromUserName><![CDATA[')[1].split(']]></FromUserName>')[0]
         msgtype = body.split('<MsgType><![CDATA[')[1].split(']]></MsgType>')[0]
         msgid = body.split('<MsgId>')[1].split('</MsgId>')[0]
 
