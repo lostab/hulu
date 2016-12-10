@@ -644,9 +644,10 @@ def weixin(request):
                 if msgtype == 'text':
                     content = body.split('<Content><![CDATA[')[1].split(']]></Content>')[0]
                     #cache.set('last_msg', nickname + headimgurl + content, 3600)
-                    cache.set('last_msg', fromuser + ': ' + content, 3600)
+                    cache.set('last_msg', content, 3600)
                 elif msgtype == 'image':
                     pilurl = body.split('<PicUrl><![CDATA[')[1].split(']]></PicUrl>')[0]
                     mediaid = body.split('<MediaId><![CDATA[')[1].split(']]></MediaId>')[0]
+                    cache.set('last_msg', pilurl, 3600)
 
         return HttpResponse('')
