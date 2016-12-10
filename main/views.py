@@ -579,6 +579,7 @@ def app(request):
         return redirectlogin(request)
 
 def weixin(request):
+    from WXBizMsgCrypt import WXBizMsgCrypt
     def get_access_token():
         api_url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' + os.environ['weixin_appid'] + '&secret=' + os.environ['weixin_secret']
         access_token_result = json.loads(urllib2.urlopen(api_url, context=ctx).read())
@@ -596,12 +597,13 @@ def weixin(request):
             cache.set('access_token', get_access_token(), 7200)
             return get_user_info(openid)
 
+    token = 'weixin'
+
     if request.method == 'GET':
         signature = request.GET.get('signature')
         timestamp = request.GET.get('timestamp')
         nonce = request.GET.get('nonce')
         echostr = request.GET.get('echostr')
-        token = 'weixin'
 
         if signature and timestamp and nonce and echostr:
             tmparray = [token, timestamp, nonce]
@@ -616,9 +618,21 @@ def weixin(request):
             return HttpResponse(cache.get('last_msg'))
 
     if request.method == 'POST':
-        fromuser = request.POST.get('FromUserName')
-        msgtype = request.POST.get('MsgType')
-        msgid = request.POST.get('MsgId')
+        body = request.POST.get('body')
+        aeskey = request.POST.get('encodingaeskey')
+        msg_signature = request.POST.get('msg_signature')
+        timestamp = request.POST.get('timestamp')
+        nonce = request.POST.get('nonce')
+        encrypt_type = request.POST.get('encrypt_type')
+
+        if encrypt_type == 'aes':
+            decrypt_test = WXBizMsgCrypt(token, aeskey, os.environ['weixin_appid'])
+            ret, decryp_xml = decrypt_test.DecryptMsg(body, msg_signature, timestamp, nonce)
+            body = decryp_xml
+
+        fromuser = body.split('<ToUserName><![CDATA[')[1].split(']]></ToUserName>')[0]
+        msgtype = body.split('<MsgType><![CDATA[')[1].split(']]></MsgType>')[0]
+        msgid = body.split('<MsgId>')[1].split('</MsgId>')[0]
 
         user_info_result = get_user_info(fromuser)
         if 'openid' in user_info_result:
@@ -626,10 +640,10 @@ def weixin(request):
             headimgurl = user_info_result['headimgurl']
 
             if msgtype == 'text':
-                content = request.POST.get('Content')
+                content = body.split('<Content><![CDATA[')[1].split(']]></Content>')[0]
                 cache.set('last_msg', nickname + headimgurl + content, 3600)
             elif msgtype == 'image':
-                pilurl = request.POST.get('PicUrl')
-                mediaid = request.POST.get('MediaId')
+                pilurl = body.split('<PicUrl><![CDATA[')[1].split(']]></PicUrl>')[0]
+                mediaid = body.split('<MediaId><![CDATA[')[1].split(']]></MediaId>')[0]
 
         return HttpResponse('')
