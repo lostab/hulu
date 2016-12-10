@@ -636,16 +636,17 @@ def weixin(request):
             msgid = body.split('<MsgId>')[1].split('</MsgId>')[0]
 
             if fromuser:
-                user_info_result = get_user_info(fromuser)
-                if 'openid' in user_info_result:
-                    nickname = user_info_result['nickname']
-                    headimgurl = user_info_result['headimgurl']
+                #user_info_result = get_user_info(fromuser)
+                #if 'openid' in user_info_result:
+                #    nickname = user_info_result['nickname']
+                #    headimgurl = user_info_result['headimgurl']
 
-                    if msgtype == 'text':
-                        content = body.split('<Content><![CDATA[')[1].split(']]></Content>')[0]
-                        cache.set('last_msg', nickname + headimgurl + content, 3600)
-                    elif msgtype == 'image':
-                        pilurl = body.split('<PicUrl><![CDATA[')[1].split(']]></PicUrl>')[0]
-                        mediaid = body.split('<MediaId><![CDATA[')[1].split(']]></MediaId>')[0]
+                if msgtype == 'text':
+                    content = body.split('<Content><![CDATA[')[1].split(']]></Content>')[0]
+                    #cache.set('last_msg', nickname + headimgurl + content, 3600)
+                    cache.set('last_msg', fromuser + ': ' + content, 3600)
+                elif msgtype == 'image':
+                    pilurl = body.split('<PicUrl><![CDATA[')[1].split(']]></PicUrl>')[0]
+                    mediaid = body.split('<MediaId><![CDATA[')[1].split(']]></MediaId>')[0]
 
         return HttpResponse('')
