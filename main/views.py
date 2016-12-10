@@ -583,9 +583,9 @@ def app(request):
 @csrf_exempt
 def weixin(request):
     def get_access_token():
-        api_url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' + os.environ['weixin_appid'] + '&secret=' + os.environ['weixin_secret']
+        apiurl = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' + os.environ['weixin_appid'] + '&secret=' + os.environ['weixin_secret']
         print(apiurl)
-        access_token_result = json.loads(urllib2.urlopen(api_url, context=ctx).read())
+        access_token_result = json.loads(urllib2.urlopen(apiurl, context=ctx).read())
         if 'access_token' in access_token_result:
             return access_token_result['access_token']
         else:
@@ -595,7 +595,7 @@ def weixin(request):
         if cache.get('access_token'):
             apiurl = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' + cache.get('access_token') + '&openid=' + openid + '&lang=zh_CN'
             print(apiurl)
-            user_info_result = json.loads(urllib2.urlopen(api_url, context=ctx).read())
+            user_info_result = json.loads(urllib2.urlopen(apiurl, context=ctx).read())
             if 'openid' in user_info_result:
                 return user_info_result
             else:
