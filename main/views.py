@@ -310,18 +310,20 @@ def jk(request, username):
             with open(jkimg, 'wb+') as destination:
                 for chunk in request.FILES['file'].chunks():
                     destination.write(chunk)
-
-            monitoremail = EmailMessage(
-                '[Hulu Monitor] - ' + username + ' - ' + str(datetime.datetime.now()),
-                '',
-                os.environ['system_mail_username'],
-                [os.environ['receive_mail']],
-                [],
-                reply_to=[],
-                headers={},
-            )
-            monitoremail.attach_file(jkimg)
-            monitoremail.send(fail_silently=False)
+            try:
+                monitoremail = EmailMessage(
+                    '[Hulu Monitor] - ' + username + ' - ' + str(datetime.datetime.now()),
+                    '',
+                    os.environ['system_mail_username'],
+                    [os.environ['receive_mail']],
+                    [],
+                    reply_to=[],
+                    headers={},
+                )
+                monitoremail.attach_file(jkimg)
+                monitoremail.send(fail_silently=False)
+            except:
+                pass
 
         return render(request, 'other/jk.html', {})
 
@@ -582,6 +584,7 @@ def app(request):
 def weixin(request):
     def get_access_token():
         api_url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' + os.environ['weixin_appid'] + '&secret=' + os.environ['weixin_secret']
+        print(apiurl)
         access_token_result = json.loads(urllib2.urlopen(api_url, context=ctx).read())
         if 'access_token' in access_token_result:
             return access_token_result['access_token']
@@ -589,10 +592,15 @@ def weixin(request):
             return get_access_token()
 
     def get_user_info(openid):
-        apiurl = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' + cache.get('access_token') + '&openid=' + openid + '&lang=zh_CN'
-        user_info_result = json.loads(urllib2.urlopen(api_url, context=ctx).read())
-        if 'openid' in user_info_result:
-            return user_info_result
+        if cache.get('access_token'):
+            apiurl = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' + cache.get('access_token') + '&openid=' + openid + '&lang=zh_CN'
+            print(apiurl)
+            user_info_result = json.loads(urllib2.urlopen(api_url, context=ctx).read())
+            if 'openid' in user_info_result:
+                return user_info_result
+            else:
+                cache.set('access_token', get_access_token(), 7200)
+                return get_user_info(openid)
         else:
             cache.set('access_token', get_access_token(), 7200)
             return get_user_info(openid)
@@ -622,21 +630,22 @@ def weixin(request):
 
     if request.method == 'POST':
         body = request.body
+        if body:
+            fromuser = body.split('<FromUserName><![CDATA[')[1].split(']]></FromUserName>')[0]
+            msgtype = body.split('<MsgType><![CDATA[')[1].split(']]></MsgType>')[0]
+            msgid = body.split('<MsgId>')[1].split('</MsgId>')[0]
 
-        fromuser = body.split('<FromUserName><![CDATA[')[1].split(']]></FromUserName>')[0]
-        msgtype = body.split('<MsgType><![CDATA[')[1].split(']]></MsgType>')[0]
-        msgid = body.split('<MsgId>')[1].split('</MsgId>')[0]
+            if fromuser:
+                user_info_result = get_user_info(fromuser)
+                if 'openid' in user_info_result:
+                    nickname = user_info_result['nickname']
+                    headimgurl = user_info_result['headimgurl']
 
-        user_info_result = get_user_info(fromuser)
-        if 'openid' in user_info_result:
-            nickname = user_info_result['nickname']
-            headimgurl = user_info_result['headimgurl']
-
-            if msgtype == 'text':
-                content = body.split('<Content><![CDATA[')[1].split(']]></Content>')[0]
-                cache.set('last_msg', nickname + headimgurl + content, 3600)
-            elif msgtype == 'image':
-                pilurl = body.split('<PicUrl><![CDATA[')[1].split(']]></PicUrl>')[0]
-                mediaid = body.split('<MediaId><![CDATA[')[1].split(']]></MediaId>')[0]
+                    if msgtype == 'text':
+                        content = body.split('<Content><![CDATA[')[1].split(']]></Content>')[0]
+                        cache.set('last_msg', nickname + headimgurl + content, 3600)
+                    elif msgtype == 'image':
+                        pilurl = body.split('<PicUrl><![CDATA[')[1].split(']]></PicUrl>')[0]
+                        mediaid = body.split('<MediaId><![CDATA[')[1].split(']]></MediaId>')[0]
 
         return HttpResponse('')
