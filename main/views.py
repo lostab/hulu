@@ -623,10 +623,13 @@ def weixin(request):
             else:
                 return redirect('/')
         else:
-            if cache.get('last_msg'):
-                return HttpResponse(cache.get('last_msg'))
+            if request.user.is_authenticated() and request.user.id == 1:
+                if cache.get('last_msg'):
+                    return HttpResponse(cache.get('last_msg'))
+                else:
+                    return HttpResponse('')
             else:
-                return HttpResponse('')
+                return redirect('/')
 
     if request.method == 'POST':
         body = request.body
