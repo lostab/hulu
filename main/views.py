@@ -587,16 +587,13 @@ def weixin(request):
         else:
             return get_access_token()
 
-    access_token = get_access_token()
-    last_msg = None
-    
     def get_user_info(openid):
-        apiurl = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' + access_token + '&openid=' + openid + '&lang=zh_CN'
+        apiurl = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' + cache.get('access_token') + '&openid=' + openid + '&lang=zh_CN'
         user_info_result = json.loads(urllib2.urlopen(api_url, context=ctx).read())
         if 'openid' in user_info_result:
             return user_info_result
         else:
-            access_token = get_access_token()
+            cache.set('access_token', get_access_token(), 7200)
             return get_user_info(openid)
 
     if request.method == 'GET':
@@ -616,7 +613,8 @@ def weixin(request):
             else:
                 return redirect('/')
         else:
-            return HttpResponse(last_msg)
+            return HttpResponse(cache.get('last_msg'))
+
     if request.method == 'POST':
         fromuser = request.POST.get('FromUserName')
         msgtype = request.POST.get('MsgType')
@@ -629,7 +627,7 @@ def weixin(request):
 
             if msgtype == 'text':
                 content = request.POST.get('Content')
-                last_msg = nickname + headimgurl + content
+                cache.set('last_msg', nickname + headimgurl + content, 3600)
             elif msgtype == 'image':
                 pilurl = request.POST.get('PicUrl')
                 mediaid = request.POST.get('MediaId')
