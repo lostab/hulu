@@ -583,7 +583,7 @@ def app(request):
 @csrf_exempt
 def weixin(request):
     def get_access_token():
-        apiurl = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' + os.environ['weixin_appid'] + '&secret=' + os.environ['weixin_secret']
+        apiurl = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' + os.environ['weixin_appid_yh'] + '&secret=' + os.environ['weixin_secret_yh']
         print(apiurl)
         access_token_result = json.loads(urllib2.urlopen(apiurl, context=ctx).read())
         if 'access_token' in access_token_result:
