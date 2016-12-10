@@ -184,6 +184,17 @@ $(document).ready(function(){
                                             "opacity": "0.6",
                                             "filter": "alpha(opacity=60)"
                                         });
+                                        $(".search .musicswitch").mouseover(function(){
+                                            $(this).css({
+                                                "opacity": "1",
+                                                "filter": "alpha(opacity=100)"
+                                            });
+                                        }).mouseout(function(){
+                                            $(this).css({
+                                                "opacity": "0.6",
+                                                "filter": "alpha(opacity=60)"
+                                            });
+                                        });
 
                                         var getplaystatus = function(){
                                             if($("body .musicplayer audio")[0].paused){

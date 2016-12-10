@@ -41,6 +41,10 @@ from django.core.mail import EmailMessage
 import hashlib
 import ssl
 
+ctx = ssl.create_default_context()
+ctx.check_hostname = False
+ctx.verify_mode = ssl.CERT_NONE
+
 def index(request):
     #try:
     #    if Site.objects.all():
@@ -161,9 +165,6 @@ def index(request):
             #try:
             if request.user.id == 1 and 'VCAP_SERVICES' in os.environ:
             #if 'VCAP_SERVICES' in os.environ:
-                ctx = ssl.create_default_context()
-                ctx.check_hostname = False
-                ctx.verify_mode = ssl.CERT_NONE
                 #Zhihu
                 #for fetchdate in [[str((datetime.datetime.now() + timedelta(days=1)).strftime('%Y%m%d')), str(datetime.datetime.now().strftime('%Y%m%d'))], [str(datetime.datetime.now().strftime('%Y%m%d')), str((datetime.datetime.now() - timedelta(days=1)).strftime('%Y%m%d'))], [str((datetime.datetime.now() - timedelta(days=1)).strftime('%Y%m%d')), str((datetime.datetime.now() - timedelta(days=2)).strftime('%Y%m%d'))]]:
                 #    zhihuurl = 'http://news.at.zhihu.com/api/3/news/before/' + fetchdate[0]
@@ -578,6 +579,26 @@ def app(request):
         return redirectlogin(request)
 
 def weixin(request):
+    def get_access_token():
+        api_url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' + os.environ['weixin_appid'] + '&secret=' + os.environ['weixin_secret']
+        access_token_result = json.loads(urllib2.urlopen(api_url, context=ctx).read())
+        if 'access_token' in access_token_result:
+            return access_token_result['access_token']
+        else:
+            return get_access_token()
+
+    access_token = get_access_token()
+    last_msg = None
+    
+    def get_user_info(openid):
+        apiurl = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' + access_token + '&openid=' + openid + '&lang=zh_CN'
+        user_info_result = json.loads(urllib2.urlopen(api_url, context=ctx).read())
+        if 'openid' in user_info_result:
+            return user_info_result
+        else:
+            access_token = get_access_token()
+            return get_user_info(openid)
+
     if request.method == 'GET':
         signature = request.GET.get('signature')
         timestamp = request.GET.get('timestamp')
@@ -595,4 +616,22 @@ def weixin(request):
             else:
                 return redirect('/')
         else:
-            return redirect('/')
+            return HttpResponse(last_msg)
+    if request.method == 'POST':
+        fromuser = request.POST.get('FromUserName')
+        msgtype = request.POST.get('MsgType')
+        msgid = request.POST.get('MsgId')
+
+        user_info_result = get_user_info(fromuser)
+        if 'openid' in user_info_result:
+            nickname = user_info_result['nickname']
+            headimgurl = user_info_result['headimgurl']
+
+            if msgtype == 'text':
+                content = request.POST.get('Content')
+                last_msg = nickname + headimgurl + content
+            elif msgtype == 'image':
+                pilurl = request.POST.get('PicUrl')
+                mediaid = request.POST.get('MediaId')
+
+        return HttpResponse('')
