@@ -806,6 +806,16 @@ p.submit-btn, p.cancel-btn {
     white-space: nowrap;
     display: inline-block;
     font-weight: bold;
+    padding: 0 3px 0 3px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+}
+.content-header .homepathlink, .content-header .subpathlink {
+    border: 1px solid lightgray;
+}
+.content-header .homepathlink:hover, .content-header .subpathlink:hover {
+    background: whitesmoke;
 }
 .content-header .homepathlink {
     width: 48px;
