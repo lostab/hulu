@@ -27,6 +27,7 @@ from django.forms.utils import ErrorList
 from django.views.decorators import csrf
 import os
 from django.utils.html import escape
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 if 'VCAP_SERVICES' in os.environ:
     vcap = json.loads(os.environ['VCAP_SERVICES'])
@@ -541,6 +542,17 @@ def List(request):
         users = User.objects.all().order_by('-date_joined')
     except User.DoesNotExist:
         users = None
+
+    paginator = Paginator(users, 100)
+    itemlist = []
+    page = request.GET.get('page')
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+
     content = {
         'users': users
     }

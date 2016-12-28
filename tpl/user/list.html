@@ -21,7 +21,7 @@
                         {% else %}
                         <a class="item-author" href="/{{ user.username }}/"><span class="username">{{ user.username }}</span></a>
                         {% endif %}
-                        <br />
+
                         <span class="userinfo">{{ user.userprofile.info }}</span>
                     </span>
                 </div>
@@ -32,19 +32,19 @@
         </div>
         {% endif %}
         {% endfor %}
-        {% if items.paginator.num_pages > 1 %}
+        {% if users.paginator.num_pages > 1 %}
         <div class="pagination">
             <span class="step-links">
-                {% if items.has_previous %}
-                    <a class="previous-page" href="?page={{ items.previous_page_number }}"><button>上一页</button></a>
+                {% if users.has_previous %}
+                    <a class="previous-page" href="?page={{ users.previous_page_number }}">上一页</a>
                 {% endif %}
 
                 <span class="current">
-                    {{ items.number }} / {{ items.paginator.num_pages }}
+                    {{ users.number }} / {{ users.paginator.num_pages }}
                 </span>
 
-                {% if items.has_next %}
-                    <a class="next-page" href="?page={{ items.next_page_number }}"><button>下一页</button></a>
+                {% if users.has_next %}
+                    <a class="next-page" href="?page={{ users.next_page_number }}">下一页</a>
                 {% endif %}
             </span>
         </div>

@@ -8,7 +8,7 @@
             <h3>发布信息{% if tagname %} - {{ tagname }}{% endif %}</h3>
             <form class="itemform" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <p class="description"><textarea name="content">{{ form.content.value }}</textarea></p>
+                <p class="description"><textarea name="content" placeholder="首行内容将作为信息标题">{{ form.content.value }}</textarea></p>
                 <!--<p>附件：
                 <br />
                 <input class="file" name="file" type="file" value={{ form.file.value }} />
