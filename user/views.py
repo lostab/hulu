@@ -406,6 +406,69 @@ def UserPage(request, username):
             user = None
     except User.DoesNotExist:
         user = None
+
+    if user:
+        try:
+            items = Item.objects.select_related('user').filter(user=user).filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).order_by('-id').prefetch_related('itemcontent_set')
+            items = sorted(items, key=lambda item:item.id, reverse=True)
+
+            subitems = Item.objects.filter(user=user).filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=False)).order_by('-id').prefetch_related('itemcontent_set')
+            belongitems = []
+            for subitem in subitems:
+                rootitems = subitem.get_root_items()
+                for rootitem in rootitems:
+                    #过滤掉重复的、自己发的、私有的信息
+                    if rootitem not in belongitems and rootitem.user != user and rootitem.status != 'private':
+                        belongitems.append(rootitem)
+            belongitems = sorted(belongitems, key=lambda belongitem:belongitem.id, reverse=True)
+
+            for item in items:
+                itemcontent = item.itemcontent_set.all()
+                if itemcontent:
+                    item.create = itemcontent[0].create
+                    if itemcontent[0].content:
+                        item.title = itemcontent[0].content.strip().splitlines()[0]
+                    else:
+                        contentattachment = itemcontent[0].contentattachment_set.all()
+                        if contentattachment:
+                            item.title = contentattachment[0].title
+                        else:
+                            item.title = str(item.id)
+
+            for item in belongitems:
+                itemcontent = item.itemcontent_set.all()
+                if itemcontent:
+                    item.create = itemcontent[0].create
+                    if itemcontent[0].content:
+                        item.title = itemcontent[0].content.strip().splitlines()[0]
+                    else:
+                        contentattachment = itemcontent[0].contentattachment_set.all()
+                        if contentattachment:
+                            item.title = contentattachment[0].title
+                        else:
+                            item.title = str(item.id)
+
+            paginator = Paginator(items, 10)
+            page = request.GET.get('page')
+            try:
+                items = paginator.page(page)
+            except PageNotAnInteger:
+                items = paginator.page(1)
+            except EmptyPage:
+                items = paginator.page(paginator.num_pages)
+
+            paginator_belong = Paginator(belongitems, 10)
+            page = request.GET.get('page')
+            try:
+                belongitems = paginator_belong.page(page)
+            except PageNotAnInteger:
+                belongitems = paginator_belong.page(1)
+            except EmptyPage:
+                belongitems = paginator_belong.page(paginator_belong.num_pages)
+        except Item.DoesNotExist:
+            items = None
+            belongitems = None
+
     if request.GET.get('type') == 'json':
         if user:
             content = {
@@ -424,7 +487,9 @@ def UserPage(request, username):
             }
         return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
     content = {
-        'viewuser': user
+        'viewuser': user,
+        'items': items,
+        'belongitems': belongitems
     }
     return render(request, 'user/defaultpage.html', content)
 
