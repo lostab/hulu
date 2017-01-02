@@ -32,7 +32,7 @@
         left: 0;
         margin-left: 0;
     }
-    input:not(.file-input):not(.qstr):not(.userinfoinput):not(.item-tag-name):not(.item-tag-submit), textarea {
+    input:not(.file-input):not(.qstr):not(.userinfoinput):not(.item-tag-name):not(.item-tag-submit), textarea, .cancel-btn a {
         width: 100%;
         max-width: 360px;
     }
