@@ -34,47 +34,12 @@ def View(request, id):
         tag = None
     try:
         items = Item.objects.select_related('user').filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).filter(Q(status__isnull=True) | Q(status__exact='')).filter(Q(tag__id=id)).all().prefetch_related('itemcontent_set', 'itemcontent_set__contentattachment_set', 'tag')
-        itemlist = []
-        for item in items:
-            #itemcontent = ItemContent.objects.filter(item=item)
-            itemcontent = item.itemcontent_set.all()
-            if itemcontent:
-                item.create = itemcontent[0].create
-                if itemcontent[0].content:
-                    item.title = itemcontent[0].content.strip().splitlines()[0]
-                else:
-                    #contentattachment = ContentAttachment.objects.filter(itemcontent=itemcontent[0])
-                    contentattachment = itemcontent[0].contentattachment_set.all()
-                    if contentattachment:
-                        item.title = contentattachment[0].title
-                    else:
-                        item.title = str(item.id)
 
-                subitem = item.get_all_items(include_self=False)
-                if subitem:
-                    subitem.sort(key=lambda item:item.create, reverse=True)
-                    #itemcontent = ItemContent.objects.filter(item=subitem[0]).reverse()
-                    itemcontent = subitem[0].itemcontent_set.all().reverse()
-                    item.subitemcount = len(subitem)
-                    item.lastsubitem = subitem[0]
-                else:
-                    item.lastsubitem = itemcontent.last()
-                itemlist.append(item)
-
-        itemlist = sorted(itemlist, key=lambda item:item.lastsubitem.create, reverse=True)
-
-        paginator = Paginator(itemlist, 30)
-        itemlist = []
-        page = request.GET.get('page')
-        try:
-            items = paginator.page(page)
-        except PageNotAnInteger:
-            items = paginator.page(1)
-        except EmptyPage:
-            items = paginator.page(paginator.num_pages)
+        items = sort_items(items, request.GET.get('page'))
 
         currentpage = items.number
 
+        itemlist = []
         for item in items:
             itemlist.append(item)
 

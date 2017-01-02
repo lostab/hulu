@@ -32,15 +32,17 @@ class Item(models.Model):
         items = []
         if include_self:
             items.append(self)
-        for item in Item.objects.filter(belong=self).prefetch_related('itemcontent_set'):
-            items.append(item)
-            for subitem in item.get_all_items(include_self=False):
-                items.append(subitem)
-        for item in items:
-            #itemcontent = ItemContent.objects.filter(item=item)
+        #for item in Item.objects.filter(belong=self).prefetch_related('itemcontent_set'):
+        for item in self.item_set.prefetch_related('itemcontent_set'):
             itemcontent = item.itemcontent_set.all()
             item.create = itemcontent[0].create
             item.update = itemcontent.reverse().create
+            items.append(item)
+            for subitem in item.get_all_items(include_self=False):
+                itemcontent = subitem.itemcontent_set.all()
+                subitem.create = itemcontent[0].create
+                subitem.update = itemcontent.reverse().create
+                items.append(subitem)
         return items
 
     def get_root_items(self):

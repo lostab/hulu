@@ -486,6 +486,10 @@ p.submit-btn, p.cancel-btn {
 .home .items {
 
 }
+.items h3 {
+    color: gray;
+    border-bottom: 1px dashed lightgray;
+}
 .items .item-title-line {
     position: relative;
 }
@@ -510,6 +514,9 @@ p.submit-btn, p.cancel-btn {
     vertical-align: middle;
     word-wrap: break-word;
     word-break: break-all;
+}
+.item-title:hover {
+    text-shadow: 0 0 3px;
 }
 .comment-content {
     margin: 10px 0 10px 0;
@@ -562,7 +569,7 @@ p.submit-btn, p.cancel-btn {
     float: right;
     text-align: right;
 }
-.home .subitemcount {
+.subitemcount-box .subitemcount {
     font-family: arial, sans-serif;
     background: lightgray;
     color: black;
@@ -581,7 +588,7 @@ p.submit-btn, p.cancel-btn {
     /*margin: 7px 0 7px 7px;*/
     margin-top: 7px;
 }
-.home .subitemcount:visited {
+.subitemcount-box .subitemcount:visited {
     background: lightgray;
     color: white;
 }

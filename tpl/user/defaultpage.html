@@ -30,9 +30,7 @@
             <pre class="description">{{ viewuser.userprofile.profile }}</pre>
 
 
-            <h3>发起的讨论</h3>
             {% include "item/itemlist.html" %}
-            <h3>参与的讨论</h3>
             {% include "item/belongitemlist.html" %}
         {% else %}
             <p>抱歉，页面不存在。</p>

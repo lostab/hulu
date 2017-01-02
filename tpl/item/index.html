@@ -5,9 +5,7 @@
 {% block content %}
     {% if user.is_authenticated %}
         <div class="content itemindex">
-            <h3>我发布的信息</h3>
             {% include "item/itemlist.html" %}
-            <h3>我参与的信息</h3>
             {% include "item/belongitemlist.html" %}
         </div>
     {% endif %}
