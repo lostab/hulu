@@ -605,11 +605,15 @@ p.submit-btn, p.cancel-btn {
     width: 100%;
     display: block;
     padding: 3px 0 3px 0;
-    background: lightgray;
-    color: white;
+    background: whitesmoke;
+    color: gray;
+    border: 1px solid lightgray;
     border-radius: 3px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
+}
+.home .next-page:hover, .home .previous-page:hover {
+    background: lightgray;
 }
 .content.item .avatar-area {
     width: 48px;
