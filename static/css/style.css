@@ -25,7 +25,7 @@ a:hover {
 a:visited {
     color: black;
 }
-input:not(.file-input):not(.qstr):not(.item-tag-name):not(.item-tag-submit):not(.userinfoinput), textarea {
+input:not(.file-input):not(.qstr):not(.item-tag-name):not(.item-tag-submit):not(.userinfoinput), textarea, .cancel-btn a {
     width: 360px;
     height: 36px;
     font-size: inherit;
@@ -37,6 +37,15 @@ input:not(.file-input):not(.qstr):not(.item-tag-name):not(.item-tag-submit):not(
     border-radius: 3px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
+}
+.cancel-btn a {
+     display: block;
+     margin: 0 auto;
+     line-height: 36px;
+     background: whitesmoke;
+}
+.cancel-btn a:hover {
+    background: lightgray;
 }
 input.submit:not(.item-tag-submit) {
     background: green;
@@ -516,7 +525,7 @@ p.submit-btn, p.cancel-btn {
     word-break: break-all;
 }
 .item-title:hover {
-    text-shadow: 0 0 3px;
+    text-shadow: 0 0 1px;
 }
 .comment-content {
     margin: 10px 0 10px 0;
