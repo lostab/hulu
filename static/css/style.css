@@ -8,6 +8,7 @@ html, body {
     padding: 0;
     font-family: times new roman;
     /*overflow: hidden;*/
+    -webkit-font-smoothing: antialiased;
 }
 .wrapper {
     /*width: 960px;*/
@@ -42,10 +43,10 @@ input:not(.file-input):not(.qstr):not(.item-tag-name):not(.item-tag-submit):not(
      display: block;
      margin: 0 auto;
      line-height: 36px;
-     background: whitesmoke;
+     background: white;
 }
 .cancel-btn a:hover {
-    background: lightgray;
+    background: whitesmoke;
 }
 input.submit:not(.item-tag-submit) {
     background: green;
@@ -496,7 +497,7 @@ p.submit-btn, p.cancel-btn {
 
 }
 .items h3 {
-    color: gray;
+    color: lightgray;
     border-bottom: 1px dashed lightgray;
 }
 .items .item-title-line {
@@ -525,7 +526,7 @@ p.submit-btn, p.cancel-btn {
     word-break: break-all;
 }
 .item-title:hover {
-    text-shadow: 0 0 1px;
+    text-shadow: 0 0 1px gray;
 }
 .comment-content {
     margin: 10px 0 10px 0;
@@ -605,7 +606,7 @@ p.submit-btn, p.cancel-btn {
     width: 100%;
     display: block;
     padding: 3px 0 3px 0;
-    background: whitesmoke;
+    background: white;
     color: gray;
     border: 1px solid lightgray;
     border-radius: 3px;
@@ -613,7 +614,7 @@ p.submit-btn, p.cancel-btn {
     -moz-border-radius: 3px;
 }
 .home .next-page:hover, .home .previous-page:hover {
-    background: lightgray;
+    background: whitesmoke;
 }
 .content.item .avatar-area {
     width: 48px;

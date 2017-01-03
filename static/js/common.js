@@ -27,6 +27,14 @@ $(document).ready(function(){
                 $(this).attr("width", $(this).parent().width());
             }
         });
+
+        if($(".sidebar").height() + 60 > $(window).height()) {
+            $(".sidebar").css({"position": "absolute"});
+            $(".container").css({"min-height": "calc(100% - " + ($(".header").height() + 14 + $(".footer").height() - $(".sidebar").height() - 60 + $(window).height()) + "px - " + $(".container").css("padding-top") + ")"});
+        } else {
+            $(".sidebar").css({"position": "fixed"});
+            $(".container").css({"min-height": "calc(100% - " + ($(".header").height() + 14 + $(".footer").height()) + "px - " + $(".container").css("padding-top") + ")"});
+        }
     }
     $("svg").each(function(){
         $(this).attr("owidth", $(this).attr("width"));
