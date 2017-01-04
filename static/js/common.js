@@ -28,11 +28,15 @@ $(document).ready(function(){
             }
         });
 
-        if($(window).width() > 1200 && $(".sidebar").height() + 60 > $(window).height()) {
+        if($(window).width() > 720 && $(".sidebar").height() + 60 > $(window).height()) {
             $(".sidebar").css({"position": "absolute"});
             $(".container").css({"min-height": "calc(100% - " + ($(".header").height() + 14 + $(".footer").height() - $(".sidebar").height() - 60 + $(window).height()) + "px - " + $(".container").css("padding-top") + ")"});
         } else {
-            $(".sidebar").css({"position": "fixed"});
+            if ($(window).width() > 720) {
+                $(".sidebar").css({"position": "fixed"});
+            } else {
+                $(".sidebar").css({"position": "relative"});
+            }
             $(".container").css({"min-height": "calc(100% - " + ($(".header").height() + 14 + $(".footer").height()) + "px - " + $(".container").css("padding-top") + ")"});
         }
     }
