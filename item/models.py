@@ -31,19 +31,51 @@ class Item(models.Model):
     def get_all_items(self, include_self=True):
         items = []
         if include_self:
-            items.append(self)
+            item = self
+            itemcontent = item.itemcontent_set.all()
+            item.create = itemcontent[0].create
+            item.update = itemcontent.reverse().create
+            items.append(item)
         #for item in Item.objects.filter(belong=self).prefetch_related('itemcontent_set'):
         for item in self.item_set.prefetch_related('itemcontent_set'):
             itemcontent = item.itemcontent_set.all()
             item.create = itemcontent[0].create
             item.update = itemcontent.reverse().create
-            items.append(item)
+            if item not in items:
+                items.append(item)
             for subitem in item.get_all_items(include_self=False):
                 itemcontent = subitem.itemcontent_set.all()
                 subitem.create = itemcontent[0].create
                 subitem.update = itemcontent.reverse().create
-                items.append(subitem)
+                if subitem not in items:
+                    items.append(subitem)
         return items
+    '''def get_all_items(self, items=[], n=0, include_self=True):
+        if include_self:
+            item = self
+            itemcontent = item.itemcontent_set.all()
+            item.create = itemcontent[0].create
+            item.update = itemcontent.reverse().create
+            if item not in items:
+                items.append(item)
+            return items
+        else:
+            subitems = []
+            for subitem in self.item_set.all():
+                subitems.append(subitem)
+            if not subitems:
+                return items
+            else:
+                item = subitems[n]
+                itemcontent = item.itemcontent_set.all()
+                item.create = itemcontent[0].create
+                item.update = itemcontent.reverse().create
+                if item not in items:
+                    items.append(item)
+                if n >= len(subitems) - 1:
+                    return items
+                else:
+                    return subitems[n+1].get_all_items(items, include_self=False)'''
 
     def get_root_items(self):
         rootitems = []
