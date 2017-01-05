@@ -28,7 +28,7 @@ class Item(models.Model):
     belong = models.ManyToManyField('self', symmetrical=False, blank=True)
     tag = models.ManyToManyField(Tag)
 
-    def get_all_items(self, include_self=True):
+    '''def get_all_items(self, include_self=True):
         items = []
         if include_self:
             item = self
@@ -49,33 +49,29 @@ class Item(models.Model):
                 subitem.update = itemcontent.reverse().create
                 if subitem not in items:
                     items.append(subitem)
-        return items
-    '''def get_all_items(self, items=[], n=0, include_self=True):
-        if include_self:
-            item = self
-            itemcontent = item.itemcontent_set.all()
-            item.create = itemcontent[0].create
-            item.update = itemcontent.reverse().create
-            if item not in items:
-                items.append(item)
-            return items
-        else:
-            subitems = []
-            for subitem in self.item_set.all():
-                subitems.append(subitem)
-            if not subitems:
-                return items
-            else:
-                item = subitems[n]
+        return items'''
+    
+    def get_all_items(self, include_self=True):
+        items = []
+        queue = []
+        queue.append(self)
+        while queue:
+            node = queue.pop(0)
+            if include_self:
+                item = node
                 itemcontent = item.itemcontent_set.all()
                 item.create = itemcontent[0].create
                 item.update = itemcontent.reverse().create
                 if item not in items:
                     items.append(item)
-                if n >= len(subitems) - 1:
-                    return items
-                else:
-                    return subitems[n+1].get_all_items(items, include_self=False)'''
+            for item in node.item_set.all():
+                queue.append(item)
+                itemcontent = item.itemcontent_set.all()
+                item.create = itemcontent[0].create
+                item.update = itemcontent.reverse().create
+                if item not in items:
+                    items.append(item)
+        return items
 
     def get_root_items(self):
         rootitems = []
