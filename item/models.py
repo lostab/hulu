@@ -28,7 +28,7 @@ class Item(models.Model):
     belong = models.ManyToManyField('self', symmetrical=False, blank=True)
     tag = models.ManyToManyField(Tag)
 
-    '''def get_all_items(self, include_self=True):
+    def get_all_items(self, include_self=True):
         items = []
         if include_self:
             item = self
@@ -49,9 +49,9 @@ class Item(models.Model):
                 subitem.update = itemcontent.reverse().create
                 if subitem not in items:
                     items.append(subitem)
-        return items'''
-    
-    def get_all_items(self, include_self=True):
+        return items
+
+    '''def get_all_items(self, include_self=True):
         items = []
         queue = []
         queue.append(self)
@@ -71,7 +71,7 @@ class Item(models.Model):
                 item.update = itemcontent.reverse().create
                 if item not in items:
                     items.append(item)
-        return items
+        return items'''
 
     def get_root_items(self):
         rootitems = []
