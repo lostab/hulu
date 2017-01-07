@@ -450,7 +450,7 @@ def wbimg(request):
     else:
         return redirect('/')
 
-def db(request):
+'''def db(request):
     if 'VCAP_SERVICES' not in os.environ:
         return redirect('/')
 
@@ -465,4 +465,4 @@ def db(request):
         url = request.POST.get('url')
         logo = request.POST.get('logo')
         info = request.POST.get('info')
-        return HttpResponse(apps.json())
+        return HttpResponse(apps.json())'''
