@@ -24,8 +24,7 @@ from django.forms.models import inlineformset_factory
 from django.db.models import Q
 
 def Index(request):
-    if request.user.is_authenticated():
-        return redirect('/')
+    return redirect('/')
 
 def View(request, id):
     try:
@@ -68,5 +67,4 @@ def View(request, id):
     return render(request, 'tag/index.html', content)
 
 def Update(request, id):
-    if request.user.is_authenticated():
-        return None
+    return redirect('/')

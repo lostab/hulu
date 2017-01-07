@@ -49,6 +49,15 @@ if 'VCAP_SERVICES' in os.environ:
     if 'elephantsql' in vcap:
         import dj_database_url
         DATABASES['default'] = dj_database_url.config()
+    if 'cloudantNoSQLDB' in vcap:
+        import cloudant
+        nosqldb = vcap['cloudantNoSQLDB'][0]['credentials']
+        USERNAME = nosqldb['username']
+        password = nosqldb['password']
+        account = cloudant.Account(USERNAME, async=True)
+        # login, so we can make changes
+        login = account.login(USERNAME, PASSWORD)
+        assert login.status_code == 200
 
 CACHES = {
     'default': {

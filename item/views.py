@@ -449,3 +449,20 @@ def wbimg(request):
             return jsonp(request, content)
     else:
         return redirect('/')
+
+def db(request):
+    if 'VCAP_SERVICES' not in os.environ:
+        return redirect('/')
+
+    db = account.database('db')
+    if 'apps' not in db:
+        db['apps'] = []
+    apps = db['apps']
+    if request.method == 'GET':
+        return HttpResponse(apps.json())
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        url = request.POST.get('url')
+        logo = request.POST.get('logo')
+        info = request.POST.get('info')
+        return HttpResponse(apps.json())
