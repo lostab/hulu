@@ -52,8 +52,8 @@ if 'VCAP_SERVICES' in os.environ:
     if 'cloudantNoSQLDB' in vcap:
         import cloudant
         nosqldb = vcap['cloudantNoSQLDB'][0]['credentials']
-        USERNAME = nosqldb['username']
-        password = nosqldb['password']
+        USERNAME = str(nosqldb['username'])
+        password = str(nosqldb['password'])
         account = cloudant.Account(USERNAME, async=True)
         # login, so we can make changes
         login = account.login(USERNAME, PASSWORD)
