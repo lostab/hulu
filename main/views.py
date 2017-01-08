@@ -142,9 +142,10 @@ def index(request):
                     page = 1
                 fetchdate = datetime.datetime.now() + timedelta(days=(2 - page))
                 #fetchdate = datetime.datetime.now() + timedelta(hours=(8 + (1 - page) * 24))
-                zhihuurl = 'http://news.at.zhihu.com/api/3/news/before/' + str(fetchdate.strftime('%Y%m%d'))
-                print(str(datetime.datetime.now()))
-                print(zhihuurl)
+                #zhihuurl = 'http://news.at.zhihu.com/api/3/news/before/' + str(fetchdate.strftime('%Y%m%d'))
+                zhihuurl = 'http://news-at.zhihu.com/api/4/news/before/' + str(fetchdate.strftime('%Y%m%d'))
+                #print(str(datetime.datetime.now()))
+                #print(zhihuurl)
                 try:
                     req = urllib2.Request(zhihuurl, headers=hdr)
                     zhihujson = json.loads(urllib2.urlopen(req, context=ctx).read())
