@@ -22,7 +22,9 @@
     .content, .content.item, .content.home, .content-header {
         width: auto;
         float: none;
-        margin: 20px 0;
+    }
+    .content-header {
+        margin-right: -7px;
     }
     .sidebar {
         width: 100%;
@@ -34,7 +36,6 @@
     }
     input:not(.file-input):not(.qstr):not(.userinfoinput):not(.item-tag-name):not(.item-tag-submit), textarea, .cancel-btn a {
         width: 100%;
-        max-width: 360px;
     }
 }
 

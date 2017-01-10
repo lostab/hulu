@@ -9,6 +9,7 @@ html, body {
     font-family: times new roman;
     /*overflow: hidden;*/
     -webkit-font-smoothing: antialiased;
+    background: url() no-repeat fixed center;
 }
 .wrapper {
     /*width: 960px;*/
@@ -238,15 +239,24 @@ textarea {
     text-align: center;
 }
 .container {
-    padding: 31px 7px 7px 7px;
+    padding: 30px 7px 7px 7px;
     margin: 0;
     /*overflow: scroll;
     height: 100%;*/
-    min-height: calc(100% - 100px);
+    min-height: calc(100% - 33px);
     background: white;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    opacity: 0.96;
+    filter: alpha(opacity=96);
 }
 .content {
-    margin: 27px 0 23px 0;
+    /*margin: 17px 0 17px 0;*/
+    margin: 0;
     /*padding: 7px;*/
     min-height: 230px;
 }
@@ -819,8 +829,10 @@ p.submit-btn, p.cancel-btn {
     background: lightgray;
 }
 .content-header {
-    min-height: 36px;
-    line-height: 36px;
+    min-height: 34px;
+    line-height: 34px;
+    margin-bottom: 16px;
+    margin-top: 16px;
 }
 .content-header a.pathlink {
     text-overflow: ellipsis;
@@ -851,7 +863,6 @@ a.createintagbtn {
     float: right;
     background: green;
     padding: 0 8px 0 8px;
-    border: 1px solid green;
     border-radius: 3px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
