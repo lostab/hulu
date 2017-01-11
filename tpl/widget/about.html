@@ -1,7 +1,7 @@
-<h3>关于</h3>
+<h3>{% if 'zh_CN' in request.META.LANG %}关于{% else %}About{% endif %}</h3>
 <div class="about" style="width: 100%; text-align: left;">
-    <p>基于 Django(Python) 开发的社区应用，专注分享和发现。</p>
-    <p>源码： <a href="https://github.com/lostab/hulu" target="blank">github.com/lostab/hulu</a></p>
-    <p>联系： <a href="/u/feedback/">发送私信</a></p>
+    <p>{% if 'zh_CN' in request.META.LANG %}基于 Django(Python) 开发的社区应用，专注分享和发现。{% else %}A community framework based on Django.{% endif %}</p>
+    <p>{% if 'zh_CN' in request.META.LANG %}源码：{% else %}Source: {% endif %} <a href="https://github.com/lostab/hulu" target="blank">github.com/lostab/hulu</a></p>
+    <p>{% if 'zh_CN' in request.META.LANG %}联系：{% else %}Contact: {% endif %} <a href="/u/feedback/">{% if 'zh_CN' in request.META.LANG %}发送私信{% else %}Send Message{% endif %}</a></p>
     <p>Hulu © 2016-{% now "Y" %}</p>
 </div>

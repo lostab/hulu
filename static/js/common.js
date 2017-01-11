@@ -140,6 +140,14 @@ $(document).ready(function(){
         }
     });
 
+    $(".search").submit(function(){
+        var qstr = $(this).find(".qstr");
+        if (qstr.val() == "") {
+            qstr.focus();
+            return false;
+        }
+    });
+    /*
     $(".search .qstr").attr("placeholder", "搜索并播放歌曲");
     $(".search").submit(function(){
         var qstr = $(this).find(".qstr");
@@ -270,4 +278,5 @@ $(document).ready(function(){
             return false;
         }
     });
+    */
 });

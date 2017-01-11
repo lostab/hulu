@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>{% block title %}{% endblock %}Hulu</title>
-    <meta name="description" content="分享和发现有趣的东西。">
+    <meta name="description" content="{% if 'zh_CN' in request.META.LANG %}分享和发现有趣的东西。{% else %}Share and Discover.{% endif %}">
     <meta name="viewport" content="maximum-scale=1,width=device-width,initial-scale=1" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -16,17 +16,17 @@
     <div class="header">
         <a class="logo" href="/">Hulu</a>
         <form class="search" action="/">
-            <input class="qstr" type="text" name="q" placeholder="{% if request.GET.q %}{{ request.GET.q }}{% else %}搜索{% endif %}" />
+            <input class="qstr" type="text" name="q" placeholder="{% if request.GET.q %}{{ request.GET.q }}{% else %}{% if 'zh_CN' in request.META.LANG %}搜索{% else %}Search{% endif %}{% endif %}" />
         </form>
         {% if user.is_authenticated %}
         <div class="right-navbar right-navbar-login">
-            <a href="/u/" class="accounts-button" title="账户"><div class="avatar-area"><div class="avatar" style="background: url({% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}', sizingMethod='scale'); -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader( src='{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}', sizingMethod='scale')";"><img src="{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" alt="{{ user.username }}" /></div></div></a>
-            {% with user.usernotify_set.all|length as notifyamount %}<a href="/m/" title="通知" class="notify-amount{% if notifyamount %} notify-amount-new{% endif %}">{{ notifyamount }}</a>{% endwith %}
-            <a href="/i/create/" title="发布" class="create-button">+</a>
+            <a href="/u/" class="accounts-button" title="{% if 'zh_CN' in request.META.LANG %}账号{% else %}Account{% endif %}"><div class="avatar-area"><div class="avatar" style="background: url({% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}', sizingMethod='scale'); -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader( src='{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}', sizingMethod='scale')";"><img src="{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" alt="{{ user.username }}" /></div></div></a>
+            {% with user.usernotify_set.all|length as notifyamount %}<a href="/m/" title="{% if 'zh_CN' in request.META.LANG %}通知{% else %}Notify{% endif %}" class="notify-amount{% if notifyamount %} notify-amount-new{% endif %}">{{ notifyamount }}</a>{% endwith %}
+            <a href="/i/create/" title="{% if 'zh_CN' in request.META.LANG %}发布{% else %}Post{% endif %}" class="create-button">+</a>
         {% else %}
         <div class="right-navbar">
-            <a class="header-navbar-button" title="登录" href="{% url 'login' %}{% if request.get_full_path != '/' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.get_full_path }}{% endif %}{% endif %}">登录</a>
-            <a class="header-navbar-button" title="注册" href="{% url 'signup' %}{% if request.get_full_path != '/' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.get_full_path }}{% endif %}{% endif %}">注册</a>
+            <a class="header-navbar-button" title="{% if 'zh_CN' in request.META.LANG %}登录{% else %}Sign in{% endif %}" href="{% url 'login' %}{% if request.get_full_path != '/' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.get_full_path }}{% endif %}{% endif %}">{% if 'zh_CN' in request.META.LANG %}登录{% else %}Sign in{% endif %}</a>
+            <a class="header-navbar-button" title="{% if 'zh_CN' in request.META.LANG %}登录{% else %}Sign up{% endif %}" href="{% url 'signup' %}{% if request.get_full_path != '/' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.get_full_path }}{% endif %}{% endif %}">{% if 'zh_CN' in request.META.LANG %}注册{% else %}Sign up{% endif %}</a>
             <!--<a href="/i/create/" title="发布" class="header-navbar-button">发布</a>-->
         {% endif %}
         </div>
