@@ -1,6 +1,6 @@
 {% load i18n %}
 <div class="items">
-    <h3>发起的讨论</h3>
+    <h3>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}发起的讨论{% else %}My Post{% endif %}</h3>
 {% for item in items %}
     {% include "item/itemline.html" %}
 {% endfor %}
@@ -8,7 +8,7 @@
 <div class="pagination">
     <span class="step-links">
         {% if items.has_previous %}
-            <a class="previous-page" href="?page={{ items.previous_page_number }}">上一页</a>
+            <a class="previous-page" href="?page={{ items.previous_page_number }}">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}上一页{% else %}Previous{% endif %}</a>
         {% endif %}
 
         <span class="current">
@@ -16,10 +16,10 @@
         </span>
 
         {% if items.has_next %}
-            <a class="next-page" href="?page={{ items.next_page_number }}">下一页</a>
+            <a class="next-page" href="?page={{ items.next_page_number }}">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}下一页{% else %}Next{% endif %}</a>
         {% endif %}
     </span>
 </div>
 {% endif %}
-{% if not items %}暂无数据{% endif %}
+{% if not items %}{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}暂无数据{% else %}No Data Yet{% endif %}{% endif %}
 </div>

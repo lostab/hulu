@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% if item %}{{ item.title }}{% else %}页面不存在{% endif %} - {% endblock %}
+{% block title %}{% if item %}{{ item.title }}{% else %}{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}页面不存在{% else %}Page Not Found{% endif %}{% endif %} - {% endblock %}
 
 {% block content %}
     <div class="content item">
@@ -26,16 +26,16 @@
             <span class="additemtagform" style="display: none;">
                 {% csrf_token %}
                 <input class="item-tag-name" name="tagname" type="text" />
-                <input class="submit item-tag-submit" type="submit" value="添加" />
+                <input class="submit item-tag-submit" type="submit" value="{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}添加{% else %}Add{% endif %}" />
             </span>
             {% endif %}
             <span class="operate">
                 {% if item.user.username == user.username %}
-                <a class="updatetag-btn" href="" style="">编辑话题</a>
-                <a class="updateitem-btn" href="/i/update/{{ item.id }}/#update-form">更新信息</a>
+                <a class="updatetag-btn" href="" style="">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}编辑话题{% else %}Edit Tags{% endif %}</a>
+                <a class="updateitem-btn" href="/i/update/{{ item.id }}/#update-form">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}更新信息{% else %}Update Post{% endif %}</a>
                 {% endif %}
                 {% if user.id == 1 and item.status != 'private' %}
-                <a class="hideitem-btn" href="" style="">隐藏信息</a>
+                <a class="hideitem-btn" href="" style="">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}隐藏信息{% else %}Hide Post{% endif %}</a>
                 {% endif %}
             </span>
         </form>
@@ -56,10 +56,10 @@
                     {% elif 'audio' in attachmentfile.contenttype %}
                     <p><audio controls>
                         <source src="/s/{{ attachmentfile.file }}" type="audio/ogg">
-                        <a href="/s/{{ attachmentfile.file }}"><span style="font-style: italic;">(附件)</span> {{ attachmentfile.title }}</a>
+                        <a href="/s/{{ attachmentfile.file }}"><span style="font-style: italic;">({% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}附件{% else %}Attachment{% endif %})</span> {{ attachmentfile.title }}</a>
                     </audio></p>
                     {% else %}
-                    <p><a href="/s/{{ attachmentfile.file }}"><span style="font-style: italic;">(附件)</span> {{ attachmentfile.title }}</a></p>
+                    <p><a href="/s/{{ attachmentfile.file }}"><span style="font-style: italic;">({% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}附件{% else %}Attachment{% endif %})</span> {{ attachmentfile.title }}</a></p>
                     {% endif %}
                 {% endfor %}
             </div>
@@ -67,22 +67,22 @@
         </div>
         {% if item.user.username == user.username %}
             <p class="operate">
-                <a class="updateitem-btn" href="/i/update/{{ item.id }}/#update-form">更新信息</a>
+                <a class="updateitem-btn" href="/i/update/{{ item.id }}/#update-form">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}更新信息{% else %}Update Post{% endif %}</a>
             </p>
             <form class="itemform updateitemform" method="post" enctype="multipart/form-data" action="/i/update/{{ item.id }}/">
                 {% csrf_token %}
                 <p class="description"><textarea name="content">{% if form.content.value %}{{ form.content.value }}{% else %}{{ item.content }}{% endif %}</textarea></p>
-                <!--<p>附件：
+                <!--<p>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}附件{% else %}Attachment{% endif %}：
                 <br />
                 <input class="file" name="file" type="file" />
                 <br />
-                (小于2MB有效)</p>-->
-                <p class="submit-btn"><input class="submit" type="submit" value="更新信息" /></p>
-                <p class="cancel-btn"><a href="/i/{{ item.id }}/">取消</a></p>
+                (<2MB)</p>-->
+                <p class="submit-btn"><input class="submit" type="submit" value="{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}更新信息{% else %}Update Post{% endif %}" /></p>
+                <p class="cancel-btn"><a href="/i/{{ item.id }}/">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}取消{% else %}Cancel{% endif %}</a></p>
             </form>
         {% endif %}
 
-        <h3>评论</h3>
+        <h3>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}评论{% else %}Comment{% endif %}</h3>
         <div class="comments">
         {% if items %}
             {% for subitem in items %}
@@ -118,10 +118,10 @@
                                 {% elif 'audio' in attachmentfile.contenttype %}
                                 <p><audio controls>
                                     <source src="/s/{{ attachmentfile.file }}" type="audio/ogg">
-                                    <a href="/s/{{ attachmentfile.file }}"><span style="font-style: italic;">(附件)</span> {{ attachmentfile.title }}</a>
+                                    <a href="/s/{{ attachmentfile.file }}"><span style="font-style: italic;">({% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}附件{% else %}Attachment{% endif %})</span> {{ attachmentfile.title }}</a>
                                 </audio></p>
                                 {% else %}
-                                <p><a href="/s/{{ attachmentfile.file }}"><span style="font-style: italic;">(附件)</span> {{ attachmentfile.title }}</a></p>
+                                <p><a href="/s/{{ attachmentfile.file }}"><span style="font-style: italic;">({% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}附件{% else %}Attachment{% endif %})</span> {{ attachmentfile.title }}</a></p>
                                 {% endif %}
                             {% endfor %}
                         </div>
@@ -129,7 +129,7 @@
 
                     </div>
                     <div class="comment-operate">
-                        <a class="comment-reply" href="{% if user.is_authenticated %}?reply={{ subitem.id }}#comment-form{% else %}{% url 'login' %}?next={{ request.path }}?reply={{ subitem.id }}#comment-form{% endif %}">回复</a>
+                        <a class="comment-reply" href="{% if user.is_authenticated %}?reply={{ subitem.id }}#comment-form{% else %}{% url 'login' %}?next={{ request.path }}?reply={{ subitem.id }}#comment-form{% endif %}">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}回复{% else %}Reply to{% endif %}</a>
                     </div>
                 </div>
             {% endfor %}
@@ -137,7 +137,7 @@
             <div class="pagination">
                 <span class="step-links">
                     {% if items.has_previous %}
-                        <a href="?page={{ items.previous_page_number }}">上一页</a>
+                        <a href="?page={{ items.previous_page_number }}">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}上一页{% else %}Previous{% endif %}</a>
                     {% endif %}
 
                     <span class="current">
@@ -145,13 +145,13 @@
                     </span>
 
                     {% if items.has_next %}
-                        <a href="?page={{ items.next_page_number }}">下一页</a>
+                        <a href="?page={{ items.next_page_number }}">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}下一页{% else %}Next{% endif %}</a>
                     {% endif %}
                 </span>
             </div>
             {% endif %}
         {% else %}
-            <p>暂无评论。</p>
+            <p>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}暂无评论。{% else %}No Comment Yet.{% endif %}</p>
         {% endif %}
         </div>
 
@@ -160,24 +160,24 @@
         <form method="post" class="comment-form itemform" id="comment-form" enctype="multipart/form-data">
             {% csrf_token %}
             <input class="comment-parent" name="reply" type="hidden"{% if request.GET.reply %} value="{{ request.GET.reply }}"{% endif %} />
-            <div class="comment-content">{% if reply %}<div class="comment-reply-to-users">回复 <a class="comment-reply-to-user">{{ reply.user.username }}</a></div>{% endif %}<textarea name="content">{{ form.content.value }}</textarea></div>
-            <!--<p>附件：
+            <div class="comment-content">{% if reply %}<div class="comment-reply-to-users">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}回复{% else %}Reply to{% endif %} <a class="comment-reply-to-user">{{ reply.user.username }}</a></div>{% endif %}<textarea name="content">{{ form.content.value }}</textarea></div>
+            <!--<p>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}附件{% else %}Attachment{% endif %}：
             <br />
             <input class="file" name="file" type="file" />
             <br />
-            (小于2MB有效)</p>-->
-            <p class="submit-btn"><input class="submit" type="submit" value="提交" /></p>
+            (<2MB)</p>-->
+            <p class="submit-btn"><input class="submit" type="submit" value="{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}提交{% else %}Submit{% endif %}" /></p>
         </form>
         {% else %}
-            <p class="login-link"><a href="{% url 'login' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.get_full_path }}{% endif %}">登录</a>
-            或
-            <a href="{% url 'signup' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.get_full_path }}{% endif %}">注册</a>
-            以参与评论。</p>
+            <p class="login-link"><a href="{% url 'login' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.get_full_path }}{% endif %}">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}登录{% else %}Sign in{% endif %}</a>
+            {% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}或{% else %}or{% endif %}
+            <a href="{% url 'signup' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.get_full_path }}{% endif %}">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}注册{% else %}Sign up{% endif %}</a>
+            {% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}以参与评论。{% else %}to post comment.{% endif %}</p>
             <p><a href="/u/login/?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.path }}{% endif %}&type=qq"><img src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_3.png" /></a></p>
         {% endif %}
 
     {% else %}
-        <p>抱歉，页面不存在。</p>
+        <p>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}抱歉，页面不存在。{% else %}Page Not Found.{% endif %}</p>
     {% endif %}
     </div>
 {% endblock %}
@@ -202,9 +202,9 @@ $(document).ready(function(){
 
         $(".comment-form .comment-parent").val($(this).closest(".comment").attr("id"));
         $(".comment-form .comment-reply-to-users").remove();
-        $(".comment-form .comment-content").prepend("<div class=\"comment-reply-to-users\">回复 <a class=\"comment-reply-to-user\">" + $(this).closest(".comment").find(".item-info .comment-author span.username").text() + "</a></div>");
+        $(".comment-form .comment-content").prepend("<div class=\"comment-reply-to-users\">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}回复{% else %}Reply to{% endif %} <a class=\"comment-reply-to-user\">" + $(this).closest(".comment").find(".item-info .comment-author span.username").text() + "</a></div>");
         $(this).hide();
-        $(this).after("<a class=\"cancel-comment-reply\" href=\"\">取消回复</a>");
+        $(this).after("<a class=\"cancel-comment-reply\" href=\"\">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}取消回复{% else %}Cancel{% endif %}</a>");
         $(".comment-form").appendTo($(this).closest(".comment"));
         $(".comment .comment-operate .cancel-comment-reply").click(function(){
             $(".comment-form .comment-parent").val("");
@@ -248,13 +248,13 @@ $(document).ready(function(){
     $(".updatetag-btn").click(function(){
         if ($(".additemtagform").is(":visible")) {
             $(".additemtagform").hide();
-            $(this).text("编辑话题");
+            $(this).text("{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}编辑话题{% else %}Edit Tags{% endif %}");
             $(".item-head .item-tags .item-tag").each(function(){
                 $(this).unbind("click");
             });
         } else {
             $(".additemtagform").show();
-            $(this).text("保存话题");
+            $(this).text("{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}保存话题{% else %}Save Tags{% endif %}");
             $(".item-head .item-tags .item-tag").each(function(){
                 $(this).bind("click", removetag);
             });
@@ -292,7 +292,7 @@ $(document).ready(function(){
     });
     $(".hideitem-btn").click(function(){
         var thus = $(this);
-        var confirm = prompt("请输入 YES 以确定：", "");
+        var confirm = prompt("{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}请输入 YES 以确定：{% else %}Please input YES to comfirm: {% endif %}", "");
         if (confirm == "YES") {
             $.ajax({
                 url: "",

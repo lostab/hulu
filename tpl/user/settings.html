@@ -1,25 +1,25 @@
 {% extends "base.html" %}
 
-{% block title %}完善资料 - {% endblock %}
+{% block title %}{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}完善资料{% else %}Update Settings{% endif %} - {% endblock %}
 
 {% block content %}
     {% if user.is_authenticated %}
         <div class="content setting">
-            <h3>完善资料</h3>
+            <h3>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}完善资料{% else %}Update Settings{% endif %}</h3>
             <div class="avatar" style="background: url({% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}', sizingMethod='scale'); -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader( src='{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}', sizingMethod='scale')";"><img src="{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" /></div>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input class="file-input" name="avatar" type="file" />
                 <br />
-                <span class="tips">提示：图片会被自动压缩</span>
+                <span class="tips">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}提示：图片会被自动压缩{% else %}Tips: Avatar will be compressed.{% endif %}</span>
                 <br />
-                <p>账号：{{ user.username }}</p>
-                {% if not user.userprofile.openid %}<p>邮箱：{{ user.email }}</p>{% endif %}
-                <p class="info">签名：<input class="userinfoinput" name="info" type="text" value="{{ user.userprofile.info }}" /></p>
-                <p class="description">简介：<textarea name="profile">{{ user.userprofile.profile }}</textarea></p>
+                <p>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}帐号：{% else %}Account: {% endif %}{{ user.username }}</p>
+                {% if not user.userprofile.openid %}<p>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}邮箱：{% else %}Email: {% endif %}{{ user.email }}</p>{% endif %}
+                <p class="info">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}签名：{% else %}Name: {% endif %}<input class="userinfoinput" name="info" type="text" value="{{ user.userprofile.info }}" /></p>
+                <p class="description">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}简介：{% else %}Bio: {% endif %}<textarea name="profile">{{ user.userprofile.profile }}</textarea></p>
                 <!--<p class="description">页面：<textarea name="page">{{ user.userprofile.page }}</textarea></p>-->
-                <p class="submit-btn"><input class="submit" type="submit" value="提交" /></p>
-                <p class="cancel-btn">{% if prev == 'signup' %}<a href="{% if next %}{{ next }}{% else %}/{% endif %}">跳过</a>{% else %}<a href="/u/">取消</a>{% endif %}</p>
+                <p class="submit-btn"><input class="submit" type="submit" value="{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}提交{% else %}Submit{% endif %}" /></p>
+                <p class="cancel-btn">{% if prev == 'signup' %}<a href="{% if next %}{{ next }}{% else %}/{% endif %}">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}跳过{% else %}Skip{% endif %}</a>{% else %}<a href="/u/">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}取消{% else %}Cancel{% endif %}</a>{% endif %}</p>
             </form>
         </div>
     {% endif %}

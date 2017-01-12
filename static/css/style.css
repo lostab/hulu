@@ -834,7 +834,7 @@ p.submit-btn, p.cancel-btn {
 .content-header a.pathlink {
     text-overflow: ellipsis;
     overflow: hidden;
-    max-width: 50%;
+    max-width: 30%;
     white-space: nowrap;
     display: inline-block;
     font-weight: bold;
@@ -850,7 +850,7 @@ p.submit-btn, p.cancel-btn {
     background: whitesmoke;
 }
 .content-header .homepathlink {
-    width: 40px;
+    min-width: 40px;
     text-align: center;
 }
 .content-header .subpathlink {

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}更新信息 - {% endblock %}
+{% block title %}{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}更新信息{% else %}Update Post{% endif %} - {% endblock %}
 
 {% block content %}
     {% if user.is_authenticated %}
@@ -37,25 +37,25 @@
                         {% elif 'audio' in attachmentfile.contenttype %}
                         <p><audio controls>
                             <source src="/s/{{ attachmentfile.file }}" type="audio/ogg">
-                            <a href="/s/{{ attachmentfile.file }}"><span style="font-style: italic;">(附件)</span> {{ attachmentfile.title }}</a>
+                            <a href="/s/{{ attachmentfile.file }}"><span style="font-style: italic;">({% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}附件{% else %}Attachment{% endif %})</span> {{ attachmentfile.title }}</a>
                         </audio></p>
                         {% else %}
-                        <p><a href="/s/{{ attachmentfile.file }}"><span style="font-style: italic;">(附件)</span> {{ attachmentfile.title }}</a></p>
+                        <p><a href="/s/{{ attachmentfile.file }}"><span style="font-style: italic;">({% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}附件{% else %}Attachment{% endif %})</span> {{ attachmentfile.title }}</a></p>
                         {% endif %}
                     {% endfor %}
                 </div>
             {% endfor %}
-            <h3 id="update-form">更新信息</h3>
+            <h3 id="update-form">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}更新信息{% else %}Update Post{% endif %}</h3>
             <form class="itemform" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <p class="description"><textarea name="content">{% if form.content.value %}{{ form.content.value }}{% else %}{{ item.content }}{% endif %}</textarea></p>
-                <!--<p>附件：
+                <!--<p>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}附件{% else %}Attachment{% endif %}：
                 <br />
                 <input class="file" name="file" type="file" />
                 <br />
-                (小于2MB有效)</p>-->
-                <p class="submit-btn"><input class="submit" type="submit" value="更新信息" /></p>
-                <p class="cancel-btn"><a href="/i/{{ item.id }}/">取消</a></p>
+                (<2MB)</p>-->
+                <p class="submit-btn"><input class="submit" type="submit" value="{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}更新信息{% else %}Update Post{% endif %}" /></p>
+                <p class="cancel-btn"><a href="/i/{{ item.id }}/">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}取消{% else %}Cancel{% endif %}</a></p>
             </form>
             {% endif %}
         </div>

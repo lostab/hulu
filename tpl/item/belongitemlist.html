@@ -1,6 +1,6 @@
 {% load i18n %}
 <div class="items">
-    <h3>参与的讨论</h3>
+    <h3>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}参与的讨论{% else %}My Comment{% endif %}</h3>
 {% for item in belongitems %}
     {% include "item/itemline.html" %}
 {% endfor %}
@@ -8,7 +8,7 @@
 <div class="pagination">
     <span class="step-links">
         {% if belongitems.has_previous %}
-            <a class="previous-page" href="?page={{ belongitems.previous_page_number }}">上一页</a>
+            <a class="previous-page" href="?page={{ belongitems.previous_page_number }}">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}上一页{% else %}Previous{% endif %}</a>
         {% endif %}
 
         <span class="current">
@@ -16,10 +16,10 @@
         </span>
 
         {% if belongitems.has_next %}
-            <a class="next-page" href="?page={{ belongitems.next_page_number }}">下一页</a>
+            <a class="next-page" href="?page={{ belongitems.next_page_number }}">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}下一页{% else %}Next{% endif %}</a>
         {% endif %}
     </span>
 </div>
 {% endif %}
-{% if not belongitems %}暂无数据{% endif %}
+{% if not belongitems %}{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}暂无数据{% else %}No Data Yet{% endif %}{% endif %}
 </div>

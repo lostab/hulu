@@ -49,6 +49,7 @@ $(document).ready(function(){
         svgresize();
     });
     $(".container").css({"min-height": "calc(100% - " + ($(".header").height() - 46 + $(".footer").height()) + "px - " + $(".container").css("padding-top") + ")"});
+    $(".header .search").css({"width": "calc(100% - " + ($(".header .logo").width() + $(".header .right-navbar").width() + 24) + "px)", "margin-right": ($(".header .right-navbar").width() + 16) + "px"});
 
     $(".itemform .submit").click(function(){
         if($.trim($(this).closest(".itemform").find("textarea").val()) == "") {

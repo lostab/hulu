@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% if tag %}{{ tag.name }}{% else %}页面不存在{% endif %} - {% endblock %}
+{% block title %}{% if tag %}{{ tag.name }}{% else %}{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}页面不存在{% else %}Page Not Found{% endif %}{% endif %} - {% endblock %}
 
 {% block content %}
     <div class="content-header">
     {% if tag %}
-            <a class="pathlink homepathlink" href="/">首页</a>
+            <a class="pathlink homepathlink" href="/">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}首页{% else %}Home{% endif %}</a>
             <a class="pathlink">></a>
             <a class="pathlink subpathlink" href="/t/{{ tag.id }}/">{{ tag.name }}</a>
-            <a class="createintagbtn" href="/i/create/?t={{ tag.name }}">发布信息</a>
+            <a class="createintagbtn" href="/i/create/?t={{ tag.name }}">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}发布信息{% else %}New Post{% endif %}</a>
     {% else %}
-        <p>抱歉，页面不存在。</p>
+        <p>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}抱歉，页面不存在。{% else %}Page Not Found.{% endif %}</p>
     {% endif %}
     </div>
 
@@ -24,7 +24,7 @@
         <div class="pagination">
             <span class="step-links">
                 {% if items.has_previous %}
-                    <a class="previous-page" href="?page={{ items.previous_page_number }}">上一页</a>
+                    <a class="previous-page" href="?page={{ items.previous_page_number }}">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}上一页{% else %}Previous{% endif %}</a>
                 {% endif %}
 
                 <span class="current">
@@ -32,7 +32,7 @@
                 </span>
 
                 {% if items.has_next %}
-                    <a class="next-page" href="?page={{ items.next_page_number }}">下一页</a>
+                    <a class="next-page" href="?page={{ items.next_page_number }}">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}下一页{% else %}Next{% endif %}</a>
                 {% endif %}
             </span>
         </div>
@@ -56,11 +56,11 @@ $(document).ready(function(){
             $(".content.home>.items>.item").last().css({"border": "none"});     //去掉末行底部边框
             $(".content.home .items .pagination .current").hide();
             $(".content.home .items .pagination .previous-page").hide();
-            $(".content.home .items .pagination .next-page").text("加载更多");
+            $(".content.home .items .pagination .next-page").text("{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}加载更多{% else %}load more{% endif %}");
             //$(".content.home .items .pagination .next-page").css({"width": "100%", "height":"30px"});
             $(".content.home .items .pagination .next-page").click(function(){
                 var url = $(this).attr("href");
-                $(".content.home .items .pagination .next-page").text("加载中…");
+                $(".content.home .items .pagination .next-page").text("{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}加载中…{% else %}loading...{% endif %}");
                 $(".content.home .items .pagination .next-page").attr("disabled",true);
                 $(".content.home .items .pagination .current").load(url + " .items", function(){
                     //去掉页数超限情况下的重复项

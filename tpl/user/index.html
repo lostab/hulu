@@ -1,25 +1,25 @@
 {% extends "base.html" %}
 
-{% block title %}我的资料 - {% endblock %}
+{% block title %}{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}我的资料{% else %}My Settings{% endif %} - {% endblock %}
 
 {% block content %}
     {% if user.is_authenticated %}
         <div class="content userprofile">
-            <h3>我的资料</h3>
+            <h3>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}我的资料{% else %}My Settings{% endif %}</h3>
             <a href="/{{ user.username }}/"><div class="avatar" style="background: url({% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}', sizingMethod='scale'); -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader( src='{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}', sizingMethod='scale')";"><img src="{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" /></div></a>
             <p class="operate">
-                <a href="/i/">我的分享</a>
-                <a href="/u/settings/">完善资料</a>
+                <a href="/i/">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}我的分享{% else %}My Post{% endif %}</a>
+                <a href="/u/settings/">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}完善资料{% else %}Update Settings{% endif %}</a>
                 <br />
-                {% if not user.userprofile.openid %}<a href="/u/password_change/">修改密码</a>{% endif %}
-                <a href="/u/logout/">退出登录</a>
+                {% if not user.userprofile.openid %}<a href="/u/password_change/">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}修改密码{% else %}Change Password{% endif %}</a>{% endif %}
+                <a href="/u/logout/">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}退出登录{% else %}Sign out{% endif %}</a>
                 <br />
             </p>
-            <p>帐号：{{ user.username }}</p>
-            {% if not user.userprofile.openid %}<p>邮箱：{{ user.email }}</p>{% endif %}
-            <p>签名：{{ user.userprofile.info }}</p>
-            <span class="descriptionlabel">简介：</span><pre class="description">{{ user.userprofile.profile }}</pre>
-            <p class="created">注册于{{ user.userprofile.create|date:'Y年m月d日' }}</p>
+            <p>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}帐号：{% else %}Account: {% endif %}{{ user.username }}</p>
+            {% if not user.userprofile.openid %}<p>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}邮箱：{% else %}Email: {% endif %}{{ user.email }}</p>{% endif %}
+            <p>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}签名：{% else %}Name: {% endif %}{{ user.userprofile.info }}</p>
+            <span class="descriptionlabel">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}简介：{% else %}Bio: {% endif %}</span><pre class="description">{{ user.userprofile.profile }}</pre>
+            <p class="created">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}注册于{{ user.userprofile.create|date:'Y年m月d日' }}{% else %}Sign up @ {{ user.userprofile.create|date:'Y-m-d' }}{% endif %}</p>
         </div>
     {% endif %}
 {% endblock %}

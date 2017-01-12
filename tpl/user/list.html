@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}用户列表 - {% endblock %}
+{% block title %}{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}用户列表{% else %}User List{% endif %} - {% endblock %}
 
 {% block content %}
     <div class="content userlist">
-        <h3>用户列表</h3>
+        <h3>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}用户列表{% else %}User List{% endif %}</h3>
         <div class="items">
         {% for user in users %}
         {% if user.userprofile %}
@@ -12,7 +12,7 @@
             <div class="avatar-area"><div class="avatar" style="background: url({% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}', sizingMethod='scale'); -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader( src='{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}', sizingMethod='scale')";"><a href="/{{ user.username }}/"><img src="{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" /></a></div></div>
             <div class="item-line">
                 <div class="item-info">
-                    <span class="item-info-right"><a class="item-created">{{ user.userprofile.create|date:'Y年m月d日' }}</a>
+                    <span class="item-info-right"><a class="item-created">{{ user.userprofile.create|date:'Y-m-d' }}</a>
                     </span>
 
                     <span class="item-info-left">
@@ -36,7 +36,7 @@
         <div class="pagination">
             <span class="step-links">
                 {% if users.has_previous %}
-                    <a class="previous-page" href="?page={{ users.previous_page_number }}">上一页</a>
+                    <a class="previous-page" href="?page={{ users.previous_page_number }}">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}上一页{% else %}Previous{% endif %}</a>
                 {% endif %}
 
                 <span class="current">
@@ -44,7 +44,7 @@
                 </span>
 
                 {% if users.has_next %}
-                    <a class="next-page" href="?page={{ users.next_page_number }}">下一页</a>
+                    <a class="next-page" href="?page={{ users.next_page_number }}">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}下一页{% else %}Next{% endif %}</a>
                 {% endif %}
             </span>
         </div>

@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 
-{% block title %}通知中心 - {% endblock %}
+{% block title %}{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}通知中心{% else %}Notify{% endif %} - {% endblock %}
 
 {% block content %}
     {% if user.is_authenticated %}
         <div class="content notify">
-            <h3>通知中心</h3>
+            <h3>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}通知中心{% else %}Notify{% endif %}</h3>
             {% if notify %}
                 {% for i in notify %}
                     <!--<p>您发布的 {% with i.item.belong.all|first as belong %}<a href="/i/{{ belong.id }}/">{% with belong.itemcontent_set.all|first as belongcontent %}{{ belongcontent.content|slice:'30' }}...{% endwith %}</a>{% endwith %} 有了 <a href="/{{ i.item.user.username }}/">{{ i.item.user.username }}</a> 的新回应：<a href="/i/{{ i.item.id }}/">{% with i.item.itemcontent_set.all|first as itemcontent %}{{ itemcontent.content|slice:'30' }}...{% endwith %}</a></p>-->
-                    <p>您发布的 {% with i.item.belong.all|first as belong %}<a href="/i/{{ i.rootitem.id }}/#{{ belong.id }}">{% with belong.itemcontent_set.all|first as belongcontent %}{{ belongcontent.content|slice:'30' }}...{% endwith %}</a>{% endwith %} 有了 <a href="/{{ i.item.user.username }}/">{{ i.item.user.username }}</a> 的新回应：<a href="/i/{{ i.rootitem.id }}/#{{ i.item.id }}">{% with i.item.itemcontent_set.all|first as itemcontent %}{{ itemcontent.content|slice:'30' }}...{% endwith %}</a></p>
+                    <p>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}您发布的{% else %}Your Post{% endif %} {% with i.item.belong.all|first as belong %}<a href="/i/{{ i.rootitem.id }}/#{{ belong.id }}">{% with belong.itemcontent_set.all|first as belongcontent %}{{ belongcontent.content|slice:'30' }}...{% endwith %}</a>{% endwith %} {% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}有了{% else %}has{% endif %} <a href="/{{ i.item.user.username }}/">{{ i.item.user.username }}</a> {% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}的新回应：{% else %}'s new comment: {% endif %}<a href="/i/{{ i.rootitem.id }}/#{{ i.item.id }}">{% with i.item.itemcontent_set.all|first as itemcontent %}{{ itemcontent.content|slice:'30' }}...{% endwith %}</a></p>
                 {% endfor %}
             {% else %}
-                <p>暂无通知。</p>
+                <p>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}暂无通知。{% else %}No Notify Yet.{% endif %}</p>
             {% endif %}
         </div>
     {% endif %}

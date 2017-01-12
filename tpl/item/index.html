@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}我的分享 - {% endblock %}
+{% block title %}{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}我的分享{% else %}My Post{% endif %} - {% endblock %}
 
 {% block content %}
     {% if user.is_authenticated %}
