@@ -129,7 +129,7 @@
 
                     </div>
                     <div class="comment-operate">
-                        <a class="comment-reply" href="{% if user.is_authenticated %}?reply={{ subitem.id }}#comment-form{% else %}{% url 'login' %}?next={{ request.path }}?reply={{ subitem.id }}#comment-form{% endif %}">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}回复{% else %}Reply to{% endif %}</a>
+                        <a class="comment-reply" href="{% if user.is_authenticated %}?reply={{ subitem.id }}#comment-form{% else %}{% url 'login' %}?next={{ request.path }}?reply={{ subitem.id }}#comment-form{% endif %}">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}回复{% else %}Reply{% endif %}</a>
                     </div>
                 </div>
             {% endfor %}
