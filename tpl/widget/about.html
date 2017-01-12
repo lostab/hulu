@@ -1,7 +1,7 @@
-<h3>{% if 'zh_CN' in request.META.HTTP_ACCEPT_LANGUAGE %}关于{% else %}About{% endif %}</h3>
+<h3>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}关于{% else %}About{% endif %}</h3>
 <div class="about" style="width: 100%; text-align: left;">
-    <p>{% if 'zh_CN' in request.META.HTTP_ACCEPT_LANGUAGE %}基于 Django(Python) 开发的社区应用，专注分享和发现。{% else %}A community framework based on Django.{% endif %}</p>
-    <p>{% if 'zh_CN' in request.META.HTTP_ACCEPT_LANGUAGE %}源码：{% else %}Source: {% endif %} <a href="https://github.com/lostab/hulu" target="blank">github.com/lostab/hulu</a></p>
-    <p>{% if 'zh_CN' in request.META.HTTP_ACCEPT_LANGUAGE %}联系：{% else %}Contact: {% endif %} <a href="/u/feedback/">{% if 'zh_CN' in request.META.HTTP_ACCEPT_LANGUAGE %}发送私信{% else %}Send Message{% endif %}</a></p>
+    <p>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}基于 Django(Python) 开发的社区应用，专注分享和发现。{% else %}A community framework based on Django.{% endif %}</p>
+    <p>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}源码：{% else %}Source: {% endif %} <a href="https://github.com/lostab/hulu" target="blank">github.com/lostab/hulu</a></p>
+    <p>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}联系：{% else %}Contact: {% endif %} <a href="/u/feedback/">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}发送私信{% else %}Send Message{% endif %}</a></p>
     <p>Hulu © 2016-{% now "Y" %}</p>
 </div>
