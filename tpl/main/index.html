@@ -70,7 +70,7 @@ $(document).ready(function(){
             $(".content.home>.items>.item").last().css({"border": "none"});     //去掉末行底部边框
             $(".content.home .items .pagination .current").hide();
             $(".content.home .items .pagination .previous-page").hide();
-            $(".content.home .items .pagination .next-page").text("{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}加载更多{% else %}load more{% endif %}");
+            $(".content.home .items .pagination .next-page").text("{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}加载更多{% else %}Load More{% endif %}");
             //$(".content.home .items .pagination .next-page").css({"width": "100%", "height":"30px"});
             var loadstatus = 0;
             $(".content.home .items .pagination .next-page").click(function(){
