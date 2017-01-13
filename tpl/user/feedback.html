@@ -1,19 +1,19 @@
 {% extends "base.html" %}
 
-{% block title %}{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}发送私信{% else %}Send Message{% endif %} - {% endblock %}
+{% block title %}{% if 'zh' in request.LANGUAGE_CODE %}发送私信{% else %}Send Message{% endif %} - {% endblock %}
 
 {% block content %}
     <div class="content feedback">
-        <h3>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}发送私信{% else %}Send Message{% endif %}</h3>
+        <h3>{% if 'zh' in request.LANGUAGE_CODE %}发送私信{% else %}Send Message{% endif %}</h3>
         {% if submit %}
-        <p>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}发送成功，多谢您的关注。{% else %}Send Successfully, Thank you.{% endif %}</p>
+        <p>{% if 'zh' in request.LANGUAGE_CODE %}发送成功，多谢您的关注。{% else %}Send Successfully, Thank you.{% endif %}</p>
         {% else %}
         <form method="post" class="itemform">
             {% csrf_token %}
             <p>
                 <textarea name="feedback" class="feedbackinput"></textarea>
             </p>
-            <p class="submit-btn"><input class="submit" type="submit" value="{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}提交{% else %}Submit{% endif %}" /></p>
+            <p class="submit-btn"><input class="submit" type="submit" value="{% if 'zh' in request.LANGUAGE_CODE %}提交{% else %}Submit{% endif %}" /></p>
         </form>
         {% endif %}
     </div>

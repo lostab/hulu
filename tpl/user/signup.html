@@ -1,55 +1,55 @@
 {% extends "base.html" %}
 
-{% block title %}{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}注册{% else %}Sign up{% endif %} - {% endblock %}
+{% block title %}{% if 'zh' in request.LANGUAGE_CODE %}注册{% else %}Sign up{% endif %} - {% endblock %}
 
 {% block content %}
     <div class="content signup">
-        <h3>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}注册{% else %}Sign up{% endif %}</h3>
+        <h3>{% if 'zh' in request.LANGUAGE_CODE %}注册{% else %}Sign up{% endif %}</h3>
         <form method="post">
             {% csrf_token %}
-            <p><input name="email" type="email" value="{{ form.email.value }}" placeholder="{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}请输入邮箱{% else %}Email{% endif %}" />
+            <p><input name="email" type="email" value="{{ form.email.value }}" placeholder="{% if 'zh' in request.LANGUAGE_CODE %}请输入邮箱{% else %}Email{% endif %}" />
                 {% if form.email.errors %}
                     <br />
                     {% if form.email.value %}
                         {% if 'Enter a valid email address.' in form.email.errors %}
-                            <span class="error">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}邮箱格式错误{% else %}Email is error{% endif %}</span>
+                            <span class="error">{% if 'zh' in request.LANGUAGE_CODE %}邮箱格式错误{% else %}Email is error{% endif %}</span>
                         {% elif 'User with this Email address already exists.' in form.email.errors %}
-                            <span class="error">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}邮箱已被注册{% else %}Email has been used{% endif %}</span>
+                            <span class="error">{% if 'zh' in request.LANGUAGE_CODE %}邮箱已被注册{% else %}Email has been used{% endif %}</span>
                         {% else %}
                             <span class="error">{{ form.email.errors }}</span>
                         {% endif %}
                     {% else %}
-                        <span class="error">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}请填写邮箱{% else %}Please input Email{% endif %}</span>
+                        <span class="error">{% if 'zh' in request.LANGUAGE_CODE %}请填写邮箱{% else %}Please input Email{% endif %}</span>
                     {% endif %}
                 {% endif %}
             </p>
-            <p><input name="username" type="text" value="{{ form.username.value }}" placeholder="{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}请输入帐号{% else %}Account{% endif %}" />
+            <p><input name="username" type="text" value="{{ form.username.value }}" placeholder="{% if 'zh' in request.LANGUAGE_CODE %}请输入帐号{% else %}Account{% endif %}" />
                 {% if form.username.errors %}
                     <br />
                     {% if form.username.value %}
                         {% if 'Ensure this value has at least 6 characters' in form.username.errors %}
-                            <span class="error">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}至少3位字符{% else %}At least 3 Characters{% endif %}</span>
+                            <span class="error">{% if 'zh' in request.LANGUAGE_CODE %}至少3位字符{% else %}At least 3 Characters{% endif %}</span>
                         {% elif 'A user with that username already exists.' in form.username.errors %}
-                            <span class="error">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}帐号已被注册{% else %}Username has been used{% endif %}</span>
+                            <span class="error">{% if 'zh' in request.LANGUAGE_CODE %}帐号已被注册{% else %}Username has been used{% endif %}</span>
                         {% elif 'The username is not allowed.' in form.username.errors %}
-                            <span class="error">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}帐号不允许被使用{% else %}Username is not allowed{% endif %}</span>
+                            <span class="error">{% if 'zh' in request.LANGUAGE_CODE %}帐号不允许被使用{% else %}Username is not allowed{% endif %}</span>
                         {% else %}
                             <span class="error">{{ form.username.errors }}</span>
                         {% endif %}
                     {% else %}
-                        <span class="error">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}请填写账号{% else %}Please input Account{% endif %}</span>
+                        <span class="error">{% if 'zh' in request.LANGUAGE_CODE %}请填写账号{% else %}Please input Account{% endif %}</span>
                     {% endif %}
                 {% endif %}
             </p>
-            <p><input name="password1" type="password" placeholder="{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}请输入密码{% else %}Password{% endif %}" />
+            <p><input name="password1" type="password" placeholder="{% if 'zh' in request.LANGUAGE_CODE %}请输入密码{% else %}Password{% endif %}" />
                 {% if form.errors and not form.email.errors and not form.username.errors %}
                     <br />
-                    <span class="error">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}密码填写错误{% else %}Password is Wrong{% endif %}</span>
+                    <span class="error">{% if 'zh' in request.LANGUAGE_CODE %}密码填写错误{% else %}Password is Wrong{% endif %}</span>
                 {% endif %}
             </p>
-            <p><input name="password2" type="password" placeholder="{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}请再次输入密码{% else %}Password{% endif %}" /></p>
-            <p><input class="submit" type="submit" value="{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}注册{% else %}Sign up{% endif %}" /></p>
-            <p>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}已有帐号？{% else %}Already Signed up?{% endif %}<a href="{% url 'login' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.path }}{% endif %}">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}现在登录{% else %}Sign in Now{% endif %}</a></p>
+            <p><input name="password2" type="password" placeholder="{% if 'zh' in request.LANGUAGE_CODE %}请再次输入密码{% else %}Password{% endif %}" /></p>
+            <p><input class="submit" type="submit" value="{% if 'zh' in request.LANGUAGE_CODE %}注册{% else %}Sign up{% endif %}" /></p>
+            <p>{% if 'zh' in request.LANGUAGE_CODE %}已有帐号？{% else %}Already Signed up?{% endif %}<a href="{% url 'login' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.path }}{% endif %}">{% if 'zh' in request.LANGUAGE_CODE %}现在登录{% else %}Sign in Now{% endif %}</a></p>
             <p><a href="?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.path }}{% endif %}&type=qq"><img src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_3.png" /></a></p>
         </form>
     </div>

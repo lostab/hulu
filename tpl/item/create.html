@@ -1,21 +1,21 @@
 {% extends "base.html" %}
 
-{% block title %}{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}发布信息{% else %}New Post{% endif %} - {% endblock %}
+{% block title %}{% if 'zh' in request.LANGUAGE_CODE %}发布信息{% else %}New Post{% endif %} - {% endblock %}
 
 {% block content %}
     {% if user.is_authenticated %}
         <div class="content create">
-            <h3>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}发布信息{% else %}New Post{% endif %}{% if tagname %} - {{ tagname }}{% endif %}</h3>
+            <h3>{% if 'zh' in request.LANGUAGE_CODE %}发布信息{% else %}New Post{% endif %}{% if tagname %} - {{ tagname }}{% endif %}</h3>
             <form class="itemform" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <p class="description"><textarea name="content" placeholder="{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}首行内容将作为信息标题{% else %}The first line will be the Title{% endif %}">{{ form.content.value }}</textarea></p>
-                <!--<p>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}附件{% else %}Attachment{% endif %}：
+                <p class="description"><textarea name="content" placeholder="{% if 'zh' in request.LANGUAGE_CODE %}首行内容将作为信息标题{% else %}The first line will be the Title{% endif %}">{{ form.content.value }}</textarea></p>
+                <!--<p>{% if 'zh' in request.LANGUAGE_CODE %}附件{% else %}Attachment{% endif %}：
                 <br />
                 <input class="file" name="file" type="file" value={{ form.file.value }} />
                 <br />
                 (<2MB)</p>-->
 
-                <p class="submit-btn"><input class="submit" type="submit" value="{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}发布信息{% else %}New Post{% endif %}" /></p>
+                <p class="submit-btn"><input class="submit" type="submit" value="{% if 'zh' in request.LANGUAGE_CODE %}发布信息{% else %}New Post{% endif %}" /></p>
             </form>
         </div>
     {% endif %}

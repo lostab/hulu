@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
-{% block title %}{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}退出成功{% else %}Sign out Success{% endif %} - {% endblock %}
+{% block title %}{% if 'zh' in request.LANGUAGE_CODE %}退出成功{% else %}Sign out Success{% endif %} - {% endblock %}
 
 {% block content %}
     <div class="content pwcd">
-        <p>{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}退出成功。{% else %}Sign out Success.{% endif %}<a href="/u/login/">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}登录{% else %}Sign in{% endif %}</a></p>
+        <p>{% if 'zh' in request.LANGUAGE_CODE %}退出成功。{% else %}Sign out Success.{% endif %}<a href="/u/login/">{% if 'zh' in request.LANGUAGE_CODE %}登录{% else %}Sign in{% endif %}</a></p>
     </div>
 {% endblock %}

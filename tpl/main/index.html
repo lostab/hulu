@@ -5,12 +5,12 @@
 
 {% block content %}
     <div class="content-header">
-            <a class="pathlink homepathlink" href="/">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}首页{% else %}Home{% endif %}</a>
+            <a class="pathlink homepathlink" href="/">{% if 'zh' in request.LANGUAGE_CODE %}首页{% else %}Home{% endif %}</a>
             {% if request.GET.q %}
             <a class="pathlink">></a>
-            <a class="pathlink subpathlink">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}搜索结果{% else %}Search Result{% endif %}</a>
+            <a class="pathlink subpathlink">{% if 'zh' in request.LANGUAGE_CODE %}搜索结果{% else %}Search Result{% endif %}</a>
             {% endif %}
-            <a class="createintagbtn" href="/i/create/">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}发布信息{% else %}New Post{% endif %}</a>
+            <a class="createintagbtn" href="/i/create/">{% if 'zh' in request.LANGUAGE_CODE %}发布信息{% else %}New Post{% endif %}</a>
     </div>
     <div class="content home">
         <div class="items">
@@ -21,7 +21,7 @@
         <div class="pagination">
             <span class="step-links">
                 {% if pitems.has_previous %}
-                    <a class="previous-page" href="?page={{ pitems.previous_page_number }}">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}上一页{% else %}Previous{% endif %}</a>
+                    <a class="previous-page" href="?page={{ pitems.previous_page_number }}">{% if 'zh' in request.LANGUAGE_CODE %}上一页{% else %}Previous{% endif %}</a>
                 {% endif %}
 
                 <span class="current">
@@ -29,12 +29,12 @@
                 </span>
 
                 {% if pitems.has_next %}
-                    <a class="next-page" href="?page={{ pitems.next_page_number }}">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}下一页{% else %}Next{% endif %}</a>
+                    <a class="next-page" href="?page={{ pitems.next_page_number }}">{% if 'zh' in request.LANGUAGE_CODE %}下一页{% else %}Next{% endif %}</a>
                 {% elif request.user.id == 1 and bluemix %}<!--for Zhihu-->
                     {% if request.GET.page %}
-                        <a class="next-page" href="?page={{ request.GET.page|add:1 }}">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}下一页{% else %}Next{% endif %}</a>
+                        <a class="next-page" href="?page={{ request.GET.page|add:1 }}">{% if 'zh' in request.LANGUAGE_CODE %}下一页{% else %}Next{% endif %}</a>
                     {% else %}
-                        <a class="next-page" href="?page=2">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}下一页{% else %}Next{% endif %}</a>
+                        <a class="next-page" href="?page=2">{% if 'zh' in request.LANGUAGE_CODE %}下一页{% else %}Next{% endif %}</a>
                     {% endif %}<!--for Zhihu-->
                 {% endif %}
             </span>
@@ -44,9 +44,9 @@
             <span class="step-links">
                 <span class="current"></span>
                 {% if request.GET.page %}
-                    <a class="next-page" href="?page={{ request.GET.page|add:1 }}">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}下一页{% else %}Next{% endif %}</a>
+                    <a class="next-page" href="?page={{ request.GET.page|add:1 }}">{% if 'zh' in request.LANGUAGE_CODE %}下一页{% else %}Next{% endif %}</a>
                 {% else %}
-                    <a class="next-page" href="?page=2">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}下一页{% else %}Next{% endif %}</a>
+                    <a class="next-page" href="?page=2">{% if 'zh' in request.LANGUAGE_CODE %}下一页{% else %}Next{% endif %}</a>
                 {% endif %}
             </span>
         </div><!--for Zhihu-->
@@ -70,7 +70,7 @@ $(document).ready(function(){
             $(".content.home>.items>.item").last().css({"border": "none"});     //去掉末行底部边框
             $(".content.home .items .pagination .current").hide();
             $(".content.home .items .pagination .previous-page").hide();
-            $(".content.home .items .pagination .next-page").text("{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}加载更多{% else %}Load More{% endif %}");
+            $(".content.home .items .pagination .next-page").text("{% if 'zh' in request.LANGUAGE_CODE %}加载更多{% else %}Load More{% endif %}");
             //$(".content.home .items .pagination .next-page").css({"width": "100%", "height":"30px"});
             var loadstatus = 0;
             $(".content.home .items .pagination .next-page").click(function(){
@@ -80,7 +80,7 @@ $(document).ready(function(){
                     loadstatus = 1;
                 }
                 var url = $(this).attr("href");
-                $(".content.home .items .pagination .next-page").text("{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}加载中…{% else %}loading...{% endif %}");
+                $(".content.home .items .pagination .next-page").text("{% if 'zh' in request.LANGUAGE_CODE %}加载中…{% else %}loading...{% endif %}");
                 $(".content.home .items .pagination .next-page").attr("disabled", true);
                 $(".content.home .items .pagination .current").load(url + " .items", function(){
                     //去掉页数超限情况下的重复项
@@ -110,7 +110,7 @@ $(document).ready(function(){
     var loading = function(){
         if($(".loading").length <= 0){
             $(".loading").remove();
-            $(".content-header").append("<p class=\"loading\" style=\"color:gray;text-align:center;display:none;\">{% if 'zh-cn' in request.META.HTTP_ACCEPT_LANGUAGE %}加载中…{% else %}loading...{% endif %}</p>");
+            $(".content-header").append("<p class=\"loading\" style=\"color:gray;text-align:center;display:none;\">{% if 'zh' in request.LANGUAGE_CODE %}加载中…{% else %}loading...{% endif %}</p>");
             $(".loading").slideDown();
         }
         $(".content.home").load("/ .items", function(response, status, xhr){
