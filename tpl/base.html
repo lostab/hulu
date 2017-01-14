@@ -1,5 +1,5 @@
 {% load i18n %}<!doctype html>
-<html lang="en">
+<html lang="{% if 'zh' in request.LANGUAGE_CODE %}zh{% else %}en{% endif %}">
 <head>
     <meta charset="utf-8" />
     <title>{% block title %}{% endblock %}Hulu</title>

@@ -72,16 +72,29 @@ $(document).ready(function(){
         });
     }
 
-    $(".itemform .submit").parent().before('\
-        <div class="fileselect" style="text-align: center;">\
-            <input class="wbimg" type="file" name="file" style="display: none;" />\
-            <input class="fileselectbutton" type="button" value="上传图片" style="font-size: small;" />\
-        </div>\
-        <div class="process" style="width: 100%; display: none;">\
-            <div class="processbar" style="width: 0%; height: 22px; background: black;"></div>\
-        </div>\
-        <div class="uploadinfo" style="text-align: center; height: 18px; font-size: small; color: gray;"></div>\
-    ');
+    if ($('html').attr('lang') == "zh") {
+        $(".itemform .submit").parent().before('\
+            <div class="fileselect" style="text-align: center;">\
+                <input class="wbimg" type="file" name="file" style="display: none;" />\
+                <input class="fileselectbutton" type="button" value="上传图片" style="font-size: small;" />\
+            </div>\
+            <div class="process" style="width: 100%; display: none;">\
+                <div class="processbar" style="width: 0%; height: 22px; background: black;"></div>\
+            </div>\
+            <div class="uploadinfo" style="text-align: center; height: 18px; font-size: small; color: gray;"></div>\
+        ');
+    } else {
+        $(".itemform .submit").parent().before('\
+            <div class="fileselect" style="text-align: center;">\
+                <input class="wbimg" type="file" name="file" style="display: none;" />\
+                <input class="fileselectbutton" type="button" value="Upload Image" style="font-size: small;" />\
+            </div>\
+            <div class="process" style="width: 100%; display: none;">\
+                <div class="processbar" style="width: 0%; height: 22px; background: black;"></div>\
+            </div>\
+            <div class="uploadinfo" style="text-align: center; height: 18px; font-size: small; color: gray;"></div>\
+        ');
+    }
     $(".itemform .fileselectbutton").click(function(){
         $(this).closest(".itemform").find(".wbimg").click();
     });
@@ -101,7 +114,11 @@ $(document).ready(function(){
             }
             $(this).closest(".itemform").find(".process").hide();
             $(this).closest(".itemform").find(".uploadinfo").show();
-            $(this).closest(".itemform").find(".uploadinfo").text("上传成功，请备份图片链接。");
+            if ($('html').attr('lang') == "zh") {
+                $(this).closest(".itemform").find(".uploadinfo").text("上传成功，请备份图片链接。");
+            } else {
+                $(this).closest(".itemform").find(".uploadinfo").text("Upload succeeded, please backup the link.");
+            }
 
         },
         fail: function(e, data){
@@ -111,7 +128,11 @@ $(document).ready(function(){
             $(this).closest(".itemform").find(".submit").prop("disabled", false);
             $(this).closest(".itemform").find(".process").hide();
             $(this).closest(".itemform").find(".uploadinfo").show();
-            $(this).closest(".itemform").find(".uploadinfo").text("上传失败，请检查图片后重试。");
+            if ($('html').attr('lang') == "zh") {
+                $(this).closest(".itemform").find(".uploadinfo").text("上传失败，请检查图片后重试。");
+            } else {
+                $(this).closest(".itemform").find(".uploadinfo").text("Upload failed, please check and retry.");
+            }
         },
         progressall: function(e, data){
             $(this).closest(".itemform").find(".process").show();
@@ -127,7 +148,11 @@ $(document).ready(function(){
             $(this).closest(".itemform").find(".submit").prop("disabled", true);
             //$(this).closest(".itemform").find(".process").hide();
             $(this).closest(".itemform").find(".uploadinfo").show();
-            $(this).closest(".itemform").find(".uploadinfo").text("正在上传…");
+            if ($('html').attr('lang') == "zh") {
+                $(this).closest(".itemform").find(".uploadinfo").text("正在上传…");
+            } else {
+                $(this).closest(".itemform").find(".uploadinfo").text("uploading...");
+            }
             data.submit();
         }
     });

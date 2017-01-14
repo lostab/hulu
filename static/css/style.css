@@ -872,6 +872,16 @@ a.createintagbtn:hover {
     opacity: 1;
     filter: alpha(opacity=100);
 }
+.pagination a {
+    border: 1px solid lightgray;
+    padding: 3px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+}
+.pagination a:hover {
+    background: whitesmoke;
+}
 form.additemtag, form.newtagform {
     text-align: right;
     line-height: 36px;
