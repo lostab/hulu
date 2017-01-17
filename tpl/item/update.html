@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% if 'zh' in request.LANGUAGE_CODE %}更新信息{% else %}Update Post{% endif %} - {% endblock %}
+{% block title %}{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}更新信息{% else %}Update Post{% endif %} - {% endblock %}
 
 {% block content %}
     {% if user.is_authenticated %}
@@ -37,25 +37,25 @@
                         {% elif 'audio' in attachmentfile.contenttype %}
                         <p><audio controls>
                             <source src="/s/{{ attachmentfile.file }}" type="audio/ogg">
-                            <a href="/s/{{ attachmentfile.file }}"><span style="font-style: italic;">({% if 'zh' in request.LANGUAGE_CODE %}附件{% else %}Attachment{% endif %})</span> {{ attachmentfile.title }}</a>
+                            <a href="/s/{{ attachmentfile.file }}"><span style="font-style: italic;">({% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}附件{% else %}Attachment{% endif %})</span> {{ attachmentfile.title }}</a>
                         </audio></p>
                         {% else %}
-                        <p><a href="/s/{{ attachmentfile.file }}"><span style="font-style: italic;">({% if 'zh' in request.LANGUAGE_CODE %}附件{% else %}Attachment{% endif %})</span> {{ attachmentfile.title }}</a></p>
+                        <p><a href="/s/{{ attachmentfile.file }}"><span style="font-style: italic;">({% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}附件{% else %}Attachment{% endif %})</span> {{ attachmentfile.title }}</a></p>
                         {% endif %}
                     {% endfor %}
                 </div>
             {% endfor %}
-            <h3 id="update-form">{% if 'zh' in request.LANGUAGE_CODE %}更新信息{% else %}Update Post{% endif %}</h3>
+            <h3 id="update-form">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}更新信息{% else %}Update Post{% endif %}</h3>
             <form class="itemform" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <p class="description"><textarea name="content">{% if form.content.value %}{{ form.content.value }}{% else %}{{ item.content }}{% endif %}</textarea></p>
-                <!--<p>{% if 'zh' in request.LANGUAGE_CODE %}附件{% else %}Attachment{% endif %}：
+                <!--<p>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}附件{% else %}Attachment{% endif %}：
                 <br />
                 <input class="file" name="file" type="file" />
                 <br />
                 (<2MB)</p>-->
-                <p class="submit-btn"><input class="submit" type="submit" value="{% if 'zh' in request.LANGUAGE_CODE %}更新信息{% else %}Update Post{% endif %}" /></p>
-                <p class="cancel-btn"><a href="/i/{{ item.id }}/">{% if 'zh' in request.LANGUAGE_CODE %}取消{% else %}Cancel{% endif %}</a></p>
+                <p class="submit-btn"><input class="submit" type="submit" value="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}更新信息{% else %}Update Post{% endif %}" /></p>
+                <p class="cancel-btn"><a href="/i/{{ item.id }}/">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}取消{% else %}Cancel{% endif %}</a></p>
             </form>
             {% endif %}
         </div>

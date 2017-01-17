@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}{% if 'zh' in request.LANGUAGE_CODE %}用户列表{% else %}User List{% endif %} - {% endblock %}
+{% block title %}{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}用户列表{% else %}User List{% endif %} - {% endblock %}
 
 {% block content %}
     <div class="content userlist">
-        <h3>{% if 'zh' in request.LANGUAGE_CODE %}用户列表{% else %}User List{% endif %}</h3>
+        <h3>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}用户列表{% else %}User List{% endif %}</h3>
         <div class="items">
         {% for user in users %}
         {% if user.userprofile %}
@@ -36,7 +36,7 @@
         <div class="pagination">
             <span class="step-links">
                 {% if users.has_previous %}
-                    <a class="previous-page" href="?page={{ users.previous_page_number }}">{% if 'zh' in request.LANGUAGE_CODE %}上一页{% else %}Previous{% endif %}</a>
+                    <a class="previous-page" href="?page={{ users.previous_page_number }}">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}上一页{% else %}Previous{% endif %}</a>
                 {% endif %}
 
                 <span class="current">
@@ -44,7 +44,7 @@
                 </span>
 
                 {% if users.has_next %}
-                    <a class="next-page" href="?page={{ users.next_page_number }}">{% if 'zh' in request.LANGUAGE_CODE %}下一页{% else %}Next{% endif %}</a>
+                    <a class="next-page" href="?page={{ users.next_page_number }}">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}下一页{% else %}Next{% endif %}</a>
                 {% endif %}
             </span>
         </div>

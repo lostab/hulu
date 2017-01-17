@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{% if viewuser %}{% if viewuser.userprofile.name %}{{ viewuser.userprofile.name }}{% else %}{{ viewuser.username }}{% endif %}{% else %}{% if 'zh' in request.LANGUAGE_CODE %}页面不存在{% else %}Page Not Found{% endif %}{% endif %} - {% endblock %}
+{% block title %}{% if viewuser %}{% if viewuser.userprofile.name %}{{ viewuser.userprofile.name }}{% else %}{{ viewuser.username }}{% endif %}{% else %}{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}页面不存在{% else %}Page Not Found{% endif %}{% endif %} - {% endblock %}
 
 {% block content %}
     <div class="content userpage">
@@ -15,14 +15,14 @@
             <p class="operate">
             {% if user.is_authenticated %}
                 {% if request.user == viewuser %}
-                    <a href="/u/settings/">{% if 'zh' in request.LANGUAGE_CODE %}完善资料{% else %}Update Settings{% endif %}</a>
+                    <a href="/u/settings/">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}完善资料{% else %}Update Settings{% endif %}</a>
                 {% else %}
-                    <a class="sendmessagebtn" onclick="$('.newsendmessage').click();" style="cursor:pointer;">{% if 'zh' in request.LANGUAGE_CODE %}发送消息{% else %}Send Message{% endif %}</a>
+                    <a class="sendmessagebtn" onclick="$('.newsendmessage').click();" style="cursor:pointer;">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}发送消息{% else %}Send Message{% endif %}</a>
 
                     <form class"newsendmessageform" method="post" enctype="multipart/form-data" action="/m/" style="display: none;float: right;">
                         {% csrf_token %}
                         <input name="newusernames" type="hidden" value="{{ viewuser.username }}" />
-                        <input class="newsendmessage" type="submit" value="{% if 'zh' in request.LANGUAGE_CODE %}发送消息{% else %}Send Message{% endif %}" style="font-size: small;" />
+                        <input class="newsendmessage" type="submit" value="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}发送消息{% else %}Send Message{% endif %}" style="font-size: small;" />
                     </form>
                 {% endif %}
             {% endif %}
@@ -33,7 +33,7 @@
             {% include "item/itemlist.html" %}
             {% include "item/belongitemlist.html" %}
         {% else %}
-            <p>{% if 'zh' in request.LANGUAGE_CODE %}抱歉，页面不存在。{% else %}Page Not Found.{% endif %}</p>
+            <p>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}抱歉，页面不存在。{% else %}Page Not Found.{% endif %}</p>
         {% endif %}
     </div>
 {% endblock %}

@@ -159,7 +159,8 @@ $(document).ready(function(){
 
     $(".newtagform").submit(function(){
         var itemtag = $(this).find(".item-tag-name");
-        if ( itemtag.val() == "") {
+        if ( itemtag.val().trim() == "") {
+            itemtag.val("");
             itemtag.focus();
             $(".newtagform .submit").attr("disabled", false);
             return false;
@@ -168,7 +169,8 @@ $(document).ready(function(){
 
     $(".search").submit(function(){
         var qstr = $(this).find(".qstr");
-        if (qstr.val() == "") {
+        if (qstr.val().trim() == "") {
+            qstr.val("");
             qstr.focus();
             return false;
         }

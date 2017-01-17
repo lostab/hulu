@@ -1,25 +1,25 @@
 {% extends "base.html" %}
 
-{% block title %}{% if 'zh' in request.LANGUAGE_CODE %}完善资料{% else %}Update Settings{% endif %} - {% endblock %}
+{% block title %}{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}完善资料{% else %}Update Settings{% endif %} - {% endblock %}
 
 {% block content %}
     {% if user.is_authenticated %}
         <div class="content setting">
-            <h3>{% if 'zh' in request.LANGUAGE_CODE %}完善资料{% else %}Update Settings{% endif %}</h3>
+            <h3>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}完善资料{% else %}Update Settings{% endif %}</h3>
             <div class="avatar" style="background: url({% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}', sizingMethod='scale'); -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader( src='{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}', sizingMethod='scale')";"><img src="{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" /></div>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input class="file-input" name="avatar" type="file" />
                 <br />
-                <span class="tips">{% if 'zh' in request.LANGUAGE_CODE %}提示：图片会被自动压缩{% else %}Tips: Avatar will be compressed.{% endif %}</span>
+                <span class="tips">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}提示：图片会被自动压缩{% else %}Tips: Avatar will be compressed.{% endif %}</span>
                 <br />
-                <p>{% if 'zh' in request.LANGUAGE_CODE %}帐号：{% else %}Account: {% endif %}{{ user.username }}</p>
-                {% if not user.userprofile.openid %}<p>{% if 'zh' in request.LANGUAGE_CODE %}邮箱：{% else %}Email: {% endif %}{{ user.email }}</p>{% endif %}
-                <p class="info">{% if 'zh' in request.LANGUAGE_CODE %}签名：{% else %}Name: {% endif %}<input class="userinfoinput" name="info" type="text" value="{{ user.userprofile.info }}" /></p>
-                <p class="description">{% if 'zh' in request.LANGUAGE_CODE %}简介：{% else %}Bio: {% endif %}<textarea name="profile">{{ user.userprofile.profile }}</textarea></p>
+                <p>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}帐号：{% else %}Account: {% endif %}{{ user.username }}</p>
+                {% if not user.userprofile.openid %}<p>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}邮箱：{% else %}Email: {% endif %}{{ user.email }}</p>{% endif %}
+                <p class="info">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}签名：{% else %}Name: {% endif %}<input class="userinfoinput" name="info" type="text" value="{{ user.userprofile.info }}" /></p>
+                <p class="description">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}简介：{% else %}Bio: {% endif %}<textarea name="profile">{{ user.userprofile.profile }}</textarea></p>
                 <!--<p class="description">页面：<textarea name="page">{{ user.userprofile.page }}</textarea></p>-->
-                <p class="submit-btn"><input class="submit" type="submit" value="{% if 'zh' in request.LANGUAGE_CODE %}提交{% else %}Submit{% endif %}" /></p>
-                <p class="cancel-btn">{% if prev == 'signup' %}<a href="{% if next %}{{ next }}{% else %}/{% endif %}">{% if 'zh' in request.LANGUAGE_CODE %}跳过{% else %}Skip{% endif %}</a>{% else %}<a href="/u/">{% if 'zh' in request.LANGUAGE_CODE %}取消{% else %}Cancel{% endif %}</a>{% endif %}</p>
+                <p class="submit-btn"><input class="submit" type="submit" value="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}提交{% else %}Submit{% endif %}" /></p>
+                <p class="cancel-btn">{% if prev == 'signup' %}<a href="{% if next %}{{ next }}{% else %}/{% endif %}">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}跳过{% else %}Skip{% endif %}</a>{% else %}<a href="/u/">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}取消{% else %}Cancel{% endif %}</a>{% endif %}</p>
             </form>
         </div>
     {% endif %}

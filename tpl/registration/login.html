@@ -1,19 +1,19 @@
 {% extends "base.html" %}
 
-{% block title %}{% if 'zh' in request.LANGUAGE_CODE %}登录{% else %}Sign in{% endif %} - {% endblock %}
+{% block title %}{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}登录{% else %}Sign in{% endif %} - {% endblock %}
 
 {% block content %}
     <div class="content login">
-        <h3>{% if 'zh' in request.LANGUAGE_CODE %}登录{% else %}Sign in{% endif %}</h3>{{ error }}
+        <h3>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}登录{% else %}Sign in{% endif %}</h3>{{ error }}
         {% if form.errors %}
-            <p class="error">{% if 'zh' in request.LANGUAGE_CODE %}请填写正确的账号和密码{% else %}Please check your Account and Password{% endif %}</p>
+            <p class="error">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}请填写正确的账号和密码{% else %}Please check your Account and Password{% endif %}</p>
         {% endif %}
         <form method="post"{% if next %} action="?next={{ next }}"{% endif %}>
             {% csrf_token %}
-            <p><input name="username" type="text" value="{{ form.username.value }}" placeholder="{% if 'zh' in request.LANGUAGE_CODE %}请输入账号{% else %}Account{% endif %}" /></p>
-            <p><input name="password" type="password" placeholder="{% if 'zh' in request.LANGUAGE_CODE %}请输入密码{% else %}Password{% endif %}" /></p>
-            <p><input class="submit" type="submit" value="{% if 'zh' in request.LANGUAGE_CODE %}登录{% else %}Sign in{% endif %}" /></p>
-            <p><a href="/u/password_reset/">{% if 'zh' in request.LANGUAGE_CODE %}忘记密码？{% else %}Forgot Password?{% endif %}</a> - {% if 'zh' in request.LANGUAGE_CODE %}没有帐号？{% else %}No Account Yet?{% endif %}<a href="{% url 'signup' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.path }}{% endif %}">{% if 'zh' in request.LANGUAGE_CODE %}现在注册{% else %}Sign up Now{% endif %}</a></p>
+            <p><input name="username" type="text" value="{{ form.username.value }}" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}请输入账号{% else %}Account{% endif %}" /></p>
+            <p><input name="password" type="password" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}请输入密码{% else %}Password{% endif %}" /></p>
+            <p><input class="submit" type="submit" value="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}登录{% else %}Sign in{% endif %}" /></p>
+            <p><a href="/u/password_reset/">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}忘记密码？{% else %}Forgot Password?{% endif %}</a> - {% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}没有帐号？{% else %}No Account Yet?{% endif %}<a href="{% url 'signup' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.path }}{% endif %}">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}现在注册{% else %}Sign up Now{% endif %}</a></p>
             <p><a href="?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.path }}{% endif %}&type=qq"><img src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_3.png" /></a></p>
         </form>
     </div>

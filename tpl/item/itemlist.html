@@ -1,6 +1,6 @@
 {% load i18n %}
 <div class="items">
-    <h3>{% if 'zh' in request.LANGUAGE_CODE %}发起的讨论{% else %}Post{% endif %}</h3>
+    <h3>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}发起的讨论{% else %}Post{% endif %}</h3>
 {% for item in items %}
     {% include "item/itemline.html" %}
 {% endfor %}
@@ -8,7 +8,7 @@
 <div class="pagination">
     <span class="step-links">
         {% if items.has_previous %}
-            <a class="previous-page" href="?page={{ items.previous_page_number }}">{% if 'zh' in request.LANGUAGE_CODE %}上一页{% else %}Previous{% endif %}</a>
+            <a class="previous-page" href="?page={{ items.previous_page_number }}">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}上一页{% else %}Previous{% endif %}</a>
         {% endif %}
 
         <span class="current">
@@ -16,10 +16,10 @@
         </span>
 
         {% if items.has_next %}
-            <a class="next-page" href="?page={{ items.next_page_number }}">{% if 'zh' in request.LANGUAGE_CODE %}下一页{% else %}Next{% endif %}</a>
+            <a class="next-page" href="?page={{ items.next_page_number }}">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}下一页{% else %}Next{% endif %}</a>
         {% endif %}
     </span>
 </div>
 {% endif %}
-{% if not items %}{% if 'zh' in request.LANGUAGE_CODE %}暂无数据{% else %}No Data Yet{% endif %}{% endif %}
+{% if not items %}{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}暂无数据{% else %}No Data Yet{% endif %}{% endif %}
 </div>

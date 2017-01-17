@@ -14,17 +14,17 @@
 <body>
     <div class="container">
         <div class="header">
-            <span class="header-left"><消息</span>
+            <span class="header-left"><{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}消息{% else %}Message{% endif %}</span>
             <span class="header-right"></span>
-            <span class="header-center">消息</span>
+            <span class="header-center">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}消息{% else %}Message{% endif %}</span>
         </div>
         <div class="wrapper">
             <div class="messagesessions"></div>
         </div>
         <div class="footer">
-            <span class="footer-bar footer-im footer-bar-focus">消息</span>
-            <span class="footer-bar footer-im"><a href="/u/list/">人脉</a></span>
-            <span class="footer-bar footer-homelink"><a href="/">首页</a></span>
+            <span class="footer-bar footer-im footer-bar-focus">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}消息{% else %}Message{% endif %}</span>
+            <span class="footer-bar footer-im"><a href="/u/list/">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}人脉{% else %}Relationship{% endif %}</a></span>
+            <span class="footer-bar footer-homelink"><a href="/">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}首页{% else %}Home{% endif %}</a></span>
         </div>
     </div>
 
@@ -32,7 +32,7 @@
 <script type="text/javascript">
     $(document).ready(function(){
         {% if not newmessagesession %}
-        $(".container").after("<div class=\"loading\" style=\"width:100%;height:100%;margin:0;padding:0;vertical-align:middle;\"><div class=\"loading-content\" style=\"text-align:center;width:100%;height:10px;position:absolute;top:50%;margin-top:-5px;\">加载中…</div></div>");
+        $(".container").after("<div class=\"loading\" style=\"width:100%;height:100%;margin:0;padding:0;vertical-align:middle;\"><div class=\"loading-content\" style=\"text-align:center;width:100%;height:10px;position:absolute;top:50%;margin-top:-5px;\">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}加载中…{% else %}loading...{% endif %}</div></div>");
         $(".container").hide();
         setTimeout(function(){
             $(".container").show();
@@ -88,7 +88,7 @@
                         });
 
                         //系统消息，替换链接
-                        if (usernames == "系统消息") {
+                        if (usernames == "{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}系统消息{% else %}GM{% endif %}") {
                             $(this).find(".line-title").html(messagesession.lastmessage.content);
                         }
 
@@ -119,7 +119,7 @@
                     continue;
                 }
                 //如果是系统消息，标记为已有会话跳过
-                if (isnewsession == 0 && usernames == "系统消息") {
+                if (isnewsession == 0 && usernames == "{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}系统消息{% else %}GM{% endif %}") {
                     continue;
                 }
 
@@ -151,7 +151,7 @@
                         $(".wrapper .messagesessions .line").not(openmessagesession).show();
                         $(".messagesession").css({"visibility": "hidden"});
                         tooglefooter();
-                        $(".header .header-center").text("消息");
+                        $(".header .header-center").text("{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}消息{% else %}Message{% endif %}");
                         $(".header .header-left").css("visibility", "hidden");
                     });
                     var scrolldown = function(){
@@ -182,7 +182,7 @@
                         currentmessagesession.find(".historymessages").append("<div class=\"currentmessage message message-me\" clientcreate=\"" + clientcreate + "\"><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url({% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}', sizingMethod='scale'); -ms-filter: \"progid:DXImageTransform.Microsoft.AlphaImageLoader( src='{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}', sizingMethod='scale')\";\"><img src=\"{% if user.userprofile.openid %}{{ user.userprofile.avatar }}{% else %}{% if user.userprofile.avatar %}/s/{{ user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}\" /></div></div><pre class=\"itemcontent-content message-me\">" + $("<div/>").text(messagecontent).html() + "</pre></div>");
                         var lastcurrentmessage = currentmessagesession.find(".historymessages").find(".currentmessage").last();
                         currentmessagesession.find(".line-title").text(messagecontent);
-                        currentmessagesession.find(".line-info-right").text("刚刚");
+                        currentmessagesession.find(".line-info-right").text("{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}刚刚{% else %}Now{% endif %}");
                         currentmessagesession.find(".historymessages").scrollTop(currentmessagesession.find(".historymessages")[0].scrollHeight);
                         $.ajax({
                             type: "post",
@@ -207,7 +207,7 @@
 
             //系统消息排序，新增空会话提前
             $(".wrapper .messagesessions .line").each(function(){
-                if ($(this).find(".line-info-left").text() == "系统消息") {
+                if ($(this).find(".line-info-left").text() == "{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}系统消息{% else %}GM{% endif %}") {
                     for (i in $(".wrapper .messagesessions .line")) {
                         if (new Date($(this).find(".line-info-right").text().replace(/-/g, "/")) > new Date($(".wrapper .messagesessions .line").eq(i).find(".line-info-right").text().replace(/-/g, "/"))) {
                             $(this).insertBefore($(".wrapper .messagesessions .line").eq(i));
@@ -259,7 +259,7 @@
                     if(json.notify.count != 0){
                         var notifycount = 0;
                         $(".wrapper .messagesessions .line").each(function(){
-                            if ($(this).find(".sendmessageform").find(".messagetousernames").val() == "系统消息") {
+                            if ($(this).find(".sendmessageform").find(".messagetousernames").val() == "{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}系统消息{% else %}GM{% endif %}") {
                                 notifycount = $(this).find(".historymessages .message").length;
                             }
                         });
@@ -269,11 +269,11 @@
                             for (i in notifymessages) {
                                 var notify = notifymessages[i];
                                 var message = {
-                                    "content": "您发布的 <a href=\"/i/" + notify.rootitem.id + "/#" + notify.parent.id + "\">" + notify.parent.content.substr(0, 30) + "...</a> 有了 <a href=\"/" + notify.item.user.username + "/\">" + notify.item.user.username + "</a> 的新回应：<a href=\"/i/" + notify.rootitem.id + "/#" + notify.item.id + "\">" + notify.item.content.substr(0, 30) + "...</a>",
+                                    "content": "{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}您发布的{% else %}Your Post{% endif %} <a href=\"/i/" + notify.rootitem.id + "/#" + notify.parent.id + "\">" + notify.parent.content.substr(0, 30) + "...</a> {% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}有了{% else %}has{% endif %} <a href=\"/" + notify.item.user.username + "/\">" + notify.item.user.username + "</a> {% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}的新回应：{% else %}'s new comment: {% endif %}<a href=\"/i/" + notify.rootitem.id + "/#" + notify.item.id + "\">" + notify.item.content.substr(0, 30) + "...</a>",
                                     "create": notify.created,
                                     "id": "",
                                     "user": {
-                                        "username": "系统消息",
+                                        "username": "{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}系统消息{% else %}GM{% endif %}",
                                         "info": "",
                                         "profile": "",
                                         "avatar": "/s/avatar/n.png",
@@ -287,7 +287,7 @@
                                     {
                                         "urusers": [
                                             {
-                                                "username": "系统消息",
+                                                "username": "{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}系统消息{% else %}GM{% endif %}",
                                                 "info": "",
                                                 "profile": "",
                                                 "avatar": "/s/avatar/n.png",
@@ -312,7 +312,7 @@
 
                             //移除系统消息的多余元素
                             $(".wrapper .messagesessions .line").each(function(){
-                                if($(this).find(".sendmessageform").find(".messagetousernames").val() == "系统消息") {
+                                if($(this).find(".sendmessageform").find(".messagetousernames").val() == "{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}系统消息{% else %}GM{% endif %}") {
                                     $(this).find(".sendmessageform").hide();
                                     $(this).find(".historymessages").find(".message-avatar-link").removeAttr("href");
                                     $(this).find(".line-title").find("a").removeAttr("href");

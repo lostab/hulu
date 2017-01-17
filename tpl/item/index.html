@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{% if 'zh' in request.LANGUAGE_CODE %}我的分享{% else %}My Post{% endif %} - {% endblock %}
+{% block title %}{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}我的分享{% else %}My Post{% endif %} - {% endblock %}
 
 {% block content %}
     {% if user.is_authenticated %}
