@@ -175,136 +175,139 @@ $(document).ready(function(){
             return false;
         }
     });
-    /*
-    $(".search .qstr").attr("placeholder", "搜索并播放歌曲");
-    $(".search").submit(function(){
-        var qstr = $(this).find(".qstr");
-        if (qstr.val() == "") {
-            qstr.focus();
-            return false;
-        } else {
-            $.ajax({
-                type: "get",
-                url: "https://c.y.qq.com/soso/fcgi-bin/search_cp?remoteplace=txt.yqq.center&searchid=53956420086125571&t=0&aggr=1&cr=1&catZhida=1&lossless=0&flag_qc=0&p=1&n=20&w=" + qstr.val() + "&g_tk=938407465&jsonpCallback=searchCallbacksong1662&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0",
-                dataType: "jsonp",
-                jsonpCallback:"searchCallbacksong1662",
-                success: function(data){
-                    var songmid = data.data.song.list[0].songmid;
-                    if(songmid != ""){
-                        $.ajax({
-                            type: "get",
-                            url: "https://c.y.qq.com/v8/fcg-bin/fcg_play_single_song.fcg?songmid=" + songmid + "&tpl=yqq_song_detail&format=jsonp&callback=getOneSongInfoCallback&g_tk=938407465&jsonpCallback=getOneSongInfoCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0",
-                            dataType: "jsonp",
-                            jsonpCallback:"getOneSongInfoCallback",
-                            success: function(data){
-                                var url = "";
-                                for(i in data.url){
-                                    url = data.url[i];
-                                }
-                                if (url != ""){
-                                    var info = data.data[0].singer[0].name + " - " + data.data[0].title;
-                                    if (url != "" && $("body").length > 0) {
-                                        if ($("body .musicplayer").length > 0){
-                                            $(".search .musicswitch").remove();
-                                            $("body .musicplayer").remove();
-                                        }
-                                        qstr.attr("placeholder", info);
-                                        $("body").append("<div class=\"musicplayer\"><audio autoplay=\"autoplay\" controls=\"controls\" loop=\"loop\" preload=\"preload\" style=\"width: 100%;display: none;\" src=\"http://" + url + "\">浏览器不支持</audio></div>");
-                                        $(".search").append("<a class=\"musicswitch\"></a>");
-                                        $(".search .musicswitch").css({
-                                            "font-family": "arial,sans-serif",
-                                            "color": "white",
-                                            "background": "green",
-                                            "font-weight": "bold",
-                                            "width": "24px",
-                                            "height": "24px",
-                                            "line-height": "24px",
-                                            "border-radius": "12px",
-                                            "-webkit-border-radius": "12px",
-                                            "-moz-border-radius": "12px",
-                                            "text-align": "center",
-                                            "font-size": "small",
-                                            "display": "inline-block",
-                                            "position": "absolute",
-                                            "right": "-3px",
-                                            "top": "0px",
-                                            "cursor": "pointer",
-                                            "opacity": "0.6",
-                                            "filter": "alpha(opacity=60)"
-                                        });
-                                        $(".search .musicswitch").mouseover(function(){
-                                            $(this).css({
-                                                "opacity": "1",
-                                                "filter": "alpha(opacity=100)"
-                                            });
-                                        }).mouseout(function(){
-                                            $(this).css({
-                                                "opacity": "0.6",
-                                                "filter": "alpha(opacity=60)"
-                                            });
-                                        });
 
-                                        var getplaystatus = function(){
-                                            if($("body .musicplayer audio")[0].paused){
-                                                $(".search .musicswitch").text("开");
-                                            } else {
-                                                $(".search .musicswitch").text("关");
-                                            }
-                                            setTimeout(getplaystatus, 1000);
-                                        }
-                                        getplaystatus();
+    if ($(".right-navbar .accounts-button .avatar img").attr("alt") == "way" ) {
 
-                                        $(".search .musicswitch").click(function(){
-                                            if($(this).text() == "关"){
-                                                $("body .musicplayer audio")[0].pause();
-                                                $(this).text("开");
-                                            } else if ($(this).text() == "开") {
-                                                $("body .musicplayer audio")[0].play();
-                                                $(this).text("关");
-                                            }
-                                        });
-
-                                        $("body .musicplayer audio").on("error", function() {
+        $(".search .qstr").attr("placeholder", "搜索并播放歌曲");
+        $(".search").submit(function(){
+            var qstr = $(this).find(".qstr");
+            if (qstr.val() == "") {
+                qstr.focus();
+                return false;
+            } else {
+                $.ajax({
+                    type: "get",
+                    url: "https://c.y.qq.com/soso/fcgi-bin/search_cp?remoteplace=txt.yqq.center&searchid=53956420086125571&t=0&aggr=1&cr=1&catZhida=1&lossless=0&flag_qc=0&p=1&n=20&w=" + qstr.val() + "&g_tk=938407465&jsonpCallback=searchCallbacksong1662&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0",
+                    dataType: "jsonp",
+                    jsonpCallback:"searchCallbacksong1662",
+                    success: function(data){
+                        var songmid = data.data.song.list[0].songmid;
+                        if(songmid != ""){
+                            $.ajax({
+                                type: "get",
+                                url: "https://c.y.qq.com/v8/fcg-bin/fcg_play_single_song.fcg?songmid=" + songmid + "&tpl=yqq_song_detail&format=jsonp&callback=getOneSongInfoCallback&g_tk=938407465&jsonpCallback=getOneSongInfoCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0",
+                                dataType: "jsonp",
+                                jsonpCallback:"getOneSongInfoCallback",
+                                success: function(data){
+                                    var url = "";
+                                    for(i in data.url){
+                                        url = data.url[i];
+                                    }
+                                    if (url != ""){
+                                        var info = data.data[0].singer[0].name + " - " + data.data[0].title;
+                                        if (url != "" && $("body").length > 0) {
                                             if ($("body .musicplayer").length > 0){
                                                 $(".search .musicswitch").remove();
                                                 $("body .musicplayer").remove();
                                             }
+                                            qstr.attr("placeholder", info);
+                                            $("body").append("<div class=\"musicplayer\"><audio autoplay=\"autoplay\" controls=\"controls\" loop=\"loop\" preload=\"preload\" style=\"width: 100%;display: none;\" src=\"http://" + url + "\">浏览器不支持</audio></div>");
+                                            $(".search").append("<a class=\"musicswitch\"></a>");
+                                            $(".search .musicswitch").css({
+                                                "font-family": "arial,sans-serif",
+                                                "color": "white",
+                                                "background": "green",
+                                                "font-weight": "bold",
+                                                "width": "24px",
+                                                "height": "24px",
+                                                "line-height": "24px",
+                                                "border-radius": "12px",
+                                                "-webkit-border-radius": "12px",
+                                                "-moz-border-radius": "12px",
+                                                "text-align": "center",
+                                                "font-size": "small",
+                                                "display": "inline-block",
+                                                "position": "absolute",
+                                                "right": "-3px",
+                                                "top": "0px",
+                                                "cursor": "pointer",
+                                                "opacity": "0.6",
+                                                "filter": "alpha(opacity=60)"
+                                            });
+                                            $(".search .musicswitch").mouseover(function(){
+                                                $(this).css({
+                                                    "opacity": "1",
+                                                    "filter": "alpha(opacity=100)"
+                                                });
+                                            }).mouseout(function(){
+                                                $(this).css({
+                                                    "opacity": "0.6",
+                                                    "filter": "alpha(opacity=60)"
+                                                });
+                                            });
+
+                                            var getplaystatus = function(){
+                                                if($("body .musicplayer audio")[0].paused){
+                                                    $(".search .musicswitch").text("开");
+                                                } else {
+                                                    $(".search .musicswitch").text("关");
+                                                }
+                                                setTimeout(getplaystatus, 1000);
+                                            }
+                                            getplaystatus();
+
+                                            $(".search .musicswitch").click(function(){
+                                                if($(this).text() == "关"){
+                                                    $("body .musicplayer audio")[0].pause();
+                                                    $(this).text("开");
+                                                } else if ($(this).text() == "开") {
+                                                    $("body .musicplayer audio")[0].play();
+                                                    $(this).text("关");
+                                                }
+                                            });
+
+                                            $("body .musicplayer audio").on("error", function() {
+                                                if ($("body .musicplayer").length > 0){
+                                                    $(".search .musicswitch").remove();
+                                                    $("body .musicplayer").remove();
+                                                }
+                                                qstr.attr("placeholder", "没有找到");
+                                                $(".search .musicswitch").remove();
+                                                $("body .musicplayer").remove();
+                                            });
+                                        } else {
                                             qstr.attr("placeholder", "没有找到");
                                             $(".search .musicswitch").remove();
                                             $("body .musicplayer").remove();
-                                        });
+                                        }
                                     } else {
                                         qstr.attr("placeholder", "没有找到");
                                         $(".search .musicswitch").remove();
                                         $("body .musicplayer").remove();
                                     }
-                                } else {
+                                },
+                                error: function(){
                                     qstr.attr("placeholder", "没有找到");
                                     $(".search .musicswitch").remove();
                                     $("body .musicplayer").remove();
                                 }
-                            },
-                            error: function(){
-                                qstr.attr("placeholder", "没有找到");
-                                $(".search .musicswitch").remove();
-                                $("body .musicplayer").remove();
-                            }
-                        });
-                    } else {
+                            });
+                        } else {
+                            qstr.attr("placeholder", "没有找到");
+                            $(".search .musicswitch").remove();
+                            $("body .musicplayer").remove();
+                        }
+                    },
+                    error: function(){
                         qstr.attr("placeholder", "没有找到");
                         $(".search .musicswitch").remove();
                         $("body .musicplayer").remove();
                     }
-                },
-                error: function(){
-                    qstr.attr("placeholder", "没有找到");
-                    $(".search .musicswitch").remove();
-                    $("body .musicplayer").remove();
-                }
-            });
-            qstr.val("");
-            return false;
-        }
-    });
-    */
+                });
+                qstr.val("");
+                return false;
+            }
+        });
+        
+    }
 });
