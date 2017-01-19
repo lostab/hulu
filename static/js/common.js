@@ -167,6 +167,44 @@ $(document).ready(function(){
         }
     });
 
+
+    if(window.history && window.history.pushState) {
+        $("a").click(function(e){
+            var thus = $(this);
+            var event_obj = $._data(thus[0], "events");
+            if ((event_obj && event_obj["click"] && event_obj["click"].length > 1) || thus.attr("href") == "/m/" ) {
+
+            } else {
+                if (thus.attr("href").split("//").length == 1 || (thus.attr("href").split("//").length > 1 && thus.attr("href").split("//")[1].split("/")[0] == window.location.host)) {
+                    $.get(thus.attr("href"), function(data){
+                        e.preventDefault();
+                        $("body").html("");
+                        $(data).filter(".wrapper").appendTo("body");
+                        $(data).filter("script").appendTo("body");
+                        window.history.pushState({
+                            "url": window.location.href,
+                            "title": document.title
+                        }, $(data).filter("title").text(), thus.attr("href"));
+                        document.title = $(data).filter("title").text();
+                    }, "html");
+                    return false;
+                }
+            }
+        });
+
+        if(!window.isaddpopstateevent){
+            window.addEventListener("popstate", function(){
+                $.get(window.location.href, function(data){
+                    $("body").html("");
+                    $(data).filter(".wrapper").appendTo("body");
+                    $(data).filter("script").appendTo("body");
+                    document.title = $(data).filter("title").text();
+                }, "html");
+            }, false);
+            window.isaddpopstateevent = true;
+        }
+    }
+
     $(".search").submit(function(){
         var qstr = $(this).find(".qstr");
         if (qstr.val().trim() == "") {
@@ -308,6 +346,6 @@ $(document).ready(function(){
                 return false;
             }
         });
-        
+
     }
 });

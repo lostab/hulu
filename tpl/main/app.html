@@ -12,13 +12,13 @@
     <link href="/s/css/app.css" rel="stylesheet" />
 </head>
 <body>
-    <div class="container">
+    <div class="wrapper">
         <div class="header">
             <span class="header-left"><{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}消息{% else %}Message{% endif %}</span>
             <span class="header-right"></span>
             <span class="header-center">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}消息{% else %}Message{% endif %}</span>
         </div>
-        <div class="wrapper">
+        <div class="container">
             <div class="messagesessions"></div>
         </div>
         <div class="footer">
@@ -32,22 +32,22 @@
 <script type="text/javascript">
     $(document).ready(function(){
         {% if not newmessagesession %}
-        $(".container").after("<div class=\"loading\" style=\"width:100%;height:100%;margin:0;padding:0;vertical-align:middle;\"><div class=\"loading-content\" style=\"text-align:center;width:100%;height:10px;position:absolute;top:50%;margin-top:-5px;\">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}加载中…{% else %}loading...{% endif %}</div></div>");
-        $(".container").hide();
+        $(".wrapper").after("<div class=\"loading\" style=\"width:100%;height:100%;margin:0;padding:0;vertical-align:middle;\"><div class=\"loading-content\" style=\"text-align:center;width:100%;height:10px;position:absolute;top:50%;margin-top:-5px;\">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}加载中…{% else %}loading...{% endif %}</div></div>");
+        $(".wrapper").hide();
         setTimeout(function(){
-            $(".container").show();
+            $(".wrapper").show();
             $(".loading").remove();
         }, 2000);
         {% else %}
-        $(".container").show();
+        $(".wrapper").show();
         {% endif %}
 
         var tooglefooter = function(){
             if ($(".footer").is(":hidden")) {
-                $(".wrapper").css({"height": "calc(100% - " + $(".header").height() + "px - " + $(".footer").height() + "px)", "padding-bottom": $(".footer").height()});
+                $(".container").css({"height": "calc(100% - " + $(".header").height() + "px - " + $(".footer").height() + "px)", "padding-bottom": $(".footer").height()});
                 $(".footer").show();
             } else {
-                $(".wrapper").css({"height": "calc(100% - " + $(".header").height() + "px)", "padding-bottom": "0"});
+                $(".container").css({"height": "calc(100% - " + $(".header").height() + "px)", "padding-bottom": "0"});
                 $(".footer").hide();
             }
         }
@@ -75,7 +75,7 @@
 
                 //默认为新会话
                 var isnewsession = 1;
-                $(".wrapper .messagesessions .line").each(function(){
+                $(".container .messagesessions .line").each(function(){
                     var messageline = $(this);
                     //如果在已有会话中找到相同的会话对象，则非新会话，在已有会话中追加会话内容
                     if ($(this).find(".sendmessageform").find(".messagetousernames").val() == usernames) {
@@ -124,8 +124,8 @@
                 }
 
                 //如果是新会话，在会话列表页面添加一行会话，并绑定事件
-                $(".wrapper .messagesessions").prepend("<div class=\"line\"><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url(" + messagesession.urusers[0].avatar + ") no-repeat;background-size: cover;background-position: center; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='" + messagesession.urusers[0].avatar + "', sizingMethod='scale'); -ms-filter: \"progid:DXImageTransform.Microsoft.AlphaImageLoader( src='" + messagesession.urusers[0].avatar + "', sizingMethod='scale')\";\"><img src=" + messagesession.urusers[0].avatar + " /></div></div><div class=\"line-main\"><div class=\"line-info\"><span class=\"line-info-right\">" + messagesession.lastmessage.datetime.split(".")[0].split("+")[0] + "</span><span class=\"line-info-left\">" + userinfos + "</span></div><div class=\"line-title\">" + messagesession.lastmessage.content + "</div></div><div class=\"messagesession\"><div class=\"historymessagesbox\"><div class=\"historymessages\"></div></div><form class=\"sendmessageform\" method=\"post\" enctype=\"multipart/form-data\">{% csrf_token %}<input type=\"hidden\" class=\"messagetousernames\" name=\"usernames\" value=\"" + usernames + "\" /><input class=\"messagecontent\" name=\"content\" /><input class=\"sendmessage\" type=\"submit\" value=\"发送\" /></form></div></div>");
-                var currentmessagesession = $(".wrapper .messagesessions .line").first();
+                $(".container .messagesessions").prepend("<div class=\"line\"><div class=\"avatar-area\"><div class=\"avatar\" style=\"background: url(" + messagesession.urusers[0].avatar + ") no-repeat;background-size: cover;background-position: center; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='" + messagesession.urusers[0].avatar + "', sizingMethod='scale'); -ms-filter: \"progid:DXImageTransform.Microsoft.AlphaImageLoader( src='" + messagesession.urusers[0].avatar + "', sizingMethod='scale')\";\"><img src=" + messagesession.urusers[0].avatar + " /></div></div><div class=\"line-main\"><div class=\"line-info\"><span class=\"line-info-right\">" + messagesession.lastmessage.datetime.split(".")[0].split("+")[0] + "</span><span class=\"line-info-left\">" + userinfos + "</span></div><div class=\"line-title\">" + messagesession.lastmessage.content + "</div></div><div class=\"messagesession\"><div class=\"historymessagesbox\"><div class=\"historymessages\"></div></div><form class=\"sendmessageform\" method=\"post\" enctype=\"multipart/form-data\">{% csrf_token %}<input type=\"hidden\" class=\"messagetousernames\" name=\"usernames\" value=\"" + usernames + "\" /><input class=\"messagecontent\" name=\"content\" /><input class=\"sendmessage\" type=\"submit\" value=\"发送\" /></form></div></div>");
+                var currentmessagesession = $(".container .messagesessions .line").first();
                 for (i in messagesession.messages){
                     var message = messagesession.messages[i];
                     var messageclass = message.user.username=="{{ user.username }}"?"message-me":"message-you";
@@ -148,7 +148,7 @@
                     $(".header .header-left").css("visibility", "visible");
                     $(".header .header-left").unbind("click");
                     $(".header .header-left").click(function(){
-                        $(".wrapper .messagesessions .line").not(openmessagesession).show();
+                        $(".container .messagesessions .line").not(openmessagesession).show();
                         $(".messagesession").css({"visibility": "hidden"});
                         tooglefooter();
                         $(".header .header-center").text("{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}消息{% else %}Message{% endif %}");
@@ -165,7 +165,7 @@
                     });
                     //进入会话后点击输入框
                     //openmessagesession.find(".sendmessageform").find(".messagecontent").click();
-                    $(".wrapper .messagesessions .line").not(openmessagesession).hide();
+                    $(".container .messagesessions .line").not(openmessagesession).hide();
                 });
                 currentmessagesession.find(".avatar-area").click(function(){
                     $(this).next(".line-main").click();
@@ -173,7 +173,7 @@
 
                 //绑定提交消息事件
                 currentmessagesession.find(".sendmessageform").submit(function(){
-                    var currentmessagesession = $(this).closest(".wrapper .messagesessions .line");
+                    var currentmessagesession = $(this).closest(".container .messagesessions .line");
                     var messagecontent = $(this).children(".messagecontent").val();
                     $(this).find(".messagecontent").val("");
                     $(this).find(".messagecontent").focus();
@@ -206,11 +206,11 @@
             }
 
             //系统消息排序，新增空会话提前
-            $(".wrapper .messagesessions .line").each(function(){
+            $(".container .messagesessions .line").each(function(){
                 if ($(this).find(".line-info-left").text() == "{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}系统消息{% else %}GM{% endif %}") {
-                    for (i in $(".wrapper .messagesessions .line")) {
-                        if (new Date($(this).find(".line-info-right").text().replace(/-/g, "/")) > new Date($(".wrapper .messagesessions .line").eq(i).find(".line-info-right").text().replace(/-/g, "/"))) {
-                            $(this).insertBefore($(".wrapper .messagesessions .line").eq(i));
+                    for (i in $(".container .messagesessions .line")) {
+                        if (new Date($(this).find(".line-info-right").text().replace(/-/g, "/")) > new Date($(".container .messagesessions .line").eq(i).find(".line-info-right").text().replace(/-/g, "/"))) {
+                            $(this).insertBefore($(".container .messagesessions .line").eq(i));
                             break;
                         }
                     }
@@ -243,7 +243,7 @@
                     if (data.status == "success") {
                         loaddatafromjson(data, uirid);
 
-                        $(".container").show();
+                        $(".wrapper").show();
                         $(".loading").remove();
                     }
                 },
@@ -258,7 +258,7 @@
                 if(json.status == "success"){
                     if(json.notify.count != 0){
                         var notifycount = 0;
-                        $(".wrapper .messagesessions .line").each(function(){
+                        $(".container .messagesessions .line").each(function(){
                             if ($(this).find(".sendmessageform").find(".messagetousernames").val() == "{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}系统消息{% else %}GM{% endif %}") {
                                 notifycount = $(this).find(".historymessages .message").length;
                             }
@@ -311,7 +311,7 @@
                             loaddatafromjson(notifysessiondata, "");
 
                             //移除系统消息的多余元素
-                            $(".wrapper .messagesessions .line").each(function(){
+                            $(".container .messagesessions .line").each(function(){
                                 if($(this).find(".sendmessageform").find(".messagetousernames").val() == "{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}系统消息{% else %}GM{% endif %}") {
                                     $(this).find(".sendmessageform").hide();
                                     $(this).find(".historymessages").find(".message-avatar-link").removeAttr("href");
@@ -339,7 +339,7 @@
             newusernames += newmessagesession.urusers[i].username;
         }
         loaddatafromjson(newsessiondata, "");
-        var currentmessagesession = $(".wrapper .messagesessions .line").last();
+        var currentmessagesession = $(".container .messagesessions .line").last();
         if (currentmessagesession.find(".sendmessageform").find(".messagetousernames").val() == newusernames) {
             currentmessagesession.find(".line-main").click();
         }
