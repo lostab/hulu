@@ -99,7 +99,7 @@ $(document).ready(function(){
                     $(".content.home>.items>.pagination").after($(".content.home>.items>.pagination .current .items").html());
                     $(".content.home>.items>.pagination").first().remove();
                     $("a").unbind("click");
-                    ajaxload($("a"));
+                    ajaxget($("a"));
                     load_next_page();
                 });
                 return false;
@@ -118,7 +118,7 @@ $(document).ready(function(){
         $(".content.home").load("/ .items", function(response, status, xhr){
             $(".items").show();
             $("a").unbind("click");
-            ajaxload();
+            ajaxget($("a"));
             load_next_page();
             $(".loading").slideUp(function(){
                 $(this).remove();

@@ -65,7 +65,7 @@ html, body {
     border: 2px dashed green;
     border-radius: 2px;
     /*background: green;*/
-    -webkit-animation: changeposition 20s linear infinite;
+    -webkit-animation: changeposition 10s linear infinite;
 }
 a {
     color: black;

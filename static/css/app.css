@@ -47,7 +47,7 @@ html, body, .wrapper {
     height: 2px;
     border-radius: 2px;
     margin: 0 auto;
-    margin-top: 6px;
+    margin-top: -12px;
     position: relative;
     overflow: hidden;
 }
@@ -58,7 +58,7 @@ html, body, .wrapper {
     border: 2px dashed green;
     border-radius: 2px;
     /*background: green;*/
-    -webkit-animation: changeposition 20s linear infinite;
+    -webkit-animation: changeposition 10s linear infinite;
 }
 .header {
     position: fixed;

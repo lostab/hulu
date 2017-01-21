@@ -171,13 +171,14 @@ $(document).ready(function(){
             qstr.val("");
             qstr.focus();
             return false;
+        } else {
+            ajaxload("/?q=" + qstr.val().trim());
+            return false;
         }
     });
 
     $(".container").css({"min-height": "calc(100% - " + ($(".header").height() - 46 + $(".footer").height()) + "px - " + $(".container").css("padding-top") + ")"});
     $(".header .search").css({"width": "calc(100% - " + ($(".header .logo").width() + $(".header .right-navbar").width() + 24) + "px)", "margin-right": ($(".header .right-navbar").width() + 16) + "px"});
-
-    ajaxload($("a"));
 
     if ($(".right-navbar .accounts-button .avatar img").attr("userid") == "1" ) {
         var addmusicswitch = function(){
@@ -321,4 +322,7 @@ $(document).ready(function(){
         });
 
     }
+
+    ajaxget($("a"));
+    ajaxpost($("form"));
 });

@@ -118,7 +118,7 @@
                             });
 
                             $("a").unbind();
-                            ajaxload($("a"));
+                            ajaxget($("a"));
                         }
                         var scrolldown = function(){
                             messageline.find(".historymessages").scrollTop(messageline.find(".historymessages")[0].scrollHeight);
@@ -167,7 +167,7 @@
                     });
 
                     $("a").unbind();
-                    ajaxload($("a"));
+                    ajaxget($("a"));
                 }
                 currentmessagesession.find(".historymessages").scrollTop(currentmessagesession.find(".historymessages")[0].scrollHeight);
 
@@ -383,7 +383,7 @@
         var messagesessionexit = 0;
         {% endif %}
 
-        ajaxload($("a"));
+        ajaxget($("a"));
     });
 </script>
 </body>

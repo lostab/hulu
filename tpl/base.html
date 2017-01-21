@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <title>{% block title %}{% endblock %}Hulu</title>
     <meta name="description" content="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}分享和发现有趣的东西。{% else %}Share and Discover.{% endif %}">
+    <meta name="uri" content="{{ request.build_absolute_uri }}" />
     <meta name="viewport" content="maximum-scale=1,width=device-width,initial-scale=1" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
