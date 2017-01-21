@@ -161,8 +161,10 @@ $(document).ready(function(){
             itemtag.val("");
             itemtag.focus();
             $(".newtagform .submit").attr("disabled", false);
-            return false;
+        } else {
+            ajaxload($(this).attr("action") + "?t=" + itemtag.val().trim());
         }
+        return false;
     });
 
     $(".search").submit(function(){
@@ -324,5 +326,5 @@ $(document).ready(function(){
     }
 
     ajaxget($("a"));
-    ajaxpost($("form"));
+    ajaxpost($("form").not(".additemtag").not(".newtagform"));
 });

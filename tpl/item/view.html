@@ -173,7 +173,7 @@
             {% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}或{% else %}or{% endif %}
             <a href="{% url 'signup' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.get_full_path }}{% endif %}">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}注册{% else %}Sign up{% endif %}</a>
             {% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}以参与评论。{% else %}to post comment.{% endif %}</p>
-            <p><a class="oauthbtn" href="/u/login/?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.path }}{% endif %}&type=qq"><img src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_3.png" /></a></p>
+            <p><a class="oauthbtn" target="blank" href="/u/login/?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.path }}{% endif %}&type=qq"><img src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_3.png" /></a></p>
         {% endif %}
 
     {% else %}

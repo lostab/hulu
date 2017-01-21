@@ -50,7 +50,7 @@
             <p><input name="password2" type="password" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}请再次输入密码{% else %}Password{% endif %}" /></p>
             <p><input class="submit" type="submit" value="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}注册{% else %}Sign up{% endif %}" /></p>
             <p>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}已有帐号？{% else %}Already Signed up?{% endif %}<a href="{% url 'login' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.path }}{% endif %}">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}现在登录{% else %}Sign in Now{% endif %}</a></p>
-            <p><a class="oauthbtn" href="?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.path }}{% endif %}&type=qq"><img src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_3.png" /></a></p>
+            <p><a class="oauthbtn" target="blank" href="?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.path }}{% endif %}&type=qq"><img src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_3.png" /></a></p>
         </form>
     </div>
 {% endblock %}

@@ -14,7 +14,7 @@
             <p><input name="password" type="password" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}请输入密码{% else %}Password{% endif %}" /></p>
             <p><input class="submit" type="submit" value="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}登录{% else %}Sign in{% endif %}" /></p>
             <p><a href="/u/password_reset/">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}忘记密码？{% else %}Forgot Password?{% endif %}</a> - {% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}没有帐号？{% else %}No Account Yet?{% endif %}<a href="{% url 'signup' %}?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.path }}{% endif %}">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}现在注册{% else %}Sign up Now{% endif %}</a></p>
-            <p><a class="oauthbtn" href="?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.path }}{% endif %}&type=qq"><img src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_3.png" /></a></p>
+            <p><a class="oauthbtn" target="blank" href="?next={% if request.GET.next %}{{ request.GET.next }}{% else %}{{ request.path }}{% endif %}&type=qq"><img src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_3.png" /></a></p>
         </form>
     </div>
 {% endblock %}
