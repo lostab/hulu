@@ -1,24 +1,30 @@
 var ajaxloadpage = function(url, data){
     $("body").html("");
-    if (url == "/m/" || window.location.pathname == "/m/") {
-        $("head").find("link").remove();
-        $(data).filter("link").appendTo("head");
-        setTimeout(function(){
-            $(data).filter(".wrapper").appendTo("body");
-        }, 0);
-    } else {
+    var loadcss = function(){
+        if (url == "/m/" || window.location.pathname == "/m/") {
+            $("head").find("link").remove();
+            $(data).filter("link").appendTo("head");
+        }
+    }
+    var loaddom = function(){
         $(data).filter(".wrapper").appendTo("body");
     }
-    setTimeout(function(){
+    var loadscript = function(){
         $(data).filter("script").appendTo("body");
-    }, 0);
-    $("html,body").animate({scrollTop:0}, 0);
-    window.history.pushState({
-        "url": window.location.href,
-        "pathname": window.location.pathname,
-        "title": document.title
-    }, $(data).filter("title").text(), url);
-    document.title = $(data).filter("title").text();
+    }
+    $.when(loadcss()).then(function(){
+        $.when(loaddom()).then(function(){
+            $.when(loadscript()).then(function(){
+                $("html,body").animate({scrollTop:0}, 0);
+                window.history.pushState({
+                    "url": window.location.href,
+                    "pathname": window.location.pathname,
+                    "title": document.title
+                }, $(data).filter("title").text(), url);
+                document.title = $(data).filter("title").text();
+            });
+        });
+    });
 }
 
 var ajaxload = function(url){
@@ -90,20 +96,26 @@ if(!window.isaddpopstateevent){
     window.addEventListener("popstate", function(e){
         $.get(window.location.href, function(data){
             $("body").html("");
-            if ((e.state && e.state.pathname == "/m/") || window.location.pathname == "/m/") {
-                $("head").find("link").remove();
-                $(data).filter("link").appendTo("head");
-                setTimeout(function(){
-                    $(data).filter(".wrapper").appendTo("body");
-                }, 0);
-            } else {
+            var loadcss = function(){
+                if ((e.state && e.state.pathname == "/m/") || window.location.pathname == "/m/") {
+                    $("head").find("link").remove();
+                    $(data).filter("link").appendTo("head");
+                }
+            }
+            var loaddom = function(){
                 $(data).filter(".wrapper").appendTo("body");
             }
-            setTimeout(function(){
+            var loadscript = function(){
                 $(data).filter("script").appendTo("body");
-            }, 0);
-            $("html,body").animate({scrollTop:0}, 0);
-            document.title = $(data).filter("title").text();
+            }
+            $.when(loadcss()).then(function(){
+                $.when(loaddom()).then(function(){
+                    $.when(loadscript()).then(function(){
+                        $("html,body").animate({scrollTop:0}, 0);
+                        document.title = $(data).filter("title").text();
+                    });
+                });
+            });
         }, "html");
     }, false);
     window.isaddpopstateevent = true;
