@@ -249,13 +249,14 @@ $(document).ready(function(){
         if ($(".additemtagform").is(":visible")) {
             $(".additemtagform").hide();
             $(this).text("{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}编辑话题{% else %}Edit Tags{% endif %}");
-            $(".item-head .item-tags .item-tag").each(function(){
+            $(".item-head .item-tags .item-tag a").each(function(){
                 $(this).unbind("click");
+                ajaxload($(this));
             });
         } else {
             $(".additemtagform").show();
             $(this).text("{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}保存话题{% else %}Save Tags{% endif %}");
-            $(".item-head .item-tags .item-tag").each(function(){
+            $(".item-head .item-tags .item-tag a").each(function(){
                 $(this).bind("click", removetag);
             });
         }
@@ -282,7 +283,7 @@ $(document).ready(function(){
                 },
                 success: function(data){
                     $(".item-head .item-tags").append("<div class=\"item-tag\"><a href=\"/t/" + data + "/\">" + itemtag.val() + "</a></div>");
-                    $(".item-head .item-tags .item-tag").last().bind("click", removetag);
+                    $(".item-head .item-tags .item-tag a").last().bind("click", removetag);
                     itemtag.val("");
                     $(".additemtagform .submit").attr("disabled", false);
                 }

@@ -1,6 +1,6 @@
-var ajaxload = function(){
+var ajaxload = function(obj){
     if(window.history && window.history.pushState) {
-        $("a").click(function(e){
+        obj.click(function(e){
             var thus = $(this);
             var event_obj = $._data(thus[0], "events");
             if (event_obj && event_obj["click"] && event_obj["click"].length > 1) {
