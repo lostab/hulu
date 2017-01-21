@@ -18,12 +18,13 @@ var ajaxload = function(obj){
                                 setTimeout(function(){
                                     $(data).filter(".wrapper").appendTo("body");
                                 }, 0);
+                                setTimeout(function(){
+                                    $(data).filter("script").appendTo("body");
+                                }, 0);
                             } else {
                                 $(data).filter(".wrapper").appendTo("body");
-                            }
-                            setTimeout(function(){
                                 $(data).filter("script").appendTo("body");
-                            }, 0);
+                            }
 
                             $("html,body").animate({scrollTop:0}, 0);
                             window.history.pushState({
@@ -49,13 +50,13 @@ var ajaxload = function(obj){
                         setTimeout(function(){
                             $(data).filter(".wrapper").appendTo("body");
                         }, 0);
+                        setTimeout(function(){
+                            $(data).filter("script").appendTo("body");
+                        }, 0);
                     } else {
                         $(data).filter(".wrapper").appendTo("body");
-                    }
-
-                    setTimeout(function(){
                         $(data).filter("script").appendTo("body");
-                    }, 0);
+                    }
                     $("html,body").animate({scrollTop:0}, 0);
                     document.title = $(data).filter("title").text();
                 }, "html");
