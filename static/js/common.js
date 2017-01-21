@@ -179,7 +179,7 @@ $(document).ready(function(){
 
     ajaxload();
 
-    if ($(".right-navbar .accounts-button .avatar img").attr("alt") == "way" ) {
+    if ($(".right-navbar .accounts-button .avatar img").attr("userid") == "1" ) {
         var addmusicswitch = function(){
             $(".search").append("<a class=\"musicswitch\"></a>");
             $(".search .musicswitch").css({
