@@ -10,6 +10,56 @@ html, body, .wrapper {
 .wrapper {
     display: none;
 }
+@keyframes changeposition {
+    0%{
+        -webkit-transform: translate(-50%);
+    }
+    100%{
+        -webkit-transform: translate(0);
+    }
+}
+@-webkit-keyframes changeposition {
+    0%{
+        -webkit-transform: translate(-50%);
+    }
+    100%{
+        -webkit-transform: translate(0);
+    }
+}
+@-moz-keyframes changeposition {
+    0%{
+        -webkit-transform: translate(-50%);
+    }
+    100%{
+        -webkit-transform: translate(0);
+    }
+}
+@-o-keyframes changeposition {
+    0%{
+        -webkit-transform: translate(-50%);
+    }
+    100%{
+        -webkit-transform: translate(0);
+    }
+}
+.ajaxloading{
+    width: 100%;
+    height: 2px;
+    border-radius: 2px;
+    margin: 0 auto;
+    margin-top: 6px;
+    position: relative;
+    overflow: hidden;
+}
+.ajaxloading span{
+    display:block;
+    width: 200%;
+    height: 100%;
+    border: 2px dashed green;
+    border-radius: 2px;
+    /*background: green;*/
+    -webkit-animation: changeposition 20s linear infinite;
+}
 .header {
     position: fixed;
     top: 0;

@@ -98,6 +98,8 @@ $(document).ready(function(){
                     $(".content.home>.items>.item").last().css({"border-bottom": "1px solid whitesmoke"});      //还原末行底部边框
                     $(".content.home>.items>.pagination").after($(".content.home>.items>.pagination .current .items").html());
                     $(".content.home>.items>.pagination").first().remove();
+                    $("a").unbind("click");
+                    ajaxload();
                     load_next_page();
                 });
                 return false;
@@ -115,6 +117,8 @@ $(document).ready(function(){
         }
         $(".content.home").load("/ .items", function(response, status, xhr){
             $(".items").show();
+            $("a").unbind("click");
+            ajaxload();
             load_next_page();
             $(".loading").slideUp(function(){
                 $(this).remove();
@@ -136,11 +140,11 @@ $(document).ready(function(){
             }
         });
     }
-    $(".header .logo").click(function(){
+    /*$(".header .logo").click(function(){
         $(window).scrollTop(0);
         loading();
         return false;
-    });
+    });*/
     /*
     var b = document.getElementsByClassName("container")[0];
     var x,y,scrollTop;
