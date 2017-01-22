@@ -9,9 +9,6 @@ var ajaxloadpage = function(url, data){
     } else {
         $(data).filter(".wrapper").appendTo("body");
     }
-    setTimeout(function(){
-        $(data).filter("script").appendTo("body");
-    }, 0);
     $("html,body").animate({scrollTop:0}, 0);
     window.history.pushState({
         "url": window.location.href,
@@ -99,9 +96,6 @@ if(!window.isaddpopstateevent){
             } else {
                 $(data).filter(".wrapper").appendTo("body");
             }
-            setTimeout(function(){
-                $(data).filter("script").appendTo("body");
-            }, 0);
             $("html,body").animate({scrollTop:0}, 0);
             document.title = $(data).filter("title").text();
         }, "html");
