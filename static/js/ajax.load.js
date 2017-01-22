@@ -1,6 +1,13 @@
 var ajaxloadpage = function(url, data){
-    $("body").html("");
-    if (url == "/m/" || window.location.pathname == "/m/") {
+    var locationhostname = window.location.pathname;
+    window.history.pushState({
+        "url": window.location.href,
+        "pathname": window.location.pathname,
+        "title": document.title
+    }, $(data).filter("title").text(), url);
+    document.title = $(data).filter("title").text();
+    $(".wrapper").remove();
+    if (url == "/m/" || locationhostname == "/m/") {
         $("head").find("link").remove();
         $(data).filter("link").appendTo("head");
         setTimeout(function(){
@@ -10,12 +17,6 @@ var ajaxloadpage = function(url, data){
         $(data).filter(".wrapper").appendTo("body");
     }
     $("html,body").animate({scrollTop:0}, 0);
-    window.history.pushState({
-        "url": window.location.href,
-        "pathname": window.location.pathname,
-        "title": document.title
-    }, $(data).filter("title").text(), url);
-    document.title = $(data).filter("title").text();
 }
 
 var ajaxload = function(url){
@@ -58,7 +59,7 @@ var ajaxpost = function(obj){
             var event_obj = $._data(thus[0], "events");
             //if (event_obj && event_obj["submit"] && event_obj["submit"].length > 1) {
 
-            //} else {
+            //}
             if(thus.attr("method") && thus.attr("method").toLowerCase() == "post"){
                 if($(".header .ajaxloading").length == 0) {
                     $(".header").append("<div class=\"ajaxloading\"><span></span></div>");
@@ -83,22 +84,24 @@ var ajaxpost = function(obj){
     }
 }
 
-if(!window.isaddpopstateevent){
-    window.addEventListener("popstate", function(e){
-        $.get(window.location.href, function(data){
-            $("body").html("");
-            if ((e.state && e.state.pathname == "/m/") || window.location.pathname == "/m/") {
-                $("head").find("link").remove();
-                $(data).filter("link").appendTo("head");
-                setTimeout(function(){
+if(window.history && window.history.pushState) {
+    if(!window.isaddpopstateevent){
+        window.addEventListener("popstate", function(e){
+            $.get(window.location.href, function(data){
+                document.title = $(data).filter("title").text();
+                $(".wrapper").remove();
+                if ((e.state && e.state.pathname == "/m/") || window.location.pathname == "/m/") {
+                    $("head").find("link").remove();
+                    $(data).filter("link").appendTo("head");
+                    setTimeout(function(){
+                        $(data).filter(".wrapper").appendTo("body");
+                    }, 0);
+                } else {
                     $(data).filter(".wrapper").appendTo("body");
-                }, 0);
-            } else {
-                $(data).filter(".wrapper").appendTo("body");
-            }
-            $("html,body").animate({scrollTop:0}, 0);
-            document.title = $(data).filter("title").text();
-        }, "html");
-    }, false);
-    window.isaddpopstateevent = true;
+                }
+                $("html,body").animate({scrollTop:0}, 0);
+            }, "html");
+        }, false);
+        window.isaddpopstateevent = true;
+    }
 }
