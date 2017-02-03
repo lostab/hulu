@@ -22,9 +22,17 @@ var ajaxloadpage = function(url, data){
 var ajaxload = function(url){
     if($(".header .ajaxloading").length == 0) {
         $(".header").append("<div class=\"ajaxloading\"><span></span></div>");
-        $.get(url, function(data){
-            ajaxloadpage(url, data);
-        }, "html");
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function(data){
+                ajaxloadpage(url, data);
+            },
+            dataType: "html",
+            error: function(){
+                $(".header .ajaxloading").remove();
+            }
+        });
     }
 }
 
@@ -63,20 +71,38 @@ var ajaxpost = function(obj){
             if(thus.attr("method") && thus.attr("method").toLowerCase() == "post"){
                 if($(".header .ajaxloading").length == 0) {
                     $(".header").append("<div class=\"ajaxloading\"><span></span></div>");
-                    $.post(url, thus.serialize(), function(data, status, xhr){
-                        if ($(data).filter("meta[name=uri]") && $(data).filter("meta[name=uri]").attr("content")){
-                            var url = $(data).filter("meta[name=uri]").attr("content");
-                            ajaxloadpage(url, data);
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: thus.serialize(),
+                        success: function(data, status, xhr){
+                            if ($(data).filter("meta[name=uri]") && $(data).filter("meta[name=uri]").attr("content")){
+                                var url = $(data).filter("meta[name=uri]").attr("content");
+                                ajaxloadpage(url, data);
+                            }
+                        },
+                        dataType: "html",
+                        error: function(){
+                            $(".header .ajaxloading").remove();
                         }
-                    }, "html");
+                    });
                 }
             }
             if(thus.attr("method") && thus.attr("method").toLowerCase() == "get"){
                 if($(".header .ajaxloading").length == 0) {
                     $(".header").append("<div class=\"ajaxloading\"><span></span></div>");
-                    $.get(url, thus.serialize(), function(data){
-                        ajaxloadpage(url, data);
-                    }, "html");
+                    $.ajax({
+                        type: "GET",
+                        url: url,
+                        data: thus.serialize(),
+                        success: function(data){
+                            ajaxloadpage(url, data);
+                        },
+                        dataType: "html",
+                        error: function(){
+                            $(".header .ajaxloading").remove();
+                        }
+                    });
                     return false;
                 }
             }
@@ -87,20 +113,28 @@ var ajaxpost = function(obj){
 if(window.history && window.history.pushState) {
     if(!window.isaddpopstateevent){
         window.addEventListener("popstate", function(e){
-            $.get(window.location.href, function(data){
-                document.title = $(data).filter("title").text();
-                $(".wrapper").remove();
-                if ((e.state && e.state.pathname == "/m/") || window.location.pathname == "/m/") {
-                    $("head").find("link").remove();
-                    $(data).filter("link").appendTo("head");
-                    setTimeout(function(){
+            $.ajax({
+                type: "GET",
+                url: window.location.href,
+                success: function(data){
+                    document.title = $(data).filter("title").text();
+                    $(".wrapper").remove();
+                    if ((e.state && e.state.pathname == "/m/") || window.location.pathname == "/m/") {
+                        $("head").find("link").remove();
+                        $(data).filter("link").appendTo("head");
+                        setTimeout(function(){
+                            $(data).filter(".wrapper").appendTo("body");
+                        }, 0);
+                    } else {
                         $(data).filter(".wrapper").appendTo("body");
-                    }, 0);
-                } else {
-                    $(data).filter(".wrapper").appendTo("body");
+                    }
+                    $("html,body").animate({scrollTop:0}, 0);
+                },
+                dataType: "html",
+                error: function(){
+
                 }
-                $("html,body").animate({scrollTop:0}, 0);
-            }, "html");
+            });
         }, false);
         window.isaddpopstateevent = true;
     }
