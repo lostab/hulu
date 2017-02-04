@@ -6,7 +6,7 @@ var ajaxloadpage = function(url, data){
         "title": document.title
     }, $(data).filter("title").text(), url);
     document.title = $(data).filter("title").text();
-    $(".wrapper").remove();
+    //$(".wrapper").remove();
     if (url == "/m/" || locationhostname == "/m/") {
         $("head").find("link").remove();
         $(data).filter("link").appendTo("head");
@@ -16,6 +16,7 @@ var ajaxloadpage = function(url, data){
     } else {
         $(data).filter(".wrapper").appendTo("body");
     }
+    $(".wrapper").first().remove();
     $("html,body").animate({scrollTop:0}, 0);
 }
 
@@ -113,6 +114,7 @@ var ajaxpost = function(obj){
 if(window.history && window.history.pushState) {
     if(!window.isaddpopstateevent){
         window.addEventListener("popstate", function(e){
+            $(".header").append("<div class=\"ajaxloading\"><span></span></div>");
             $.ajax({
                 type: "GET",
                 url: window.location.href,
@@ -132,7 +134,7 @@ if(window.history && window.history.pushState) {
                 },
                 dataType: "html",
                 error: function(){
-
+                    $(".header .ajaxloading").remove();
                 }
             });
         }, false);
