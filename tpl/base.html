@@ -17,7 +17,7 @@
     <div class="header">
         <a class="logo" href="/">Hulu</a>
         <form class="search" action="/">
-            <input class="qstr" type="text" name="q" placeholder="{% if request.GET.q %}{{ request.GET.q }}{% else %}{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}搜索{% else %}Search{% endif %}{% endif %}" />
+            <input class="qstr" type="text" name="q" autocomplete="off" placeholder="{% if request.GET.q %}{{ request.GET.q }}{% else %}{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}搜索{% else %}Search{% endif %}{% endif %}" />
         </form>
         {% if user.is_authenticated %}
         <div class="right-navbar right-navbar-login">
@@ -49,7 +49,7 @@
     <!--[if lt IE 9]>
         <script src="/s/js/css3-mediaqueries.js"></script>
     <![endif]-->
-    
+
     {% block footer %}{% endblock %}
     </div>
 </body>
