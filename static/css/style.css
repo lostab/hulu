@@ -19,34 +19,36 @@ html, body {
 }
 @keyframes changeposition {
     0%{
-        -webkit-transform: translate(-50%);
+        margin-left: -50%;
     }
     100%{
-        -webkit-transform: translate(0);
+        margin-left: 0;
     }
 }
 @-webkit-keyframes changeposition {
     0%{
-        -webkit-transform: translate(-50%);
+        /*-webkit-transform: translate(-50%);*/
+        margin-left: -50%;
     }
     100%{
-        -webkit-transform: translate(0);
+        /*-webkit-transform: translate(100%);*/
+        margin-left: 0;
     }
 }
 @-moz-keyframes changeposition {
     0%{
-        -webkit-transform: translate(-50%);
+        margin-left: -50%;
     }
     100%{
-        -webkit-transform: translate(0);
+        margin-left: 0;
     }
 }
 @-o-keyframes changeposition {
     0%{
-        -webkit-transform: translate(-50%);
+        margin-left: -50%;
     }
     100%{
-        -webkit-transform: translate(0);
+        margin-left: 0;
     }
 }
 .ajaxloading{
@@ -59,7 +61,7 @@ html, body {
     overflow: hidden;
 }
 .ajaxloading span{
-    display:block;
+    display: block;
     width: 200%;
     height: 100%;
     border: 2px dashed green;

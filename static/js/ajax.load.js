@@ -7,7 +7,7 @@ var ajaxloadpage = function(url, data){
     }, $(data).filter("title").text(), url);
     document.title = $(data).filter("title").text();
     //$(".wrapper").remove();
-    if (url == "/m/" || locationhostname == "/m/") {
+    if (url == "/m/" || locationhostname == "/m/" || url.split("/")[3] == "m") {
         $("head").find("link").remove();
         $(data).filter("link").appendTo("head");
         setTimeout(function(){
@@ -16,7 +16,9 @@ var ajaxloadpage = function(url, data){
     } else {
         $(data).filter(".wrapper").appendTo("body");
     }
-    $(".wrapper").first().remove();
+    setTimeout(function(){
+        $(".wrapper").first().remove();
+    }, 0);
     $("html,body").animate({scrollTop:0}, 0);
 }
 
