@@ -10,7 +10,7 @@ html, body, .wrapper {
 .wrapper {
     display: none;
 }
-@keyframes changeposition {
+/*@keyframes changeposition {
     0%{
         margin-left: -50%;
     }
@@ -57,9 +57,8 @@ html, body, .wrapper {
     height: 100%;
     border: 2px dashed green;
     border-radius: 2px;
-    /*background: green;*/
     -webkit-animation: changeposition 10s linear infinite;
-}
+}*/
 .header {
     position: fixed;
     top: 0;

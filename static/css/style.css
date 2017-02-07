@@ -17,7 +17,7 @@ html, body {
     height: inherit;
     margin: 0 auto;
 }
-@keyframes changeposition {
+/*@keyframes changeposition {
     0%{
         margin-left: -50%;
     }
@@ -27,11 +27,11 @@ html, body {
 }
 @-webkit-keyframes changeposition {
     0%{
-        /*-webkit-transform: translate(-50%);*/
+        -webkit-transform: translate(-50%);
         margin-left: -50%;
     }
     100%{
-        /*-webkit-transform: translate(100%);*/
+        -webkit-transform: translate(100%);
         margin-left: 0;
     }
 }
@@ -66,9 +66,8 @@ html, body {
     height: 100%;
     border: 2px dashed green;
     border-radius: 2px;
-    /*background: green;*/
     -webkit-animation: changeposition 10s linear infinite;
-}
+}*/
 a {
     color: black;
     text-decoration: none;
