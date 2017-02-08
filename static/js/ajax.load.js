@@ -23,7 +23,7 @@ var ajaxloadpage = function(url, data){
 var ajaxload = function(url){
     if($("body .ajaxloading").length == 0) {
         //$(".header").append("<div class=\"ajaxloading\"><span></span></div>");
-        $(".wrapper").after($("<div class=\"ajaxloading\" style=\"background:lightgray;opacity:0.6;top:0;position:fixed;z-index:999;width:100%;height:100%;margin:0;padding:0;vertical-align:middle;\"><div class=\"loading-content\" style=\"text-align:center;width:100%;height:10px;position:absolute;top:50%;margin-top:-5px;\"><span style=\"background:white;padding:7px;border-radius:7px;-webkit-border-radius:7px;-moz-border-radius:7px;\">" + (($('html').attr('lang') == "zh")?"加载中…":"loading...") + "</span></div></div>"));
+        $(".wrapper").after($("<div class=\"ajaxloading\" style=\"background:lightgray;opacity:0.8;top:0;position:fixed;z-index:999;width:100%;height:100%;margin:0;padding:0;vertical-align:middle;\"><div class=\"loading-content\" style=\"text-align:center;width:100%;height:10px;position:absolute;top:50%;margin-top:-5px;\"><span style=\"\">" + (($('html').attr('lang') == "zh")?"加载中…":"loading...") + "</span></div></div>"));
         $.ajax({
             type: "GET",
             url: url,
@@ -74,7 +74,7 @@ var ajaxpost = function(obj){
             if(thus.attr("method") && thus.attr("method").toLowerCase() == "post"){
                 if($("body .ajaxloading").length == 0) {
                     //$(".header").append("<div class=\"ajaxloading\"><span></span></div>");
-                    $(".wrapper").after($("<div class=\"ajaxloading\" style=\"background:lightgray;opacity:0.6;top:0;position:fixed;z-index:999;width:100%;height:100%;margin:0;padding:0;vertical-align:middle;\"><div class=\"loading-content\" style=\"text-align:center;width:100%;height:10px;position:absolute;top:50%;margin-top:-5px;\"><span style=\"background:white;padding:7px;border-radius:7px;-webkit-border-radius:7px;-moz-border-radius:7px;\">" + (($('html').attr('lang') == "zh")?"加载中…":"loading...") + "</span></div></div>"));
+                    $(".wrapper").after($("<div class=\"ajaxloading\" style=\"background:lightgray;opacity:0.8;top:0;position:fixed;z-index:999;width:100%;height:100%;margin:0;padding:0;vertical-align:middle;\"><div class=\"loading-content\" style=\"text-align:center;width:100%;height:10px;position:absolute;top:50%;margin-top:-5px;\"><span style=\"\">" + (($('html').attr('lang') == "zh")?"加载中…":"loading...") + "</span></div></div>"));
                     $.ajax({
                         type: "POST",
                         url: url,
@@ -96,7 +96,7 @@ var ajaxpost = function(obj){
             if(thus.attr("method") && thus.attr("method").toLowerCase() == "get"){
                 if($("body .ajaxloading").length == 0) {
                     //$(".header").append("<div class=\"ajaxloading\"><span></span></div>");
-                    $(".wrapper").after($("<div class=\"ajaxloading\" style=\"background:lightgray;opacity:0.6;top:0;position:fixed;z-index:999;width:100%;height:100%;margin:0;padding:0;vertical-align:middle;\"><div class=\"loading-content\" style=\"text-align:center;width:100%;height:10px;position:absolute;top:50%;margin-top:-5px;\"><span style=\"background:white;padding:7px;border-radius:7px;-webkit-border-radius:7px;-moz-border-radius:7px;\">" + (($('html').attr('lang') == "zh")?"加载中…":"loading...") + "</span></div></div>"));
+                    $(".wrapper").after($("<div class=\"ajaxloading\" style=\"background:lightgray;opacity:0.8;top:0;position:fixed;z-index:999;width:100%;height:100%;margin:0;padding:0;vertical-align:middle;\"><div class=\"loading-content\" style=\"text-align:center;width:100%;height:10px;position:absolute;top:50%;margin-top:-5px;\"><span style=\"\">" + (($('html').attr('lang') == "zh")?"加载中…":"loading...") + "</span></div></div>"));
                     $.ajax({
                         type: "GET",
                         url: url,
@@ -121,7 +121,7 @@ if(window.history && window.history.pushState) {
     if(!window.isaddpopstateevent){
         window.addEventListener("popstate", function(e){
             //$(".header").append("<div class=\"ajaxloading\"><span></span></div>");
-            $(".wrapper").after($("<div class=\"ajaxloading\" style=\"background:lightgray;opacity:0.6;top:0;position:fixed;z-index:999;width:100%;height:100%;margin:0;padding:0;vertical-align:middle;\"><div class=\"loading-content\" style=\"text-align:center;width:100%;height:10px;position:absolute;top:50%;margin-top:-5px;\"><span style=\"background:white;padding:7px;border-radius:7px;-webkit-border-radius:7px;-moz-border-radius:7px;\">" + (($('html').attr('lang') == "zh")?"加载中…":"loading...") + "</span></div></div>"));
+            $(".wrapper").after($("<div class=\"ajaxloading\" style=\"background:lightgray;opacity:0.8;top:0;position:fixed;z-index:999;width:100%;height:100%;margin:0;padding:0;vertical-align:middle;\"><div class=\"loading-content\" style=\"text-align:center;width:100%;height:10px;position:absolute;top:50%;margin-top:-5px;\"><span style=\"\">" + (($('html').attr('lang') == "zh")?"加载中…":"loading...") + "</span></div></div>"));
             $.ajax({
                 type: "GET",
                 url: window.location.href,
