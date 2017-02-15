@@ -70,90 +70,92 @@ $(document).ready(function(){
         });
     }
 
-    if ($('html').attr('lang') == "zh") {
-        $(".itemform .submit").parent().before('\
-            <div class="fileselect" style="text-align: center;">\
-                <input class="wbimg" type="file" name="file" style="display: none;" />\
-                <input class="fileselectbutton" type="button" value="上传图片" style="font-size: small;" />\
-            </div>\
-            <div class="process" style="width: 100%; display: none;">\
-                <div class="processbar" style="width: 0%; height: 22px; background: black;"></div>\
-            </div>\
-            <div class="uploadinfo" style="text-align: center; height: 18px; font-size: small; color: gray;"></div>\
-        ');
-    } else {
-        $(".itemform .submit").parent().before('\
-            <div class="fileselect" style="text-align: center;">\
-                <input class="wbimg" type="file" name="file" style="display: none;" />\
-                <input class="fileselectbutton" type="button" value="Upload Image" style="font-size: small;" />\
-            </div>\
-            <div class="process" style="width: 100%; display: none;">\
-                <div class="processbar" style="width: 0%; height: 22px; background: black;"></div>\
-            </div>\
-            <div class="uploadinfo" style="text-align: center; height: 18px; font-size: small; color: gray;"></div>\
-        ');
-    }
-    $(".itemform .fileselectbutton").click(function(){
-        $(this).closest(".itemform").find(".wbimg").click();
-    });
-    $(".itemform .wbimg").fileupload({
-        url: "/wi/",
-        dataType: "jsonp",
-        done: function(e, data){
-            $(this).prop("disabled", false);
-            $(this).next(".fileselectbutton").prop("disabled", false);
-            $(this).parent().show();
-            $(this).closest(".itemform").find(".submit").prop("disabled", false);
-            var wbimgurl = data.result.original_pic;
-            if ($(this).closest(".itemform").find("textarea").val() == "") {
-                $(this).closest(".itemform").find("textarea").val(wbimgurl);
-            } else {
-                $(this).closest(".itemform").find("textarea").val($(this).closest(".itemform").find("textarea").val() + "\r\n" + wbimgurl);
-            }
-            $(this).closest(".itemform").find(".process").hide();
-            $(this).closest(".itemform").find(".uploadinfo").show();
-            if ($('html').attr('lang') == "zh") {
-                $(this).closest(".itemform").find(".uploadinfo").text("上传成功，请备份图片链接。");
-            } else {
-                $(this).closest(".itemform").find(".uploadinfo").text("Upload succeeded, please backup the link.");
-            }
-
-        },
-        fail: function(e, data){
-            $(this).prop("disabled", false);
-            $(this).next(".fileselectbutton").prop("disabled", false);
-            $(this).parent().show();
-            $(this).closest(".itemform").find(".submit").prop("disabled", false);
-            $(this).closest(".itemform").find(".process").hide();
-            $(this).closest(".itemform").find(".uploadinfo").show();
-            if ($('html').attr('lang') == "zh") {
-                $(this).closest(".itemform").find(".uploadinfo").text("上传失败，请检查图片后重试。");
-            } else {
-                $(this).closest(".itemform").find(".uploadinfo").text("Upload failed, please check and retry.");
-            }
-        },
-        progressall: function(e, data){
-            $(this).closest(".itemform").find(".process").show();
-            //$(this).closest(".itemform").find(".uploadinfo").hide();
-            var process = parseInt(data.loaded / data.total * 100, 10);
-            $(this).closest(".itemform").find(".process .processbar").css("width", process + "%");
-            $(this).closest(".itemform").find(".uploadinfo").text(process + "%");
-        },
-        add: function(e, data){
-            $(this).prop("disabled", true);
-            $(this).next(".fileselectbutton").prop("disabled", true);
-            $(this).parent().hide();
-            $(this).closest(".itemform").find(".submit").prop("disabled", true);
-            //$(this).closest(".itemform").find(".process").hide();
-            $(this).closest(".itemform").find(".uploadinfo").show();
-            if ($('html').attr('lang') == "zh") {
-                $(this).closest(".itemform").find(".uploadinfo").text("正在上传…");
-            } else {
-                $(this).closest(".itemform").find(".uploadinfo").text("uploading...");
-            }
-            data.submit();
+    if ($(".right-navbar .accounts-button .avatar img").attr("userid") == "1" ) {
+        if ($('html').attr('lang') == "zh") {
+            $(".itemform .submit").parent().before('\
+                <div class="fileselect" style="text-align: center;">\
+                    <input class="wbimg" type="file" name="file" style="display: none;" />\
+                    <input class="fileselectbutton" type="button" value="上传图片" style="font-size: small;" />\
+                </div>\
+                <div class="process" style="width: 100%; display: none;">\
+                    <div class="processbar" style="width: 0%; height: 22px; background: black;"></div>\
+                </div>\
+                <div class="uploadinfo" style="text-align: center; height: 18px; font-size: small; color: gray;"></div>\
+            ');
+        } else {
+            $(".itemform .submit").parent().before('\
+                <div class="fileselect" style="text-align: center;">\
+                    <input class="wbimg" type="file" name="file" style="display: none;" />\
+                    <input class="fileselectbutton" type="button" value="Upload Image" style="font-size: small;" />\
+                </div>\
+                <div class="process" style="width: 100%; display: none;">\
+                    <div class="processbar" style="width: 0%; height: 22px; background: black;"></div>\
+                </div>\
+                <div class="uploadinfo" style="text-align: center; height: 18px; font-size: small; color: gray;"></div>\
+            ');
         }
-    });
+        $(".itemform .fileselectbutton").click(function(){
+            $(this).closest(".itemform").find(".wbimg").click();
+        });
+        $(".itemform .wbimg").fileupload({
+            url: "/wi/",
+            dataType: "jsonp",
+            done: function(e, data){
+                $(this).prop("disabled", false);
+                $(this).next(".fileselectbutton").prop("disabled", false);
+                $(this).parent().show();
+                $(this).closest(".itemform").find(".submit").prop("disabled", false);
+                var wbimgurl = data.result.original_pic;
+                if ($(this).closest(".itemform").find("textarea").val() == "") {
+                    $(this).closest(".itemform").find("textarea").val(wbimgurl);
+                } else {
+                    $(this).closest(".itemform").find("textarea").val($(this).closest(".itemform").find("textarea").val() + "\r\n" + wbimgurl);
+                }
+                $(this).closest(".itemform").find(".process").hide();
+                $(this).closest(".itemform").find(".uploadinfo").show();
+                if ($('html').attr('lang') == "zh") {
+                    $(this).closest(".itemform").find(".uploadinfo").text("上传成功，请备份图片链接。");
+                } else {
+                    $(this).closest(".itemform").find(".uploadinfo").text("Upload succeeded, please backup the link.");
+                }
+
+            },
+            fail: function(e, data){
+                $(this).prop("disabled", false);
+                $(this).next(".fileselectbutton").prop("disabled", false);
+                $(this).parent().show();
+                $(this).closest(".itemform").find(".submit").prop("disabled", false);
+                $(this).closest(".itemform").find(".process").hide();
+                $(this).closest(".itemform").find(".uploadinfo").show();
+                if ($('html').attr('lang') == "zh") {
+                    $(this).closest(".itemform").find(".uploadinfo").text("上传失败，请检查图片后重试。");
+                } else {
+                    $(this).closest(".itemform").find(".uploadinfo").text("Upload failed, please check and retry.");
+                }
+            },
+            progressall: function(e, data){
+                $(this).closest(".itemform").find(".process").show();
+                //$(this).closest(".itemform").find(".uploadinfo").hide();
+                var process = parseInt(data.loaded / data.total * 100, 10);
+                $(this).closest(".itemform").find(".process .processbar").css("width", process + "%");
+                $(this).closest(".itemform").find(".uploadinfo").text(process + "%");
+            },
+            add: function(e, data){
+                $(this).prop("disabled", true);
+                $(this).next(".fileselectbutton").prop("disabled", true);
+                $(this).parent().hide();
+                $(this).closest(".itemform").find(".submit").prop("disabled", true);
+                //$(this).closest(".itemform").find(".process").hide();
+                $(this).closest(".itemform").find(".uploadinfo").show();
+                if ($('html').attr('lang') == "zh") {
+                    $(this).closest(".itemform").find(".uploadinfo").text("正在上传…");
+                } else {
+                    $(this).closest(".itemform").find(".uploadinfo").text("uploading...");
+                }
+                data.submit();
+            }
+        });
+    }
 
     $(".newtagform").submit(function(){
         var itemtag = $(this).find(".item-tag-name");

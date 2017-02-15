@@ -77,6 +77,8 @@ def index(request):
 
     try:
         items = Item.objects.select_related('user').filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).filter(Q(status__isnull=True) | Q(status__exact='') | (Q(status__exact='private') & Q(user__id=request.user.id))).all().prefetch_related('itemcontent_set', 'itemcontent_set__contentattachment_set')
+        if q:
+            items = items.filter(Q(itemcontent__content__icontains=q)).distinct()
 
         items = sort_items(items, request.GET.get('page'))
 
@@ -204,7 +206,7 @@ def index(request):
         items = sorted(items, key=lambda item:item.lastsubitem.create, reverse=True)
     except Item.DoesNotExist:
         items = None
-    
+
     try:
         tags = Tag.objects.all().order_by('?')[:10]
     except Tag.DoesNotExist:
