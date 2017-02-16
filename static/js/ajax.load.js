@@ -138,7 +138,7 @@ if(window.history && window.history.pushState) {
                         $(data).filter(".wrapper").appendTo("body");
                     }
                     $("html,body").animate({scrollTop:0}, 0);
-                },
+                    $("body .ajaxloading").remove();                },
                 dataType: "html",
                 error: function(){
                     //$(".header .ajaxloading").remove();
