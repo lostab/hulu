@@ -378,6 +378,6 @@ $(document).ready(function(){
 
     //}
 
-    ajaxget($("a"));
+    ajaxget($("a").not(".oauthbtn"));
     ajaxpost($("form").not(".additemtag").not(".newtagform"));
 });
