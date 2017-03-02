@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}链接{% else %}Links{% endif %} - {% endblock %}
+
+{% block content %}
+        <div class="content link">
+            <p style="text-align:center;"><!--<a class="randombtn" href="/i/link/">换一换</a> --><a class="addlinkbtn" href="">添加链接</a></p>
+            <form class="linkform" method="post" style="display:none;position:fixed;width:340px;top:20%;left:50%;margin-left:-190px;padding:20px;background:whitesmoke;">
+                {% csrf_token %}
+                <p class="logopreview"></p>
+                <p class="url"><input type="text" name="url" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}地址，如 http://hulu.im{% else %}URL{% endif %}" value="{{ form.url.value }}" /></p>
+                <p class="logo"><input type="hidden" name="logo" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}{% else %}{% endif %}" value="{{ form.logo.value }}" /></p>
+                <p class="title"><input type="text" name="title" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}标题{% else %}Title{% endif %}" value="{{ form.title.value }}" /></p>
+                <p class="description"><input type="text" name="description" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}简介{% else %}Description{% endif %}" value="{{ form.description.value }}" /></p>
+
+                <p class="submit-btn"><input class="submit" type="submit" value="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}添加链接{% else %}Add Link{% endif %}" /></p>
+            </form>
+            <div class="links">
+                {% for link in links %}
+                <a href="{{ link.url }}" target="blank">
+                <div class="link-box">
+                    <div class="link-logo"><img src="{% if link.logo %}{{ link.logo }}{% else %}/s/avatar/n.png{% endif %}" /></div>
+                    <div class="link-title">{{ link.title }}</div>
+                    <div class="link-description">{{ link.description }}</div>
+                </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+{% endblock %}
+{% block footer %}
+<script type="text/javascript">
+$(document).ready(function(){
+    $(".addlinkbtn").click(function(){
+        $(".linkform").show();
+        return false;
+    });
+    var mouseoverform = 0;
+    $(".linkform").mouseover(function(){
+        mouseoverform = 1;
+    }).mouseout(function(){
+        mouseoverform = 0;
+    });
+    $(".linkform .url input").on("propertychange paste change", function(){
+        var url = $(this).val();
+        if($(".logopreview img").length > 0){
+            $(".logopreview img").remove();
+        }
+        $(".linkform .logo input").val("");
+        if (url != "") {
+            var favicon = url.split("://")[0] + "://" + url.split("://")[1].split("/")[0] + "/favicon.ico"
+            $("<img>", {
+                src: favicon
+            }).on("load", function() {
+                if($(".logopreview img").length == 0){
+                    $(".logopreview").append($(this));
+                }
+                $(".linkform .logo input").val(favicon);
+            }).on("error", function() {
+
+            });
+        }
+    });
+    $("body").click(function(){
+        if (mouseoverform == 0){
+            $(".linkform").hide();
+        }
+    });
+});
+</script>
+{% endblock %}

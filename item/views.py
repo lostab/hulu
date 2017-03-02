@@ -22,6 +22,8 @@ from main.__init__ import *
 from item.__init__ import *
 from django.forms.models import inlineformset_factory
 from django.db.models import Q
+import ssl
+import HTMLParser
 
 def Index(request):
     if request.user.is_authenticated():
@@ -466,3 +468,64 @@ def wbimg(request):
         logo = request.POST.get('logo')
         info = request.POST.get('info')
         return HttpResponse(apps.json())'''
+
+def LinkClass(request):
+    try:
+        links = Link.objects.all().order_by('?')[:100]
+    except Link.DoesNotExist:
+        links = None
+
+    regex = re.compile(
+    r'^(?:http|ftp)s?://'
+    r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'
+    r'localhost|'
+    r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'
+    r'(?::\d+)?'
+    r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+
+    hdr = {
+        'User-Agent': 'hulu'
+    }
+
+    if request.method == 'GET':
+        '''if request.GET.get('type') == 'fetch':
+            url = request.GET.get('url').strip()
+            if re.match(regex, url):
+                title = ''
+                logo = ''
+                description = ''
+                try:
+                    req = urllib2.Request(url, headers=hdr)
+                    content = urllib2.urlopen(req, context=ctx).read()
+                    hp = HTMLParser.HTMLParser()
+                    title = hp.unescape(content.split('<title>')[1].split('</title>')[0])
+                except:
+                    pass
+                content = {
+                    'title': title
+                }
+                return jsonp(request, content)
+            else:
+                return redirect('/i/link/')'''
+        content = {
+            'links': links
+        }
+        return render(request, 'item/link.html', content)
+    if request.method == 'POST':
+        form = LinkForm(request.POST)
+
+        if form.is_valid() and re.match(regex, form.cleaned_data['url']):
+            url = request.POST.get('url').strip()
+            hostname = url.split('://')[1].split('/')[0]
+            if not Link.objects.all().filter(Q(url__icontains=hostname)):
+                link = form.save(commit=False)
+                #link.lastcheck = timezone.now()
+                link.save()
+
+            return redirect('/i/link/')
+        else:
+            return render(request, 'item/link.html', { 'links': links, 'form': form })

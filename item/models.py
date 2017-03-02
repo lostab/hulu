@@ -100,3 +100,12 @@ class ContentAttachment(models.Model):
     file = models.FileField(storage=FileSystemStorage(location=settings.MEDIA_ROOT), upload_to=attachment_file)
     content = models.TextField()
     contenttype = models.CharField(max_length=30)
+
+class Link(models.Model):
+    url = models.TextField()
+    logo = models.TextField()
+    title = models.TextField()
+    description = models.TextField()
+    status = models.CharField(max_length=30)
+    unreachable = models.BigIntegerField(default=0)
+    lastcheck = models.DateTimeField(auto_now=True)

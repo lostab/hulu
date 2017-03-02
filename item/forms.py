@@ -7,18 +7,18 @@ from django.utils.timezone import utc
 
 class ItemContentForm(forms.ModelForm):
     content = forms.CharField(required=False, widget=forms.Textarea)
-    
+
     class Meta:
         model = ItemContent
         fields = ('content',)
 
 class ContentAttachmentForm(forms.ModelForm):
     file = forms.FileField()
-    
+
     class Meta:
         model = ContentAttachment
         fields = ('file',)
-    
+
     def clean_file(self):
         file = self.cleaned_data['file']
         if file:
@@ -33,3 +33,13 @@ class ContentAttachmentForm(forms.ModelForm):
         else:
             #raise ValidationError("Couldn't read uploaded image.")
             return None
+
+class LinkForm(forms.ModelForm):
+    url = forms.CharField(required=True)
+    logo = forms.CharField(required=False)
+    title = forms.CharField(required=True)
+    description = forms.CharField(required=False)
+
+    class Meta:
+        model = Link
+        fields = ('url', 'logo', 'title', 'description',)

@@ -160,7 +160,7 @@ def index(request):
                         fetchitems.append(zhihuitem)
                 except:
                     pass
-
+                
                 if not request.GET.get('page'):
                     #V2EX
                     v2exurl = 'https://www.v2ex.com/api/topics/hot.json'
