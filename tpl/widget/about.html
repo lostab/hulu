@@ -3,5 +3,6 @@
     <p>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}基于 Django(Python) 开发的社区应用，专注分享和发现。{% else %}A community framework based on Django.{% endif %}</p>
     <p>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}源码：{% else %}Source: {% endif %} <a href="https://github.com/lostab/hulu" target="blank">github.com/lostab/hulu</a></p>
     <p>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}联系：{% else %}Contact: {% endif %} <a href="/u/feedback/">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}发送私信{% else %}Send Message{% endif %}</a></p>
+    <p>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}链接：{% else %}Links: {% endif %} <a href="/i/link/">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}自助友情链接{% else %}Add Friend Link{% endif %}</a></p>
     <p>Hulu © 2016-{% now "Y" %}</p>
 </div>

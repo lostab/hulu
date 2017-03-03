@@ -378,6 +378,6 @@ $(document).ready(function(){
 
     //}
 
-    ajaxget($("a").not(".oauthbtn"));
+    ajaxget($("a").not(".oauthbtn").not(".friendlink"));
     ajaxpost($("form").not(".additemtag").not(".newtagform"));
 });

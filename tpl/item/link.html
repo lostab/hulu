@@ -5,7 +5,7 @@
 {% block content %}
         <div class="content link">
             <p style="text-align:center;"><!--<a class="randombtn" href="/i/link/">换一换</a> --><a class="addlinkbtn" href="">添加链接</a></p>
-            <form class="linkform" method="post" style="display:none;position:fixed;width:340px;top:20%;left:50%;margin-left:-190px;padding:20px;background:whitesmoke;">
+            <form class="linkform" method="post" style="display:none;position:fixed;width:340px;top:15%;left:50%;margin-left:-190px;padding:20px;background:whitesmoke;">
                 {% csrf_token %}
                 <p class="logopreview"></p>
                 <p class="url"><input type="text" name="url" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}地址，如 http://hulu.im{% else %}URL{% endif %}" value="{{ form.url.value }}" /></p>
@@ -17,7 +17,7 @@
             </form>
             <div class="links">
                 {% for link in links %}
-                <a href="{{ link.url }}" target="blank">
+                <a class="friendlink" href="?f={{ link.url }}" target="blank">
                 <div class="link-box">
                     <div class="link-logo"><img src="{% if link.logo %}{{ link.logo }}{% else %}/s/avatar/n.png{% endif %}" /></div>
                     <div class="link-title">{{ link.title }}</div>
@@ -33,6 +33,7 @@
 $(document).ready(function(){
     $(".addlinkbtn").click(function(){
         $(".linkform").show();
+        $(".addlinkbtn").css({"visibility": "hidden"});
         return false;
     });
     var mouseoverform = 0;
@@ -41,13 +42,16 @@ $(document).ready(function(){
     }).mouseout(function(){
         mouseoverform = 0;
     });
+
+    var urlreg = /[a-zA-z]+\:\/\/[^\s]*/;
+
     $(".linkform .url input").on("propertychange paste change", function(){
-        var url = $(this).val();
+        var url = $(this).val().trim();
         if($(".logopreview img").length > 0){
             $(".logopreview img").remove();
         }
         $(".linkform .logo input").val("");
-        if (url != "") {
+        if (url != "" && urlreg.test(url)) {
             var favicon = url.split("://")[0] + "://" + url.split("://")[1].split("/")[0] + "/favicon.ico"
             $("<img>", {
                 src: favicon
@@ -57,13 +61,28 @@ $(document).ready(function(){
                 }
                 $(".linkform .logo input").val(favicon);
             }).on("error", function() {
-
+                if($(".logopreview img").length == 0){
+                    $(".logopreview").append($("<img src=\"/s/avatar/n.png\" />"));
+                }
             });
         }
     });
     $("body").click(function(){
         if (mouseoverform == 0){
             $(".linkform").hide();
+            $(".addlinkbtn").css({"visibility": "visible"});
+        }
+    });
+    $(".linkform .submit").click(function(e){
+        //e.preventDefault();
+        var url = $(".linkform .url input").val().trim();
+        if( url == "" || !urlreg.test(url) || ( url.split("://")[1].split("/").length > 1 && url.split("://")[1].split("/")[1] != "" ) ){
+            $(".linkform .url input").focus();
+            return false;
+        }
+        if($(".linkform .title input").val().trim() == ""){
+            $(".linkform .title input").focus();
+            return false;
         }
     });
 });

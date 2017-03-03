@@ -481,7 +481,8 @@ def LinkClass(request):
     r'localhost|'
     r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'
     r'(?::\d+)?'
-    r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+    #r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+    r'(?:\/?)$', re.IGNORECASE)
 
     ctx = ssl.create_default_context()
     ctx.check_hostname = False
@@ -490,8 +491,14 @@ def LinkClass(request):
     hdr = {
         'User-Agent': 'hulu'
     }
-
+    
     if request.method == 'GET':
+        if request.GET.get('f'):
+            url = request.GET.get('f').strip()
+            if re.match(regex, url):
+                return redirect(url)
+            else:
+                return redirect('/i/link/')
         '''if request.GET.get('type') == 'fetch':
             url = request.GET.get('url').strip()
             if re.match(regex, url):
