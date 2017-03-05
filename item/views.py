@@ -24,6 +24,7 @@ from django.forms.models import inlineformset_factory
 from django.db.models import Q
 import ssl
 import HTMLParser
+import threading
 
 def Index(request):
     if request.user.is_authenticated():
@@ -469,29 +470,53 @@ def wbimg(request):
         info = request.POST.get('info')
         return HttpResponse(apps.json())'''
 
+regex = re.compile(
+r'^(?:http|ftp)s?://'
+r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'
+r'localhost|'
+r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'
+r'(?::\d+)?'
+#r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+r'(?:\/?)$', re.IGNORECASE)
+
+ctx = ssl.create_default_context()
+ctx.check_hostname = False
+ctx.verify_mode = ssl.CERT_NONE
+
+hdr = {
+    'User-Agent': 'hulu'
+}
+
+def checklink():
+    for link in Link.objects.all():
+        if not re.match(regex, link.url):
+            link.delete()
+        else:
+            if link.url[-1] == '/':
+                link.url = link.url[:-1]
+                link.save()
+            '''try:
+                req = urllib2.Request(link.url, headers=hdr)
+                content = urllib2.urlopen(req, context=ctx, timeout=3).read()
+                hp = HTMLParser.HTMLParser()
+                title = hp.unescape(content.split('<title>')[1].split('</title>')[0])
+                print(title)
+
+                link.title = title
+                link.save()
+            except:
+                pass'''
+
+    #threading.Timer(3600, checklink).start()
+
 def LinkClass(request):
     try:
         links = Link.objects.all().order_by('?')[:100]
     except Link.DoesNotExist:
         links = None
 
-    regex = re.compile(
-    r'^(?:http|ftp)s?://'
-    r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'
-    r'localhost|'
-    r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'
-    r'(?::\d+)?'
-    #r'(?:/?|[/?]\S+)$', re.IGNORECASE)
-    r'(?:\/?)$', re.IGNORECASE)
+    checklink()
 
-    ctx = ssl.create_default_context()
-    ctx.check_hostname = False
-    ctx.verify_mode = ssl.CERT_NONE
-
-    hdr = {
-        'User-Agent': 'hulu'
-    }
-    
     if request.method == 'GET':
         if request.GET.get('f'):
             url = request.GET.get('f').strip()
@@ -499,34 +524,19 @@ def LinkClass(request):
                 return redirect(url)
             else:
                 return redirect('/i/link/')
-        '''if request.GET.get('type') == 'fetch':
-            url = request.GET.get('url').strip()
-            if re.match(regex, url):
-                title = ''
-                logo = ''
-                description = ''
-                try:
-                    req = urllib2.Request(url, headers=hdr)
-                    content = urllib2.urlopen(req, context=ctx).read()
-                    hp = HTMLParser.HTMLParser()
-                    title = hp.unescape(content.split('<title>')[1].split('</title>')[0])
-                except:
-                    pass
-                content = {
-                    'title': title
-                }
-                return jsonp(request, content)
-            else:
-                return redirect('/i/link/')'''
+
         content = {
             'links': links
         }
         return render(request, 'item/link.html', content)
+    
     if request.method == 'POST':
         form = LinkForm(request.POST)
 
         if form.is_valid() and re.match(regex, form.cleaned_data['url']):
             url = request.POST.get('url').strip()
+            if url[-1] == '/':
+                url = url[:-1]
             hostname = url.split('://')[1].split('/')[0]
             if not Link.objects.all().filter(Q(url__icontains=hostname)):
                 link = form.save(commit=False)
