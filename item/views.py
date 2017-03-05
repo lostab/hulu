@@ -495,27 +495,38 @@ def checklink():
             if link.url[-1] == '/':
                 link.url = link.url[:-1]
                 link.save()
-            '''try:
-                req = urllib2.Request(link.url, headers=hdr)
-                content = urllib2.urlopen(req, context=ctx, timeout=3).read()
-                hp = HTMLParser.HTMLParser()
-                title = hp.unescape(content.split('<title>')[1].split('</title>')[0])
-                print(title)
 
-                link.title = title
-                link.save()
-            except:
-                pass'''
+            def checkurl(link, checktimes):
+                try:
+                    req = urllib2.Request(link.url, headers=hdr)
+                    content = urllib2.urlopen(req, context=ctx, timeout=10).read()
+                    hp = HTMLParser.HTMLParser()
+                    title = hp.unescape(content.split('<title>')[1].split('</title>')[0])
+                    print(title)
 
-    #threading.Timer(3600, checklink).start()
+                    link.title = title
+                    link.unreachable = 0
+                    link.save()
+                except:
+                    if checktimes < 3:
+                        checkurl(link, checktimes + 1)
+                    else:
+                        if not link.unreachable:
+                            link.unreachable = 1
+                        else:
+                            link.unreachable = int(link.unreachable) + 1
+                        link.save()
+                        if int(link.unreachable) > 100:
+                            link.delete()
+            checkurl(link, 0)
+
+    threading.Timer(3600, checklink).start()
 
 def LinkClass(request):
     try:
         links = Link.objects.all().order_by('?')[:100]
     except Link.DoesNotExist:
         links = None
-
-    checklink()
 
     if request.method == 'GET':
         if request.GET.get('f'):
@@ -529,7 +540,7 @@ def LinkClass(request):
             'links': links
         }
         return render(request, 'item/link.html', content)
-    
+
     if request.method == 'POST':
         form = LinkForm(request.POST)
 
