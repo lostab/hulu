@@ -7,4 +7,4 @@ applications:
   domain: mybluemix.net
   instances: 2
   memory: 512M
-  command: python cron.py & ; python runserver.py
+  command: python runserver.py
