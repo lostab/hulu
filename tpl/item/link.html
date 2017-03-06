@@ -67,6 +67,9 @@ $(document).ready(function(){
             });
         }
     });
+    $(".links img").on("error", function() {
+        $(this).attr("src", "/s/avatar/n.png");
+    });
     $("body").click(function(){
         if (mouseoverform == 0){
             $(".linkform").hide();
