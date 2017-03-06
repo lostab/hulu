@@ -501,7 +501,7 @@ def checklink():
                     req = urllib2.Request(link.url, headers=hdr)
                     content = urllib2.urlopen(req, context=ctx, timeout=10).read()
                     hp = HTMLParser.HTMLParser()
-                    title = hp.unescape(content.split('<title>')[1].split('</title>')[0])
+                    title = hp.unescape(content.split('<title>')[1].split('</title>')[0]).encode("utf-8")
                     print(title)
 
                     link.title = title

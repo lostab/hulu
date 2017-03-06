@@ -160,7 +160,7 @@ def index(request):
                         fetchitems.append(zhihuitem)
                 except:
                     pass
-                
+
                 if not request.GET.get('page'):
                     #V2EX
                     v2exurl = 'https://www.v2ex.com/api/topics/hot.json'
@@ -184,7 +184,7 @@ def index(request):
                         items.pop(-1)
                         for item in items:
                             hp = HTMLParser.HTMLParser()
-                            title = hp.unescape(re.split('<title>|</title> <title>|</title>', item)[1])
+                            title = hp.unescape(re.split('<title>|</title> <title>|</title>', item)[1]).encode("utf-8")
                             newstime = re.split('<pubDate>|</pubDate> <pubDate>|</pubDate>', item)[1]
                             url = re.split('<link>|</link> <link>|</link>', item)[1].split('url=')[1]
                             newsitem = fetchitem(user=fetchuser(username='Google News', userprofile=fetchprofile(openid='Google News', avatar='https://mail.qq.com/favicon.ico')), title=title, url=url, lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(newstime, '%a, %d %b %Y %H:%M:%S GMT'), timezone.get_default_timezone())), tags=None)
