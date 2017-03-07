@@ -503,10 +503,10 @@ def checklink():
                     hp = HTMLParser.HTMLParser()
                     title = hp.unescape(content.split('<title>')[1].split('</title>')[0]).encode("utf-8")
                     print(title)
-
-                    link.title = title
-                    link.unreachable = 0
-                    link.save()
+                    if title:
+                        link.title = title
+                        link.unreachable = 0
+                        link.save()
                 except:
                     if checktimes < 3:
                         checkurl(link, checktimes + 1)
@@ -516,11 +516,11 @@ def checklink():
                         else:
                             link.unreachable = int(link.unreachable) + 1
                         link.save()
-                        if int(link.unreachable) > 100:
+                        if int(link.unreachable) > 10:
                             link.delete()
             checkurl(link, 0)
 
-    threading.Timer(3600, checklink).start()
+    threading.Timer(21600, checklink).start()
 
 def LinkClass(request):
     try:
