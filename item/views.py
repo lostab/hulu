@@ -498,7 +498,7 @@ def checklink():
                 link.url = link.url[:-1]
                 link.save()
 
-            if link.url.split('://')[1].split('/')[0] in urlblist:
+            if link.url.split('://')[1] in urlblist:
                 link.delete()
 
             def checkurl(link, checktimes):
