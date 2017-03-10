@@ -588,8 +588,9 @@ p.submit-btn, p.cancel-btn {
     word-wrap: break-word;
     word-break: break-all;
 }
-.item-title:hover {
-    text-shadow: 0 0 1px gray;
+.item-title:hover, .item-title a:hover {
+    /*text-shadow: 0 0 1px gray;*/
+    color: green;
 }
 .comment-content {
     margin: 10px 0 10px 0;

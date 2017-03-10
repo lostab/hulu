@@ -10,8 +10,8 @@
                 <p class="logopreview"></p>
                 <p class="url"><input type="text" name="url" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}地址，如 http://hulu.im{% else %}URL{% endif %}" value="{{ form.url.value }}" /></p>
                 <p class="logo"><input type="hidden" name="logo" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}{% else %}{% endif %}" value="{{ form.logo.value }}" /></p>
-                <p class="title"><input type="text" name="title" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}标题{% else %}Title{% endif %}" value="{{ form.title.value }}" /></p>
-                <p class="description"><input type="text" name="description" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}简介{% else %}Description{% endif %}" value="{{ form.description.value }}" /></p>
+                <p class="title"><input type="hidden" name="title" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}标题{% else %}Title{% endif %}" value="{{ form.title.value }}" /></p>
+                <!--<p class="description"><input type="text" name="description" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}简介{% else %}Description{% endif %}" value="{{ form.description.value }}" /></p>-->
 
                 <p class="submit-btn"><input class="submit" type="submit" value="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}添加链接{% else %}Add Link{% endif %}" /></p>
             </form>
@@ -65,12 +65,24 @@ $(document).ready(function(){
                     $(".logopreview").append($("<img src=\"/s/avatar/n.png\" />"));
                 }
             });
+
+            $.ajax({
+                url: "?type=fetch&url=" + url,
+                type: "GET",
+                dataType: "JSON",
+                success: function(data){
+                    var title = data.title;
+                    if (title != "") {
+                        $(".linkform .title input").val(title);
+                    }
+                }
+            });
         }
     });
     $(".links img").on("error", function() {
         $(this).attr("src", "/s/avatar/n.png");
     });
-    $("body").click(function(){
+    $(".wrapper").click(function(){
         if (mouseoverform == 0){
             $(".linkform").hide();
             $(".addlinkbtn").css({"visibility": "visible"});

@@ -487,6 +487,8 @@ hdr = {
     'User-Agent': 'hulu'
 }
 
+urlblist = ['google.com', 'www.google.com', 'baidu.com', 'www.baidu.com', 'qq.com', 'www.qq.com', 'zhihu.com', 'www.zhihu.com']
+
 def checklink():
     for link in Link.objects.all():
         if not re.match(regex, link.url):
@@ -496,6 +498,9 @@ def checklink():
                 link.url = link.url[:-1]
                 link.save()
 
+            if link.url.split('://')[1].split('/')[0] in urlblist:
+                link.delete()
+
             def checkurl(link, checktimes):
                 try:
                     req = urllib2.Request(link.url, headers=hdr)
@@ -503,10 +508,12 @@ def checklink():
                     hp = HTMLParser.HTMLParser()
                     title = hp.unescape(content.split('<title>')[1].split('</title>')[0]).encode("utf-8")
                     print(title)
-
-                    link.title = title
-                    link.unreachable = 0
-                    link.save()
+                    if title:
+                        link.title = title
+                        link.unreachable = 0
+                        link.save()
+                    else:
+                        link.delete()
                 except:
                     if checktimes < 3:
                         checkurl(link, checktimes + 1)
@@ -516,11 +523,11 @@ def checklink():
                         else:
                             link.unreachable = int(link.unreachable) + 1
                         link.save()
-                        if int(link.unreachable) > 100:
+                        if int(link.unreachable) > 9:
                             link.delete()
             checkurl(link, 0)
 
-    threading.Timer(3600, checklink).start()
+    threading.Timer(21600, checklink).start()
 
 def LinkClass(request):
     try:
@@ -529,6 +536,27 @@ def LinkClass(request):
         links = None
 
     if request.method == 'GET':
+        if request.GET.get('type') == 'fetch':
+            if request.GET.get('url'):
+                url = request.GET.get('url').strip()
+                if re.match(regex, url):
+                    title = ''
+                    try:
+                        req = urllib2.Request(url, headers=hdr)
+                        content = urllib2.urlopen(req, context=ctx, timeout=10).read()
+                        hp = HTMLParser.HTMLParser()
+                        title = hp.unescape(content.split('<title>')[1].split('</title>')[0]).encode("utf-8")
+                    except:
+                        pass
+                    content = {
+                        'title': title
+                    }
+                    return jsonp(request, content)
+                else:
+                    return redirect('/i/link/')
+            else:
+                return redirect('/i/link/')
+
         if request.GET.get('f'):
             url = request.GET.get('f').strip()
             if re.match(regex, url):
