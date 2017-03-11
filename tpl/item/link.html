@@ -78,6 +78,9 @@ $(document).ready(function(){
                         $(".logopreview div").remove();
                         $(".logopreview").append("<div>" + title + "</div>");
                     }
+                },
+                error: function(){
+                    $(".logopreview").html("<div>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}加载失败{% else %}Load Failed{% endif %}</div>");
                 }
             });
         }

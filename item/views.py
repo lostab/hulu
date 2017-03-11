@@ -555,6 +555,8 @@ def LinkClass(request):
                         hp = HTMLParser.HTMLParser()
                         title = hp.unescape(content.split('<title>')[1].split('</title>')[0]).encode("utf-8")
                         logo = hp.unescape(content.split('<link rel="icon"')[1].split('>')[0].split('href="')[1].split('"')[0]).encode("utf-8")
+                        if logo == '':
+                            logo = hp.unescape(content.split('<link rel="shortcut icon"')[1].split('>')[0].split('href="')[1].split('"')[0]).encode("utf-8")
                         if logo[0] == '/':
                             logo = url + logo
                     except:
