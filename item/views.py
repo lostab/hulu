@@ -493,6 +493,7 @@ def checklink():
     for link in Link.objects.all():
         if not re.match(regex, link.url):
             link.delete()
+            continue
         else:
             if link.url[-1] == '/':
                 link.url = link.url[:-1]
@@ -500,6 +501,7 @@ def checklink():
 
             if link.url.split('://')[1] in urlblist:
                 link.delete()
+                continue
 
             def checkurl(link, checktimes):
                 try:
