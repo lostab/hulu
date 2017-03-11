@@ -4,13 +4,13 @@
 
 {% block content %}
         <div class="content link">
-            <p style="text-align:center;"><!--<a class="randombtn" href="/i/link/">换一换</a> --><a class="addlinkbtn" href="">添加链接</a></p>
+            <p style="text-align:center;"><!--<a class="randombtn" href="/i/link/">换一换</a> --><a class="addlinkbtn">添加链接</a></p>
             <form class="linkform" method="post" style="display:none;position:fixed;width:340px;top:15%;left:50%;margin-left:-190px;padding:20px;background:whitesmoke;border-radius: 3px;-webkit-border-radius: 3px;-moz-border-radius: 3px;opacity: 0.9;filter: alpha(opacity=90);">
                 {% csrf_token %}
-                <p class="url"><input type="text" name="url" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}地址，如 http://hulu.im{% else %}URL{% endif %}" value="{{ form.url.value }}" /></p>
-                <p class="logo"><input type="hidden" name="logo" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}{% else %}{% endif %}" value="{{ form.logo.value }}" /></p>
-                <p class="title"><input type="hidden" name="title" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}标题{% else %}Title{% endif %}" value="{{ form.title.value }}" /></p>
-                <!--<p class="description"><input type="text" name="description" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}简介{% else %}Description{% endif %}" value="{{ form.description.value }}" /></p>-->
+                <p class="url"><input type="text" name="url" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}地址，如 http://hulu.im{% else %}URL{% endif %}" value="{% if form.url.value %}{{ form.url.value }}{% endif %}" /></p>
+                <p class="logo"><input type="hidden" name="logo" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}{% else %}{% endif %}" value="{% if form.logo.value %}{{ form.logo.value }}{% endif %}" /></p>
+                <p class="title"><input type="hidden" name="title" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}标题{% else %}Title{% endif %}" value="{% if form.title.value %}{{ form.title.value }}{% endif %}" /></p>
+                <!--<p class="description"><input type="text" name="description" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}简介{% else %}Description{% endif %}" value="{% if form.description.value %}{{ form.description.value }}{% endif %}" /></p>-->
 
                 <p class="submit-btn"><input class="submit" type="submit" value="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}添加链接{% else %}Add Link{% endif %}" /></p>
                 <p class="logopreview"></p>
@@ -58,12 +58,12 @@ $(document).ready(function(){
                 src: favicon
             }).on("load", function() {
                 if($(".logopreview img").length == 0){
-                    $(".logopreview").append($(this));
+                    $(".logopreview").prepend($(this));
                 }
                 $(".linkform .logo input").val(favicon);
             }).on("error", function() {
                 if($(".logopreview img").length == 0){
-                    $(".logopreview").append($("<img src=\"/s/avatar/n.png\" />"));
+                    $(".logopreview").prepend($("<img src=\"/s/avatar/n.png\" />"));
                 }
             });
 
@@ -75,6 +75,7 @@ $(document).ready(function(){
                     var title = data.title;
                     if (title != "") {
                         $(".linkform .title input").val(title);
+                        $(".logopreview div").remove();
                         $(".logopreview").append("<div>" + title + "</div>");
                     }
                 }

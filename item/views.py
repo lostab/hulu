@@ -487,7 +487,7 @@ hdr = {
     'User-Agent': 'hulu'
 }
 
-urlblist = ['google.com', 'www.google.com', 'baidu.com', 'www.baidu.com', 'qq.com', 'www.qq.com', 'zhihu.com', 'www.zhihu.com']
+urlblist = []
 
 def checklink():
     for link in Link.objects.all():
@@ -509,9 +509,14 @@ def checklink():
                     content = urllib2.urlopen(req, context=ctx, timeout=10).read()
                     hp = HTMLParser.HTMLParser()
                     title = hp.unescape(content.split('<title>')[1].split('</title>')[0]).encode("utf-8")
+                    logo = hp.unescape(content.split('<link rel="icon"')[1].split('>')[0].split('href="')[1].split('"')[0]).encode("utf-8")
+                    if logo[0] == '/':
+                        logo = url + logo
                     print(title)
                     if title:
                         link.title = title
+                        if logo:
+                            link.logo = logo
                         link.unreachable = 0
                         link.save()
                     else:
@@ -543,15 +548,20 @@ def LinkClass(request):
                 url = request.GET.get('url').strip()
                 if re.match(regex, url):
                     title = ''
+                    logo = ''
                     try:
                         req = urllib2.Request(url, headers=hdr)
                         content = urllib2.urlopen(req, context=ctx, timeout=10).read()
                         hp = HTMLParser.HTMLParser()
                         title = hp.unescape(content.split('<title>')[1].split('</title>')[0]).encode("utf-8")
+                        logo = hp.unescape(content.split('<link rel="icon"')[1].split('>')[0].split('href="')[1].split('"')[0]).encode("utf-8")
+                        if logo[0] == '/':
+                            logo = url + logo
                     except:
                         pass
                     content = {
-                        'title': title
+                        'title': title,
+                        'logo': logo
                     }
                     return jsonp(request, content)
                 else:
