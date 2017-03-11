@@ -47,7 +47,7 @@ def Main(request):
                     'username': user.username,
                     'email': user.email,
                     'name': user.userprofile.info,
-                    'avatar': (user.userprofile.openid) and str(user.userprofile.avatar) or ((user.userprofile.avatar) and '/s/' + str(user.userprofile.avatar) or '/s/avatar/n.png'),
+                    'avatar': (user.userprofile.openid and '//' in str(user.userprofile.avatar)) and str(user.userprofile.avatar) or ((user.userprofile.avatar) and '/s/' + str(user.userprofile.avatar) or '/s/avatar/n.png'),
                     'page': user.userprofile.page,
                     'create': str(user.userprofile.create)
                 }
@@ -416,7 +416,7 @@ def UserPage(request, username):
                 'user': {
                     'username': user.username,
                     'info': user.userprofile.info,
-                    'avatar': (user.userprofile.openid) and str(user.userprofile.avatar) or ((user.userprofile.avatar) and '/s/' + str(user.userprofile.avatar) or '/s/avatar/n.png'),
+                    'avatar': (user.userprofile.openid and '//' in str(user.userprofile.avatar)) and str(user.userprofile.avatar) or ((user.userprofile.avatar) and '/s/' + str(user.userprofile.avatar) or '/s/avatar/n.png'),
                     'profile': user.userprofile.profile,
                     'page': user.userprofile.page
                 }
@@ -449,7 +449,7 @@ def Page(request, username):
                 'user': {
                     'username': user.username,
                     'info': user.userprofile.info,
-                    'avatar': (user.userprofile.openid) and str(user.userprofile.avatar) or ((user.userprofile.avatar) and '/s/' + str(user.userprofile.avatar) or '/s/avatar/n.png'),
+                    'avatar': (user.userprofile.openid and '//' in str(user.userprofile.avatar)) and str(user.userprofile.avatar) or ((user.userprofile.avatar) and '/s/' + str(user.userprofile.avatar) or '/s/avatar/n.png'),
                     'profile': user.userprofile.profile,
                     'page': user.userprofile.page
                 }
@@ -500,7 +500,7 @@ def Notify(request):
                         'user': {
                             'username': i.item.user.username,
                             'info': escape(i.item.user.userprofile.info),
-                            'avatar': (i.item.user.userprofile.openid) and str(i.item.user.userprofile.avatar) or ((i.item.user.userprofile.avatar) and '/s/' + str(i.item.user.userprofile.avatar) or '/s/avatar/n.png'),
+                            'avatar': (i.item.user.userprofile.openid and '//' in str(i.item.user.userprofile.avatar)) and str(i.item.user.userprofile.avatar) or ((i.item.user.userprofile.avatar) and '/s/' + str(i.item.user.userprofile.avatar) or '/s/avatar/n.png'),
                             'profile': escape(i.item.user.userprofile.profile),
                             'page': escape(i.item.user.userprofile.page)
                         }

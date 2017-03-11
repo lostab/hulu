@@ -408,7 +408,7 @@ def app(request):
                         urusers.append({
                             'username': uruser.username,
                             'info': escape(uruser.userprofile.info),
-                            'avatar': (uruser.userprofile.openid) and str(uruser.userprofile.avatar) or ((uruser.userprofile.avatar) and '/s/' + str(uruser.userprofile.avatar) or '/s/avatar/n.png'),
+                            'avatar': (uruser.userprofile.openid and '//' in str(uruser.userprofile.avatar)) and str(uruser.userprofile.avatar) or ((uruser.userprofile.avatar) and '/s/' + str(uruser.userprofile.avatar) or '/s/avatar/n.png'),
                             'profile': escape(uruser.userprofile.profile),
                             'page': escape(uruser.userprofile.page),
                         })
@@ -429,7 +429,7 @@ def app(request):
                             'user': {
                                 'username': message.user.username,
                                 'info': escape(message.user.userprofile.info),
-                                'avatar': (message.user.userprofile.openid) and str(message.user.userprofile.avatar) or ((message.user.userprofile.avatar) and '/s/' + str(message.user.userprofile.avatar) or '/s/avatar/n.png'),
+                                'avatar': (message.user.userprofile.openid and '//' in str(message.user.userprofile.avatar)) and str(message.user.userprofile.avatar) or ((message.user.userprofile.avatar) and '/s/' + str(message.user.userprofile.avatar) or '/s/avatar/n.png'),
                                 'profile': escape(message.user.userprofile.profile),
                                 'page': escape(message.user.userprofile.page),
                             },
@@ -535,7 +535,7 @@ def app(request):
                     newurusers.append({
                         'username': uruser.username,
                         'info': escape(uruser.userprofile.info),
-                        'avatar': (uruser.userprofile.openid) and str(uruser.userprofile.avatar) or ((uruser.userprofile.avatar) and '/s/' + str(uruser.userprofile.avatar) or '/s/avatar/n.png'),
+                        'avatar': (uruser.userprofile.openid and '//' in str(uruser.userprofile.avatar)) and str(uruser.userprofile.avatar) or ((uruser.userprofile.avatar) and '/s/' + str(uruser.userprofile.avatar) or '/s/avatar/n.png'),
                         'profile': escape(uruser.userprofile.profile),
                         'page': escape(uruser.userprofile.page),
                     })
