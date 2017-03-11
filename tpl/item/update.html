@@ -8,7 +8,7 @@
         <div class="content item update">
             {% if item %}
             <div class="avatar-area">
-                <div class="avatar" style="background: url({% if item.user.userprofile.openid %}{% if not '//' in item.user.userprofile.avatar %}/s/{% endif %}{{ item.user.userprofile.avatar }}{% else %}{% if item.user.userprofile.avatar %}/s/{{ item.user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center;"><a href="/{{ item.user.username }}/"><img src="{% if item.user.userprofile.openid %}{% if not '//' in item.user.userprofile.avatar %}/s/{% endif %}{{ item.user.userprofile.avatar }}{% else %}{% if item.user.userprofile.avatar %}/s/{{ item.user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" /></a></div>
+                <div class="avatar" style="background: url({% if item.user.userprofile.openid %}{% if '//' not in item.user.userprofile.avatar %}/s/{% endif %}{{ item.user.userprofile.avatar }}{% else %}{% if item.user.userprofile.avatar %}/s/{{ item.user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center;"><a href="/{{ item.user.username }}/"><img src="{% if item.user.userprofile.openid %}{% if '//' not in item.user.userprofile.avatar %}/s/{% endif %}{{ item.user.userprofile.avatar }}{% else %}{% if item.user.userprofile.avatar %}/s/{{ item.user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" /></a></div>
             </div>
             <div class="item-head">
                 <div class="item-info">
