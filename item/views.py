@@ -486,7 +486,7 @@ def checklink():
                 link.delete()
                 continue
 
-            if link.logo and re.match(regex, link.logo):
+            if link.logo and not re.match(regex, link.logo):
                 link.logo = ''
                 link.save()
 
@@ -517,11 +517,11 @@ def checklink():
                         else:
                             link.unreachable = int(link.unreachable) + 1
                         link.save()
-                        if int(link.unreachable) > 9:
+                        if int(link.unreachable) > 5:
                             link.delete()
             checkurl(link, 0)
 
-    threading.Timer(21600, checklink).start()
+    threading.Timer(43200, checklink).start()
 
 def LinkClass(request):
     try:
