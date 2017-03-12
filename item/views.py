@@ -453,23 +453,6 @@ def wbimg(request):
     else:
         return redirect('/')
 
-'''def db(request):
-    if 'VCAP_SERVICES' not in os.environ:
-        return redirect('/')
-
-    db = account.database('db')
-    if 'apps' not in db:
-        db['apps'] = []
-    apps = db['apps']
-    if request.method == 'GET':
-        return HttpResponse(apps.json())
-    if request.method == 'POST':
-        title = request.POST.get('title')
-        url = request.POST.get('url')
-        logo = request.POST.get('logo')
-        info = request.POST.get('info')
-        return HttpResponse(apps.json())'''
-
 regex = re.compile(
 r'^(?:http|ftp)s?://'
 r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'
@@ -503,6 +486,10 @@ def checklink():
                 link.delete()
                 continue
 
+            if link.logo and re.match(regex, link.logo):
+                link.logo = ''
+                link.save()
+
             def checkurl(link, checktimes):
                 try:
                     req = urllib2.Request(link.url, headers=hdr)
@@ -515,7 +502,7 @@ def checklink():
                     print(title)
                     if title:
                         link.title = title
-                        if logo:
+                        if logo and re.match(regex, logo):
                             link.logo = logo
                         link.unreachable = 0
                         link.save()
@@ -559,6 +546,8 @@ def LinkClass(request):
                             logo = hp.unescape(content.split('<link rel="shortcut icon"')[1].split('>')[0].split('href="')[1].split('"')[0]).encode("utf-8")
                         if logo[0] == '/':
                             logo = url + logo
+                        if not re.match(regex, logo):
+                            logo = ''
                     except:
                         pass
                     content = {
