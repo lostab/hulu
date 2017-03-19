@@ -15,6 +15,12 @@ $(document).ready(function(){
 
         });
     });
+    $(".avatar-area .avatar img, .comment-avatar-area .comment-avatar img").each(function(){
+        if (!this.complete || typeof(this.naturalWidth) == "undefined" || this.naturalWidth == 0) {
+            $(this).parent().parent().attr("style", $(this).parent().parent().attr("style").replace($(this).attr("src"), "/s/avatar/n.png"));
+            this.src = "/s/avatar/n.png";
+        }
+    });
     $("form").each(function(){
         $(this).submit(function(){
             $(this).find(".submit").attr("disabled", true);
