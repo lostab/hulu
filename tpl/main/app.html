@@ -257,6 +257,13 @@
                     //    openmessagesession.find(".sendmessageform").find(".messagecontent").focus();
                     //}
 
+                    $(".avatar-area .avatar img").each(function(){
+                        if (!this.complete || typeof(this.naturalWidth) == "undefined" || this.naturalWidth == 0) {
+                            $(this).closest("div").attr("style", $(this).closest("div").attr("style").replace($(this).attr("src"), "/s/avatar/n.png"));
+                            this.src = "/s/avatar/n.png";
+                        }
+                    });
+
                     if (data.uirid != "" && data.messagesessions.length > 0) {
                         loaddata(data.uirid);
                     } else if(uirid != "") {
