@@ -24,7 +24,16 @@ from django.forms.models import inlineformset_factory
 from django.db.models import Q
 
 def Index(request):
-    return redirect('/')
+    try:
+        tags = Tag.objects.all().order_by('?')[:100]
+    except Tag.DoesNotExist:
+        tags = None
+
+    content = {
+        'tags': tags
+    }
+
+    return render(request, 'tag/index.html', content)
 
 def View(request, id):
     try:
@@ -64,7 +73,7 @@ def View(request, id):
         }
 
         return HttpResponse(json.dumps(content, encoding='utf-8', ensure_ascii=False, indent=4), content_type="application/json; charset=utf-8")
-    return render(request, 'tag/index.html', content)
+    return render(request, 'tag/view.html', content)
 
 def Update(request, id):
     return redirect('/')

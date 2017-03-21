@@ -1,15 +1,50 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}话题{% else %}Tags{% endif %} - {% endblock %}
+{% block title %}{% if tag %}{{ tag.name }}{% else %}{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}页面不存在{% else %}Page Not Found{% endif %}{% endif %} - {% endblock %}
 
 {% block content %}
-    <div class="content tag">
-        <div class="item-tags">
-        {% for tag in tags %}
-            <div class="item-tag"><a href="/t/{{ tag.id }}/">{{ tag.name }}</a></div>
+    <div class="content-header">
+    {% if tag %}
+            <a class="pathlink homepathlink" href="/">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}首页{% else %}Home{% endif %}</a>
+            <a class="pathlink">></a>
+            <a class="pathlink subpathlink" href="/t/{{ tag.id }}/">{{ tag.name }}</a>
+            <a class="createintagbtn" href="/i/create/?t={{ tag.name }}">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}发布信息{% else %}New Post{% endif %}</a>
+    {% else %}
+        <p>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}抱歉，页面不存在。{% else %}Page Not Found.{% endif %}</p>
+    {% endif %}
+    </div>
+
+    <div class="content home">
+        <div class="items">
+        {% for item in items %}
+            {% include "item/itemline.html" %}
         {% endfor %}
+        {% if items.paginator.num_pages > 1 %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if items.has_previous %}
+                    <a class="previous-page" href="?page={{ items.previous_page_number }}">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}上一页{% else %}Previous{% endif %}</a>
+                {% endif %}
+
+                <span class="current">
+                    {{ items.number }} / {{ items.paginator.num_pages }}
+                </span>
+
+                {% if items.has_next %}
+                    <a class="next-page" href="?page={{ items.next_page_number }}">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}下一页{% else %}Next{% endif %}</a>
+                {% endif %}
+            </span>
         </div>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block sidebar %}
+    <div class="sidebar">
+        {% include "widget/tag.html" %}
+        {% include "widget/about.html" %}
     </div>
 {% endblock %}
 

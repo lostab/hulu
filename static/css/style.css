@@ -877,6 +877,13 @@ p.submit-btn, p.cancel-btn {
     color: white;
     background: lightgray;
 }
+.item-tags .item-tag-more {
+    font-size: small;
+    color: gray;
+}
+.item-tags .item-tag-more:hover {
+    color: black;
+}
 .content-header {
     min-height: 34px;
     line-height: 34px;
