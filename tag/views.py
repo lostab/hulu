@@ -25,7 +25,8 @@ from django.db.models import Q
 
 def Index(request):
     try:
-        tags = Tag.objects.all().order_by('?')[:100]
+        #tags = Tag.objects.all().order_by('?')[:1000]
+        tags = Tag.objects.all().order_by('?')
     except Tag.DoesNotExist:
         tags = None
 

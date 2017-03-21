@@ -472,7 +472,7 @@ hdr = {
 
 urlblist = []
 
-def checklink():
+def checklinks():
     for link in Link.objects.all():
         if not re.match(regex, link.url):
             link.delete()
@@ -496,9 +496,13 @@ def checklink():
                     content = urllib2.urlopen(req, context=ctx, timeout=10).read()
                     hp = HTMLParser.HTMLParser()
                     title = hp.unescape(content.split('<title>')[1].split('</title>')[0]).encode("utf-8")
-                    logo = hp.unescape(content.split('<link rel="icon"')[1].split('>')[0].split('href="')[1].split('"')[0]).encode("utf-8")
-                    if logo[0] == '/':
-                        logo = url + logo
+                    logo = ''
+                    if '<link rel="icon"' in content or '<link rel="shortcut icon"' in content:
+                        logo = hp.unescape(content.split('<link rel="icon"')[1].split('>')[0].split('href="')[1].split('"')[0]).encode("utf-8")
+                        if logo == '':
+                            logo = hp.unescape(content.split('<link rel="shortcut icon"')[1].split('>')[0].split('href="')[1].split('"')[0]).encode("utf-8")
+                        if logo[0] == '/':
+                            logo = url + logo
                     print(title)
                     if title:
                         link.title = title
@@ -521,7 +525,58 @@ def checklink():
                             link.delete()
             checkurl(link, 0)
 
-    threading.Timer(43200, checklink).start()
+    threading.Timer(43200, checklinks).start()
+
+def checklink(url, checktimes):
+    try:
+        links = Link.objects.filter(url=url).all()
+    except:
+        links = None
+    for link in links:
+        if link.url[-1] == '/':
+            link.url = link.url[:-1]
+            link.save()
+
+        if link.url.split('://')[1] in urlblist:
+            link.delete()
+            continue
+
+        if link.logo and not re.match(regex, link.logo):
+            link.logo = ''
+            link.save()
+
+        try:
+            req = urllib2.Request(link.url, headers=hdr)
+            content = urllib2.urlopen(req, context=ctx, timeout=10).read()
+            hp = HTMLParser.HTMLParser()
+            title = hp.unescape(content.split('<title>')[1].split('</title>')[0]).encode("utf-8")
+            logo = ''
+            if '<link rel="icon"' in content or '<link rel="shortcut icon"' in content:
+                logo = hp.unescape(content.split('<link rel="icon"')[1].split('>')[0].split('href="')[1].split('"')[0]).encode("utf-8")
+                if logo == '':
+                    logo = hp.unescape(content.split('<link rel="shortcut icon"')[1].split('>')[0].split('href="')[1].split('"')[0]).encode("utf-8")
+                if logo[0] == '/':
+                    logo = url + logo
+            print(title)
+            if title:
+                link.title = title
+                if logo and re.match(regex, logo):
+                    link.logo = logo
+                link.unreachable = 0
+                link.save()
+            else:
+                link.delete()
+        except:
+            if checktimes < 3:
+                checklink(url, checktimes + 1)
+            else:
+                if not link.unreachable:
+                    link.unreachable = 1
+                else:
+                    link.unreachable = int(link.unreachable) + 1
+                link.save()
+                if int(link.unreachable) > 3:
+                    link.delete()
 
 def LinkClass(request):
     try:
@@ -541,13 +596,15 @@ def LinkClass(request):
                         content = urllib2.urlopen(req, context=ctx, timeout=10).read()
                         hp = HTMLParser.HTMLParser()
                         title = hp.unescape(content.split('<title>')[1].split('</title>')[0]).encode("utf-8")
-                        logo = hp.unescape(content.split('<link rel="icon"')[1].split('>')[0].split('href="')[1].split('"')[0]).encode("utf-8")
-                        if logo == '':
-                            logo = hp.unescape(content.split('<link rel="shortcut icon"')[1].split('>')[0].split('href="')[1].split('"')[0]).encode("utf-8")
-                        if logo[0] == '/':
-                            logo = url + logo
-                        if not re.match(regex, logo):
-                            logo = ''
+                        logo = ''
+                        if '<link rel="icon"' in content or '<link rel="shortcut icon"' in content:
+                            logo = hp.unescape(content.split('<link rel="icon"')[1].split('>')[0].split('href="')[1].split('"')[0]).encode("utf-8")
+                            if logo == '':
+                                logo = hp.unescape(content.split('<link rel="shortcut icon"')[1].split('>')[0].split('href="')[1].split('"')[0]).encode("utf-8")
+                            if logo[0] == '/':
+                                logo = url + logo
+                            if not re.match(regex, logo):
+                                logo = ''
                     except:
                         pass
                     content = {
@@ -562,6 +619,7 @@ def LinkClass(request):
 
         if request.GET.get('f'):
             url = request.GET.get('f').strip()
+            checklink(url, 0)
             if re.match(regex, url):
                 return redirect(url)
             else:

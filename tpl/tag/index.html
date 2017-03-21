@@ -5,11 +5,16 @@
 
 {% block content %}
     <div class="content tag">
+        <h3>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}所有话题{% else %}All Tags{% endif %}</h3>
         <div class="item-tags">
         {% for tag in tags %}
             <div class="item-tag"><a href="/t/{{ tag.id }}/">{{ tag.name }}</a></div>
         {% endfor %}
         </div>
+        <form class="newtagform" action="/i/create/" method="get">
+            <input class="item-tag-name" name="t" type="text" />
+            <input class="submit item-tag-submit" type="submit" value="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}新话题{% else %}New Tag{% endif %}" />
+        </form>
     </div>
 {% endblock %}
 

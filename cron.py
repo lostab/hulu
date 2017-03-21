@@ -6,4 +6,4 @@ django.setup()
 
 from item.views import checklink
 
-checklink()
+checklinks()
