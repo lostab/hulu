@@ -9,6 +9,7 @@ from hulu import *
 import settings
 import os
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+#from django.conf.urls.static import static
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -33,17 +34,18 @@ urlpatterns = [
     url(r'^tg/', main.ttt, name='ttt'),
     url(r'^jk/(.+)/$', main.jk, name='jk'),
     url(r'^m/', main.app, name='app'),
-    url(r'^s/avatar/(.+)$', user.Avatar, name='avatar'),
     url(r'^wi/', item.wbimg, name='wbimg'),
     url(r'^wx/', main.weixin, name='weixin'),
-    #url(r'^db/', item.db, name='db'),
     url(r'^(.+)/$', user.UserPage, name='userpage'),
     url(r'^a/sitemap.txt$', main.sitemap, name='sitemap'),
 ]
 
 #urlpatterns += patterns('',
-#(r'^s/(.*)$', 'django.views.static.serve', {'document_root' :settings.STATIC_ROOT}),
+#    (r'^s/(.*)$', 'django.views.static.serve', {'document_root' :settings.STATIC_ROOT}),
 #)
 
+#urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += staticfiles_urlpatterns()
+
 if 'VCAP_SERVICES' in os.environ:
-    urlpatterns += staticfiles_urlpatterns()
+    urlpatterns += url(r'^s/avatar/(.+)$', user.Avatar, name='avatar'),
