@@ -145,7 +145,7 @@ textarea {
 .header {
     width: inherit;
     height: 24px;
-    margin: 0px;
+    margin: 0;
     padding: 3px 0 3px 0;
     border-bottom: 1px solid whitesmoke;
     position: fixed;
@@ -290,11 +290,13 @@ textarea {
     text-align: center;
 }
 .container {
-    padding: 37px 7px 7px 7px;
-    margin: 0;
+    position: absolute;
+    width: inherit;
+    padding: 7px 7px 7px 7px;
+    margin: 47px 0 10px 0;
     /*overflow: scroll;
     height: 100%;*/
-    min-height: calc(100% - 33px);
+    min-height: calc(100% - 47px);
     background: white;
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
@@ -318,13 +320,13 @@ textarea {
     position: relative;
 }
 .sidebar {
-    margin: 37px 0 7px 0;
-    /*padding: 7px;*/
+    margin: 0px 0 10px 0;
+    padding: 7px;
     width: 280px;
     min-width: 230px;
     /*float: right;*/
     position: fixed;
-    top: 0;
+    top: 47px;
     right: 10%;
     /*margin-right: -480px;*/
 }
@@ -861,6 +863,11 @@ p.submit-btn, p.cancel-btn {
     background: whitesmoke;
     box-shadow: 0 -3px 3px 3px whitesmoke;
     clear: both;
+    font-size: small;
+    position: absolute;
+    bottom: 0;
+    height: 24px;
+    width: inherit;
 }
 
 .item-tags .item-tag {

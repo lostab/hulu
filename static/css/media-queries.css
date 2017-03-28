@@ -3,11 +3,11 @@
         width: 96%;
     }
     .content.item, .content.home, .content-header {
-        width: 55%;
+        width: 60%;
     }
     .sidebar {
         min-width: 230px;
-        margin: 17px 0 17px 0;
+        /*margin: 17px 0 17px 0;*/
         padding: 7px;
         position: fixed;
         right: 2%;
@@ -18,9 +18,9 @@
     }
 }
 
-@media screen and (max-width: 720px) {
+@media screen and (max-width: 960px) {
     .content, .content.item, .content.home, .content-header {
-        width: auto;
+        width: 100%;
         float: none;
     }
     .content-header {

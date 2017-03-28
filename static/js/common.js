@@ -34,17 +34,18 @@ $(document).ready(function(){
             }
         });
 
-        if($(window).width() > 720 && $(".sidebar").height() + 70 > $(window).height()) {
-            $(".sidebar").css({"position": "absolute"});
-            $(".container").css({"min-height": "calc(100% - " + ($(".header").height() - 46 + $(".footer").height() - $(".sidebar").height() - 70 + $(window).height()) + "px - " + $(".container").css("padding-top") + ")"});
+        if($(window).width() > 960 && $(".sidebar").height() + 47 > $(window).height()) {
+            $(".sidebar").css({"position": "absolute", "top": "0", "right": "0"});
+            $(".container").css({"min-height": "calc(" + $(".sidebar").css("padding-top") + " + " + $(".sidebar").css("padding-bottom") + " + " + $(".sidebar").height() + "px)"});
         } else {
-            if ($(window).width() > 720) {
-                $(".sidebar").css({"position": "fixed"});
+            if ($(window).width() > 960) {
+                $(".sidebar").css({"position": "fixed", "top": "47px", "right": "10%"});
             } else {
-                $(".sidebar").css({"position": "relative"});
+                $(".sidebar").css({"position": "relative", "top": "0", "right": "0"});
             }
-            $(".container").css({"min-height": "calc(100% - " + ($(".header").height() - 46 + $(".footer").height()) + "px - " + $(".container").css("padding-top") + ")"});
+            $(".container").css({"min-height": "calc(" + $(".sidebar").css("padding-top") + " + " + $(".sidebar").css("padding-bottom") + " + " + $(".sidebar").height() + "px)"});
         }
+        $(".footer").css({"top": "calc(" + $(".container").height() + "px + " + $(".container").css("margin-top") + " + " + $(".container").css("margin-bottom") + ")"});
     }
     $("svg").each(function(){
         $(this).attr("owidth", $(this).attr("width"));
@@ -187,7 +188,8 @@ $(document).ready(function(){
         }
     });
 
-    $(".container").css({"min-height": "calc(100% - " + ($(".header").height() - 46 + $(".footer").height()) + "px - " + $(".container").css("padding-top") + ")"});
+    $(".container").css({"min-height": "calc(" + $(".sidebar").css("padding-top") + " + " + $(".sidebar").css("padding-bottom") + " + " + $(".sidebar").height() + "px)"});
+    $(".footer").css({"top": "calc(" + $(".container").height() + "px + " + $(".container").css("margin-top") + " + " + $(".container").css("margin-bottom") + ")"});
     $(".header .search").css({"width": "calc(100% - " + ($(".header .logo").width() + $(".header .right-navbar").width() + 24) + "px)", "margin-right": ($(".header .right-navbar").width() + 16) + "px"});
 
     //if ($(".right-navbar .accounts-button .avatar img").attr("userid") == "1" ) {
