@@ -336,6 +336,12 @@ textarea {
 .sidebar div p a:hover {
     color: black;
 }
+.sidebar h3 {
+    margin: 0;
+}
+.sidebar .widget {
+    margin: 16px 0 16px 0;
+}
 .content.signup p,.content.signup h3, .content.login p,.content.login h3, .content.account p,.content.account h3 {
     text-align: center;
 }
@@ -866,7 +872,7 @@ p.submit-btn, p.cancel-btn {
     font-size: small;
     position: absolute;
     bottom: 0;
-    height: 24px;
+    height: 18px;
     width: inherit;
 }
 
@@ -894,8 +900,8 @@ p.submit-btn, p.cancel-btn {
 .content-header {
     min-height: 34px;
     line-height: 34px;
-    margin-bottom: 7px;
     margin: 16px 0 16px 0;
+    margin: 0;
 }
 .content-header a.pathlink {
     text-overflow: ellipsis;

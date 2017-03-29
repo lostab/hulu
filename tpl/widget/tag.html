@@ -1,5 +1,5 @@
-{% if tags %}<div class="item-tags">
-    <h3>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}话题{% else %}Tags{% endif %}</h3>
+{% if tags %}<h3>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}话题{% else %}Tags{% endif %}</h3>
+<div class="item-tags widget">
     {% for tag in tags %}
         <div class="item-tag"><a href="/t/{{ tag.id }}/">{{ tag.name }}</a></div>
     {% endfor %}
