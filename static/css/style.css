@@ -293,7 +293,7 @@ textarea {
     position: absolute;
     width: inherit;
     padding: 7px 7px 7px 7px;
-    margin: 47px 0 10px 0;
+    margin: 47px 0 47px 0;
     /*overflow: scroll;
     height: 100%;*/
     min-height: calc(100% - 47px);
@@ -320,7 +320,7 @@ textarea {
     position: relative;
 }
 .sidebar {
-    margin: 0px 0 10px 0;
+    margin: 0px 0 47px 0;
     padding: 7px;
     width: 280px;
     min-width: 230px;
@@ -870,7 +870,7 @@ p.submit-btn, p.cancel-btn {
     box-shadow: 0 -3px 3px 3px whitesmoke;
     clear: both;
     font-size: small;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     height: 18px;
     width: inherit;
