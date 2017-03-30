@@ -34,11 +34,11 @@ $(document).ready(function(){
             }
         });
 
-        if($(window).width() > 960 && $(".sidebar").height() + $(".footer").height()+ parseInt($(".sidebar").css("top")) + parseInt($(".container").css("margin-top")) > $(window).height()) {
+        if($(window).width() > 944 && $(".sidebar").height() + $(".footer").height()+ parseInt($(".sidebar").css("top")) + parseInt($(".container").css("margin-top")) > $(window).height()) {
             $(".sidebar").css({"position": "absolute", "top": "0", "right": "0"});
             $(".container").css({"min-height": "calc(" + $(".sidebar").height() + "px - " + $(".container").css("margin-top") + " - " + $(".container").css("margin-bottom") + ")"});
         } else {
-            if ($(window).width() > 960) {
+            if ($(window).width() > 944) {
                 $(".sidebar").css({"position": "fixed", "top": "47px", "right": "10%"});
             } else {
                 $(".sidebar").css({"position": "relative", "top": "0", "right": "0"});
