@@ -58,6 +58,9 @@ $(document).ready(function(){
         $(this).attr("oheight", $(this).attr("height"));
     });
     svgresize();
+    $(window).load(function() {
+        svgresize();
+    });
     $(window).resize(function() {
         svgresize();
     });
