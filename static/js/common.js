@@ -59,7 +59,7 @@ $(document).ready(function(){
     });
     svgresize();
     $(window).resize(function() {
-        svgresize().queue();
+        svgresize();
     });
 
     $(".itemform .submit").click(function(){
