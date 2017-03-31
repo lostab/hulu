@@ -28,7 +28,7 @@ class Item(models.Model):
     belong = models.ManyToManyField('self', symmetrical=False, blank=True)
     tag = models.ManyToManyField(Tag)
 
-    def get_all_items(self, include_self=True):
+    def get_all_items_old(self, include_self=True):
         items = []
         if include_self:
             item = self
@@ -51,7 +51,7 @@ class Item(models.Model):
                     items.append(subitem)
         return items
 
-    '''def get_all_items(self, include_self=True):
+    def get_all_items(self, include_self=True):
         items = []
         queue = []
         queue.append(self)
@@ -71,9 +71,9 @@ class Item(models.Model):
                 item.update = itemcontent.reverse().create
                 if item not in items:
                     items.append(item)
-        return items'''
+        return items
 
-    def get_root_items(self):
+    def get_root_items_old(self):
         rootitems = []
         if self.belong.all():
             for belongitem in self.belong.all().prefetch_related('itemcontent_set'):
@@ -82,6 +82,20 @@ class Item(models.Model):
                         rootitems.append(rootitem)
         else:
             rootitems.append(self)
+        return rootitems
+    
+    def get_root_items(self):
+        rootitems = []
+        queue = []
+        queue.append(self)
+        while queue:
+            node = queue.pop(0)
+            if node.belong.all():
+                for belongitem in node.belong.all().prefetch_related('itemcontent_set'):
+                    queue.append(belongitem)
+            else:
+                if node not in rootitems:
+                    rootitems.append(node)
         return rootitems
 
 class ItemContent(models.Model):
