@@ -34,16 +34,16 @@ $(document).ready(function(){
             }
         });
 
-        if($(window).width() > 944 && $(".sidebar").height() + $(".footer").height()+ parseInt($(".sidebar").css("top")) + parseInt($(".container").css("margin-top")) > $(window).height()) {
-            $(".sidebar").css({"position": "absolute", "top": "0", "right": "0"});
-            $(".container").css({"min-height": "calc(" + $(".sidebar").height() + "px - " + $(".container").css("margin-top") + " - " + $(".container").css("margin-bottom") + ")"});
+        if($(window).width() > 960 && $(".sidebar").height() + $(".footer").height()+ parseInt($(".sidebar").css("top")) + parseInt($(".container").css("padding-top")) > $(window).height()) {
+            $(".sidebar").css({"position": "absolute", "top": "47px", "right": "0"});
+            $(".container").css({"min-height": "calc(" + $(".sidebar").height() + "px - " + $(".container").css("padding-top") + " - " + $(".container").css("padding-bottom") + ")"});
         } else {
-            if ($(window).width() > 944) {
+            if ($(window).width() > 960) {
                 $(".sidebar").css({"position": "fixed", "top": "47px", "right": "10%"});
             } else {
                 $(".sidebar").css({"position": "relative", "top": "0", "right": "0"});
             }
-            $(".container").css({"min-height": "calc(" + $(window).height() + "px - " + $(".container").css("margin-top") + " - " + $(".container").css("margin-bottom") + " - " + $(".footer").height() + "px)"});
+            $(".container").css({"min-height": "calc(100% - " + $(".container").css("padding-top") + ")"});
         }
         /*setTimeout(function(){
             $(".footer").css({"top": "calc(" + $(".container").height() + "px + " + $(".container").css("margin-top") + " + " + $(".container").css("margin-bottom") + " - " + parseInt($(".footer").css("border-top")) + "px)"});
@@ -54,7 +54,7 @@ $(document).ready(function(){
         $(this).attr("oheight", $(this).attr("height"));
     });
     svgresize();
-    
+
     $(window).resize(function() {
         svgresize();
     });
