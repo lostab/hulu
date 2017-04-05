@@ -35,11 +35,16 @@ $(document).ready(function(){
         });
 
         if($(window).width() > 960 && $(".sidebar").height() + $(".footer").height()+ parseInt($(".sidebar").css("top")) + parseInt($(".container").css("padding-top")) > $(window).height()) {
-            $(".sidebar").css({"position": "absolute", "top": "47px", "right": "0"});
+            $(".sidebar").css({"position": "absolute", "top": "48px", "right": "0"});
             $(".container").css({"min-height": "calc(" + $(".sidebar").height() + "px - " + $(".container").css("padding-top") + " - " + $(".container").css("padding-bottom") + ")"});
+            $(".content").css({"min-height": ($(window).height() - 96) + "px"});
         } else {
-            if ($(window).width() > 960) {
-                $(".sidebar").css({"position": "fixed", "top": "47px", "right": "10%"});
+            if ($(window).width() > 1200) {
+                $(".sidebar").css({"position": "fixed", "top": "48px", "right": "10%"});
+                $(".content").css({"min-height": ($(window).height() - 96) + "px"});
+            } else if ($(window).width() > 960) {
+                $(".sidebar").css({"position": "fixed", "top": "48px", "right": "2%"});
+                $(".content").css({"min-height": ($(window).height() - 96) + "px"});
             } else {
                 $(".sidebar").css({"position": "relative", "top": "0", "right": "0"});
             }

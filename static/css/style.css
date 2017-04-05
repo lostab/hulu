@@ -295,11 +295,10 @@ textarea {
     /*padding: 7px 7px 7px 7px;
     margin: 47px 0 47px 0;*/
     margin: 0;
-    padding: 54px 7px 54px 7px;
+    padding: 48px 0 48px 0;
     /*overflow: scroll;
     height: 100%;*/
-    min-height: calc(100% - 47px);
-    background: white;
+    min-height: calc(100% - 48px);
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
     box-sizing: border-box;         /* Opera/IE 8+ */
@@ -310,10 +309,18 @@ textarea {
     filter: alpha(opacity=96);
 }
 .content {
-    margin: 17px 0 17px 0;
+    margin: 0;
     /*margin-top: 17px;*/
-    /*padding: 7px;*/
-    min-height: 230px;
+    padding: 7px;
+    /*min-height: 230px;*/
+    min-height: calc(100% - 96px);
+    background: white;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
 }
 .content.item, .content.home, .content-header {
     /*width: 600px;*/
@@ -328,9 +335,16 @@ textarea {
     min-width: 230px;
     /*float: right;*/
     position: fixed;
-    top: 47px;
+    top: 48px;
     right: 10%;
     /*margin-right: -480px;*/
+    background: white;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
 }
 .sidebar div p, .sidebar div p a {
     color: gray;
@@ -865,7 +879,7 @@ p.submit-btn, p.cancel-btn {
     text-align: left;
 }
 .footer {
-    padding: 7px 0 7px 0;
+    padding: 3px 0 3px 0;
     border-top: 1px solid whitesmoke;
     text-align: center;
     background: whitesmoke;
@@ -874,7 +888,7 @@ p.submit-btn, p.cancel-btn {
     font-size: small;
     position: fixed;
     bottom: 0;
-    height: 18px;
+    height: 24px;
     width: inherit;
 }
 
@@ -902,8 +916,15 @@ p.submit-btn, p.cancel-btn {
 .content-header {
     min-height: 34px;
     line-height: 34px;
-    margin: 16px 0 16px 0;
     margin: 0;
+    padding: 7px;
+    background: white;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
 }
 .content-header a.pathlink {
     text-overflow: ellipsis;
