@@ -889,6 +889,7 @@ p.submit-btn, p.cancel-btn {
     position: fixed;
     bottom: 0;
     height: 24px;
+    line-height: 24px;
     width: inherit;
 }
 
