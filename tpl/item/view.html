@@ -11,7 +11,7 @@
         </div>
         <div class="item-head">
             <div class="item-info">
-                <span class="item-info-right"><a class="item-created">{% with item.itemcontent_set.all|first as itemcontent %}{{ itemcontent.create|date:'Y-m-d H:i:s'}}{% endwith %}</a></span>
+                <!--<span class="item-info-right"><a class="item-created">{% with item.itemcontent_set.all|first as itemcontent %}{{ itemcontent.create|date:'Y-m-d H:i:s'}}{% endwith %}</a></span>-->
 
                 <span class="item-info-left"><a class="username" href="/{{ item.user.username }}/"><span class="username">{{ item.user.username }}</span></a>
 
@@ -43,6 +43,7 @@
         {% for itemcontent in item.itemcontent_set.all %}
             <div class="itemcontent">
                 {% if forloop.first %}
+                <p class="updated">{{ itemcontent.create|date:'Y-m-d H:i:s' }}</p>
                 <div class="itemcontent-content"><pre>{{ item.firstcontent }}</pre></div>
                 {% else %}
                 <p class="updated">{{ itemcontent.create|date:'Y-m-d H:i:s' }}</p>

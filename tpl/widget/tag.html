@@ -1,5 +1,7 @@
-{% if tags %}<h3>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}话题{% else %}Tags{% endif %}</h3>
-<div class="item-tags widget">
+{% if tags %}<div class="widget">
+<h3>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}话题{% else %}Tags{% endif %}</h3>
+<div class="item-tags">
+    <p>
     {% for tag in tags %}
         <div class="item-tag"><a href="/t/{{ tag.id }}/">{{ tag.name }}</a></div>
     {% endfor %}
@@ -8,4 +10,6 @@
         <input class="item-tag-name" name="t" type="text" />
         <input class="submit item-tag-submit" type="submit" value="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}新话题{% else %}New Tag{% endif %}" />
     </form>
+    </p>
 </div>{% endif %}
+</div>

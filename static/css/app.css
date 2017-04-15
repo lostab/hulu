@@ -188,7 +188,7 @@ img {
 }
 .line .line-title {
     color: gray;
-    margin-top: 7px;
+    margin-top: 3px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

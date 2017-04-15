@@ -330,7 +330,6 @@ textarea {
 }
 .sidebar {
     margin: 0;
-    padding: 7px;
     width: 280px;
     min-width: 230px;
     /*float: right;*/
@@ -338,7 +337,6 @@ textarea {
     top: 48px;
     right: 10%;
     /*margin-right: -480px;*/
-    background: white;
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
     box-sizing: border-box;         /* Opera/IE 8+ */
@@ -352,11 +350,19 @@ textarea {
 .sidebar div p a:hover {
     color: black;
 }
+.sidebar .widget {
+    margin: 0 0 16px 0;
+    padding: 7px;
+    background: white;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+}
 .sidebar h3 {
     margin: 0;
-}
-.sidebar .widget {
-    margin: 16px 0 16px 0;
 }
 .content.signup p,.content.signup h3, .content.login p,.content.login h3, .content.account p,.content.account h3 {
     text-align: center;

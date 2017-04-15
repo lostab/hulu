@@ -1,15 +1,16 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}话题{% else %}Tags{% endif %} - {% endblock %}
+{% block title %}{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}更多话题{% else %}Tags{% endif %} - {% endblock %}
 
 {% block content %}
     <div class="content tag">
-        <h3>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}所有话题{% else %}All Tags{% endif %}</h3>
+        <h3>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}更多话题{% else %}All Tags{% endif %}</h3>
         <div class="item-tags">
         {% for tag in tags %}
             <div class="item-tag"><a href="/t/{{ tag.id }}/">{{ tag.name }}</a></div>
         {% endfor %}
+            <a href="/t/" class="item-tag-more">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}更多{% else %}More{% endif %}...</a>
         </div>
         <form class="newtagform" action="/i/create/" method="get">
             <input class="item-tag-name" name="t" type="text" />

@@ -1,5 +1,7 @@
-<h3>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}赞助{% else %}Pay{% endif %}</h3>
 <div class="widget">
+<h3>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}赞助{% else %}Pay{% endif %}</h3>
+<div class="wxpay">
     <div class="wxpay" style="width: 240px; height: 240px; background: url(/s/wxpay.png) no-repeat; background-size: cover; background-position: center; margin: 0 auto;"><img src="/s/wxpay.png" style="width: 240px; height: 240px; margin: 0 auto; border: 0;" /></div>
     <div class="paypal" style="width: 100%; text-align: center;"><p><a href="https://www.paypal.me/lostab" target="blank">https://www.paypal.me/lostab</a></p></div>
+</div>
 </div>
