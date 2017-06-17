@@ -95,6 +95,13 @@ $(document).ready(function(){
                         });
                     });
 
+                    $(".avatar img, .comment-avatar-area .comment-avatar img").each(function(){
+                        if (!this.complete || typeof(this.naturalWidth) == "undefined" || this.naturalWidth == 0) {
+                            $(this).closest("div").attr("style", $(this).closest("div").attr("style").replace($(this).attr("src"), "/s/avatar/n.png"));
+                            this.src = "/s/avatar/n.png";
+                        }
+                    });
+
                     $(".content.home>.items>.item").last().css({"border-bottom": "1px solid whitesmoke"});      //还原末行底部边框
                     $(".content.home>.items>.pagination").after($(".content.home>.items>.pagination .current .items").html());
                     $(".content.home>.items>.pagination").first().remove();
