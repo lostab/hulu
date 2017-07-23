@@ -276,7 +276,7 @@ $(document).ready(function(){
                 $(".search .qstr").attr("placeholder", $(".musicplayer audio").attr("title"));
                 addmusicswitch();
             } else{
-                $(".search .qstr").attr("placeholder", "搜索并播放歌曲");
+                $(".search .qstr").attr("placeholder", "搜索（信息、歌曲）");
             }
         }
 
