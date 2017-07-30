@@ -11,7 +11,7 @@
         <form method="post" class="itemform">
             {% csrf_token %}
             <p>
-                <textarea name="feedback" class="feedbackinput"></textarea>
+                <textarea name="feedback" class="feedbackinput" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}请附上联系方式以便答复{% else %}Please leave your contact infomation for reply{% endif %}"></textarea>
             </p>
             <p class="submit-btn"><input class="submit" type="submit" value="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}提交{% else %}Submit{% endif %}" /></p>
         </form>

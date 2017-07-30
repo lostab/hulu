@@ -107,6 +107,10 @@ input.submit:not(.item-tag-submit) {
     filter: alpha(opacity=60);
     cursor: pointer;
 }
+input.submit:not(.item-tag-submit):hover {
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
 input:not(.file-input):not(.qstr):not(.item-tag-name):not(.item-tag-submit) {
     max-width: 100%;
     line-height: 36px;
@@ -126,6 +130,12 @@ input:not(.file-input):not(.qstr):not(.item-tag-name):not(.item-tag-submit) {
 img {
     max-width: 100%;
     border: 0;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
 }
 textarea {
     -webkit-box-sizing: border-box;
@@ -360,6 +370,9 @@ textarea {
     border-radius: 3px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
+}
+.sidebar .widget:last-child {
+    margin-bottom: 0;
 }
 .sidebar h3 {
     margin: 0;
@@ -908,6 +921,12 @@ p.submit-btn, p.cancel-btn {
     font-size: small;
     padding: 3px;
     background: whitesmoke;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
 }
 .item-tags .item-tag a:hover {
     color: white;
@@ -916,6 +935,7 @@ p.submit-btn, p.cancel-btn {
 .item-tags .item-tag-more {
     font-size: small;
     color: gray;
+    float: right;
 }
 .item-tags .item-tag-more:hover {
     color: black;
@@ -933,7 +953,7 @@ p.submit-btn, p.cancel-btn {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
 }
-.content-header a.pathlink {
+.content-header a.pathlink, .create  a.pathlink {
     text-overflow: ellipsis;
     overflow: hidden;
     max-width: 30%;
@@ -945,10 +965,10 @@ p.submit-btn, p.cancel-btn {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
 }
-.content-header .homepathlink, .content-header .subpathlink {
+.content-header .homepathlink, .content-header .subpathlink, .create a.pathlink {
     border: 1px solid lightgray;
 }
-.content-header .homepathlink:hover, .content-header .subpathlink:hover {
+.content-header .homepathlink:hover, .content-header .subpathlink:hover, .create a.pathlink:hover {
     background: whitesmoke;
 }
 .content-header .homepathlink {
@@ -987,6 +1007,7 @@ a.createintagbtn:hover {
 form.additemtag, form.newtagform {
     text-align: right;
     line-height: 36px;
+    clear: both;
 }
 input.item-tag-name {
     width: 4em;
@@ -1062,11 +1083,15 @@ ul.errorlist {
     border-radius: 3px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
-    cursor: default;
+    cursor: pointer;
 }
 .link .addlinkbtn {
     color: white;
     background: green;
     opacity: 0.6;
     filter: alpha(opacity=60);
+}
+.link .addlinkbtn:hover {
+    opacity: 1;
+    filter: alpha(opacity=100);
 }

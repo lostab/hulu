@@ -43,10 +43,10 @@
         {% for itemcontent in item.itemcontent_set.all %}
             <div class="itemcontent">
                 {% if forloop.first %}
-                <p class="updated">{{ itemcontent.create|date:'Y-m-d H:i:s' }}</p>
+                <p class="updated"><!--{{ itemcontent.create|date:'Y-m-d H:i:s' }}-->{% blocktrans with itemcontent.create|timesince as create %}{{ create }}{% endblocktrans %}{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}前{% else %} ago{% endif %}</p>
                 <div class="itemcontent-content"><pre>{{ item.firstcontent }}</pre></div>
                 {% else %}
-                <p class="updated">{{ itemcontent.create|date:'Y-m-d H:i:s' }}</p>
+                <p class="updated"><!--{{ itemcontent.create|date:'Y-m-d H:i:s' }}-->{% blocktrans with itemcontent.create|timesince as create %}{{ create }}{% endblocktrans %}{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}前{% else %} ago{% endif %}</p>
                 <div class="itemcontent-content"><pre>{{ itemcontent.content }}</pre></div>
                 {% endif %}
                 {% for attachmentfile in itemcontent.contentattachment_set.all %}
@@ -91,7 +91,7 @@
                     <div class="comment-avatar-area"><div class="comment-avatar" style="background: url({% if subitem.user.userprofile.openid %}{% if '//' not in subitem.user.userprofile.avatar.name %}/s/{% endif %}{{ subitem.user.userprofile.avatar }}{% else %}{% if subitem.user.userprofile.avatar %}/s/{{ subitem.user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}) no-repeat;background-size: cover;background-position: center; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='{% if subitem.user.userprofile.openid %}{% if '//' not in subitem.user.userprofile.avatar.name %}/s/{% endif %}{{ subitem.user.userprofile.avatar }}{% else %}{% if subitem.user.userprofile.avatar %}/s/{{ subitem.user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}', sizingMethod='scale'); -ms-filter: 'progid:DXImageTransform.Microsoft.AlphaImageLoader( src='{% if subitem.user.userprofile.openid %}{% if "//" not in subitem.user.userprofile.avatar.name %}/s/{% endif %}{{ subitem.user.userprofile.avatar }}{% else %}{% if subitem.user.userprofile.avatar %}/s/{{ subitem.user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}', sizingMethod='scale')';"><a href="/{{ subitem.user.username }}/"><img src="{% if subitem.user.userprofile.openid %}{% if '//' not in subitem.user.userprofile.avatar.name %}/s/{% endif %}{{ subitem.user.userprofile.avatar }}{% else %}{% if subitem.user.userprofile.avatar %}/s/{{ subitem.user.userprofile.avatar }}{% else %}/s/avatar/n.png{% endif %}{% endif %}" /></a></div></div>
                     <div class="item-line">
                         <div class="item-info">
-                            <span class="item-info-right"><a class="item-created">{% with subitem.itemcontent_set.all|first as itemcontent %}{{ itemcontent.create|date:'Y-m-d H:i:s' }}{% endwith %}</a></span>
+                            <span class="item-info-right"><a class="item-created">{% with subitem.itemcontent_set.all|first as itemcontent %}<!--{{ itemcontent.create|date:'Y-m-d H:i:s' }}-->{% blocktrans with itemcontent.create|timesince as create %}{{ create }}{% endblocktrans %}{% endwith %}{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}前{% else %} ago{% endif %}</a></span>
 
                             <span class="comment-author"><a class="usernamelabel" href="/{{ subitem.user.username }}/"><span class="username">{{ subitem.user.username }}</span></a>
                             <span class="userinfo">{{ subitem.user.userprofile.info }}</span></span>

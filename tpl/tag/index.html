@@ -10,6 +10,7 @@
         {% for tag in tags %}
             <div class="item-tag"><a href="/t/{{ tag.id }}/">{{ tag.name }}</a></div>
         {% endfor %}
+            <br />
             <a href="/t/" class="item-tag-more">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}更多{% else %}More{% endif %}...</a>
         </div>
         <form class="newtagform" action="/i/create/" method="get">
