@@ -229,7 +229,7 @@ img {
 }
 .messagesession .historymessages {
     width: 100%;
-    max-height: calc(100% - 100px);
+    max-height: calc(100% - 112px);
     overflow: hidden;
     overflow-y: auto;
     position: absolute;

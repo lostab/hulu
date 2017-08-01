@@ -305,10 +305,10 @@ textarea {
     /*padding: 7px 7px 7px 7px;
     margin: 47px 0 47px 0;*/
     margin: 0;
-    padding: 48px 0 48px 0;
+    padding: 48px 0 36px 0;
     /*overflow: scroll;
     height: 100%;*/
-    min-height: calc(100% - 48px);
+    min-height: calc(100% - 36px);
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
     box-sizing: border-box;         /* Opera/IE 8+ */
@@ -321,7 +321,7 @@ textarea {
 .content {
     margin: 0;
     /*margin-top: 17px;*/
-    padding: 7px;
+    padding: 7px 7px 19px 7px;
     /*min-height: 230px;*/
     min-height: calc(100% - 96px);
     background: white;
@@ -344,7 +344,7 @@ textarea {
     min-width: 230px;
     /*float: right;*/
     position: fixed;
-    top: 48px;
+    top: 60px;
     right: 10%;
     /*margin-right: -480px;*/
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
@@ -362,7 +362,7 @@ textarea {
 }
 .sidebar .widget {
     margin: 0 0 16px 0;
-    padding: 7px;
+    padding: 0 7px 0 7px;
     background: white;
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */

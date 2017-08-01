@@ -34,7 +34,13 @@ var ajaxload = function(url){
             error: function(){
                 //$(".header .ajaxloading").remove();
                 $("body .ajaxloading").remove();
-            }
+            },
+            timeout: 7000,
+            complete : function(XMLHttpRequest, status){
+        　　      if(status=='timeout'){
+         　　         $("body .ajaxloading").remove();
+        　　      }
+        　　 }
         });
     }
 }
@@ -97,7 +103,13 @@ var ajaxpost = function(obj){
                         error: function(){
                             //$(".header .ajaxloading").remove();
                             $("body .ajaxloading").remove();
-                        }
+                        },
+                        timeout: 7000,
+                        complete : function(XMLHttpRequest, status){
+                    　　      if(status=='timeout'){
+                     　　         $("body .ajaxloading").remove();
+                    　　      }
+                    　　 }
                     });
                 }
             }
@@ -116,7 +128,13 @@ var ajaxpost = function(obj){
                         error: function(){
                             //$(".header .ajaxloading").remove();
                             $("body .ajaxloading").remove();
-                        }
+                        },
+                        timeout: 7000,
+                        complete : function(XMLHttpRequest, status){
+                    　　      if(status=='timeout'){
+                     　　         $("body .ajaxloading").remove();
+                    　　      }
+                    　　 }
                     });
                     return false;
                 }
@@ -152,7 +170,13 @@ if(window.history && window.history.pushState) {
                 error: function(){
                     //$(".header .ajaxloading").remove();
                     $("body .ajaxloading").remove();
-                }
+                },
+                timeout: 7000,
+                complete : function(XMLHttpRequest, status){
+            　　      if(status=='timeout'){
+             　　         $("body .ajaxloading").remove();
+            　　      }
+            　　 }
             });
         }, false);
         window.isaddpopstateevent = true;
