@@ -229,7 +229,7 @@ img {
 }
 .messagesession .historymessages {
     width: 100%;
-    max-height: calc(100% - 112px);
+    max-height: calc(100% - 100px);
     overflow: hidden;
     overflow-y: auto;
     position: absolute;
@@ -245,6 +245,9 @@ img {
 }
 .container::-webkit-scrollbar, .messagesession::-webkit-scrollbar, .messagesession .historymessages::-webkit-scrollbar {
     display: none;
+}
+.messagesession .message {
+    padding-top: 12px;
 }
 .messagesession .message-me {
     text-align: right;
