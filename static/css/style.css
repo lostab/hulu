@@ -1055,13 +1055,16 @@ ul.errorlist {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
 }
+.links {
+    text-align: center;
+}
 .links .link-box {
     display: inline-block;
     width: 128px;
     height: 128px;
     margin: 13px;
     text-align: center;
-    float: left;
+    white-space: nowrap;
     overflow: hidden;
 }
 /*.links .link-box:hover {
@@ -1069,6 +1072,8 @@ ul.errorlist {
 }*/
 .links .link-title {
     line-height: 24px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .links .link-description {
     color: gray;

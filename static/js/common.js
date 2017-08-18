@@ -99,7 +99,7 @@ $(document).ready(function(){
         });
     }
 
-    if ($(".right-navbar .accounts-button .avatar img").attr("userid") == "1" ) {
+    /*if ($(".right-navbar .accounts-button .avatar img").attr("userid") == "1" ) {
         if ($('html').attr('lang') == "zh") {
             $(".itemform .submit").parent().before('\
                 <div class="fileselect" style="text-align: center;">\
@@ -184,7 +184,7 @@ $(document).ready(function(){
                 data.submit();
             }
         });
-    }
+    }*/
 
     $(".newtagform").submit(function(){
         var itemtag = $(this).find(".item-tag-name");
