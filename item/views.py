@@ -575,7 +575,7 @@ def checklink(url, checktimes):
                 else:
                     link.unreachable = int(link.unreachable) + 1
                 link.save()
-                if int(link.unreachable) > 3:
+                if int(link.unreachable) > 10:
                     link.delete()
 
 def LinkClass(request):
