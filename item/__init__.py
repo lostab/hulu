@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
+
 import os
 from django.conf import settings
 import shutil
@@ -37,21 +42,32 @@ def img2svg(contentattachment):
 
 def sort_items(items, page):
     itemlist = []
-    
+
     for item in items:
         #itemcontent = ItemContent.objects.filter(item=item)
         itemcontent = item.itemcontent_set.all()
         if itemcontent:
             item.create = itemcontent[0].create
-            if itemcontent[0].content:
-                item.title = itemcontent[0].content.strip().splitlines()[0]
+            #取第一个内容首行作为标题
+            #if itemcontent[0].content:
+            #    item.title = itemcontent[0].content.strip().splitlines()[0]
+            #else:
+            #    contentattachment = itemcontent[0].contentattachment_set.all()
+            #    if contentattachment:
+            #        item.title = contentattachment[0].title
+            #    else:
+            #        item.title = str(item.id)
+
+            #取最后一个内容首行作为标题
+            if itemcontent.last().content:
+                item.title = itemcontent.last().content.strip().splitlines()[0]
             else:
-                #contentattachment = ContentAttachment.objects.filter(itemcontent=itemcontent[0])
-                contentattachment = itemcontent[0].contentattachment_set.all()
+                contentattachment = itemcontent.last().contentattachment_set.all()
                 if contentattachment:
                     item.title = contentattachment[0].title
                 else:
                     item.title = str(item.id)
+
             subitem = item.get_all_items(include_self=False)
             if subitem:
                 subitem.sort(key=lambda item:item.create, reverse=True)

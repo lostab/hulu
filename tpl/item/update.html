@@ -12,7 +12,7 @@
             </div>
             <div class="item-head">
                 <div class="item-info">
-                    <span class="item-info-right"><a class="item-created">{% with item.itemcontent_set.all|first as itemcontent %}{{ itemcontent.create|date:'Y-m-d H:i:s'}}{% endwith %}</a></span>
+                    <span class="item-info-right"><a class="item-created">{% with item.itemcontent_set.all|first as itemcontent %}<!--{{ itemcontent.create|date:'Y-m-d H:i:s'}}-->{% blocktrans with itemcontent.create|timesince as create %}{{ create }}{% endblocktrans %}{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}前{% else %} ago{% endif %}{% endwith %}</a></span>
 
                     <span class="item-info-left"><a class="username" href="/{{ item.user.username }}/"><span class="username">{{ item.user.username }}</span></a>
 
@@ -23,10 +23,10 @@
             <div class="line">
             {% for itemcontent in item.itemcontent_set.all %}
                 <div class="itemcontent">
-                    {% if forloop.first %}
+                    {% if forloop.last %}
                     <div class="itemcontent-content"><pre>{{ item.firstcontent }}</pre></div>
                     {% else %}
-                    <p class="updated">{{ itemcontent.create|date:'Y-m-d H:i:s' }}</p>
+                    <p class="updated"><!--{{ itemcontent.create|date:'Y-m-d H:i:s' }}-->{% blocktrans with itemcontent.create|timesince as create %}{{ create }}{% endblocktrans %}{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}前{% else %} ago{% endif %}</p>
                     <div class="itemcontent-content"><pre>{{ itemcontent.content }}</pre></div>
                     {% endif %}
                     {% for attachmentfile in itemcontent.contentattachment_set.all %}
@@ -48,7 +48,7 @@
             <h3 id="update-form">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}更新信息{% else %}Update Post{% endif %}</h3>
             <form class="itemform" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <p class="description"><textarea name="content">{% if form.content.value %}{{ form.content.value }}{% else %}{{ item.content }}{% endif %}</textarea></p>
+                <p class="description"><textarea name="content">{% if form.content.value %}{{ form.content.value }}{% else %}{{ item.itemcontent_set.last.content }}{% endif %}</textarea></p>
                 <!--<p>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}附件{% else %}Attachment{% endif %}：
                 <br />
                 <input class="file" name="file" type="file" />

@@ -510,6 +510,7 @@ p.submit-btn, p.cancel-btn {
 }
 .itemcontent:not(:last-child) {
     line-height: 2em;
+    display: none;
 }
 .itemcontent:not(:last-child) .itemcontent-content {
     border-bottom: 1px dashed lightgray;

@@ -148,15 +148,27 @@ def View(request, id):
         item = Item.objects.filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).get(id=id)
         #itemcontent = ItemContent.objects.filter(item=item)
         itemcontent = item.itemcontent_set.all()
-        if itemcontent[0].content:
-            item.title = itemcontent[0].content.strip().splitlines()[0]
+        #取第一个内容首行作为标题
+        #if itemcontent[0].content:
+        #    item.title = itemcontent[0].content.strip().splitlines()[0]
+        #else:
+        #    contentattachment = itemcontent[0].contentattachment_set.all()
+        #    if contentattachment:
+        #        item.title = contentattachment[0].title
+        #    else:
+        #        item.title = str(item.id)
+        #item.firstcontent = ''.join(itemcontent[0].content.strip().splitlines(True)[1:])
+
+        #取最后一个内容首行作为标题
+        if itemcontent.last().content:
+            item.title = itemcontent.last().content.strip().splitlines()[0]
         else:
-            contentattachment = itemcontent[0].contentattachment_set.all()
+            contentattachment = itemcontent.last().contentattachment_set.all()
             if contentattachment:
                 item.title = contentattachment[0].title
             else:
                 item.title = str(item.id)
-        item.firstcontent = ''.join(itemcontent[0].content.strip().splitlines(True)[1:])
+        item.firstcontent = ''.join(itemcontent.last().content.strip().splitlines(True)[1:])
     except Item.DoesNotExist:
         item = None
     if not item:
@@ -345,15 +357,27 @@ def Update(request, id):
                 item = None
             else:
                 itemcontent = item.itemcontent_set.all()
-                if itemcontent[0].content:
-                    item.title = itemcontent[0].content.strip().splitlines()[0]
+                #取第一个内容首行作为标题
+                #if itemcontent[0].content:
+                #    item.title = itemcontent[0].content.strip().splitlines()[0]
+                #else:
+                #    contentattachment = itemcontent[0].contentattachment_set.all()
+                #    if contentattachment:
+                #        item.title = contentattachment[0].title
+                #    else:
+                #        item.title = str(item.id)
+                #item.firstcontent = ''.join(itemcontent[0].content.strip().splitlines(True)[1:])
+                #取最后一个内容首行作为标题
+
+                if itemcontent.last().content:
+                    item.title = itemcontent.last().content.strip().splitlines()[0]
                 else:
-                    contentattachment = itemcontent[0].contentattachment_set.all()
+                    contentattachment = itemcontent.last().contentattachment_set.all()
                     if contentattachment:
                         item.title = contentattachment[0].title
                     else:
                         item.title = str(item.id)
-                item.firstcontent = ''.join(itemcontent[0].content.strip().splitlines(True)[1:])
+                item.firstcontent = ''.join(itemcontent.last().content.strip().splitlines(True)[1:])
         except Item.DoesNotExist:
             item = None
         if not item:

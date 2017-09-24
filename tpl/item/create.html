@@ -4,8 +4,15 @@
 
 {% block content %}
     {% if user.is_authenticated %}
+        <div class="content-header">
+        {% if tagname %}
+                <a class="pathlink homepathlink" href="/">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}首页{% else %}Home{% endif %}</a>
+                <a class="pathlink">></a>
+                <a class="pathlink subpathlink">{{ tagname }}</a>
+        {% endif %}
+        </div>
         <div class="content create">
-            <h3>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}发布信息{% else %}New Post{% endif %}{% if tagname %} - <a class="pathlink subpathlink">{{ tagname }}</a>{% endif %}</h3>
+            <h3>{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}发布信息{% else %}New Post{% endif %}</h3>
             <form class="itemform" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <p class="description"><textarea name="content" placeholder="{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}首行内容将作为信息标题{% else %}The first line will be the Title{% endif %}">{{ form.content.value }}</textarea></p>
