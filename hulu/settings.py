@@ -23,6 +23,14 @@ DATABASES = {
         'OPTIONS': {
             'timeout': 30,
         },
+    },
+    'postgresql': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'DBNAME',
+        'USER': 'USERNAME',
+        'PASSWORD': 'PASSWORD',
+        'HOST': '127.0.0.1',
+        'PORT': '',
     }
 }
 

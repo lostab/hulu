@@ -24,6 +24,9 @@ var ajaxload = function(url){
     if($("body .ajaxloading").length == 0) {
         //$(".header").append("<div class=\"ajaxloading\"><span></span></div>");
         $(".wrapper").after($("<div class=\"ajaxloading\" style=\"background:lightgray;opacity:0.8;top:0;position:fixed;z-index:999;width:100%;height:100%;margin:0;padding:0;vertical-align:middle;\"><div class=\"loading-content\" style=\"text-align:center;width:100%;height:10px;position:absolute;top:50%;margin-top:-5px;\"><span style=\"\">" + (($('html').attr('lang') == "zh")?"加载中…":"loading...") + "</span></div></div>"));
+        $.ajaxSetup({
+            cache: true
+        });
         $.ajax({
             type: "GET",
             url: url,
@@ -37,10 +40,10 @@ var ajaxload = function(url){
             },
             timeout: 7000,
             complete : function(XMLHttpRequest, status){
-        　　      if(status=='timeout'){
-         　　         $("body .ajaxloading").remove();
-        　　      }
-        　　 }
+                if(status=='timeout'){
+                    $("body .ajaxloading").remove();
+                }
+            }
         });
     }
 }
@@ -85,12 +88,14 @@ var ajaxpost = function(obj){
                     var submitformData = new FormData(thus[0]);
                     submitformData.append("csrfmiddlewaretoken", thus.find('[name="csrfmiddlewaretoken"]').val());
 
+                    $.ajaxSetup({
+                        cache: true
+                    });
                     $.ajax({
                         type: "POST",
                         url: url,
                         //data: thus.serialize(),
                         data: submitformData,
-                        cache: false,
                         contentType: false,
                         processData: false,
                         success: function(data, status, xhr){
@@ -106,10 +111,10 @@ var ajaxpost = function(obj){
                         },
                         timeout: 7000,
                         complete : function(XMLHttpRequest, status){
-                    　　      if(status=='timeout'){
-                     　　         $("body .ajaxloading").remove();
-                    　　      }
-                    　　 }
+                            if(status=='timeout'){
+                                $("body .ajaxloading").remove();
+                            }
+                        }
                     });
                 }
             }
@@ -117,6 +122,9 @@ var ajaxpost = function(obj){
                 if($("body .ajaxloading").length == 0) {
                     //$(".header").append("<div class=\"ajaxloading\"><span></span></div>");
                     $(".wrapper").after($("<div class=\"ajaxloading\" style=\"background:lightgray;opacity:0.8;top:0;position:fixed;z-index:999;width:100%;height:100%;margin:0;padding:0;vertical-align:middle;\"><div class=\"loading-content\" style=\"text-align:center;width:100%;height:10px;position:absolute;top:50%;margin-top:-5px;\"><span style=\"\">" + (($('html').attr('lang') == "zh")?"加载中…":"loading...") + "</span></div></div>"));
+                    $.ajaxSetup({
+                        cache: true
+                    });
                     $.ajax({
                         type: "GET",
                         url: url,
@@ -131,10 +139,10 @@ var ajaxpost = function(obj){
                         },
                         timeout: 7000,
                         complete : function(XMLHttpRequest, status){
-                    　　      if(status=='timeout'){
-                     　　         $("body .ajaxloading").remove();
-                    　　      }
-                    　　 }
+                            if(status=='timeout'){
+                                $("body .ajaxloading").remove();
+                            }
+                        }
                     });
                     return false;
                 }
@@ -148,6 +156,9 @@ if(window.history && window.history.pushState) {
         window.addEventListener("popstate", function(e){
             //$(".header").append("<div class=\"ajaxloading\"><span></span></div>");
             $(".wrapper").after($("<div class=\"ajaxloading\" style=\"background:lightgray;opacity:0.8;top:0;position:fixed;z-index:999;width:100%;height:100%;margin:0;padding:0;vertical-align:middle;\"><div class=\"loading-content\" style=\"text-align:center;width:100%;height:10px;position:absolute;top:50%;margin-top:-5px;\"><span style=\"\">" + (($('html').attr('lang') == "zh")?"加载中…":"loading...") + "</span></div></div>"));
+            $.ajaxSetup({
+                cache: true
+            });
             $.ajax({
                 type: "GET",
                 url: window.location.href,
@@ -173,10 +184,10 @@ if(window.history && window.history.pushState) {
                 },
                 timeout: 7000,
                 complete : function(XMLHttpRequest, status){
-            　　      if(status=='timeout'){
-             　　         $("body .ajaxloading").remove();
-            　　      }
-            　　 }
+                    if(status=='timeout'){
+                        $("body .ajaxloading").remove();
+                    }
+                }
             });
         }, false);
         window.isaddpopstateevent = true;
