@@ -35,7 +35,7 @@ if 'postgresql_user' in os.environ:
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': os.environ['postgresql_db'],
             'USER': os.environ['postgresql_user'],
-            'PASSWORD': os.environ['postgresql_password'],
+            'PASSWORD': os.environ['postgresql_pass'],
             'HOST': '127.0.0.1',
             'PORT': '',
         }
