@@ -130,7 +130,7 @@ def index(request):
                 cache.set('cacheitems', json.dumps(cacheitems, encoding='utf-8', ensure_ascii=False, indent=4), 3600)
 
             #try:
-            if request.user.id == 1 and 'VCAP_SERVICES' in os.environ:
+            if request.user.id == 1 and ('VCAP_SERVICES' in os.environ or 'getnews' in os.environ):
             #if 'VCAP_SERVICES' in os.environ:
                 hdr = {
                     'User-Agent': 'hulu'
@@ -216,7 +216,7 @@ def index(request):
         'items': items,
         'tags': tags,
         'pitems': pitems,
-        'bluemix': 'True' if 'VCAP_SERVICES' in os.environ else None
+        'getnews': 'True' if ('VCAP_SERVICES' in os.environ or 'getnews' in os.environ) else None
     }
     if request.GET.get('type') == 'json':
         content = {

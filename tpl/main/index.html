@@ -30,7 +30,7 @@
 
                 {% if pitems.has_next %}
                     <a class="next-page" href="?page={{ pitems.next_page_number }}">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}下一页{% else %}Next{% endif %}</a>
-                {% elif request.user.id == 1 and bluemix %}<!--for Zhihu-->
+                {% elif request.user.id == 1 and getnews %}<!--for Zhihu-->
                     {% if request.GET.page %}
                         <a class="next-page" href="?page={{ request.GET.page|add:1 }}">{% if 'zh' in request.LANGUAGE_CODE or 'zh' in LANGUAGE_CODE %}下一页{% else %}Next{% endif %}</a>
                     {% else %}
@@ -39,7 +39,7 @@
                 {% endif %}
             </span>
         </div>
-        {% elif request.user.id == 1 and bluemix %}<!--for Zhihu-->
+        {% elif request.user.id == 1 and getnews %}<!--for Zhihu-->
         <div class="pagination">
             <span class="step-links">
                 <span class="current"></span>

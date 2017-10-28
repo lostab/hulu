@@ -23,19 +23,23 @@ DATABASES = {
         'OPTIONS': {
             'timeout': 30,
         },
-    },
-    'postgresql': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'DBNAME',
-        'USER': 'USERNAME',
-        'PASSWORD': 'PASSWORD',
-        'HOST': '127.0.0.1',
-        'PORT': '',
     }
 }
 
 #import dj_database_url
 #DATABASES['default'] = dj_database_url.config()
+
+if 'postgresql_user' in os.environ:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ['postgresql_db'],
+            'USER': os.environ['postgresql_user'],
+            'PASSWORD': os.environ['postgresql_password'],
+            'HOST': '127.0.0.1',
+            'PORT': '',
+        }
+    }
 
 if 'VCAP_SERVICES' in os.environ:
     import json
