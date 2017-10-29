@@ -10,6 +10,7 @@ html, body {
     /*overflow: hidden;*/
     -webkit-font-smoothing: antialiased;
     background: url() no-repeat fixed center;
+    background-size: cover;
 }
 .wrapper {
     /*width: 960px;*/
