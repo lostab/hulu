@@ -176,10 +176,10 @@ textarea {
     font-family: Arial;
     /*padding-left: 7px;
     padding-right: 7px;*/
-    background: url(/s/logo.png) no-repeat;
-    background-size: 24px 24px;
-    /*filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/s/logo.png', sizingMethod='scale');
-    -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/s/logo.png', sizingMethod='scale')";*/
+    background: url(/s/icon.png) no-repeat;
+    background-size: cover;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/s/icon.png', sizingMethod='scale');
+    -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/s/icon.png', sizingMethod='scale')";
     color: transparent;
     font-size: 0;
 }
