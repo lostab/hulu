@@ -31,7 +31,13 @@ var ajaxload = function(url){
             type: "GET",
             url: url,
             success: function(data){
-                ajaxloadpage(url, data);
+                //ajaxloadpage(url, data);
+                if ($(data).filter("meta[name=uri]") && $(data).filter("meta[name=uri]").attr("content")){
+                    var url = $(data).filter("meta[name=uri]").attr("content");
+                    ajaxloadpage(url, data);
+                } else {
+                    ajaxloadpage(url, data);
+                }
             },
             dataType: "html",
             error: function(){
@@ -102,6 +108,8 @@ var ajaxpost = function(obj){
                             if ($(data).filter("meta[name=uri]") && $(data).filter("meta[name=uri]").attr("content")){
                                 var url = $(data).filter("meta[name=uri]").attr("content");
                                 ajaxloadpage(url, data);
+                            } else {
+                                ajaxloadpage(url, data);
                             }
                         },
                         dataType: "html",
@@ -130,7 +138,12 @@ var ajaxpost = function(obj){
                         url: url,
                         data: thus.serialize(),
                         success: function(data){
-                            ajaxloadpage(url, data);
+                            if ($(data).filter("meta[name=uri]") && $(data).filter("meta[name=uri]").attr("content")){
+                                var url = $(data).filter("meta[name=uri]").attr("content");
+                                ajaxloadpage(url, data);
+                            } else {
+                                ajaxloadpage(url, data);
+                            }
                         },
                         dataType: "html",
                         error: function(){
