@@ -523,8 +523,10 @@ def checklink(url, checktimes):
             elif '<link rel="shortcut icon"' in content:
                 logo = hp.unescape(content.split('<link rel="shortcut icon"')[1].split('>')[0].split('href="')[1].split('"')[0]).encode("utf-8")
             if logo != '':
-                if logo[0] == '/':
+                if logo[0] == '/' and logo[1] != '/':
                     logo = url + logo
+                if 'data:' in logo:
+                    logo = ''
             if title:
                 link.title = title
                 if logo:
@@ -568,10 +570,10 @@ def LinkClass(request):
                         elif '<link rel="shortcut icon"' in content:
                             logo = hp.unescape(content.split('<link rel="shortcut icon"')[1].split('>')[0].split('href="')[1].split('"')[0]).encode("utf-8")
                         if logo != '':
-                            if logo[0] == '/':
+                            if logo[0] == '/' and logo[1] != '/':
                                 logo = url + logo
-                            #if not re.match(regex, logo):
-                            #    logo = ''
+                            if 'data:' in logo:
+                                logo = ''
                     except:
                         pass
                     content = {
