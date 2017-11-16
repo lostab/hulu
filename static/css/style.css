@@ -1075,7 +1075,9 @@ ul.errorlist {
 /*.links .link-box:hover {
     background: whitesmoke;
 }*/
-.links .link-title {
+.links .link-title, .logopreview div {
+    white-space: nowrap;
+    height: 24px;
     line-height: 24px;
     overflow: hidden;
     text-overflow: ellipsis;

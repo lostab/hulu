@@ -529,6 +529,8 @@ def checklink(url, checktimes):
                         logo = ''
             if title:
                 link.title = title
+                if 'data:' in logo:
+                    logo = ''
                 link.logo = logo
                 link.unreachable = 0
                 link.save()
