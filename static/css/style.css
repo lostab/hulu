@@ -1053,9 +1053,9 @@ ul.errorlist {
     margin: 0 auto;
     width: 48px;
     height: 48px;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
+    border-radius: 24px;
+    -webkit-border-radius: 24px;
+    -moz-border-radius: 24px;
 }
 .links {
     text-align: center;
@@ -1068,6 +1068,9 @@ ul.errorlist {
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
+}
+.links .link-logo {
+    margin: 24px;
 }
 /*.links .link-box:hover {
     background: whitesmoke;

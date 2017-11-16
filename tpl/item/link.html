@@ -17,7 +17,7 @@
             </form>
             <div class="links">
                 {% for link in links %}
-                <a class="friendlink" href="?f={{ link.url }}" target="blank" title="{{ link.title }}{% if link.description %} - {{ link.description }}{% endif %}">
+                <a class="friendlink" href="?f={{ link.url }}&check=true" target="blank" title="{{ link.title }}{% if link.description %} - {{ link.description }}{% endif %}">
                 <div class="link-box">
                     <div class="link-logo"><img src="{% if link.logo %}{{ link.logo }}{% else %}/s/avatar/n.png{% endif %}" /></div>
                     <div class="link-title">{{ link.title }}</div>
