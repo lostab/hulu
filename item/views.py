@@ -525,12 +525,11 @@ def checklink(url, checktimes):
             if logo != '':
                 if logo[0] == '/' and logo[1] != '/':
                     logo = url + logo
-                if 'data:' in logo:
-                    logo = ''
+                    if 'data:' in logo:
+                        logo = ''
             if title:
                 link.title = title
-                if logo:
-                    link.logo = logo
+                link.logo = logo
                 link.unreachable = 0
                 link.save()
             else:
