@@ -513,6 +513,8 @@ def checklink(url, checktimes):
         #    link.logo = ''
         #    link.save()
 
+        title = ''
+        logo = ''
         try:
             req = urllib2.Request(link.url, headers=hdr)
             content = urllib2.urlopen(req, context=ctx, timeout=10).read()
@@ -522,6 +524,8 @@ def checklink(url, checktimes):
                 logo = hp.unescape(content.split('<link rel="icon"')[1].split('>')[0].split('href="')[1].split('"')[0]).encode("utf-8")
             elif '<link rel="shortcut icon"' in content:
                 logo = hp.unescape(content.split('<link rel="shortcut icon"')[1].split('>')[0].split('href="')[1].split('"')[0]).encode("utf-8")
+            else:
+                logo = ''
             if logo != '':
                 if logo[0] == '/' and logo[1] != '/':
                     logo = url + logo
@@ -536,7 +540,6 @@ def checklink(url, checktimes):
                     logo = url + '/favicon.ico'
             if title:
                 link.title = title
-                print(logo)
                 if 'data:' in logo:
                     logo = ''
                 link.logo = logo
@@ -578,6 +581,8 @@ def LinkClass(request):
                             logo = hp.unescape(content.split('<link rel="icon"')[1].split('>')[0].split('href="')[1].split('"')[0]).encode("utf-8")
                         elif '<link rel="shortcut icon"' in content:
                             logo = hp.unescape(content.split('<link rel="shortcut icon"')[1].split('>')[0].split('href="')[1].split('"')[0]).encode("utf-8")
+                        else:
+                            logo = ''
                         if logo != '':
                             if logo[0] == '/' and logo[1] != '/':
                                 logo = url + logo
