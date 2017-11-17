@@ -63,7 +63,7 @@ $(document).ready(function(){
                 $(".linkform .logo input").val(favicon);
             }).on("error", function() {
                 if($(".logopreview img").length == 0){
-                    $(".logopreview").prepend($("<img src=\"/s/avatar/n.png\" />"));
+                    $(".logopreview").prepend($("<img src=\"/s/loading.gif\" />"));
                 }
             });
 
@@ -77,6 +77,10 @@ $(document).ready(function(){
                         $(".linkform .title input").val(title);
                         $(".logopreview div").remove();
                         $(".logopreview").append("<div>" + title + "</div>");
+                    }
+                    var logo = data.logo;
+                    if (logo != "") {
+                        $(".logopreview img").attr("src", logo);
                     }
                 },
                 error: function(){
