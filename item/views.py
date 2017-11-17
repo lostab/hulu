@@ -532,7 +532,7 @@ def checklink(url, checktimes):
             else:
                 req = urllib2.Request(url + '/favicon.ico', headers=hdr)
                 status = urllib2.urlopen(req, context=ctx, timeout=10).getcode()
-                if status == '200':
+                if status == 200:
                     logo = url + '/favicon.ico'
             if title:
                 link.title = title
@@ -585,6 +585,11 @@ def LinkClass(request):
                                 logo = url + '/' + logo
                             if 'data:' in logo:
                                 logo = ''
+                        else:
+                            req = urllib2.Request(url + '/favicon.ico', headers=hdr)
+                            status = urllib2.urlopen(req, context=ctx, timeout=10).getcode()
+                            if status == 200:
+                                logo = url + '/favicon.ico'
                     except:
                         pass
                     content = {
