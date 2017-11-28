@@ -1,3 +1,11 @@
+var showtips = function(text){
+    $("body .tips").remove();
+    $("body").append("<div class=\"tips\" style=\"z-index: 999;width: 180px;min-height: 24px;line-height: 24px;top: 3px;left: 50%;margin-left: -90px;position: fixed;background: lightyellow;color: black;cursor: pointer;text-align: center;border-radius: 3px;-webkit-border-radius: 3px;-moz-border-radius: 3px;\">" + text + "</div>");
+    $("body .tips").click(function(){
+        $(this).remove();
+    });
+};
+
 var ajaxloadpage = function(url, data){
     var locationhostname = window.location.pathname;
     window.history.pushState({
@@ -21,6 +29,8 @@ var ajaxloadpage = function(url, data){
 }
 
 var ajaxload = function(url){
+    $("body .tips").remove();
+
     if($("body .ajaxloading").length == 0) {
         //$(".header").append("<div class=\"ajaxloading\"><span></span></div>");
         $(".wrapper").after($("<div class=\"ajaxloading\" style=\"background:lightgray;opacity:0.8;top:0;position:fixed;z-index:999;width:100%;height:100%;margin:0;padding:0;vertical-align:middle;\"><div class=\"loading-content\" style=\"text-align:center;width:100%;height:32px;position:absolute;top:50%;margin-top:-16px;\"><!--<span style=\"\">" + (($('html').attr('lang') == "zh")?"加载中…":"loading...") + "</span>--><img src=\"/s/loading.gif\" style=\"width: 32px;height: 32px;\" /></div></div>"));
@@ -43,11 +53,13 @@ var ajaxload = function(url){
             error: function(){
                 //$(".header .ajaxloading").remove();
                 $("body .ajaxloading").remove();
+                showtips((($('html').attr('lang') == "zh")?"加载失败。":"Error loding."));
             },
             timeout: 7000,
             complete : function(XMLHttpRequest, status){
                 if(status=='timeout'){
                     $("body .ajaxloading").remove();
+                    showtips((($('html').attr('lang') == "zh")?"加载失败。":"Error loding."));
                 }
             }
         });
@@ -87,6 +99,8 @@ var ajaxpost = function(obj){
 
             //}
             if(thus.attr("method") && thus.attr("method").toLowerCase() == "post"){
+                $("body .tips").remove();
+
                 if($("body .ajaxloading").length == 0) {
                     //$(".header").append("<div class=\"ajaxloading\"><span></span></div>");
                     $(".wrapper").after($("<div class=\"ajaxloading\" style=\"background:lightgray;opacity:0.8;top:0;position:fixed;z-index:999;width:100%;height:100%;margin:0;padding:0;vertical-align:middle;\"><div class=\"loading-content\" style=\"text-align:center;width:100%;height:32px;position:absolute;top:50%;margin-top:-16px;\"><!--<span style=\"\">" + (($('html').attr('lang') == "zh")?"加载中…":"loading...") + "</span>--><img src=\"/s/loading.gif\" style=\"width: 32px;height: 32px;\" /></div></div>"));
@@ -116,17 +130,21 @@ var ajaxpost = function(obj){
                         error: function(){
                             //$(".header .ajaxloading").remove();
                             $("body .ajaxloading").remove();
+                            showtips((($('html').attr('lang') == "zh")?"加载失败。":"Error loding."));
                         },
                         timeout: 7000,
                         complete : function(XMLHttpRequest, status){
                             if(status=='timeout'){
                                 $("body .ajaxloading").remove();
+                                showtips((($('html').attr('lang') == "zh")?"加载失败。":"Error loding."));
                             }
                         }
                     });
                 }
             }
             if(thus.attr("method") && thus.attr("method").toLowerCase() == "get"){
+                $("body .tips").remove();
+
                 if($("body .ajaxloading").length == 0) {
                     //$(".header").append("<div class=\"ajaxloading\"><span></span></div>");
                     $(".wrapper").after($("<div class=\"ajaxloading\" style=\"background:lightgray;opacity:0.8;top:0;position:fixed;z-index:999;width:100%;height:100%;margin:0;padding:0;vertical-align:middle;\"><div class=\"loading-content\" style=\"text-align:center;width:100%;height:32px;position:absolute;top:50%;margin-top:-16px;\"><!--<span style=\"\">" + (($('html').attr('lang') == "zh")?"加载中…":"loading...") + "</span>--><img src=\"/s/loading.gif\" style=\"width: 32px;height: 32px;\" /></div></div>"));
@@ -149,11 +167,13 @@ var ajaxpost = function(obj){
                         error: function(){
                             //$(".header .ajaxloading").remove();
                             $("body .ajaxloading").remove();
+                            showtips((($('html').attr('lang') == "zh")?"加载失败。":"Error loding."));
                         },
                         timeout: 7000,
                         complete : function(XMLHttpRequest, status){
                             if(status=='timeout'){
                                 $("body .ajaxloading").remove();
+                                showtips((($('html').attr('lang') == "zh")?"加载失败。":"Error loding."));
                             }
                         }
                     });
@@ -167,6 +187,8 @@ var ajaxpost = function(obj){
 if(window.history && window.history.pushState) {
     if(!window.isaddpopstateevent){
         window.addEventListener("popstate", function(e){
+            $("body .tips").remove();
+
             //$(".header").append("<div class=\"ajaxloading\"><span></span></div>");
             $(".wrapper").after($("<div class=\"ajaxloading\" style=\"background:lightgray;opacity:0.8;top:0;position:fixed;z-index:999;width:100%;height:100%;margin:0;padding:0;vertical-align:middle;\"><div class=\"loading-content\" style=\"text-align:center;width:100%;height:32px;position:absolute;top:50%;margin-top:-16px;\"><!--<span style=\"\">" + (($('html').attr('lang') == "zh")?"加载中…":"loading...") + "</span>--><img src=\"/s/loading.gif\" style=\"width: 32px;height: 32px;\" /></div></div>"));
             $.ajaxSetup({
@@ -194,11 +216,13 @@ if(window.history && window.history.pushState) {
                 error: function(){
                     //$(".header .ajaxloading").remove();
                     $("body .ajaxloading").remove();
+                    showtips((($('html').attr('lang') == "zh")?"加载失败。":"Error loding."));
                 },
                 timeout: 7000,
                 complete : function(XMLHttpRequest, status){
                     if(status=='timeout'){
                         $("body .ajaxloading").remove();
+                        showtips((($('html').attr('lang') == "zh")?"加载失败。":"Error loding."));
                     }
                 }
             });
