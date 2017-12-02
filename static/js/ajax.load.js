@@ -1,6 +1,6 @@
 var showtips = function(text){
     $("body .tips").remove();
-    $("body").append("<div class=\"tips\" style=\"z-index: 999;width: 180px;min-height: 24px;line-height: 24px;top: 3px;left: 50%;margin-left: -90px;position: fixed;background: lightyellow;color: black;cursor: pointer;text-align: center;border-radius: 3px;-webkit-border-radius: 3px;-moz-border-radius: 3px;\">" + text + "</div>");
+    $("body").append("<div class=\"tips\" style=\"z-index: 999;border: 1px solid lightgray;width: 180px;min-height: 22px;line-height: 22px;top: 3px;left: 50%;margin-left: -91px;position: fixed;background: lightyellow;color: black;cursor: pointer;text-align: center;border-radius: 3px;-webkit-border-radius: 3px;-moz-border-radius: 3px;\">" + text + "</div>");
     $("body .tips").click(function(){
         $(this).remove();
     });

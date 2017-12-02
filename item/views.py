@@ -527,8 +527,9 @@ def checklink(url, checktimes):
             else:
                 logo = ''
             if logo != '':
-                if logo[0] == '/' and logo[1] != '/':
-                    logo = url + logo
+                if logo[0] == '/':
+                    if logo[1] != '/':
+                        logo = url + logo
                 else:
                     logo = url + '/' + logo
                 if 'data:' in logo:
@@ -584,8 +585,9 @@ def LinkClass(request):
                         else:
                             logo = ''
                         if logo != '':
-                            if logo[0] == '/' and logo[1] != '/':
-                                logo = url + logo
+                            if logo[0] == '/':
+                                if logo[1] != '/':
+                                    logo = url + logo
                             else:
                                 logo = url + '/' + logo
                             if 'data:' in logo:
