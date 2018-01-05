@@ -21,11 +21,11 @@ $(document).ready(function(){
             this.src = "/s/avatar/n.png";
         }
     });
-    $("form").each(function(){
+    /*$("form").each(function(){
         $(this).submit(function(){
             $(this).find(".submit").attr("disabled", true);
         });
-    });
+    });*/
     var svgresize = function(){
         $("svg").each(function(){
             if ($(this).attr("owidth").split("pt")[0] * 4 / 3 > $(this).parent().width() || $(this).attr("width") > $(this).parent().width() || ($(this).attr("owidth").split("pt")[0] * 3 / 4 > $(this).parent().width() && $(this).attr("width") < $(this).parent().width())) {
