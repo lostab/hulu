@@ -636,7 +636,10 @@ def weixin(request):
 def coin(request):
     if request.method == 'GET':
         if request.user.is_authenticated():
-            coins = Coin.objects.filter(user=request.user).all()
+            try:
+                coins = Coin.objects.filter(user=request.user).all()
+            except Coin.DoesNotExist:
+                coins = None
         else:
             coins = None
         content = {
