@@ -4,7 +4,7 @@ os.system('python manage.py migrate --run-syncdb')
 os.system('python manage.py makemigrations')
 os.system('python manage.py migrate')
 
-port = '8000'
+port = '80'
 
 if 'PORT' in os.environ:
     port = os.environ['PORT']

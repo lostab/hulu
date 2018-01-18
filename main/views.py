@@ -632,3 +632,7 @@ def weixin(request):
                     cache.set('last_msg', pilurl, 3600)
 
         return HttpResponse('')
+
+def coin(request):
+    if request.method == 'GET':
+        return render(request, 'other/coin.html', {})
