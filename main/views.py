@@ -635,4 +635,39 @@ def weixin(request):
 
 def coin(request):
     if request.method == 'GET':
+        if request.user.is_authenticated():
+            coins = Coin.objects.filter(user=request.user).all()
+        else:
+            coins = None
+        content = {
+            'coins': coins
+        }
+        if request.GET.get('type') == 'json':
+            content = []
+            for coin in coins:
+                content.append({
+                    'type': coin.cointype,
+                    'hold': coin.coinhold
+                })
+            return jsonp(request, content)
+        return render(request, 'other/coin.html', content)
+    if request.method == 'POST':
+        if request.user.is_authenticated():
+            if request.POST.get('cointype'):
+                cointype = request.POST.get('cointype')
+                if request.POST.get('operate') == 'add' and request.POST.get('coinhold'):
+                    coinhold = request.POST.get('coinhold')
+                    try:
+                        coin = Coin.objects.get(user=request.user, cointype=cointype)
+                    except Coin.DoesNotExist:
+                        coin = Coin(user=request.user)
+                    coin.cointype = cointype
+                    coin.coinhold = coinhold
+                    coin.save()
+                if request.POST.get('operate') == 'del':
+                    try:
+                        coin = Coin.objects.get(user=request.user, cointype=cointype)
+                        coin.delete()
+                    except Coin.DoesNotExist:
+                        pass
         return render(request, 'other/coin.html', {})

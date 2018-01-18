@@ -83,7 +83,7 @@ class Item(models.Model):
         else:
             rootitems.append(self)
         return rootitems
-    
+
     def get_root_items(self):
         rootitems = []
         queue = []
@@ -123,3 +123,8 @@ class Link(models.Model):
     status = models.CharField(max_length=30)
     unreachable = models.BigIntegerField(default=0)
     lastcheck = models.DateTimeField(auto_now=True)
+
+class Coin(models.Model):
+    user = models.ForeignKey(User)
+    cointype = models.TextField()
+    coinhold = models.TextField()
