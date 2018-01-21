@@ -642,16 +642,30 @@ def coin(request):
                 coins = None
         else:
             coins = None
+
+        apiurl = 'https://api.coinmarketcap.com/v1/ticker/?convert=CNY'
+        try:
+            req = urllib2.Request(apiurl)
+            markets = json.loads(urllib2.urlopen(req, context=ctx).read())
+        except:
+            markets = None
+
         content = {
-            'coins': coins
+            'coins': coins,
+            'markets': markets
         }
         if request.GET.get('type') == 'json':
-            content = []
-            for coin in coins:
-                content.append({
-                    'type': coin.cointype,
-                    'hold': coin.coinhold
-                })
+            coinlist = []
+            if coins:
+                for coin in coins:
+                    coinlist.append({
+                        'type': coin.cointype,
+                        'hold': coin.coinhold
+                    })
+            content = {
+                'coins': coinlist,
+                'markets': markets
+            }
             return jsonp(request, content)
         return render(request, 'other/coin.html', content)
     if request.method == 'POST':
