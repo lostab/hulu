@@ -1,3 +1,0 @@
-{% for tag in tags %}
-http://{{ request.META.HTTP_HOST }}/t/{{ tag.id }}/<br />
-{% endfor %}

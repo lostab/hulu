@@ -40,6 +40,7 @@ from django.utils.html import escape
 from django.core.mail import EmailMessage
 import hashlib
 import ssl
+from django.contrib.sites.shortcuts import get_current_site
 
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
@@ -235,10 +236,10 @@ def sitemap(request):
         tags = Tag.objects.all().order_by('?')[:10]
     except Tag.DoesNotExist:
         tags = None
-    content = {
-        'tags': tags
-    }
-    return render(request, 'main/sitemap.txt', content)
+    content = ''
+    for tag in tags:
+        content += ('https://' if request.is_secure else 'http://') + request.get_host() + '/t/' + str(tag.id) + '/\r\n'
+    return HttpResponse(content)
 
 @csrf_exempt
 def jk(request, username):
