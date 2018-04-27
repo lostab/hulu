@@ -213,7 +213,7 @@ $(document).ready(function(){
     $(".header .search").css({"width": "calc(100% - " + ($(".header .logo").width() + $(".header .right-navbar").width() + 24) + "px)", "margin-right": ($(".header .right-navbar").width() + 16) + "px"});
 
     //if ($(".right-navbar .accounts-button .avatar img").attr("userid") == "1" ) {
-    if ($('html').attr('lang') == "zh") {
+    if ($('html').attr('lang') == "zh" && false) {
         var addmusicswitch = function(){
             if($(".search .musicswitch").length == 0) {
                 $(".search").append("<a class=\"musicswitch\"></a>");
