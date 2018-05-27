@@ -55,7 +55,7 @@ var ajaxload = function(url){
                 $("body .ajaxloading").remove();
                 showtips((($('html').attr('lang') == "zh")?"加载失败。":"Error loding."));
             },
-            timeout: 7000,
+            //timeout: 7000,
             complete : function(XMLHttpRequest, status){
                 if(status=='timeout'){
                     $("body .ajaxloading").remove();
@@ -132,7 +132,7 @@ var ajaxpost = function(obj){
                             $("body .ajaxloading").remove();
                             showtips((($('html').attr('lang') == "zh")?"加载失败。":"Error loding."));
                         },
-                        timeout: 7000,
+                        //timeout: 7000,
                         complete : function(XMLHttpRequest, status){
                             if(status=='timeout'){
                                 $("body .ajaxloading").remove();
@@ -169,7 +169,7 @@ var ajaxpost = function(obj){
                             $("body .ajaxloading").remove();
                             showtips((($('html').attr('lang') == "zh")?"加载失败。":"Error loding."));
                         },
-                        timeout: 7000,
+                        //timeout: 7000,
                         complete : function(XMLHttpRequest, status){
                             if(status=='timeout'){
                                 $("body .ajaxloading").remove();
@@ -218,7 +218,7 @@ if(window.history && window.history.pushState) {
                     $("body .ajaxloading").remove();
                     showtips((($('html').attr('lang') == "zh")?"加载失败。":"Error loding."));
                 },
-                timeout: 7000,
+                //timeout: 7000,
                 complete : function(XMLHttpRequest, status){
                     if(status=='timeout'){
                         $("body .ajaxloading").remove();
