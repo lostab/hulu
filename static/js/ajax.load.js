@@ -105,7 +105,15 @@ var ajaxpost = function(obj){
                     //$(".header").append("<div class=\"ajaxloading\"><span></span></div>");
                     $(".wrapper").after($("<div class=\"ajaxloading\" style=\"background:lightgray;opacity:0.8;top:0;position:fixed;z-index:999;width:100%;height:100%;margin:0;padding:0;vertical-align:middle;\"><div class=\"loading-content\" style=\"text-align:center;width:100%;height:32px;position:absolute;top:50%;margin-top:-16px;\"><!--<span style=\"\">" + (($('html').attr('lang') == "zh")?"加载中…":"loading...") + "</span>--><img src=\"/s/loading.gif\" style=\"width: 32px;height: 32px;\" /></div></div>"));
 
-                    var submitformData = new FormData(thus[0]);
+                    var submitform = thus;
+                    submitform.find("input[type='file']").each(function(){
+                        if ($(this)[0].files.length == 0){
+                            $(this).remove();
+                        }
+                    });
+                    //var submitformData = new FormData(thus[0]);
+                    var submitformData = new FormData(submitform[0]);
+                    
                     submitformData.append("csrfmiddlewaretoken", thus.find('[name="csrfmiddlewaretoken"]').val());
 
                     $.ajaxSetup({
