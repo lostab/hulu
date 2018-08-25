@@ -208,15 +208,15 @@ if(window.history && window.history.pushState) {
                 success: function(data){
                     document.title = $(data).filter("title").text();
                     $(".wrapper").remove();
-                    if ((e.state && e.state.pathname == "/m/") || window.location.pathname == "/m/") {
+                    //if ((e.state && e.state.pathname == "/m/") || window.location.pathname == "/m/") {
                         $("head").find("link").remove();
                         $(data).filter("link").appendTo("head");
                         setTimeout(function(){
                             $(data).filter(".wrapper").appendTo("body");
                         }, 0);
-                    } else {
-                        $(data).filter(".wrapper").appendTo("body");
-                    }
+                    //} else {
+                    //    $(data).filter(".wrapper").appendTo("body");
+                    //}
                     $("html,body").animate({scrollTop:0}, 0);
                     $("body .ajaxloading").remove();
                 },
