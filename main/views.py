@@ -239,7 +239,7 @@ def sitemap(request):
     content = ''
     for tag in tags:
         content += ('https://' if request.is_secure else 'http://') + request.get_host() + '/t/' + str(tag.id) + '/\r\n'
-    return HttpResponse(content)
+    return HttpResponse(content, content_type='text/plain')
 
 @csrf_exempt
 def jk(request, username):
