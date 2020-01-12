@@ -40,7 +40,7 @@ for i in zhihucontent:
     storytitle = i['title'].encode('utf-8')
     storyid = i['id']
     storyurl = 'http://news-at.zhihu.com/api/4/news/' + str(i['id'])
-    print(storytitle)
+    #print(storytitle)
     print(storyid)
     print(storyurl)
 
