@@ -86,7 +86,7 @@ for i in zhihucontent:
         transcontent = ''
         for i in transjson['trans_result']:
             transcontent += i['dst'].encode('utf-8')
-        print(transcontent)
+        #print(transcontent)
         
         # save to db
         user = User.objects.get(username='way')
