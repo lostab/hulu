@@ -37,7 +37,7 @@ zhihujson = json.loads(urllib2.urlopen(req, context=ctx).read())
 zhihudate = zhihujson['date']
 zhihucontent = zhihujson['stories']
 for i in zhihucontent:
-    storytitle = i['title']
+    storytitle = i['title'].encode('utf-8')
     storyid = i['id']
     storyurl = 'http://news-at.zhihu.com/api/4/news/' + str(i['id'])
     print(storytitle)
@@ -85,7 +85,7 @@ for i in zhihucontent:
         transjson = json.loads(urllib2.urlopen(transreq, context=ctx).read())
         transcontent = ''
         for i in transjson['trans_result']:
-            transcontent += i['dst']
+            transcontent += i['dst'].encode('utf-8')
         print(transcontent)
         
         # save to db
