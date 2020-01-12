@@ -11,8 +11,8 @@ import json
 import ssl
 import hashlib
 
-print(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+basedir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(basedir)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hulu.settings")
 import django
 django.setup()
@@ -46,10 +46,10 @@ for i in zhihucontent:
 
     ifexist = False
     # remove old file
-    if os.path.isfile('zhihu-' + str(datetime.datetime.now().strftime('%Y%m%d')) + '.txt'):
-        os.remove('zhihu-' + str(datetime.datetime.now().strftime('%Y%m%d')) + '.txt')
+    if os.path.isfile(basedir + '/script/zhihu-' + str(datetime.datetime.now().strftime('%Y%m%d')) + '.txt'):
+        os.remove(basedir + '/script/zhihu-' + str(datetime.datetime.now().strftime('%Y%m%d')) + '.txt')
     # check new file
-    zhihufile = 'zhihu-' + str(fetchdate.strftime('%Y%m%d')) + '.txt'
+    zhihufile = basedir + '/script/zhihu-' + str(fetchdate.strftime('%Y%m%d')) + '.txt'
     if os.path.isfile(zhihufile):
         fo = open(zhihufile, 'r')
         for line in fo.readlines():
@@ -62,7 +62,7 @@ for i in zhihucontent:
         storyjson = json.loads(urllib2.urlopen(storyreq, context=ctx).read())
         storycontent = storyjson['body'].split('<div class=\"content\">')[1].split('<div class=\"view-more\">')[0].strip()
 
-        fo = open('transaccount.txt', 'r')
+        fo = open(basedir + '/script/transaccount.txt', 'r')
         transaccount = fo.read().split(' ')
         fo.close()
         transappid = transaccount[0]
