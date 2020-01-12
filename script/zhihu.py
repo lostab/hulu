@@ -17,6 +17,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hulu.settings")
 import django
 django.setup()
 from hulu import *
+from django.contrib.auth.models import User
 from item.models import *
 
 ctx = ssl.create_default_context()
