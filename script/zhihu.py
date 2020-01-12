@@ -10,6 +10,7 @@ import urllib
 import json
 import ssl
 import hashlib
+import re
 
 basedir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(basedir)
@@ -87,6 +88,7 @@ try:
             transcontent = ''
             for i in transjson['trans_result']:
                 transcontent += i['dst'].encode('utf-8').replace('<p>', '\n').replace('</p>', '\n')
+            transcontent = re.sub(r'<.*?>', '\n', transcontent)
             #print(transcontent)
             
             # save to db
