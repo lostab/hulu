@@ -929,6 +929,11 @@ p.submit-btn, p.cancel-btn {
     border-radius: 2px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
+    max-width: 60px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
 }
 .item-tags .item-tag a:hover {
     color: white;
@@ -991,6 +996,7 @@ a.createintagbtn {
     filter: alpha(opacity=60);
     color: white;
     line-height: 36px;
+    text-align: center;
 }
 a.createintagbtn:hover {
     opacity: 1;
