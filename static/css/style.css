@@ -930,6 +930,7 @@ p.submit-btn, p.cancel-btn {
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     max-width: 60px;
+    height: 24px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
