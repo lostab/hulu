@@ -232,11 +232,11 @@ def ttt(request):
     return render(request, 'other/ttt.html', {})
 
 def sitemap(request):
+    content = ('https://' if request.is_secure else 'http://') + request.get_host() + '/\r\n'
     try:
         tags = Tag.objects.all().order_by('?')[:10]
     except Tag.DoesNotExist:
         tags = None
-    content = ''
     for tag in tags:
         content += ('https://' if request.is_secure else 'http://') + request.get_host() + '/t/' + str(tag.id) + '/\r\n'
     return HttpResponse(content, content_type='text/plain')
