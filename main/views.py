@@ -47,24 +47,11 @@ ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
 def index(request):
-    #try:
-    #    if Site.objects.all():
-    #        site = Site.objects.get_current()
-    #        if site.domain != request.get_host():
-    #            site.domain = request.get_host()
-    #            site.save()
-    #    else:
-    #        site = Site()
-    #        site.domain = request.get_host()
-    #        site.save()
-    #except Site.DoesNotExist:
-    #    pass
-
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     ip = request.META['REMOTE_ADDR']
     if x_forwarded_for:
         ip = x_forwarded_for.split(', ')[-1]
-
+    
     q = request.GET.get('q')
     if q == '':
         return redirect('/')
@@ -75,7 +62,7 @@ def index(request):
                 return redirect('/')
             else:
                 return redirect('/?q=' + q)
-
+    
     try:
         items = Item.objects.select_related('user').filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).filter(Q(status__isnull=True) | Q(status__exact='') | (Q(status__exact='private') & Q(user__id=request.user.id))).all().prefetch_related('itemcontent_set', 'itemcontent_set__contentattachment_set')
         if q:
@@ -85,126 +72,6 @@ def index(request):
 
         currentpage = items.number
         pitems = items
-
-        itemlist = []
-        for item in items:
-            itemlist.append(item)
-
-        fetchitems = []
-        fetchitem = namedtuple('fetchitem', 'user title url lastsubitem tags')
-        fetchuser = namedtuple('fetchuser', 'username userprofile')
-        fetchprofile = namedtuple('fetchprofile', 'openid avatar')
-        fetchcreate = namedtuple('fetchcreate', 'create')
-
-        cacheitems = cache.get('cacheitems')
-        if cacheitems and not request.GET.get('nocache') and not request.GET.get('page'):
-            cacheitems = json.loads(cacheitems)
-            if cacheitems and cacheitems.has_key('datetime') and cacheitems.has_key('items') and cacheitems['datetime']:
-                cacheitems['datetime'] = datetime.datetime.strptime(cacheitems['datetime'].split('.')[0], '%Y-%m-%d %H:%M:%S')
-                if cacheitems['datetime'] + timedelta(hours=1) > datetime.datetime.now():
-                    for item in cacheitems['items']:
-                        item['lastsubitem']['create'] = datetime.datetime.strptime(item['lastsubitem']['create'].split('+')[0], '%Y-%m-%d %H:%M:%S')
-                        cacheitem = fetchitem(user=fetchuser(username=item['user']['username'], userprofile=fetchprofile(openid=item['user']['userprofile']['openid'], avatar=item['user']['userprofile']['avatar'])), title=item['title'], url=item['url'], lastsubitem=fetchcreate(create=timezone.make_aware(item['lastsubitem']['create'], timezone.get_default_timezone())), tags=item['tags'])
-                        itemlist.append(cacheitem)
-        else:
-            def updatecache():
-                cache.delete('cacheitems')
-                cacheitems = {
-                    "datetime": str(timezone.make_aware(datetime.datetime.now(), timezone.get_default_timezone())),
-                    "items": []
-                }
-                for item in fetchitems:
-                    cacheitems['items'].append({
-                        'title': item.title.decode().encode('utf-8'),
-                        'url': item.url.encode('utf-8'),
-                        'user': {
-                            'username': item.user.username.encode('utf-8'),
-                            'userprofile': {
-                                'openid': item.user.userprofile.openid.encode('utf-8'),
-                                'avatar': item.user.userprofile.avatar.encode('utf-8')
-                            }
-                        },
-                        'lastsubitem': {
-                            'create': str(item.lastsubitem.create)
-                        }
-                    })
-                cache.set('cacheitems', json.dumps(cacheitems, encoding='utf-8', ensure_ascii=False, indent=4), 3600)
-
-            #try:
-            if request.user.id == 1 and ('VCAP_SERVICES' in os.environ or 'getnews' in os.environ):
-            #if 'VCAP_SERVICES' in os.environ:
-                hdr = {
-                    'User-Agent': 'hulu'
-                }
-                #Zhihu
-                #for fetchdate in [[str((datetime.datetime.now() + timedelta(days=1)).strftime('%Y%m%d')), str(datetime.datetime.now().strftime('%Y%m%d'))], [str(datetime.datetime.now().strftime('%Y%m%d')), str((datetime.datetime.now() - timedelta(days=1)).strftime('%Y%m%d'))], [str((datetime.datetime.now() - timedelta(days=1)).strftime('%Y%m%d')), str((datetime.datetime.now() - timedelta(days=2)).strftime('%Y%m%d'))]]:
-                #    zhihuurl = 'http://news.at.zhihu.com/api/3/news/before/' + fetchdate[0]
-                if request.GET.get('page') and request.GET.get('page').isdigit():
-                    page = int(request.GET.get('page'))
-                else:
-                    page = 1
-                fetchdate = datetime.datetime.now() + timedelta(days=(2 - page))
-                #fetchdate = datetime.datetime.now() + timedelta(hours=(8 + (1 - page) * 24))
-                #zhihuurl = 'http://news.at.zhihu.com/api/3/news/before/' + str(fetchdate.strftime('%Y%m%d'))
-                zhihuurl = 'http://news-at.zhihu.com/api/4/news/before/' + str(fetchdate.strftime('%Y%m%d'))
-                #print(str(datetime.datetime.now()))
-                #print(zhihuurl)
-                try:
-                    req = urllib2.Request(zhihuurl, headers=hdr)
-                    zhihujson = json.loads(urllib2.urlopen(req, context=ctx).read())
-                    zhihudate = zhihujson['date']
-                    #if int(zhihudate) == int(fetchdate[1]):
-                    zhihucontent = zhihujson['stories']
-                    for i in zhihucontent:
-                        zhihuitem = fetchitem(user=fetchuser(username=u'知乎日报', userprofile=fetchprofile(openid='Zhihu', avatar='https://www.zhihu.com/favicon.ico')), title=i['title'], url='http://daily.zhihu.com/story/'+str(i['id']), lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(zhihudate[:4] + i['ga_prefix'], '%Y%m%d%H'), timezone.get_default_timezone())), tags=None)
-                        itemlist.append(zhihuitem)
-                        fetchitems.append(zhihuitem)
-                except:
-                    pass
-
-                if not request.GET.get('page'):
-                    #V2EX
-                    v2exurl = 'https://www.v2ex.com/api/topics/hot.json'
-                    try:
-                        req = urllib2.Request(v2exurl, headers=hdr)
-                        v2exjson = json.loads(urllib2.urlopen(req, context=ctx).read())
-                        for i in v2exjson:
-                            v2exitem = fetchitem(user=fetchuser(username='V2EX', userprofile=fetchprofile(openid='V2EX', avatar='https://www.v2ex.com/static/img/v2ex_192.png')), title=i['title'], url=i['url'].replace('http://', 'https://'), lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.fromtimestamp(int(i['created'])), timezone.get_default_timezone())), tags=None)
-                            itemlist.append(v2exitem)
-                            fetchitems.append(v2exitem)
-                    except:
-                        pass
-
-                    #Google News
-                    newsurl = 'https://news.google.com/news?output=rss&hl=zh-CN'
-                    try:
-                        req = urllib2.Request(newsurl)
-                        result = urllib2.urlopen(req, context=ctx).read()
-                        items = re.split('<item>|</item> <item>|</item>', result)
-                        items.pop(0)
-                        items.pop(-1)
-                        for item in items:
-                            hp = HTMLParser.HTMLParser()
-                            title = hp.unescape(re.split('<title>|</title> <title>|</title>', item)[1]).encode("utf-8")
-                            newstime = re.split('<pubDate>|</pubDate> <pubDate>|</pubDate>', item)[1]
-                            url = re.split('<link>|</link> <link>|</link>', item)[1].split('url=')[1]
-                            newsitem = fetchitem(user=fetchuser(username='Google News', userprofile=fetchprofile(openid='Google News', avatar='https://mail.qq.com/favicon.ico')), title=title, url=url, lastsubitem=fetchcreate(create=timezone.make_aware(datetime.datetime.strptime(newstime, '%a, %d %b %Y %H:%M:%S GMT'), timezone.get_default_timezone())), tags=None)
-                            itemlist.append(newsitem)
-                            fetchitems.append(newsitem)
-                    except:
-                        pass
-
-            #    if not request.GET.get('page'):
-            #        updatecache()
-            #    else:
-            #        pass
-            #except:
-            #    if not request.GET.get('page'):
-            #        updatecache()
-            #    else:
-            #        pass
-        items = itemlist
-        items = sorted(items, key=lambda item:item.lastsubitem.create, reverse=True)
     except Item.DoesNotExist:
         items = None
 
