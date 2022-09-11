@@ -64,7 +64,7 @@ def index(request):
                 return redirect('/?q=' + q)
     
     try:
-        items = Item.objects.select_related('user').filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).filter(Q(status__isnull=True) | Q(status__exact='') | (Q(status__exact='private') & Q(user__id=request.user.id))).all()[:1000].prefetch_related('itemcontent_set', 'itemcontent_set__contentattachment_set')
+        items = Item.objects.select_related('user').filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).filter(Q(status__isnull=True) | Q(status__exact='') | (Q(status__exact='private') & Q(user__id=request.user.id))).order_by(-id).all()[:1000].prefetch_related('itemcontent_set', 'itemcontent_set__contentattachment_set')
         if q:
             items = items.filter(Q(itemcontent__content__icontains=q)).distinct()
 
