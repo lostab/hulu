@@ -23,12 +23,12 @@ def avatar_file(instance, filename):
 def get_item_by_user(user, request):
     try:
         if request.user.is_authenticated():
-            items = Item.objects.select_related('user').filter(user=user).filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).filter(~Q(status__exact='private') | Q(user=request.user)).order_by('-id').prefetch_related('itemcontent_set')
+            items = Item.objects.select_related('user').filter(user=user).filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).filter(~Q(status__exact='private') | Q(user=request.user)).order_by('-id').all()[:600].prefetch_related('itemcontent_set')
         else:
-            items = Item.objects.select_related('user').filter(user=user).filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).filter(~Q(status__exact='private')).order_by('-id').prefetch_related('itemcontent_set')
+            items = Item.objects.select_related('user').filter(user=user).filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=True)).filter(~Q(status__exact='private')).order_by('-id').all()[:600].prefetch_related('itemcontent_set')
         items = sorted(items, key=lambda item:item.id, reverse=True)
 
-        subitems = Item.objects.filter(user=user).filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=False)).order_by('-id').prefetch_related('itemcontent_set')
+        subitems = Item.objects.filter(user=user).filter(useritemrelationship__isnull=True).filter(Q(belong__isnull=False)).order_by('-id').all()[:600].prefetch_related('itemcontent_set')
         belongitems = []
         for subitem in subitems:
             rootitems = subitem.get_root_items()
