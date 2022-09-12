@@ -544,7 +544,7 @@ def Feedback(request):
 
 def List(request):
     try:
-        users = User.objects.all().order_by('-date_joined')
+        users = User.objects.order_by('-date_joined').all()[:300]
     except User.DoesNotExist:
         users = None
 
